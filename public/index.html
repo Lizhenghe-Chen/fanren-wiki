@@ -445,6 +445,18 @@ footer .note{margin-top:6px}
   .chip{white-space:normal;overflow-wrap:anywhere;max-width:100%;line-height:1.35}
 }
 
+/* 卡片互引：被引数与相关条目 chip */
+.ref-count{color:var(--gold);opacity:.85;font-variant-numeric:tabular-nums}
+.card-hint .ref-count{margin-left:auto}
+.ref-block{display:flex;flex-direction:column;gap:8px;margin-top:2px;padding-top:9px;border-top:1px dashed var(--line)}
+.ref-row{display:flex;gap:8px;align-items:baseline}
+.ref-lb{flex:none;font-size:11px;color:var(--ink3);letter-spacing:.06em;white-space:nowrap}
+.ref-lb i{font-style:normal;color:var(--gold);margin-left:4px;font-variant-numeric:tabular-nums}
+.ref-chips{display:flex;flex-wrap:wrap;gap:5px;min-width:0}
+.ref-chip{font:inherit;font-size:11px;line-height:1.5;padding:2px 8px;border-radius:999px;cursor:pointer;color:var(--ink2);border:1px solid var(--line);background:rgba(255,255,255,.03);transition:color .16s,border-color .16s,background .16s}
+.ref-chip:hover{color:var(--gold);border-color:rgba(212,175,106,.5);background:rgba(212,175,106,.1)}
+.ref-more{font-size:11px;color:var(--ink3);padding:2px 2px}
+
 /* ===== 灵兽灵虫视图 ===== */
 .beast-rail-sec{padding:4px 0 8px}
 .beast-rail{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:8px;overflow-x:auto;padding:4px 0 12px}
@@ -1642,6 +1654,112 @@ document.getElementById("st-uniq").textContent = CHAR_UNIQ;
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function escapeAttr(s){return esc(s).replace(/\"/g,"&quot;").replace(/'/g,"&#39;")}
 
+/* ===== 全库索引与引用网 =====
+   搜索面板与卡片互引共用同一份索引，加载期各扫一次。
+   引用不来自新增数据，而是“某条目的名称出现在别人正文里”这个事实 ——
+   390 条正文 × 390 个名称，用一条交替正则一次扫完（比逐个 includes 快一个量级）。 */
+const LIBS = [
+  {id:"chars",  name:"人物图谱", view:"v-chars",     color:"var(--c1)"},
+  {id:"beasts", name:"灵兽灵虫", view:"v-beasts",    color:"var(--c2)"},
+  {id:"herbs",  name:"灵草丹药", view:"v-herbs",     color:"var(--c5)"},
+  {id:"tres",   name:"法器法宝", view:"v-treasures", color:"var(--c6)"}
+];
+const INDEX = [];          // {lib,key,name,sub,tag,text}
+const ENTRY_BY_KEY = {};   // key → INDEX 条目
+const REFS = {};           // key → {out:[它提到的 key], in:[提到它的 key]}
+(function buildIndexAndRefs(){
+  function catName(cats, id){ const c = cats.find(x => x.id === id); return c ? c.name : ""; }
+  function push(lib, key, o, tag){
+    /* text 不含 sub：sub 在搜索结果行里已单独占一列，重复收录会让命中片段与身份撞车 */
+    INDEX.push({lib:lib, key:key, name:o.n, sub:o.t || "", tag:tag,
+      text:[o.t,o.r,o.e,o.ev,o.s,o.rel,o.camp,o.race].filter(Boolean).join(" ")});
+  }
+  CHAPTERS.forEach(ch => DATA[ch.id].forEach((c,i) => push("chars", ch.id+"#"+i, c, ch.name)));
+  BEASTS.forEach((b,i) => push("beasts", "beast#"+i, b, catName(BEAST_CATS, b.cat)));
+  HERBS.forEach((h,i) => push("herbs", "herb#"+i, h, catName(HERB_CATS, h.cat)));
+  TREASURES.forEach((t,i) => push("tres", "tres#"+i, t, catName(TREASURE_CATS, t.cat)));
+  INDEX.forEach(e => { ENTRY_BY_KEY[e.key] = e; REFS[e.key] = {out:[], in:[]}; });
+
+  const cands = new Map();   // 名称 → 候选 key（同名条目可能横跨多个库）
+  INDEX.forEach(e => { const a = cands.get(e.name); if(a) a.push(e.key); else cands.set(e.name, [e.key]); });
+  /* 优先指向同一库：在灵兽格里点「噬金虫」应落到灵兽卡，而不是人物库那张 */
+  const pick = (name, lib) => {
+    const a = cands.get(name);
+    return a.find(k => ENTRY_BY_KEY[k].lib === lib) || a[0];
+  };
+  /* 长名优先，否则「韩立」会先吃掉「韩立之女」 */
+  const names = [...cands.keys()].filter(n => n.length >= 2).sort((a,b) => b.length - a.length);
+  const re = new RegExp(names.map(n => n.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")).join("|"), "g");
+  INDEX.forEach(e => {
+    const hit = new Set();
+    re.lastIndex = 0;
+    let m;
+    while((m = re.exec(e.text))) if(m[0] !== e.name) hit.add(pick(m[0], e.lib));
+    REFS[e.key].out = [...hit];
+  });
+  INDEX.forEach(e => REFS[e.key].out.forEach(k => REFS[k].in.push(e.key)));
+})();
+
+/* 同名条目是同一实体的不同副本：韩立 6 张（按篇章收录）、掌天瓶 2 张（灵草/法宝），
+   另有「曲魂（傀儡形态）」「噬金虫（金童）」这类带形态后缀的变体。
+   匹配用精确名（正文里写的就是那个名字），但计数与展示按“基础名”归并 ——
+   否则同一个人会被拆成两半（掌天瓶只能显示“被引 1”），同一张卡片里也会冒出同名 chip。 */
+const baseName = n => String(n).replace(/（[^）]*）$/, "");
+const KEYS_BY_BASE = {};
+INDEX.forEach(e => {
+  const b = baseName(e.name);
+  (KEYS_BY_BASE[b] = KEYS_BY_BASE[b] || []).push(e.key);
+});
+const REF_SCORE = {};
+Object.keys(KEYS_BY_BASE).forEach(b => {
+  let n = 0;
+  KEYS_BY_BASE[b].forEach(k => { n += REFS[k].in.length; });
+  KEYS_BY_BASE[b].forEach(k => { REF_SCORE[k] = n; });
+});
+
+/** 被引数：该实体一共被多少个条目提到（跨它的所有副本合计）。也是一份免费的“重要度”。 */
+function refCount(key){ return REF_SCORE[key] || 0; }
+
+/** 卡片内的互引区：排除指向自身的副本，按被引数降序、按基础名去重取前 8，其余折成 +N */
+function refsBlock(key){
+  const self = ENTRY_BY_KEY[key];
+  if(!self) return "";
+  const mine = baseName(self.name);
+  /* 被引用于：同事实体各副本的入边合并 —— 韩立 6 张卡收到的是同一份提及 */
+  const incoming = [];
+  KEYS_BY_BASE[mine].forEach(k => { incoming.push(...REFS[k].in); });
+  const uniq = ks => {
+    const seen = new Set(), list = [];
+    ks.slice().sort((a,b) => refCount(b) - refCount(a)).forEach(k => {
+      const b = baseName(ENTRY_BY_KEY[k].name);
+      if(b === mine || seen.has(b)) return;
+      seen.add(b); list.push(k);
+    });
+    return list;
+  };
+  const chip = k => {
+    const e = ENTRY_BY_KEY[k];
+    return `<button class="ref-chip" type="button" data-goto="${escapeAttr(k)}" title="${escapeAttr(e.tag)} · ${escapeAttr(e.sub)}">${esc(e.name)}</button>`;
+  };
+  const row = (label, ks) => {
+    const list = uniq(ks);
+    if(!list.length) return "";
+    const shown = list.slice(0, 8);
+    return `<div class="ref-row"><span class="ref-lb">${label}<i>${list.length}</i></span><span class="ref-chips">`
+      + shown.map(chip).join("")
+      + (list.length > shown.length ? `<span class="ref-more">+${list.length - shown.length}</span>` : "")
+      + "</span></div>";
+  };
+  const html = row("相关条目", REFS[key].out) + row("被引用于", incoming);
+  return html ? `<div class="ref-block">${html}</div>` : "";
+}
+
+/** 折叠状态下显示的“被引 N”：hover 说明口径，避免被误读成参考文献数 */
+function refBadge(key){
+  const n = refCount(key);
+  return n ? `<span class="ref-count" title="有 ${n} 个条目在正文里提到它">被引 ${n}</span>` : "";
+}
+
 function renderTabs(){
   const tabs = document.getElementById("tabs");
   let html = `<button class="tab active" data-ch="all">全部<span class="cnt">${Object.values(DATA).flat().length}</span></button>`;
@@ -1675,6 +1793,7 @@ function renderMain(){
   const main = document.getElementById("characters");
   main.innerHTML = CHAPTERS.map(ch=>{
     const cards = DATA[ch.id].map((c,i)=>{
+      const key = ch.id + "#" + i;
       const safeName = escapeAttr(c.n || "");
       const safeTitle = escapeAttr(c.t || "");
       const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -1682,7 +1801,7 @@ function renderMain(){
         ? `<img class="card-img" src="assets/${escapeAttr(c.img)}" alt="${safeName}" loading="lazy">`
         : `<div class="ph">${fallbackLetter}</div>`;
 
-      return `<div class="card" data-key="${ch.id}#${i}" data-name="${safeName}" data-aka="${safeTitle}">
+      return `<div class="card" data-key="${key}" data-name="${safeName}" data-aka="${safeTitle}">
         <div class="card-top">${img}<span class="card-tag" style="background:${ch.color}">${esc(ch.name)}</span></div>
         <div class="card-body">
           <div class="card-name"><h3>${esc(c.n)}</h3>${c.t?`<span class="aka">${esc(c.t)}</span>`:""}</div>
@@ -1696,8 +1815,9 @@ function renderMain(){
             <div class="card-row"><span class="lb">结局</span><span class="tx">${esc(c.e)}</span></div>
             ${c.ev?`<div class="card-row"><span class="lb">修为演进</span><span class="tx">${esc(c.ev)}</span></div>`:""}
             ${c.s?`<div class="card-row"><span class="lb">生平</span><span class="tx">${esc(c.s)}</span></div>`:""}
+            ${refsBlock(key)}
           </div>
-          <div class="card-hint"><span class="chev">▾</span>点击展开生平</div>
+          <div class="card-hint"><span class="chev">▾</span>点击展开生平${refBadge(key)}</div>
         </div>
       </div>`;
     }).join("");
@@ -1793,6 +1913,7 @@ function renderBeasts(){
   const el = document.getElementById("beasts");
   if(!el) return;
   el.innerHTML = BEASTS.map(function(c,i){
+    const key = "beast#" + i;
     const safeName = escapeAttr(c.n || "");
     const safeTitle = escapeAttr(c.t || "");
     const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -1800,7 +1921,7 @@ function renderBeasts(){
       ? '<img class="card-img" src="assets/' + escapeAttr(c.img) + '" alt="' + safeName + '" loading="lazy">'
       : '<div class="ph">' + fallbackLetter + '</div>';
     const cat = BEAST_CATS.find(function(x){return x.id===c.cat;}) || BEAST_CATS[0];
-    return '<div class="card" data-key="beast#' + i + '" data-name="' + safeName + '" data-aka="' + safeTitle + '" data-cat="' + c.cat + '">' +
+    return '<div class="card" data-key="' + key + '" data-name="' + safeName + '" data-aka="' + safeTitle + '" data-cat="' + c.cat + '">' +
       '<div class="card-top">' + img + '<span class="beast-cat-tag" style="color:' + cat.color + ';border-color:' + cat.color + '">' + esc(cat.name) + '</span></div>' +
       '<div class="card-body">' +
         '<div class="card-name"><h3>' + esc(c.n) + '</h3>' + (c.t?'<span class="aka">' + esc(c.t) + '</span>':"") + '</div>' +
@@ -1814,8 +1935,9 @@ function renderBeasts(){
           '<div class="card-row"><span class="lb">结局</span><span class="tx">' + esc(c.e) + '</span></div>' +
           (c.ev?'<div class="card-row"><span class="lb">修为演进</span><span class="tx">' + esc(c.ev) + '</span></div>':"") +
           (c.s?'<div class="card-row"><span class="lb">生平</span><span class="tx">' + esc(c.s) + '</span></div>':"") +
+          refsBlock(key) +
         '</div>' +
-        '<div class="card-hint"><span class="chev">▾</span>点击展开详情</div>' +
+        '<div class="card-hint"><span class="chev">▾</span>点击展开详情' + refBadge(key) + '</div>' +
       '</div>' +
     '</div>';
   }).join("");
@@ -1882,6 +2004,7 @@ function renderHerbs(){
   const el = document.getElementById("herbs");
   if(!el) return;
   el.innerHTML = HERBS.map(function(c,i){
+    const key = "herb#" + i;
     const safeName = escapeAttr(c.n || "");
     const safeTitle = escapeAttr(c.t || "");
     const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -1889,7 +2012,7 @@ function renderHerbs(){
       ? '<img class="card-img" src="assets/' + escapeAttr(c.img) + '" alt="' + safeName + '" loading="lazy">'
       : '<div class="ph">' + fallbackLetter + '</div>';
     const cat = HERB_CATS.find(function(x){return x.id===c.cat;}) || HERB_CATS[0];
-    return '<div class="card" data-key="herb#' + i + '" data-name="' + safeName + '" data-aka="' + safeTitle + '" data-cat="' + c.cat + '">' +
+    return '<div class="card" data-key="' + key + '" data-name="' + safeName + '" data-aka="' + safeTitle + '" data-cat="' + c.cat + '">' +
       '<div class="card-top">' + img + '<span class="herb-cat-tag" style="color:' + cat.color + ';border-color:' + cat.color + '">' + esc(cat.name) + '</span></div>' +
       '<div class="card-body">' +
         '<div class="card-name"><h3>' + esc(c.n) + '</h3>' + (c.t?'<span class="aka">' + esc(c.t) + '</span>':"") + '</div>' +
@@ -1901,8 +2024,9 @@ function renderHerbs(){
         '<div class="card-extra">' +
           '<div class="card-row"><span class="lb">结局</span><span class="tx">' + esc(c.e) + '</span></div>' +
           (c.s?'<div class="card-row"><span class="lb">详情</span><span class="tx">' + esc(c.s) + '</span></div>':"") +
+          refsBlock(key) +
         '</div>' +
-        '<div class="card-hint"><span class="chev">▾</span>点击展开详情</div>' +
+        '<div class="card-hint"><span class="chev">▾</span>点击展开详情' + refBadge(key) + '</div>' +
       '</div>' +
     '</div>';
   }).join("");
@@ -1991,7 +2115,8 @@ function renderTreasures(list){
     const name=esc(t.n);                                 // 文本节点：与灵兽/灵草一致过 esc
     const nameAttr=escapeAttr(t.n||"");                 // 属性值：额外转義引号
     const imgHtml=t.img?`<img class="tc-img" src="assets/${esc(t.img)}" alt="${nameAttr}" loading="lazy">`:`<div class="tc-img" style="display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--gold);opacity:.3">${esc((t.n||"?")[0])}</div>`;
-    return `<div class="treasure-card" data-key="tres#${TREASURES.indexOf(t)}" data-name="${nameAttr}">
+    const key="tres#"+TREASURES.indexOf(t);
+    return `<div class="treasure-card" data-key="${key}" data-name="${nameAttr}">
       ${imgHtml}
       <div class="tc-body">
         <div class="tc-name">${name}</div>
@@ -2000,12 +2125,13 @@ function renderTreasures(list){
           <span class="tc-tag" style="color:${cat?cat.color:"var(--gold)"}">${cat?esc(cat.name):esc(t.cat)}</span>
           <span class="tc-realm">${esc(t.r)}</span>
         </div>
-        <div class="tc-end">${esc(t.e)}</div>
+        <div class="tc-end">${esc(t.e)}${refBadge(key)}</div>
       </div>
       <div class="treasure-detail">
         <div class="dl-row"><span class="dl-label">来历：</span>${esc(t.s)}</div>
         <div class="dl-row"><span class="dl-label">持有者：</span>${esc(t.rel)}</div>
         <div class="dl-row"><span class="dl-label">出处：</span>${esc(t.camp)}</div>
+        ${refsBlock(key)}
       </div>
     </div>`;
   }).join("");
@@ -2070,42 +2196,9 @@ function applyTreasureFilter(){
     update();
   })();
 
-  /* ===== 全库搜索（⌘K / Ctrl+K / /） =====
-     四个库各自的内联搜索框只能搜自己那一库（且只匹配名称与身份）；
-     这里建一份统一索引：名称、身份、类别、生平、结局、修为演进、势力、出处全部可搜，
-     命中后跨库定位到具体卡片并展开。 */
-  var SPOT_LIBS = [
-    { id:"chars",  name:"人物图谱", view:"v-chars",     color:"var(--c1)" },
-    { id:"beasts", name:"灵兽灵虫", view:"v-beasts",    color:"var(--c2)" },
-    { id:"herbs",  name:"灵草丹药", view:"v-herbs",     color:"var(--c5)" },
-    { id:"tres",   name:"法器法宝", view:"v-treasures", color:"var(--c6)" }
-  ];
+  /* ===== 全库搜索面板（⌘K / Ctrl+K / /） =====
+     索引与互引数据见文件上方 “全库索引与引用网” 一节（LIBS / INDEX / ENTRY_BY_KEY）。 */
   var SPOT_HOT = ["韩立","南宫婉","掌天瓶","噬金虫","筑基丹","虚天鼎","墨大夫","乱星海"];
-  var SPOT_INDEX = [];
-  (function buildSearchIndex(){
-    function push(lib, key, o, name, sub, tag){
-      SPOT_INDEX.push({
-        lib:lib, key:key, name:name, sub:sub || "", tag:tag || "",
-        /* 正文不含 sub：它在行内已有独立列位，重复收录会让“命中片段”与身份撞车 */
-        text:[o.r,o.e,o.ev,o.s,o.rel,o.camp,o.race].filter(Boolean).join(" ")
-      });
-    }
-    CHAPTERS.forEach(function(ch){
-      DATA[ch.id].forEach(function(c,i){ push("chars", ch.id+"#"+i, c, c.n, c.t, ch.name); });
-    });
-    BEASTS.forEach(function(b,i){
-      var cat = BEAST_CATS.find(function(x){ return x.id===b.cat; });
-      push("beasts", "beast#"+i, b, b.n, b.t, cat ? cat.name : "灵兽灵虫");
-    });
-    HERBS.forEach(function(h,i){
-      var cat = HERB_CATS.find(function(x){ return x.id===h.cat; });
-      push("herbs", "herb#"+i, h, h.n, h.t, cat ? cat.name : "灵草丹药");
-    });
-    TREASURES.forEach(function(t,i){
-      var cat = TREASURE_CATS.find(function(x){ return x.id===t.cat; });
-      push("tres", "tres#"+i, t, t.n, t.t, cat ? cat.name : "法器法宝");
-    });
-  })();
 
   var spotEl = document.getElementById("spot"),
       spotInput = document.getElementById("spotInput"),
@@ -2131,8 +2224,8 @@ function applyTreasureFilter(){
   }
   function spotSearch(q){
     var out = [];
-    for(var i=0;i<SPOT_INDEX.length;i++){
-      var e = SPOT_INDEX[i], n = e.name.toLowerCase(), s = 0;
+    for(var i=0;i<INDEX.length;i++){
+      var e = INDEX[i], n = e.name.toLowerCase(), s = 0;
       if(n === q) s = 100;
       else if(n.indexOf(q) === 0) s = 80;
       else if(n.indexOf(q) >= 0) s = 60;
@@ -2147,7 +2240,7 @@ function applyTreasureFilter(){
     var q = spotInput.value.trim().toLowerCase();
     spotRows = []; spotCur = -1;
     if(!q){
-      spotCount.textContent = "索引 " + SPOT_INDEX.length + " 条";
+      spotCount.textContent = "索引 " + INDEX.length + " 条";
       spotList.innerHTML = '<div class="spot-empty">跨库检索四个库：名称、身份、生平、结局、修为、势力、出处</div>'
         + '<div class="spot-chips">' + SPOT_HOT.map(function(w){
             return '<button class="spot-chip" type="button" data-w="' + esc(w) + '">' + esc(w) + '</button>';
@@ -2170,7 +2263,7 @@ function applyTreasureFilter(){
     spotCount.textContent = "命中 " + hits.length + " 条";
     var html = "";
     order.forEach(function(lib){
-      var meta = SPOT_LIBS.filter(function(x){ return x.id===lib; })[0];
+      var meta = LIBS.filter(function(x){ return x.id===lib; })[0];
       html += '<div class="spot-group"><div class="spot-group-h"><span class="dot" style="background:' + meta.color + '"></span>'
         + meta.name + '<span class="n">' + counts[lib] + ' 条</span></div>';
       groups[lib].forEach(function(e){
@@ -2205,9 +2298,12 @@ function applyTreasureFilter(){
   }
   function spotIsOpen(){ return !spotEl.hidden; }
 
-  /* 定位：先复位目标库的筛选（否则卡片可能被筛掉），再切视图、展开并滚动过去 */
-  function spotLocate(e){
-    var meta = SPOT_LIBS.filter(function(x){ return x.id===e.lib; })[0];
+  /* 定位：先复位目标库的筛选（否则卡片可能被筛掉），再切视图、展开并滚动过去。
+     搜索命中与卡片互引 chip 共用这一个入口。 */
+  function gotoEntry(key){
+    var e = ENTRY_BY_KEY[key];
+    if(!e) return;
+    var meta = LIBS.filter(function(x){ return x.id===e.lib; })[0];
     if(e.lib === "chars"){
       keyword = ""; currentTab = "all";
       document.getElementById("searchInput").value = "";
@@ -2259,7 +2355,7 @@ function applyTreasureFilter(){
     else if(ev.key === "Escape"){ ev.preventDefault(); spotClose(); }
     else if(ev.key === "Enter"){
       ev.preventDefault();
-      if(spotRows.length) spotLocate(spotRows[spotCur < 0 ? 0 : spotCur]);
+      if(spotRows.length) gotoEntry(spotRows[spotCur < 0 ? 0 : spotCur].key);
       spotClose();
     }
   });
@@ -2268,8 +2364,16 @@ function applyTreasureFilter(){
     var chip = ev.target.closest(".spot-chip");
     if(chip){ spotInput.value = chip.dataset.w; spotRender(); spotInput.focus(); return; }
     var row = ev.target.closest(".spot-row");
-    if(row){ spotLocate(spotRows[+row.dataset.i]); spotClose(); }
+    if(row){ gotoEntry(spotRows[+row.dataset.i].key); spotClose(); }
   });
+  /* 卡片里的互引 chip 用捕获阶段拦下并阻断冒泡，否则会被卡片的展开/收起处理吃掉 */
+  document.addEventListener("click", function(ev){
+    var chip = ev.target.closest("[data-goto]");
+    if(!chip) return;
+    ev.preventDefault();
+    ev.stopPropagation();
+    gotoEntry(chip.dataset.goto);
+  }, true);
   window.addEventListener("keydown", function(ev){
     var tag = (ev.target && ev.target.tagName) || "";
     var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(tag);
