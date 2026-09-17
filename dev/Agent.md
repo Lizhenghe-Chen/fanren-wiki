@@ -61,13 +61,13 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
     .page-head → 境界 rail → 3 个 data-cultivation 图表 → 各篇人数柱状 → 图例
   </div>
   <div class="view" id="v-beasts">            # 视图4 灵兽灵虫（约 3 屏）
-    .page-head（含 .ph-lead 一句话引导） → 妖兽等级制度 rail #beastRail → 搜索框 #beastSearchInput → 分类 tab #beastTabs → 卡片区 <main id="beasts">
+    .page-head（含 .ph-lead 一句话引导） → 妖兽等级制度 rail #beastRail → 分类 tab #beastTabs → 共用搜索框 .lib-search（#beastSearchInput） → 卡片区 <div class="grid beast-grid" id="beasts">
   </div>
   <div class="view" id="v-herbs">             # 视图5 灵草丹药（约 2-3 屏）
-    .page-head → 灵药年份等级 rail #herbRail → 搜索框 #herbSearchInput → 分类 tab #herbTabs → 卡片区 <main id="herbs">
+    .page-head → 灵药年份等级 rail #herbRail → 分类 tab #herbTabs → 共用搜索框 .lib-search（#herbSearchInput） → 卡片区 <div class="grid herb-grid" id="herbs">
   </div>
   <div class="view" id="v-treasures">         # 视图6 法器法宝（约 2-3 屏）
-    .page-head → 法宝品阶 rail #treasureRail → 搜索框 #treasureSearchInput → 分类 tab #treasureTabs → 卡片区 <main id="treasures">
+    .page-head → 法宝品阶 rail #treasureRail → 分类 tab #treasureTabs → 共用搜索框 .lib-search（#treasureSearchInput） → 展示计数 #treasureShown → 卡片区 #treasureGrid
   </div>
   <footer>…</footer>
   <button class="back-top" id="backTop">↑ + 进度环</button>   # 滚过 700px 后出现（.show）；环按滚动比例补满
@@ -170,6 +170,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 | `toggleCard(el)` | 点击卡片展开/收起生平（默认收起不剧透）；同时把 URL 同步成深链（可复制分享） |
 | `applyFilter()` | 人物卡三条件过滤：篇章 tab + 搜索关键词 + 核心圈降噪（`coreOk`）；无可见卡的篇章区块整块隐藏 |
 | `isCore(key)` / `coreCount()` / `CORE_MIN` | 核心圈判定与计数（被引 ≥ 5） |
+| `haystack(o)` | 三库**统一的命中范围**：名称/称号/等级/结局/演进/生平/关系/出处/种族 —— 与全库搜索面板同一套字段。改搜索命中范围就改这一处 |
 | `initCardLib(cfg)` + `BEAST_LIB` / `HERB_LIB` | 灵兽、灵草**共用的一套实现**（配置驱动：库 id、数据、分类、文案、字段差异全在配置里）。实例按库 id 存进 `LIB_UI`，`gotoEntry` 用它复位筛选。改一库行为就是改这一处 |
 | `renderTreasureRail()` / `renderTreasureTabs()` / `renderTreasures(list)` / `applyTreasureFilter()` | 法宝视图（**不并入上面的工厂**：它按筛选结果整表重渲染、卡片结构也不同） |
 | `switchView(id)` | 切视图（同步 topnav 高亮；非法 id 回退 v-home） |
@@ -215,7 +216,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - 字体：**纯系统字体栈**（`--font-serif` 优先 Songti SC / STSong，`--font-sans` 优先 PingFang SC / Microsoft YaHei，逐级回退）。2026-09-17 已移除 `miaoda.feishu.cn` 的 Noto 字体 CDN（省 11.35MB）：**全站 0 第三方请求**，离线/`file://` 打开外观完全一致，**不要再引入外部字体**。
 - 无任何构建工具，原生 JS，`file://` 可直接打开（图片为相对路径，**转发时需连同 assets/ 一起**）。
 - 首页样式类：`.home-section` / `.home-why`（`<details>` 折叠） / `.home-cards` / `.home-card` / `.home-note` / `.home-quest`（问道自述） / `.src-list`（数据来源）（`/* ===== 首页 ===== */` 段）。
-- 全局复用类：`.page-head`（紧凑页头，内含唯一的 `h1` + `.stats` + `.ph-lead` 一句话引导；≤640px 收窄内边距） / `.seg`+`.seg-btn`（分段选择器） / `.ref-chips`+`.ref-chip`（互引 chip） / `.spot*`（搜索面板一整套） / `.back-top` / `.img-note`（`<details>` 免责声明） / `.asset-manifest`。
+- 全局复用类：`.page-head`（紧凑页头，内含唯一的 `h1` + `.stats` + `.ph-lead` 一句话引导；≤640px 收窄内边距） / `.seg`+`.seg-btn`（分段选择器） / `.lib-search`（三库共用搜索框，胶囊，与分类 tab 同一套形态与 10/12px 外边距） / `.ref-chips`+`.ref-chip`（互引 chip） / `.spot*`（搜索面板一整套） / `.back-top` / `.img-note`（`<details>` 免责声明）。
 
 ### 出处与防盗（改动前必读）
 
@@ -270,6 +271,11 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   ④ **删死代码**：`.asset-manifest`（302 条 URL 的隐藏清单，已与真实引用脱节）+ `.home-feats` 6 条规则（首页「页面包含」早已删除）+ `.home-why .lead`。
   ⑤ 体积：`public/index.html` 315.8KB → **302.5KB**（-4.2%）、行数 2493 → 2377。
   ⑥ 顺带校正：`.gitignore` 里还写着 Doubao 时代 `shot.py` 的注释；§2 目录树还列着并不存在的 `dev/unused-assets/`。
+- **v25：三库搜索框与搜索深度统一**（用户就 v24 报告的两个“不齐”点要求统一）——
+  ① **样式**：灵兽（绝对定位图标+矩形框）、灵草（flex 胶囊）、法宝（CSS 内联 SVG 背景）三套 → 一个 `.lib-search`（胶囊、与分类 tab 同形态，真 DOM `<svg>` 图标；≤640px 占满宽）；三处 tab 行外边距也对齐为 `10px 0 12px`。实测三处计算样式只有**一个指纹**（340×41、图标 left 15 / 中心 y 20、输入 left 37）。
+  ② **顺序**：灵兽/灵草原来是“搜索框→tab”，法宝是“tab→搜索框” → 统一为 **tab → 搜索框**（与人物图谱的“篇章 tab + 搜索”一致）。
+  ③ **命中范围**：原来法宝匹配 名称+称号+来历+持有者+出处+生平，灵兽/灵草只匹配 名称+称号 → 抽出 `haystack(o)` 三库共用（9 个字段，与全库搜索面板同一套）。正文不再塞进 DOM 属性，而是在 `list()` 里存成 `Map<data-key, 命中文本>`。placeholder 同时写明搜索范围（如「搜索灵兽灵虫：名称·等级·生平·结局」）。
+  ④ 验收 24 → **25 条**：搜索拆为“按名称定位”与“命中范围一致 + 无结果给空状态”两条（用「韩立」这种只出现在正文字段里的词做判据 —— 旧实现下命中数必为 0）。
 - **v20：界面治理（字体/首屏/顶栏/搜索/配色）**——① 字体治理：移除 `miaoda.feishu.cn` 的 Noto CDN（-11.35MB、首屏零第三方请求），改用系统字体栈；② v-chars 首屏瘦身：hero→紧凑 `.page-head`（760→339px）、navbar 109→59px、免责声明折进 `.img-note`（112→42px）、`.tabs` 强制单行 + 右端渐隐遮罩，全页高度 65423→45167px；③ sticky 顶栏（`.topnav` top:0 / `.navbar` top:49px）+ `.back-top` 返回顶部；④ 全站搜索面板（⌘K / Ctrl+K / `/`，390 条跳库索引、分组、高亮、定位）；⑤ 颜色收敛 34→6 色相，`.img-note`/法宝视图统一到同一套 token，免责声明去重 5→2；⑥ 修 2 个既有 bug：`applyFilter()` 用全局 `.card` 导致 `closest(".chapter")` 为 null（灵兽/灵草卡在页上时篇章切换直接抛错）、篇章 tab 清 `.active` 时把法宝 tab 一起清掉（`#treasureTabs .tab.active` 为 null → TypeError）。
 - **v21：互引网络**——`INDEX`/`ENTRY_BY_KEY`/`REFS`/`REF_SCORE`：一次正则扫过全部文本（长名优先，避免"韩立"截断"韩立之师"），`baseName()` 合并跳库同名实体（韩立 6 篇合成一个被引数），卡片底部渲染「相关条目」「被引用于」 chip（各前 8 + `+N`）与「被引 N」徽记。实测 390 条里 331 条有互链（85%），加载 +10~15ms；韩立被引 254、掌天瓶 19、南宫婉 17。⚠️ chip 必须用**捕获阶段**监听 + `stopPropagation`，否则会被卡片自身的展开/收起吃掉。
 - **v22：降噪与定位（核心圈 + 深链 + 首页瘦身 + 统一页头 + 验收脚本）**——① 被引分布是长尾（381 条中 208 条为 0、仅 38 条 ≥ 5）⇒ `CORE_MIN = 5` + `coreOnly` 默认开，`#tabs` 内 `.seg` 分段选择器「核心圈 N / 全部 221」；`gotoEntry` 跳转时自动退出降噪（否则滚过去是一片空白）；② 条目深链：`data-key` 分隔符由 `#` 改 `-`（`#v-treasures/tres-12`），点卡即同步地址栏；路由补齐 `hashchange` + `popstate` 双监听（**旧实现 `openFromHash()` 只处理 target、从不切视图 —— 手改地址或浏览器返回时视图不动**，被新增断言抓到）；③ 首页瘦身：「为什么做这个网站」折进 `<details class="home-why">`、删「页面包含」清单、清 4 处裸 URL 的 `.src-site`；④ v-beasts/v-herbs/v-lore/v-realms 统一 `.page-head` 紧凑页头，每视图补齐唯一 `h1`；⑤ `dev/tools/verify.mjs` 新增并把断言从 14 条扩到 **19 条**（新增：每视图唯一 h1、核心圈默认与回全部、深链冷启动、URL 同步、浏览器返回后路由一致）。

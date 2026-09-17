@@ -298,28 +298,32 @@ try {
     tresBad.length === 0 && tresFilter.all[0] === 65 && tresFilter.all[1] === 65 && narrowed,
     `异常 ${tresBad.join('，')}；全部=${tresFilter.all.join('/')}；有收窄=${narrowed}`)
 
-  /* 三库各自的搜索框（灵草搜索框还需要把关键词转小写后匹配，历史上两库写法不一致） */
-  const searches = JSON.parse(await evaluate(`(() => {
-    const probe = (input, cards, kw) => {
-      const el = document.getElementById(input);
-      el.value = kw;
-      el.dispatchEvent(new Event('input', { bubbles: true }));
-      return window.__vis(cards);
-    };
-    return JSON.stringify({
-      beast: probe('beastSearchInput', '#beasts .card', '噬金虫'),
-      herb: probe('herbSearchInput', '#herbs .card', '筑基丹'),
-    });
+  /* 三库搜索：既要能按名称命中，也要能命中介于正文的字段（三库命中范围已统一），无结果时给空状态 */
+  const searchProbe = JSON.parse(await evaluate(`(() => {
+    const type = (id, kw) => { const el = document.getElementById(id); el.value = kw; el.dispatchEvent(new Event('input', { bubbles: true })); };
+    const vis = sel => [...document.querySelectorAll(sel)].filter(c => c.style.display !== 'none');
+    const shown = () => Number(document.getElementById('treasureShown').textContent);
+    const out = {};
+    /* 名称可能是「噬金虫（金童）」这类带形态后缀的变体，所以用包含匹配而非相等 */
+    type('beastSearchInput', '噬金虫');    out.beastName = vis('#beasts .card').some(c => c.dataset.name.includes('噬金虫'));
+    type('herbSearchInput', '筑基丹');     out.herbName = vis('#herbs .card').length;
+    type('treasureSearchInput', '掌天瓶'); out.tresName = shown();
+    /* 「韩立」只出现在 rel/camp/s 这类正文字段里，不在名称与称号上 —— 命中即证明搜索深度已统一 */
+    type('beastSearchInput', '韩立');      out.beastText = vis('#beasts .card').length;
+    type('herbSearchInput', '韩立');       out.herbText = vis('#herbs .card').length;
+    type('treasureSearchInput', '韩立');   out.tresText = shown();
+    type('beastSearchInput', '不存在的词zzz'); out.beastNone = vis('#beasts .card').length;
+    out.emptyShown = getComputedStyle(document.getElementById('beastEmpty')).display !== 'none';
+    ['beastSearchInput','herbSearchInput','treasureSearchInput'].forEach(id => type(id, ''));
+    return JSON.stringify(out);
   })()`))
-  const tresSearch = await evaluate(`(() => {
-    const el = document.getElementById('treasureSearchInput');
-    el.value = '掌天瓶'; el.dispatchEvent(new Event('input', { bubbles: true }));
-    return document.getElementById('treasureShown').textContent;
-  })()`)
-  check('三库搜索框都能按名称定位（灵兽/灵草/法宝）',
-    searches.beast === 1 && searches.herb >= 1 && Number(tresSearch) >= 1,
-    JSON.stringify({ ...searches, tres: tresSearch }))
-  await evaluate(`['beastSearchInput','herbSearchInput','treasureSearchInput'].forEach(id => { const el = document.getElementById(id); el.value = ''; el.dispatchEvent(new Event('input', { bubbles: true })); })`)
+  check('三库搜索：都能按名称定位',
+    searchProbe.beastName && searchProbe.herbName >= 1 && searchProbe.tresName >= 1,
+    JSON.stringify(searchProbe))
+  check('三库搜索：命中范围一致（正文也参与），无结果时给空状态',
+    searchProbe.beastText > 0 && searchProbe.herbText > 0 && searchProbe.tresText > 0
+      && searchProbe.beastNone === 0 && searchProbe.emptyShown,
+    JSON.stringify(searchProbe))
 
   const locate = JSON.parse(await evaluate(`(async () => {
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));

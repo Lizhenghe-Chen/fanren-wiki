@@ -483,12 +483,17 @@ footer .note{margin-top:6px}
 .beast-node b{display:block;font-family:var(--font-serif);font-size:15px;white-space:nowrap}
 .beast-node .bl{display:block;color:var(--gold);font-size:12px;margin-top:3px;font-weight:600}
 .beast-node span{display:block;color:var(--ink3);font-size:11px;margin-top:5px;line-height:1.65}
-.beast-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px}
-.beast-search{position:relative;margin:4px 0 0;max-width:360px}
-.beast-search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--ink2);pointer-events:none}
-.beast-search input{width:100%;box-sizing:border-box;padding:9px 12px 9px 34px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.04);color:var(--ink);font-size:13px;outline:none;transition:border-color .18s}
-.beast-search input::placeholder{color:var(--ink3)}
-.beast-search input:focus{border-color:var(--gold)}
+.beast-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
+/* ===== 三库共用搜索框（胶囊形态，与分类 tab 同一套观感） =====
+   灵兽 / 灵草 / 法宝 以前各一套（一个绝对定位图标、一个 flex 胶囊、一个 CSS 内联 SVG 背景），
+   现统一为此一处；命中范围也由 JS 里的 haystack() 统一。 */
+.lib-search{display:flex;align-items:center;gap:8px;max-width:340px;margin:0 0 16px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);transition:border-color .18s,background .18s}
+.lib-search:focus-within{border-color:rgba(212,175,106,.55);background:rgba(255,255,255,.05)}
+.lib-search svg{flex:none;opacity:.55;color:var(--ink2)}
+.lib-search input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--ink);font:inherit;font-size:13px}
+.lib-search input::placeholder{color:var(--ink3)}
+@media (max-width:640px){.lib-search{max-width:none}}
+
 .beast-tab{padding:7px 15px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);color:var(--ink2);font-size:13px;cursor:pointer;transition:.18s;letter-spacing:.03em}
 .beast-tab:hover{color:var(--gold);border-color:rgba(212,175,106,.5)}
 .beast-tab.active{background:var(--gold);border-color:var(--gold);color:#14161d;font-weight:700}
@@ -511,22 +516,15 @@ footer .note{margin-top:6px}
 .herb-node b{display:block;font-family:var(--font-serif);font-size:15px;white-space:nowrap}
 .herb-node .bl{display:block;color:var(--gold);font-size:12px;margin-top:3px;font-weight:600}
 .herb-node span{display:block;color:var(--ink3);font-size:11px;margin-top:5px;line-height:1.65}
-.herb-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.herb-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 12px}
 .herb-tab{padding:7px 15px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);color:var(--ink2);font-size:13px;cursor:pointer;transition:.18s;letter-spacing:.03em}
 .herb-tab:hover{color:var(--gold);border-color:rgba(212,175,106,.5)}
 .herb-tab.active{background:var(--gold);border-color:var(--gold);color:#14161d;font-weight:700}
 .herb-tab .cnt{font-size:11px;opacity:.75;margin-left:4px}
 .herb-grid{margin-bottom:30px}
 .herb-cat-tag{position:absolute;top:10px;left:10px;z-index:2;font-size:11px;padding:3px 9px;border-radius:999px;background:rgba(14,16,22,.82);border:1px solid rgba(212,175,106,.4);color:var(--gold);letter-spacing:.04em}
-.herb-search-row{display:flex;gap:10px;margin-bottom:14px;align-items:center}
-.herb-search-box{flex:1;display:flex;align-items:center;gap:8px;padding:9px 14px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.03);transition:.18s}
-.herb-search-box:focus-within{border-color:rgba(212,175,106,.5)}
-.herb-search-box svg{flex-shrink:0;opacity:.5}
-.herb-search-box input{flex:1;background:transparent;border:none;outline:none;color:var(--ink1);font-size:14px;font-family:inherit}
-.herb-search-box input::placeholder{color:var(--ink3)}
 @media (max-width:760px){
   .herb-rail{grid-template-columns:repeat(3,minmax(140px,1fr))}
-  .herb-search-row{flex-direction:column}
 }
 
 @media (prefers-reduced-motion:reduce){
@@ -559,13 +557,10 @@ footer .note{margin-top:6px}
 @media (max-width:520px){#v-treasures .treasure-rail{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){#v-treasures .treasure-rail{grid-template-columns:1fr}}
 /* 标签与搜索框对齐全站（灵兽/灵草那套胶囊 + 金色 focus），不再用白色 15% 边框 */
-#v-treasures .treasure-tabs{display:flex;gap:8px;margin:14px 0 12px;flex-wrap:wrap}
+#v-treasures .treasure-tabs{display:flex;gap:8px;margin:10px 0 12px;flex-wrap:wrap}
 #v-treasures .treasure-tabs .tab{padding:7px 15px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink2);font-family:inherit;font-size:13px;letter-spacing:.03em;cursor:pointer;transition:.18s}
 #v-treasures .treasure-tabs .tab:hover{color:var(--gold);border-color:rgba(212,175,106,.5)}
 #v-treasures .treasure-tabs .tab.active{background:var(--gold);border-color:var(--gold);color:#14161d;font-weight:700}
-#v-treasures .treasure-search{width:100%;max-width:360px;padding:9px 12px 9px 34px;border:1px solid var(--line);border-radius:10px;color:var(--ink);font:inherit;font-size:13px;margin:4px 0 12px;outline:none;transition:border-color .18s;background:rgba(255,255,255,.04) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a89f8b' stroke-width='2.4'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E") no-repeat 12px center/14px 14px}
-#v-treasures .treasure-search::placeholder{color:var(--ink3)}
-#v-treasures .treasure-search:focus{border-color:var(--gold)}
 #v-treasures .treasure-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:14px;align-items:start}
 @media (min-width:1200px){#v-treasures .treasure-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}}
 @media (min-width:1600px){#v-treasures .treasure-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}}
@@ -989,11 +984,11 @@ footer .note{margin-top:6px}
   <div class="wrap">
     <div class="sec-title">灵兽灵虫图谱</div>
     <div class="sec-desc">点击卡片展开详情（含结局与生平），默认仅显示类别与等级、不剧透。</div>
-    <div class="beast-search">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input id="beastSearchInput" type="text" placeholder="搜索灵兽灵虫…" autocomplete="off">
-    </div>
     <div class="beast-tabs" id="beastTabs"></div>
+    <div class="lib-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="beastSearchInput" type="text" placeholder="搜索灵兽灵虫：名称·等级·生平·结局" autocomplete="off">
+    </div>
     <div class="grid beast-grid" id="beasts"></div>
     <div class="empty-tip" id="beastEmpty">该类别暂无条目。</div>
   </div>
@@ -1031,13 +1026,11 @@ footer .note{margin-top:6px}
   <div class="wrap">
     <div class="sec-title">灵草丹药图谱</div>
     <div class="sec-desc">点击卡片展开详情（含结局与相关事件），默认仅显示类别与等级、不剧透。图片多为中国风插画：动画未具象化的道具以插画呈现。</div>
-    <div class="herb-search-row">
-      <div class="herb-search-box">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-        <input id="herbSearchInput" type="text" placeholder="搜索灵草丹药…" autocomplete="off">
-      </div>
-    </div>
     <div class="herb-tabs" id="herbTabs"></div>
+    <div class="lib-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="herbSearchInput" type="text" placeholder="搜索灵草丹药：名称·品阶·功效·出处" autocomplete="off">
+    </div>
     <div class="grid herb-grid" id="herbs"></div>
     <div class="empty-tip" id="herbEmpty">该类别暂无条目。</div>
   </div>
@@ -1064,7 +1057,10 @@ footer .note{margin-top:6px}
   <div class="sec-desc">收录全篇重要法器法宝，按品阶与类型分类；数据依据《凡人必备手册》第二版 + 原著情节 + 多源交叉验证。</div>
   <div class="treasure-rail" id="treasureRail"></div>
   <div class="treasure-tabs" id="treasureTabs"></div>
-  <input type="text" class="treasure-search" id="treasureSearchInput" placeholder="搜索法宝名称、持有者、出处…" autocomplete="off">
+  <div class="lib-search">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+    <input id="treasureSearchInput" type="text" placeholder="搜索法器法宝：名称·品阶·来历·持有者" autocomplete="off">
+  </div>
   <div class="treasure-count">筛选结果 <b id="treasureShown">0</b> 件</div>
   <div class="treasure-grid" id="treasureGrid"></div>
 </div>
@@ -1913,9 +1909,16 @@ document.getElementById("searchInput").addEventListener("input", e=>{
 /* ===== 灵兽灵虫 / 灵草丹药：两库结构逐字相同，只有字段与文案不同 → 一套配置驱动 =====
    （法器法宝不并入：它按筛选结果整表重渲染，卡片结构也不同。）
    实例把手按库 id 存进 LIB_UI，gotoEntry 复位筛选时按 id 取用。 */
+/* 三库统一的命中范围：名称/称号/等级/结局/演进/生平/关系/出处/种族 —— 与全库搜索面板同一套字段，
+   避免“法宝能搜来历、灵兽搜不到生平”这种不一致。 */
+function haystack(o){
+  return [o.n, o.t, o.r, o.e, o.ev, o.s, o.rel, o.camp, o.race].filter(Boolean).join(" ").toLowerCase();
+}
+
 const LIB_UI = {};
 function initCardLib(cfg){
   const st = { tab: "all", kw: "" };
+  const HAY = new Map();   /* data-key → 命中文本：正文不进 DOM 属性，改存在 JS 里 */
   const q = id => document.getElementById(id);
   const cnt = id => id === "all" ? cfg.data.length : cfg.data.filter(x => x.cat === id).length;
 
@@ -1956,6 +1959,7 @@ function initCardLib(cfg){
     const el = q(cfg.listId);
     if(!el) return;
     el.innerHTML = cfg.data.map(cardHTML).join("");
+    cfg.data.forEach((c, i) => HAY.set(cfg.prefix + i, haystack(c)));
     /* 裂图兜底：换成首字占位（与人物/法宝一致） */
     el.querySelectorAll(".card-img").forEach(img => img.addEventListener("error", function(){
       const ph = document.createElement("div");
@@ -1968,7 +1972,7 @@ function initCardLib(cfg){
     let visible = 0;
     q(cfg.listId).querySelectorAll(".card").forEach(card => {
       const catOk = st.tab === "all" || card.dataset.cat === st.tab;
-      const hay = ((card.dataset.name || "") + (card.dataset.aka || "")).toLowerCase();
+      const hay = HAY.get(card.dataset.key) || "";
       const show = catOk && (!st.kw || hay.indexOf(st.kw) >= 0);
       card.style.display = show ? "" : "none";
       if(show) visible++;
@@ -2099,7 +2103,8 @@ function applyTreasureFilter(){
   const q=(document.getElementById("treasureSearchInput").value||"").trim().toLowerCase();
   let list=TREASURES;
   if(cat!=="all")list=list.filter(t=>t.cat===cat);
-  if(q)list=list.filter(t=>(t.n+t.t+t.rel+t.camp+t.s).toLowerCase().includes(q));
+  /* 与灵兽/灵草同一套命中范围（haystack） */
+  if(q)list=list.filter(t=>haystack(t).indexOf(q)>=0);
   renderTreasures(list);
 }
 
