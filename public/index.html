@@ -541,6 +541,20 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 #v-treasures .treasure-detail .dl-row{margin-bottom:6px}
 #v-treasures .treasure-detail .dl-label{color:var(--gold);font-weight:600;margin-right:6px}
 
+/* ===== 页面包含（功能清单，双列） ===== */
+.home-feats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 22px}
+.home-feats li{position:relative;padding-left:17px;font-size:13.5px;color:var(--ink2);line-height:1.8}
+.home-feats li::before{content:"";position:absolute;left:1px;top:.78em;width:6px;height:6px;background:var(--gold);opacity:.7;transform:rotate(45deg)}
+.home-feats a{color:var(--ink);text-decoration:none;border-bottom:1px dashed rgba(212,175,106,.4)}
+.home-feats a:hover{color:var(--gold);border-bottom-style:solid}
+@media (max-width:640px){.home-feats{grid-template-columns:1fr;gap:4px}}
+
+/* ===== 问道自述 ===== */
+.home-quest{background:linear-gradient(160deg,rgba(212,175,106,.055),rgba(212,175,106,.015));border:1px solid rgba(212,175,106,.18);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:20px 24px}
+.home-quest p{margin:0 0 12px;font-size:14px;line-height:2;color:var(--ink2)}
+.home-quest p:last-child{margin-bottom:0}
+.home-quest .q-closing{font-family:"Noto Serif SC",serif;font-size:15.5px;color:var(--gold);letter-spacing:.04em;padding-top:14px;border-top:1px dashed rgba(212,175,106,.28)}
+
 </style>
 </head>
 <body>
@@ -596,11 +610,13 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 <section class="wrap home-section">
   <div class="sec-title">为什么做这个网站</div>
   <div class="home-why">
-    <p class="lead">追完《凡人修仙传》动画，越品越觉修仙世界的残酷底色。</p>
-    <p>炼气修士穷尽一生，多数连筑基门槛都难以触及；境界之间的差距，绝非简单强弱之分，而是近乎隔绝的天堑——高一境修士随手一击，低境界数万修士联手都未必能够抵挡。</p>
-    <p>更耐人寻味的一点：<b style="color:var(--gold)">下位者无法看见上位者的世界</b>。不是视线模糊，而是认知维度的隔绝。元婴修士难以理解化神掌控天地规则的感受，正如炼气修士无法想象御剑凌空的景象。修仙大道毫无公平可言，灵根天赋、资源储备、机缘气运、寿元时限，任意一环缺失，都会卡在瓶颈止步。</p>
-    <p>这虽是虚构设定，却容易映照现实：企业层级间的信息壁垒、行业赛道的技术门槛、代际之间的认知鸿沟，本质亦是同理。最恐怖的差距，不是对方实力强于你，而是差距大到你根本无法感知对方的存在。</p>
+    <p class="lead">追看《凡人修仙传》动画，越品越觉修仙世界的残酷底色。</p>
+    <p>炼气修士穷尽一生，多数连筑基门槛都难以触及；待到化神之境，每一次动用本源力量，都要消耗自身寿元作为代价。境界之间的差距，绝非简单强弱之分，而是近乎隔绝的天堑——高一境修士随手一击，低境界数万修士联手，都未必能够抵挡。</p>
+    <p>更耐人寻味的一点：<b style="color:var(--gold)">下位者无法看见上位者的世界</b>。不是视线模糊，而是认知维度的隔绝。元婴修士难以理解化神掌控天地规则的感受，正如炼气修士无法想象御剑凌空的景象。并非上位者不愿诉说，而是底层没有承载这份认知的阅历。不曾抵达那个高度，就无法窥见那层真相；困在下境，便天然看不见上层的世界。</p>
+    <p>修仙大道本就毫无公平可言。灵根天赋、资源储备、机缘气运、寿元时限，任意一环缺失，都会卡在瓶颈止步。绝大多数修士并非殒命于强敌厮杀，而是在漫长苦修中，被岁月耗尽生机。</p>
+    <p>这虽是虚构设定，却很容易映照现实：企业层级间巨大的信息壁垒、行业赛道的技术门槛、不同国家之间的代差鸿沟，本质亦是同理。最恐怖的差距，不是对方实力强于你，而是<b style="color:var(--gold)">差距大到你根本无法感知对方的存在</b>，甚至连描述这份差距的词汇，都无从诞生。</p>
     <p>因此做了这份资料集——把全篇人物、境界、灵兽、丹药、法宝梳理成可检索的图谱，供回忆、对照与理解。</p>
+    <p><b style="color:var(--gold)">本项目为《凡人修仙传》统一资料集</b>：人物图谱按原著篇章梳理登场角色；境界体系完整呈现修炼层级、寿元上限与战力梯度。</p>
   </div>
 </section>
 
@@ -636,11 +652,37 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
   </div>
 </section>
 
+<!-- ===== 页面包含 ===== -->
+<section class="wrap home-section">
+  <div class="sec-title">页面包含</div>
+  <div class="sec-desc">不只是卡片列表 —— 检索、筛选、图表与换算工具都在页内</div>
+  <ul class="home-feats">
+    <li>六卷原著篇章人物卡片库，支持<a href="#v-chars">人物检索、篇章筛选</a></li>
+    <li>韩立完整<a href="#v-lore">境界演进时间轴</a>（人界 → 灵界 → 仙界）</li>
+    <li><a href="#v-realms">十三修炼境界总览</a>（下 / 中 / 上三大阶段）</li>
+    <li><a href="#v-realms">境界战力断层</a>交互可视化图表</li>
+    <li><a href="#v-realms">跨境界战力换算</a>工具</li>
+    <li><a href="#v-realms">寿元变化曲线</a>与原著境界结构解析</li>
+  </ul>
+</section>
+
+<!-- ===== 问道自述 ===== -->
+<section class="wrap home-section">
+  <div class="sec-title">问道自述</div>
+  <div class="home-quest">
+    <p>吾幼时好弈，名震乡野，旁人皆称神童。年岁稍长，偶遇一山野老道，三日对弈，终得一胜。老道履约，施展遁术，通天彻地。吾心生向往，遂弃棋问道。</p>
+    <p>奈何天资平平，唯有勤勉苦修。远赴他乡，辞别亲友爱侣，孤身漂泊四海，无牵无挂。历经无数生死险境，半生清苦，晚年方得一隅安身，可寿元已然无多。</p>
+    <p>时常静思：人生百年，蜉蝣一日。长生于我究竟是何？不过落入另一重樊笼。不如二三知己，弈棋饮酒；良缘相伴，共赏人间风光，百年之后同归尘土。可问道之心终究难熄，纵使蹉跎万世，亦要争那一线天机。</p>
+    <p class="q-closing">只因幼时便懂，人生如棋，落子无悔。</p>
+  </div>
+</section>
+
 <!-- ===== 收录说明 ===== -->
 <section class="wrap home-section">
   <div class="sec-title">收录说明</div>
   <div class="home-note">资料整理自《凡人修仙传》原著读书笔记与公开考据资料，正文包含剧情剧透。境界战力层级采用自建量化模型，仅用于直观体现量级差距，并非原著官方设定数值。角色图片为网络检索素材（动画截图 / 官方概念图 / 同人立绘），部分篇章角色动画未登场，图片仅供回忆辅助、不保证与官方形象完全一致，如有偏差请以文字资料为准。</div>
   <div class="home-note" style="margin-top:10px">资料如有疏漏或错讹，欢迎到 <a href="https://bunnychen.top/docs/Other/fanren-xiuxian/#__comments" style="color:var(--gold);text-decoration:none">《凡人修仙传》资料页评论区</a> 留言指正。</div>
+  <div class="home-note" style="margin-top:10px">本站持续更新中：资料依据原著逐章考据整理，含全书剧情与结局（剧透注意）；人物生平、法宝丹药与配图仍在陆续补充。</div>
 </section>
 
 <!-- ===== 数据来源 ===== -->
