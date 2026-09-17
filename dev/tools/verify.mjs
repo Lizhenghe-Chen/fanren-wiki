@@ -265,16 +265,29 @@ try {
 
   const backTop = JSON.parse(await evaluate(`(async () => {
     location.hash = '#v-chars';
-    window.scrollTo({ top: 3000, behavior: 'auto' });
     await window.__sleep(300);
     const btn = document.getElementById('backTop');
-    const shown = btn.classList.contains('show');
+    const bar = document.getElementById('backTopBar');
+    const C = 2 * Math.PI * 21;
+    const off = () => +bar.style.strokeDashoffset;
+    window.scrollTo({ top: 0, behavior: 'auto' });
+    await window.__sleep(300);
+    const atTop = { shown: btn.classList.contains('show'), off: off() };
+    window.scrollTo({ top: 3000, behavior: 'auto' });
+    await window.__sleep(300);
+    const mid = { shown: btn.classList.contains('show'), off: off() };
+    window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'auto' });
+    await window.__sleep(400);
+    const bottom = { off: off() };
     btn.click();
     await window.__sleep(2000);
-    return JSON.stringify({ shown, y: Math.round(window.scrollY) });
+    return JSON.stringify({ C, atTop, mid, bottom, y: Math.round(window.scrollY) });
   })()`))
-  check('返回顶部：滚动后出现、点击后归零',
-    backTop.shown && backTop.y === 0, JSON.stringify(backTop))
+  check('返回顶部：滚动后出现、点击后归零（进度环随滚动补满、到底接近满圈）',
+    backTop.atTop.shown === false && backTop.atTop.off > backTop.C - 1
+      && backTop.mid.shown && backTop.mid.off < backTop.atTop.off - 1
+      && backTop.bottom.off < backTop.C * 0.02 && backTop.y === 0,
+    JSON.stringify(backTop))
 
   /* 深链：以 #v-treasures/tres-2 冷启动（先 about:blank 保证是一次完整加载） */
   await goto('about:blank')

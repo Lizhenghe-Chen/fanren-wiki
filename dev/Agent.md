@@ -69,7 +69,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
     .page-head → 法宝品阶 rail #treasureRail → 搜索框 #treasureSearchInput → 分类 tab #treasureTabs → 卡片区 <main id="treasures">
   </div>
   <footer>…</footer>
-  <button class="back-top" id="backTop">↑</button>   # 滚过一屏后出现（.show）
+  <button class="back-top" id="backTop">↑ + 进度环</button>   # 滚过 700px 后出现（.show）；环按滚动比例补满
   <div class="spot" id="spot" hidden>…</div>        # 全站搜索面板（见 §5）
   <script>…</script>
 ```
@@ -179,7 +179,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 | `INDEX` / `ENTRY_BY_KEY` / `REFS` / `REF_SCORE` / `LIBS` | 跨库索引与互引网络：一次正则扫过全部文本（长名优先匹配，`baseName()` 合并同名，如韩立 6 篇合成一个被引数） |
 | `refCount(key)` / `refsBlock(key)` / `refBadge(key)` | 互引展示：「相关条目」/「被引用于」 chip（各取前 8 + `+N`）与「被引 N」徽记 |
 | `spotOpen/spotRender/spotMove/spotClose` | 全站搜索面板（`⌘K` / `Ctrl+K` / `/` 唤起；390 条、跨库分组、关键词高亮、方向键+Enter 定位） |
-| `back-top` 逻辑 | 滚过一屏后 `.show` → 点击回顶 |
+| `back-top` 逻辑 | 滚过 700px 后 `.show` → 点击回顶（尊重 `prefers-reduced-motion`）；圆环 `strokeDashoffset = C × (1 − 已滚比例)`（`C = 2πr`，r 取 `<circle>` 的 21），监听 `scroll` / `resize` + `hashchange`（切视图后文档总高会变、滚动位置不变，**不会触发 scroll**，所以必须补一次） |
 
 搜索框匹配卡片 `data-name` / `data-aka`（别名）。
 
@@ -259,6 +259,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 **历史迭代**（备份文件即版本节点）
 - v1：六篇章全量人物表格 → v2：+故事脉络/双韩立因果闭环 → v3：+rel/camp/race 三标签 + 修为演进 ev → v4：+点击展开生平、默认不剧透、修为行上卡片、图片准确性声明 → v5：+分析资料库补充（17 新角色、王蝉纠错、5 张新图、.asset-manifest 登记）→ v6：三视图分页重构 → **v7：+第四视图「灵兽灵虫」**（BEASTS 40 条、妖兽等级制度 rail）→ **v8：图片修复**（余子童/曲魂/六道极圣/石坚 4 错图替换 + 23 张生物补图）→ **v9：数据合理性修正**（依据 _review.md：BEAST_RAIL"化神级及以上"、白老鬼化神后期、Hero 副标题 221、蟹道人/魔主结局、CSS 修复、v-beasts 搜索框）→ **v10：+第五视图「灵草丹药」**（HERBS 49 条→复查 64 条、灵药年份等级 rail、22 张中国风插画）→ **v11：全量图片更新**（按用户指定图源质检 218 张，assets 218→267）→ **v12：修曲魂/极阴祖师错图 + 再补 41 个无图角色**（顶部加"持续更新中 · 作者主页 · 更新 2026-09-16"）→ **v13：+第六视图「法器法宝」**（TREASURES 65 条、6 分类、品阶 rail，配图因用户叫停未完成）→ **v14：文字资料补全——ev 修为演进字段 173→0（221/221 全齐）** → **v15：首页重构《凡人修仙传》百科**（v-home 默认视图：为什么做这个网站 + 6 板块入口卡 + 收录说明；topnav 加"首页"；title/品牌/页脚统一；移动端 topnav 防溢出）→ **v16：清理 61 个缺失图片引用**（v-treasures/v-herbs 未完成配图，移除 img 字段与 manifest 登记，修复孤立逗号 JS 错误，全 7 视图自检 0 错误）→ **v17：首页新增「数据来源」板块**（.src-list 样式，注明原著/动画/起点《凡人必备手册》/分析资料库/百科社区/图片素材六大来源，位于收录说明下方）→ **v18：全量 ev 补全 + 文本打磨**（用户指令"终止所有流程、只做文本补全"后执行：BEASTS ev 补 35 条、HERBS ev 补 64 条、TREASURES ev 补 65 条——全站 390 条记录 ev 字段 100% 覆盖；扩写 15 条过短生平 s；完善 4 处结局 e（野狼帮帮主/风老怪/魏无涯/武阳）；node --check 通过；备份 _backup/index-v18.html）→ **v19：法宝 rail 瘦身 + 首页来源附链接**（①TREASURE_RAIL note 精简至灵草 rail 同风格（去长出处、保留"来源：起点手册+B站"简注）；note 单行截断 `white-space:nowrap;overflow:hidden;text-overflow:ellipsis` + `title` 属性悬浮全文——rail 卡片 177px→89px、rail 总高 103px（比灵草 rail 155px 矮 1/3），实测 playwright 计算样式验证 grid 6 列生效；②首页「数据来源」板块 6 条来源全部附可点击官方链接：起点正版 https://www.qidian.com/book/107580/、B站国创 https://www.bilibili.com/bangumi/media/md28223043、起点《凡人必备手册》https://read.qidian.com/chapter/Gyliu2kLjSQ1/ldlf0qmr1zwex0RJOkJclQ2/、本仓库资料页 ../fanren-xiuxian/、百度百科 https://baike.baidu.com/item/凡人修仙传/10375488、起点资源站境界页 https://m.qidian.com/ziyuan/fanrenxiuxianzhuan/post/jingjie、图片检索平台（百度图片/必应/花瓣）；新增 .src-list a/.src-site 样式，移动端 overflow-wrap 修复；桌面/移动自检 0 错误；备份 _backup/index-v19.html）。
 - 中途否决方案：**左右分栏**（用户不喜欢，改"分页面"）；已废弃脚本 `_backup/apply_layout.py`（分栏死路，勿再引用）；**AI 生成图片**（用户明确否决"不要AI生成"）。
+- **v23：返回顶部进度环**（用户看到参考项目 `talesov/fanren-kb` 的按钮后提出"进度条也可参考"）——.back-top 内嵌 SVG 双圆（`bt-track`/`bt-bar`，`viewBox 0 0 48 48`、`r=21`、`-rotate-90`），`strokeDashoffset = 2πr × (1 − 已滚比例)`，`stroke-linecap:round` + hover 金色微光；只加了三行事件（scroll/resize/hashchange），仍用 `ticking` + rAF 限频。验收断言扩为三锰：顶部不显示且空圈、滚动后出现且环推进、到底近满圈、点击归零。
 - **v20：界面治理（字体/首屏/顶栏/搜索/配色）**——① 字体治理：移除 `miaoda.feishu.cn` 的 Noto CDN（-11.35MB、首屏零第三方请求），改用系统字体栈；② v-chars 首屏瘦身：hero→紧凑 `.page-head`（760→339px）、navbar 109→59px、免责声明折进 `.img-note`（112→42px）、`.tabs` 强制单行 + 右端渐隐遮罩，全页高度 65423→45167px；③ sticky 顶栏（`.topnav` top:0 / `.navbar` top:49px）+ `.back-top` 返回顶部；④ 全站搜索面板（⌘K / Ctrl+K / `/`，390 条跳库索引、分组、高亮、定位）；⑤ 颜色收敛 34→6 色相，`.img-note`/法宝视图统一到同一套 token，免责声明去重 5→2；⑥ 修 2 个既有 bug：`applyFilter()` 用全局 `.card` 导致 `closest(".chapter")` 为 null（灵兽/灵草卡在页上时篇章切换直接抛错）、篇章 tab 清 `.active` 时把法宝 tab 一起清掉（`#treasureTabs .tab.active` 为 null → TypeError）。
 - **v21：互引网络**——`INDEX`/`ENTRY_BY_KEY`/`REFS`/`REF_SCORE`：一次正则扫过全部文本（长名优先，避免"韩立"截断"韩立之师"），`baseName()` 合并跳库同名实体（韩立 6 篇合成一个被引数），卡片底部渲染「相关条目」「被引用于」 chip（各前 8 + `+N`）与「被引 N」徽记。实测 390 条里 331 条有互链（85%），加载 +10~15ms；韩立被引 254、掌天瓶 19、南宫婉 17。⚠️ chip 必须用**捕获阶段**监听 + `stopPropagation`，否则会被卡片自身的展开/收起吃掉。
 - **v22：降噪与定位（核心圈 + 深链 + 首页瘦身 + 统一页头 + 验收脚本）**——① 被引分布是长尾（381 条中 208 条为 0、仅 38 条 ≥ 5）⇒ `CORE_MIN = 5` + `coreOnly` 默认开，`#tabs` 内 `.seg` 分段选择器「核心圈 N / 全部 221」；`gotoEntry` 跳转时自动退出降噪（否则滚过去是一片空白）；② 条目深链：`data-key` 分隔符由 `#` 改 `-`（`#v-treasures/tres-12`），点卡即同步地址栏；路由补齐 `hashchange` + `popstate` 双监听（**旧实现 `openFromHash()` 只处理 target、从不切视图 —— 手改地址或浏览器返回时视图不动**，被新增断言抓到）；③ 首页瘦身：「为什么做这个网站」折进 `<details class="home-why">`、删「页面包含」清单、清 4 处裸 URL 的 `.src-site`；④ v-beasts/v-herbs/v-lore/v-realms 统一 `.page-head` 紧凑页头，每视图补齐唯一 `h1`；⑤ `dev/tools/verify.mjs` 新增并把断言从 14 条扩到 **19 条**（新增：每视图唯一 h1、核心圈默认与回全部、深链冷启动、URL 同步、浏览器返回后路由一致）。
