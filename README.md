@@ -45,7 +45,7 @@ node dev/tools/verify.mjs                                        # 默认 file:/
 node dev/tools/verify.mjs --url http://localhost:8123/index.html # 或指定地址
 ```
 
-26 条断言，每条只查一件事：七个视图容器与各自的唯一 h1 / 四库卡片数（221/40/64/65）/ **图片引用无缺图且全部能解码** / 互引网络规模 / **开源入口齐全（顶栏图标 / hero / 首页卡片 / 页脚同指一仓）** / 核心圈默认生效且可一键切回全部 / 无横向溢出与无竖条文本（桌面 1440×900 与移动 390×844 各跑一遍）/ 篇章筛选 / 三库分类筛选与搜索（含搜索深度一致性）/ 搜索定位落点 / 卡片互引跳转 / 返回顶部与进度环 / 深链冷启动 / 点卡片同步 URL / 浏览器返回后视图与地址一致 / 无第三方资源请求 / 控制台无报错。失败会打印实测值并以非 0 退出码结束。
+27 条断言，每条只查一件事：七个视图容器与各自的唯一 h1 / 四库卡片数（221/40/64/65）/ **图片引用无缺图且全部能解码** / 互引网络规模 / **开源入口齐全（顶栏图标 / hero / 首页卡片 / 页脚同指一仓）** / **反馈入口统一指向 GitHub Issues（无主站评论区旧链接）** / 核心圈默认生效且可一键切回全部 / 无横向溢出与无竖条文本（桌面 1440×900 与移动 390×844 各跑一遍）/ 篇章筛选 / 三库分类筛选与搜索（含搜索深度一致性）/ 搜索定位落点 / 卡片互引跳转 / 返回顶部与进度环 / 深链冷启动 / 点卡片同步 URL / 浏览器返回后视图与地址一致 / 无第三方资源请求 / 控制台无报错。失败会打印实测值并以非 0 退出码结束。
 
 零依赖：只需 **Node ≥ 22**（内建 WebSocket/fetch）与**本机 Chrome**，不需要 `npm install`；Chrome 不在默认位置时用 `--chrome <路径>` 或 `CHROME_PATH` 指定。
 
@@ -62,7 +62,9 @@ node dev/tools/verify.mjs --url http://localhost:8123/index.html # 或指定地�
 
 原为 `Lizhenghe-Chen.github.io` 仓库下的静态目录（`docs/docs/Other/fanren-characters/`，2026-09-14 起随主站发布），2026-09-17 拆分独立，**git 提交历史完整保留**。主站旧路径保留跳转桩指向本站。
 
-反馈入口（含评论区）仍在主站：https://bunnychen.top/docs/Other/fanren-xiuxian/
+反馈与勘误入口：**GitHub Issues** —— <https://github.com/Lizhenghe-Chen/fanren-wiki/issues/new/choose>（勘误请附依据：原著章节 / 起点《凡人必备手册》/ 动画集数）。
+
+主站《凡人修仙传》资料页 <https://bunnychen.top/docs/Other/fanren-xiuxian/> 仍是首页文案的素材来源，但**已不再是反馈入口**。
 
 ## 许可
 

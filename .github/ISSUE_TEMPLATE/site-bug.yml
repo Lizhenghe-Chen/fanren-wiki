@@ -1,0 +1,38 @@
+name: 站点问题
+description: 显示异常、筛选与搜索失灵、链接失效、移动端布局、无障碍或性能问题
+title: "[站点] "
+labels: ["站点"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        本站是**单文件静态页面**（CSS/JS 全内联、零第三方请求），若问题与浏览器或屏幕宽度有关，请尽量在「环境」里写清。
+  - type: textarea
+    id: what
+    attributes:
+      label: 问题描述
+      description: 期望看到什么、实际看到什么
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: 复现步骤
+      description: 越具体越好（如：进入「法器法宝」→ 切到「符箓」→ 搜索「韩立」→ 无结果）
+    validations:
+      required: false
+  - type: input
+    id: env
+    attributes:
+      label: 环境
+      description: 浏览器与版本 / 系统 / 屏幕宽度或是否移动端
+      placeholder: 例：Chrome 140 / macOS 15 / 1440×900
+    validations:
+      required: false
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 截图或控制台报错
+      description: 可直接拖拽图片到此处
+    validations:
+      required: false

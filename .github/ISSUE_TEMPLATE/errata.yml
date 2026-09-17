@@ -1,0 +1,73 @@
+name: 勘误 / 纠错
+description: 人物、境界、剧情、灵兽、丹药、法宝条目中的事实错误，或配图错配
+title: "[勘误] "
+labels: ["勘误"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢指正。**依据越具体，核对越快** —— 原著章节、起点《凡人必备手册》、动画集数、官方设定集等，有原文摘录更佳。
+  - type: input
+    id: entry
+    attributes:
+      label: 条目名称
+      description: 出错的条目名（人物姓名 / 法宝名 / 丹药名等）
+      placeholder: 例：曲魂
+    validations:
+      required: true
+  - type: dropdown
+    id: section
+    attributes:
+      label: 所属板块
+      multiple: false
+      options:
+        - 人物图谱
+        - 境界体系
+        - 剧情速览
+        - 灵兽灵虫
+        - 灵草丹药
+        - 法器法宝
+        - 首页 / 其他
+    validations:
+      required: true
+  - type: dropdown
+    id: kind
+    attributes:
+      label: 问题类型
+      multiple: false
+      options:
+        - 文字错误（错别字 / 名称有误）
+        - 事实错误（身份 / 修为 / 结局 / 生平有误）
+        - 配图错配（图片不是该角色）
+        - 配图质量（模糊 / 带第三方水印或游戏 UI）
+        - 缺漏（应收录而未收录）
+        - 其他
+    validations:
+      required: true
+  - type: textarea
+    id: current
+    attributes:
+      label: 页面现在写的是什么
+      description: 可直接粘贴页面原文
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 应该是怎样的
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: 依据
+      description: 原著章节 / 起点《凡人必备手册》/ 动画集数 / 官方设定；注明来源链接或原文
+    validations:
+      required: false
+  - type: checkboxes
+    id: ack
+    attributes:
+      label: 确认
+      options:
+        - label: 我已确认线上版本（https://bunnychen.top/fanren-wiki/）仍存在该问题
+          required: false
