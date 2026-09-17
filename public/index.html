@@ -12,7 +12,7 @@
   角色图片为网络检索素材，版权归各自权利人所有，不在上述许可范围内，如有异议请联系删除。
   源码仓库：https://github.com/Lizhenghe-Chen/fanren-wiki
   访问统计：首页 hero 的「次浏览」来自「不蒜子」(busuanzi.ibruce.info)，是全页唯一的外部请求，
-  不写 cookie、不采集个人标识；同一浏览器 30 分钟内只计一次，且只在真实域名下发起
+  不写 cookie、不采集个人标识；同一浏览器 1 分钟内只计一次，且只在真实域名下发起
   （file:// 与本地预览不发起）。
   首次发布：2026-09-14 · 最后更新：2026-09-17
 -->
@@ -721,7 +721,7 @@ footer .note{margin-top:6px}
         <div class="stat"><b id="home-st-beasts">0</b><span>灵兽灵虫</span></div>
         <div class="stat"><b id="home-st-herbs">0</b><span>灵草丹药</span></div>
         <div class="stat"><b id="home-st-treas">0</b><span>法器法宝</span></div>
-        <div class="stat" id="stat-views" style="display:none" title="累计浏览次数：同一浏览器 30 分钟内只计一次，刷屏不叠加"><b id="stat-views-num">0</b><span>次浏览</span></div>
+        <div class="stat" id="stat-views" style="display:none" title="累计浏览次数：同一浏览器 1 分钟内只计一次，反复刷新不叠加"><b id="stat-views-num">0</b><span>次浏览</span></div>
       </div>
     </div>
     <div class="hero-cover">
@@ -1141,13 +1141,13 @@ footer .note{margin-top:6px}
 <script>
 /* ===== 访问统计（不蒜子 page_pv）=====
    展示位置：首页 hero 统计行；数据源：busuanzi.ibruce.info（全页唯一外部请求，不写 cookie）。
-   去重：同一浏览器 30 分钟内只上报一次 —— 反复刷新不再叠加；窗口内直接显示上次拿到的值。
+   去重：同一浏览器 1 分钟内只上报一次 —— 反复刷新不再叠加；窗口内直接显示上次拿到的值。
    缓存不可用（隐私模式/禁存储）时退回「每次都上报」。
    只在真实域名下发起：file:// 与本地预览不上报（本地想看加 ?stats=1）。
    ⚠️ 自己发 JSONP 而不是引它那支 1.9KB 脚本：少一个请求，且能显式声明 referrerPolicy
    —— 默认的 strict-origin-when-cross-origin 只发 origin，服务端拿不到路径，页面计数会退化成站点计数。 */
 (function () {
-  var KEY = 'fw-pv-v1', TTL = 30 * 60 * 1000;
+  var KEY = 'fw-pv-v1', TTL = 60 * 1000;
   var box = document.getElementById('stat-views'), num = document.getElementById('stat-views-num');
   if (!box || !num) return;
 
