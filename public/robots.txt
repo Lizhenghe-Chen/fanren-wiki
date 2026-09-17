@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://bunnychen.top/fanren-wiki/sitemap.xml

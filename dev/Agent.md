@@ -14,17 +14,26 @@
 ## 2. 目录结构
 
 ```
-fanren-characters/
-├── index.html          # 唯一交付物（自包含：内联 CSS/JS + 相对路径图片）
-├── cultivation.css     # 【用户自加，不可改动】境界图表样式
-├── Agent.md            # 本文档
-├── assets/             # 302 张角色/灵兽/灵草丹药/法宝图片（动画截图/概念图/同人图，命名见 §6）
-└── _backup/            # 迭代备份与脚本（v1~v16 + apply_*.py），非交付物
+fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git 历史保留）
+├── public/                 # ← 唯一发布目录，GitHub Actions 只上传这里
+│   ├── index.html          # 唯一交付物（自包含：内联 CSS/JS + 相对路径图片）
+│   ├── cultivation.css     # 【用户自加，不可改动】境界图表样式
+│   ├── javascripts/cultivation-chart.js   # 图表脚本（本站自持，不再依赖主站）
+│   ├── assets/             # 302 张被引用的角色/灵兽/灵草丹药/法宝图（命名见 §6）
+│   ├── sitemap.xml
+│   └── robots.txt
+└── dev/                    # 开发资料，永不上站
+    ├── Agent.md            # 本文档
+    ├── _review.md          # 数据审校笔记
+    ├── _backup/            # 迭代备份与脚本（index-vNN.html + apply_*.py）
+    ├── unused-assets/      # 未被当前页面引用的实名角色/法宝图（备用素材，删了不影响线上）
+    └── watermark.svg       # 仅供 _backup/index-v*.html 引用的水印瓦片
 ```
 
-- 境界图表脚本在页面外：`../../../javascripts/cultivation-chart.js`（相对页面路径，项目内勿移动）。
-- 主工作区：`Lizhenghe-Chen.github.io/docs/docs/Other/fanren-characters/`；早期旧版在 `~/Doubao/chats/2026-09-14/new-chat/fanren-characters/`（仅参照）。
-- 参考资料页：`../fanren-xiuxian.md`（首页介绍文案的素材来源）与 `../fanren-xiuxian/`（资料页，含评论区）。
+- 工作目录：`~/Documents/GitProjects/fanren-wiki/`（原地址 `Lizhenghe-Chen.github.io/docs/docs/Other/fanren-characters/` 已停用，主站只留跳转桩）；早期旧版在 `~/Doubao/chats/2026-09-14/new-chat/fanren-characters/`（仅参照）。
+- 线上地址：`https://bunnychen.top/fanren-wiki/`（项目页，继承用户站自定义域名，本仓库无需 CNAME）。
+- 参考资料页仍在主站：`https://bunnychen.top/docs/Other/fanren-xiuxian/`（首页介绍文案素材来源 + 评论区入口）。
+- **开发资料一律放进 `dev/`**：发布边界由目录决定（只上传 `public/`），不要把 `_backup/`、自检截图、笔记放进 `public/`。
 
 ## 3. 页面结构：七视图 + hash 路由
 
@@ -153,7 +162,7 @@ fanren-characters/
 
 ## 6. 图片体系（重要红线）
 
-- **图片文件**：`assets/<拼音名>[_<篇章>].jpg`，跨篇同角色可不同文件（如 `hanli_qixuanmen.jpg` / `hanli_xianjie.jpg`）。
+- **图片文件**：`public/assets/<拼音名>[_<篇章>].jpg`，跨篇同角色可不同文件（如 `hanli_qixuanmen.jpg` / `hanli_xianjie.jpg`）。
 - **引用方式（发布链路硬规则）**：图片路径只能出现在 **`<img src="assets/…">`** 或 **CSS `url()`** 中。JS 常量数组、`data-src` 等一律发布后裂图。
 - **隐藏清单**：`<style>` 内 `.asset-manifest{display:none;background-image:url("assets/…"),…}` 列出**所有**被引用的图片。**新增图片必须同步追加登记**，否则发布后裂图（`publishBrokenAssets` 规则只认 src 与 CSS url() 静态引用）。
 - **无图角色**：不硬凑图，卡片显示姓氏首字占位（渲染逻辑：`c.img ? '<img …>' : '<div class="ph">首字</div>'`）。
@@ -171,7 +180,7 @@ fanren-characters/
 
 ### 出处与防盗（改动前必读）
 
-- **全页水印**：`.watermark`（`position:fixed` 全屏平铺）的背景图**已内联为 base64 data URI**，不再引用 `watermark.svg`——该文件仅为 `_backup/index-v*.html` 保留，**勿删**（删了旧备份开出来就没水印）。改水印要改那段 base64，别改回外部文件引用。
+- **全页水印**：`.watermark`（`position:fixed` 全屏平铺）的背景图**已内联为 base64 data URI**，不再引用 `watermark.svg`——`dev/watermark.svg` 仅为 `dev/_backup/index-v*.html` 保留，**勿删**（删了旧备份开出来就没水印）。改水印要改那段 base64，别改回外部文件引用。
 - **无 `@media print` 例外**：打印/导出 PDF 也带水印（`position:fixed` 在分页媒体里逐页重复），别再加 `display:none` 把它关掉。
 - **不在卡片图片上盖章**：曾经加过 `.card-top::after{content:"bunnychen.top"}` 的右下角标，**已移除且不要再加**——图片本身是网络检索的第三方素材，不是本站作品，在别人的图上盖自己的出处站不住脚（真有争议时也不占理）。图片区保持干净。
 - **元数据**：`<head>` 里三件套——版权注释块（含版本/日期/仓库地址，抄整页的人会把出处一起带走）、`<link rel="canonical">`、JSON-LD（author / datePublished / dateModified / license / isBasedOn）。**改版必须同步**。
@@ -180,17 +189,18 @@ fanren-characters/
 
 ## 8. 开发流程（照做）
 
-1. **先备份**：`cp index.html _backup/index-vX.html`（版本号递增，防改坏）。
+1. **先备份**：`cp public/index.html dev/_backup/index-vX.html`（版本号递增，防改坏）。
 2. 小改动直接改；大改（结构/批量数据）参照"对象级替换 + 章节标记定位"脚本模式。**改 JS 数据用字符串级精确插入**（数花括号深度找记录闭合，避免 to_json 全量重排破坏格式；`DATA.xxx` 段正则 `(DATA\.%s = \[)(.*?)(\];)`）。
 3. **自检**（html skill 专用，禁止其他校验方式）：
    ```bash
    python3 "/Users/bunnychen/Library/Application Support/Doubao/Default/.doubao/agent_mode/workspace/.skills/html/scripts/shot.py" index.html
    ```
-   看 `consoleErrors`（必须 0）、`resourceErrors`、`horizontalOverflow`、截图；`_shots/` 用完清理。报告输出到 stdout（重定向保存后再解析），结构为 `shots.desktop.consoleErrors` 等。
+   看 `consoleErrors`（必须 0）、`resourceErrors`、`horizontalOverflow`、截图；`dev/_shots/` 用完清理（已在 `.gitignore`，不会误提交）。报告输出到 stdout（重定向保存后再解析），结构为 `shots.desktop.consoleErrors` 等。
    - 验证非默认视图：复制一份临时文件到项目内（保证 assets 相对路径可用），把 `switchView(fromHash())` 临时改为 `switchView("v-xxx")` 再截图，改完删除临时文件。
    - **注意**：`switchView(fromHash())` 出现两次（hashchange 监听内 + 启动调用），只改**最后一个**（用 `rfind`），否则切换不生效。
    - 快速 JS 语法检查：提取内联 `<script>` 块逐个 `node --check`。
-4. **交付**：`present_files` 交付 `index.html`（同一产物只交付一个 html）。
+4. **交付**：`present_files` 交付 `public/index.html`（同一产物只交付一个 html）。
+5. **发布**：提交并推 `main` → GitHub Actions 只把 `public/` 上传为 Pages 产物（线上 `https://bunnychen.top/fanren-wiki/`）。首次需在仓库 **Settings → Pages → Source** 选 **GitHub Actions**。
 
 ## 9. 数据来源与已核验事实
 
