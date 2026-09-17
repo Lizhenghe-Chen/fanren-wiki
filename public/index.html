@@ -134,6 +134,8 @@ h1 .accent{
 .page-head .kicker{margin-top:8px}
 .page-head .stats{margin-top:0;gap:22px;align-items:flex-end}
 .page-head .stat b{font-size:26px}
+/* 紧凑页头里的一句话引导（原 hero-sub 的内容保留下来） */
+.ph-lead{color:var(--ink2);font-size:13px;line-height:1.75;margin-top:10px;max-width:78ch}
 @media (max-width:640px){
   .page-head{padding:16px 0 2px}
   .ph-inner{gap:10px}
@@ -181,6 +183,13 @@ h1 .accent{
 .tabs{display:flex;gap:8px;flex-wrap:nowrap;flex:1 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%);-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%)}
 .tabs::-webkit-scrollbar{display:none}
 .tabs .tab{flex:none}
+/* 核心圈 / 全部 分段选择：告诉用户“还有另一档”，比单个开关容易发现 */
+.seg{display:inline-flex;flex:none;margin-right:4px;border:1px solid var(--line);border-radius:999px;overflow:hidden;background:rgba(255,255,255,.02)}
+.seg-btn{font:inherit;font-size:12.5px;line-height:1;padding:7px 11px;border:0;background:transparent;color:var(--ink3);cursor:pointer;white-space:nowrap;transition:color .16s,background .16s}
+.seg-btn+.seg-btn{border-left:1px solid var(--line)}
+.seg-btn i{font-style:normal;font-size:11px;opacity:.72;margin-left:4px;font-variant-numeric:tabular-nums}
+.seg-btn:hover{color:var(--gold)}
+.seg-btn.on{background:rgba(212,175,106,.16);color:var(--gold);font-weight:600}
 .tab{
   border:1px solid var(--line);background:var(--card);color:var(--ink2);
   font-size:13px;padding:7px 13px;border-radius:8px;cursor:pointer;
@@ -323,6 +332,14 @@ h1 .accent{
 .home-why{background:linear-gradient(160deg,rgba(212,175,106,.07),rgba(212,175,106,.02));border:1px solid rgba(212,175,106,.18);border-radius:14px;padding:22px 26px;line-height:1.95;color:var(--ink2);font-size:14.5px}
 .home-why p{margin:0 0 12px}
 .home-why p:last-child{margin-bottom:0}
+/* 折叠态只留卷首一句：644px 的长文折到 ~90px，收录入口就上来了 */
+.home-why>summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;color:var(--gold);font-family:var(--font-serif);font-size:16.5px;font-weight:600;letter-spacing:.04em}
+.home-why>summary::-webkit-details-marker{display:none}
+.home-why>summary .more{font-family:var(--font-sans);font-size:12px;font-weight:400;letter-spacing:.06em;color:var(--ink3);border-bottom:1px dashed rgba(212,175,106,.45)}
+.home-why>summary .more::after{content:"展开全文"}
+.home-why[open]>summary .more::after{content:"收起"}
+.home-why>summary:hover .more{color:var(--gold)}
+.home-why[open]>summary{margin-bottom:14px}
 .home-why .lead{color:var(--gold);font-weight:600;font-family:var(--font-serif);font-size:16.5px;letter-spacing:.04em}
 .home-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
 .home-card{display:block;background:rgba(255,255,255,.028);border:1px solid rgba(212,175,106,.16);border-radius:14px;padding:20px 18px 18px;text-decoration:none;transition:.22s;position:relative;overflow:hidden}
@@ -343,7 +360,6 @@ h1 .accent{
 .src-list b{color:var(--gold);font-weight:600}
 .src-list a{color:var(--gold);text-decoration:none;border-bottom:1px dashed rgba(212,175,106,.45);word-break:break-all;overflow-wrap:anywhere}
 .src-list a:hover{color:#fff;border-bottom-style:solid}
-.src-list .src-site{display:block;margin-top:2px;font-size:11.5px;color:var(--ink3);word-break:break-all;overflow-wrap:anywhere}
 /* ===== 视图切换 ===== */
 .view{display:none;scroll-margin-top:49px}
 .view.active{display:block}
@@ -627,8 +643,7 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 .home-quest p:last-child{margin-bottom:0}
 .home-quest .q-closing{font-family:var(--font-serif);font-size:15.5px;color:var(--gold);letter-spacing:.04em;padding-top:14px;border-top:1px dashed rgba(212,175,106,.28)}
 
-/* ===== 返回顶部 ===== */
-.back-top{position:fixed;right:16px;bottom:18px;z-index:58;width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(212,175,106,.45);border-radius:50%;background:rgba(20,23,34,.88);backdrop-filter:blur(6px);color:var(--gold);font:inherit;font-size:17px;line-height:1;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .25s,transform .25s,visibility .25s}
+/* ===== 返回顶部 ===== */.back-top{position:fixed;right:16px;bottom:18px;z-index:58;width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(212,175,106,.45);border-radius:50%;background:rgba(20,23,34,.88);backdrop-filter:blur(6px);color:var(--gold);font:inherit;font-size:17px;line-height:1;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .25s,transform .25s,visibility .25s}
 .back-top.show{opacity:1;visibility:visible;transform:none}
 .back-top:hover{border-color:var(--gold);background:rgba(212,175,106,.18)}
 @media (max-width:640px){.back-top{right:10px;bottom:12px;width:40px;height:40px}}
@@ -734,15 +749,15 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 <!-- ===== 为什么做这个网站 ===== -->
 <section class="wrap home-section">
   <div class="sec-title">为什么做这个网站</div>
-  <div class="home-why">
-    <p class="lead">追看《凡人修仙传》动画，越品越觉修仙世界的残酷底色。</p>
+  <details class="home-why">
+    <summary>追看《凡人修仙传》动画，越品越觉修仙世界的残酷底色。<span class="more"></span></summary>
     <p>炼气修士穷尽一生，多数连筑基门槛都难以触及；待到化神之境，每一次动用本源力量，都要消耗自身寿元作为代价。境界之间的差距，绝非简单强弱之分，而是近乎隔绝的天堑——高一境修士随手一击，低境界数万修士联手，都未必能够抵挡。</p>
     <p>更耐人寻味的一点：<b style="color:var(--gold)">下位者无法看见上位者的世界</b>。不是视线模糊，而是认知维度的隔绝。元婴修士难以理解化神掌控天地规则的感受，正如炼气修士无法想象御剑凌空的景象。并非上位者不愿诉说，而是底层没有承载这份认知的阅历。不曾抵达那个高度，就无法窥见那层真相；困在下境，便天然看不见上层的世界。</p>
     <p>修仙大道本就毫无公平可言。灵根天赋、资源储备、机缘气运、寿元时限，任意一环缺失，都会卡在瓶颈止步。绝大多数修士并非殒命于强敌厮杀，而是在漫长苦修中，被岁月耗尽生机。</p>
     <p>这虽是虚构设定，却很容易映照现实：企业层级间巨大的信息壁垒、行业赛道的技术门槛、不同国家之间的代差鸿沟，本质亦是同理。最恐怖的差距，不是对方实力强于你，而是<b style="color:var(--gold)">差距大到你根本无法感知对方的存在</b>，甚至连描述这份差距的词汇，都无从诞生。</p>
     <p>因此做了这份资料集——把全篇人物、境界、灵兽、丹药、法宝梳理成可检索的图谱，供回忆、对照与理解。</p>
     <p><b style="color:var(--gold)">本项目为《凡人修仙传》统一资料集</b>：人物图谱按原著篇章梳理登场角色；境界体系完整呈现修炼层级、寿元上限与战力梯度。</p>
-  </div>
+  </details>
 </section>
 
 <!-- ===== 收录内容 ===== -->
@@ -777,20 +792,6 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
   </div>
 </section>
 
-<!-- ===== 页面包含 ===== -->
-<section class="wrap home-section">
-  <div class="sec-title">页面包含</div>
-  <div class="sec-desc">不只是卡片列表 —— 检索、筛选、图表与换算工具都在页内</div>
-  <ul class="home-feats">
-    <li>六卷原著篇章人物卡片库，支持<a href="#v-chars">人物检索、篇章筛选</a></li>
-    <li>韩立完整<a href="#v-lore">境界演进时间轴</a>（人界 → 灵界 → 仙界）</li>
-    <li><a href="#v-realms">十三修炼境界总览</a>（下 / 中 / 上三大阶段）</li>
-    <li><a href="#v-realms">境界战力断层</a>交互可视化图表</li>
-    <li><a href="#v-realms">跨境界战力换算</a>工具</li>
-    <li><a href="#v-realms">寿元变化曲线</a>与原著境界结构解析</li>
-  </ul>
-</section>
-
 <!-- ===== 问道自述 ===== -->
 <section class="wrap home-section">
   <div class="sec-title">问道自述</div>
@@ -815,10 +816,10 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
   <div class="sec-title">数据来源</div>
   <div class="sec-desc">本页文字与图片资料大量参考以下来源，特此注明</div>
   <ul class="src-list">
-    <li><b>《凡人修仙传》原著</b> —— 忘语著、起点中文网连载的仙侠巨著，为人物生平、境界体系、法宝丹药与结局考据的第一来源。<a href="https://www.qidian.com/book/107580/" target="_blank" rel="noopener">起点中文网正版阅读页</a><span class="src-site">https://www.qidian.com/book/107580/</span></li>
-    <li><b>同名改编动画《凡人修仙传》</b> —— 官方国创，角色形象与剧情速览参考动画叙事；动画进度播至人界篇，灵界/仙界角色形象以概念图与同人素材为主。<a href="https://www.bilibili.com/bangumi/media/md28223043" target="_blank" rel="noopener">B站·凡人修仙传（国创）</a><span class="src-site">https://www.bilibili.com/bangumi/media/md28223043</span></li>
-    <li><b>起点《凡人必备手册》第二版</b> —— 灵草丹药、天材地宝、人物妖兽条目的权威交叉核验来源。<a href="https://read.qidian.com/chapter/Gyliu2kLjSQ1/ldlf0qmr1zwex0RJOkJclQ2/" target="_blank" rel="noopener">起点阅读·凡人必备手册（丹药功法篇）</a><span class="src-site">https://read.qidian.com/chapter/Gyliu2kLjSQ1/ldlf0qmr1zwex0RJOkJclQ2/</span></li>
-    <li><b>原著逐章分析资料库</b> —— 基于原著逐段验证的人物谱系、故事梗概与结局考据（含原文行号），用于丰富人物生平与纠错。<a href="https://bunnychen.top/docs/Other/fanren-xiuxian/" target="_blank" rel="noopener">本站《凡人修仙传》资料页</a><span class="src-site">https://bunnychen.top/docs/Other/fanren-xiuxian/（主站资料页）</span></li>
+    <li><b>《凡人修仙传》原著</b> —— 忘语著、起点中文网连载的仙侠巨著，为人物生平、境界体系、法宝丹药与结局考据的第一来源。<a href="https://www.qidian.com/book/107580/" target="_blank" rel="noopener">起点中文网正版阅读页</a></li>
+    <li><b>同名改编动画《凡人修仙传》</b> —— 官方国创，角色形象与剧情速览参考动画叙事；动画进度播至人界篇，灵界/仙界角色形象以概念图与同人素材为主。<a href="https://www.bilibili.com/bangumi/media/md28223043" target="_blank" rel="noopener">B站·凡人修仙传（国创）</a></li>
+    <li><b>起点《凡人必备手册》第二版</b> —— 灵草丹药、天材地宝、人物妖兽条目的权威交叉核验来源。<a href="https://read.qidian.com/chapter/Gyliu2kLjSQ1/ldlf0qmr1zwex0RJOkJclQ2/" target="_blank" rel="noopener">起点阅读·凡人必备手册（丹药功法篇）</a></li>
+    <li><b>原著逐章分析资料库</b> —— 基于原著逐段验证的人物谱系、故事梗概与结局考据（含原文行号），用于丰富人物生平与纠错。<a href="https://bunnychen.top/docs/Other/fanren-xiuxian/" target="_blank" rel="noopener">本站《凡人修仙传》资料页</a></li>
     <li><b>百度百科及粉丝社区公开考据</b> —— 冷门角色、法器法宝、妖兽设定的补充参考；境界体系另核验起点官方资源站。<a href="https://baike.baidu.com/item/%E5%87%A1%E4%BA%BA%E4%BF%AE%E4%BB%99%E4%BC%A0/10375488" target="_blank" rel="noopener">百度百科·凡人修仙传</a> · <a href="https://m.qidian.com/ziyuan/fanrenxiuxianzhuan/post/jingjie" target="_blank" rel="noopener">起点资源站·境界体系</a></li>
     <li><b>图片素材</b> —— 动画正片截图、官方概念图与人物设定、百科插画、同人立绘；均为网络检索素材，仅供回忆辅助，不保证与官方形象完全一致。<a href="https://image.baidu.com/" target="_blank" rel="noopener">百度图片</a> · <a href="https://cn.bing.com/images" target="_blank" rel="noopener">必应图片</a> · <a href="https://huaban.com/" target="_blank" rel="noopener">花瓣</a></li>
   </ul>
@@ -866,6 +867,20 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 
 </div>
 <div class="view" id="v-lore">
+<!-- ===== 紧凑页头（原无标题，补上 h1） ===== -->
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>《凡人修仙传》<span class="accent">剧情速览</span></h1>
+      <span class="kicker">境界演进 · 篇章因果链 · 时空闭环</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="lore-nodes">0</b><span>时间轴节点</span></div>
+      <div class="stat"><b>6</b><span>篇章</span></div>
+    </div>
+  </div>
+</header>
+
 <!-- ===== 韩立境界时间轴 ===== -->
 <section class="timeline-sec">
   <div class="wrap">
@@ -909,10 +924,24 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 
 </div>
 <div class="view" id="v-realms">
+<!-- ===== 紧凑页头（原无标题，补上 h1） ===== -->
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>《凡人修仙传》<span class="accent">境界体系</span></h1>
+      <span class="kicker">人界五境 · 灵界三境 · 仙界五境</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>13</b><span>修炼境界</span></div>
+      <div class="stat"><b>3</b><span>三界</span></div>
+    </div>
+  </div>
+</header>
+
 <!-- ===== 境界体系 ===== -->
 <section class="realm-sec" id="realms">
   <div class="wrap">
-    <div class="sec-title">境界体系 · 从凡人到道祖</div>
+    <div class="sec-title">十三境总览</div>
     <div class="realm-intro">
       <div class="realm-lead"><p>人物图谱中的“境界”字段，统一采用这条十三境界主线。这里保留项目的核心判断：战力按量级断层，寿元却增长得缓慢；跨境界比较仅用于理解结构，不是原著公布的战力数值。</p></div>
       <div class="realm-note"><strong>三个世界</strong><p>人界五境 · 灵界三境 · 仙界五境</p></div>
@@ -971,20 +1000,20 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 </div>
 
 <div class="view" id="v-beasts">
-<!-- ===== 灵兽灵虫 Hero ===== -->
-<section class="hero">
-  <div class="wrap hero-inner">
-    <div class="hero-copy">
-      <div class="hero-title"><h1>灵兽灵虫<br><span class="accent">妖兽图鉴</span></h1><span class="kicker">灵宠 · 妖兽 · 真灵 · 魔物</span></div>
-      <p class="hero-sub">韩立的本命灵虫与灵宠、乱星海大妖、灵界魔物与上古真灵，按类别与等级归档整理。妖兽等级与人界境界的对应关系见下方「等级制度」。</p>
-      <div class="stats">
-        <div class="stat"><b id="beast-total">0</b><span>收录条目</span></div>
-        <div class="stat"><b id="beast-cats">0</b><span>类别</span></div>
-      </div>
+<!-- ===== 紧凑页头（与人物图谱/法器法宝一致） ===== -->
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>《凡人修仙传》<span class="accent">灵兽灵虫图鉴</span></h1>
+      <span class="kicker">灵宠 · 妖兽 · 真灵 · 魔物</span>
+      <p class="ph-lead">韩立的本命灵虫与灵宠、乱星海大妖、灵界魔物与上古真灵，按类别与等级归档整理。妖兽等级与人界境界的对应关系见下方「等级制度」。</p>
     </div>
-    <div class="hero-cover"><img src="assets/jintong_lingjie.webp" alt="噬金虫"></div>
+    <div class="stats">
+      <div class="stat"><b id="beast-total">0</b><span>收录条目</span></div>
+      <div class="stat"><b id="beast-cats">0</b><span>类别</span></div>
+    </div>
   </div>
-</section>
+</header>
 
 <!-- ===== 妖兽等级制度 ===== -->
 <section class="beast-rail-sec">
@@ -1013,20 +1042,20 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 </div>
 
 <div class="view" id="v-herbs">
-<!-- ===== 灵草丹药 Hero ===== -->
-<section class="hero">
-  <div class="wrap hero-inner">
-    <div class="hero-copy">
-      <div class="hero-title"><h1>灵草丹药<br><span class="accent">修仙资源图鉴</span></h1><span class="kicker">灵草 · 天材 · 丹药 · 丹方</span></div>
-      <p class="hero-sub">韩立修仙路上的灵草灵药、天材地宝、突破丹药与辅助丹方，按类别与年份等级归档整理。灵药年份与人界境界的对应关系见下方「灵药年份等级」。数据依据起点《凡人必备手册》及原著情节交叉验证。</p>
-      <div class="stats">
-        <div class="stat"><b id="herb-total">0</b><span>收录条目</span></div>
-        <div class="stat"><b id="herb-cats">0</b><span>类别</span></div>
-      </div>
+<!-- ===== 紧凑页头（与其余列表型视图一致） ===== -->
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>《凡人修仙传》<span class="accent">灵草丹药图鉴</span></h1>
+      <span class="kicker">灵草 · 天材 · 丹药 · 丹方</span>
+      <p class="ph-lead">韩立修仙路上的灵草灵药、天材地宝、突破丹药与辅助丹方，按类别与年份等级归档整理。灵药年份与人界境界的对应关系见下方「灵药年份等级」；数据依据《凡人必备手册》及原著情节交叉验证。</p>
     </div>
-    <div class="hero-cover"><img src="assets/zhangtianping.webp" alt="掌天瓶"></div>
+    <div class="stats">
+      <div class="stat"><b id="herb-total">0</b><span>收录条目</span></div>
+      <div class="stat"><b id="herb-cats">0</b><span>类别</span></div>
+    </div>
   </div>
-</section>
+</header>
 
 <!-- ===== 灵药年份等级 ===== -->
 <section class="herb-rail-sec">
@@ -1674,10 +1703,10 @@ const REFS = {};           // key → {out:[它提到的 key], in:[提到它的 
     INDEX.push({lib:lib, key:key, name:o.n, sub:o.t || "", tag:tag,
       text:[o.t,o.r,o.e,o.ev,o.s,o.rel,o.camp,o.race].filter(Boolean).join(" ")});
   }
-  CHAPTERS.forEach(ch => DATA[ch.id].forEach((c,i) => push("chars", ch.id+"#"+i, c, ch.name)));
-  BEASTS.forEach((b,i) => push("beasts", "beast#"+i, b, catName(BEAST_CATS, b.cat)));
-  HERBS.forEach((h,i) => push("herbs", "herb#"+i, h, catName(HERB_CATS, h.cat)));
-  TREASURES.forEach((t,i) => push("tres", "tres#"+i, t, catName(TREASURE_CATS, t.cat)));
+  CHAPTERS.forEach(ch => DATA[ch.id].forEach((c,i) => push("chars", ch.id+"-"+i, c, ch.name)));
+  BEASTS.forEach((b,i) => push("beasts", "beast-"+i, b, catName(BEAST_CATS, b.cat)));
+  HERBS.forEach((h,i) => push("herbs", "herb-"+i, h, catName(HERB_CATS, h.cat)));
+  TREASURES.forEach((t,i) => push("tres", "tres-"+i, t, catName(TREASURE_CATS, t.cat)));
   INDEX.forEach(e => { ENTRY_BY_KEY[e.key] = e; REFS[e.key] = {out:[], in:[]}; });
 
   const cands = new Map();   // 名称 → 候选 key（同名条目可能横跨多个库）
@@ -1760,11 +1789,25 @@ function refBadge(key){
   return n ? `<span class="ref-count" title="有 ${n} 个条目在正文里提到它">被引 ${n}</span>` : "";
 }
 
+/* ===== 核心圈：用“被引数”当重要度阈值 =====
+   被引分布是长尾（381 条里 208 条为 0，≥ 5 的只有 38 条），所以默认只显示核心圈，
+   否则 221 张卡平铺，第一屏之后就全是路人。搜索时自动忽略这条过滤。 */
+const CORE_MIN = 5;
+let coreOnly = true;
+const isCore = key => refCount(key) >= CORE_MIN;
+const coreCount = () => [...document.querySelectorAll("#characters .card")].filter(c => isCore(c.dataset.key)).length;
+
 function renderTabs(){
   const tabs = document.getElementById("tabs");
-  let html = `<button class="tab active" data-ch="all">全部<span class="cnt">${Object.values(DATA).flat().length}</span></button>`;
+  const core = coreCount();
+  const cnt = ch => coreOnly ? DATA[ch.id].filter((c,i) => isCore(ch.id + "-" + i)).length : DATA[ch.id].length;
+  let html = `<span class="seg" role="group" aria-label="条目标围">
+      <button class="seg-btn${coreOnly ? " on" : ""}" type="button" data-core="1" title="只显示被引较多的核心条目">核心圈<i>${core}</i></button>
+      <button class="seg-btn${coreOnly ? "" : " on"}" type="button" data-core="0" title="显示全部 ${CHAR_TOTAL} 条">全部<i>${CHAR_TOTAL}</i></button>
+    </span>`;
+  html += `<button class="tab${currentTab === "all" ? " active" : ""}" data-ch="all">全篇<span class="cnt">${coreOnly ? core : CHAR_TOTAL}</span></button>`;
   CHAPTERS.forEach(ch=>{
-    html += `<button class="tab" data-ch="${ch.id}" style="--tc:${ch.color}">${esc(ch.name)}<span class="cnt">${DATA[ch.id].length}</span></button>`;
+    html += `<button class="tab${currentTab === ch.id ? " active" : ""}" data-ch="${ch.id}" style="--tc:${ch.color}">${esc(ch.name)}<span class="cnt">${cnt(ch)}</span></button>`;
   });
   tabs.innerHTML = html;
 }
@@ -1793,7 +1836,7 @@ function renderMain(){
   const main = document.getElementById("characters");
   main.innerHTML = CHAPTERS.map(ch=>{
     const cards = DATA[ch.id].map((c,i)=>{
-      const key = ch.id + "#" + i;
+      const key = ch.id + "-" + i;
       const safeName = escapeAttr(c.n || "");
       const safeTitle = escapeAttr(c.t || "");
       const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -1845,7 +1888,12 @@ function renderMain(){
 let currentTab = "all";
 let keyword = "";
 
-function toggleCard(el){ el.classList.toggle("open"); }
+function toggleCard(el){
+  el.classList.toggle("open");
+  /* 展开/收起时同步 URL，这样“某个人在某一篇的那张卡”是可复制、可分享的 */
+  setHash(activeView(), el.classList.contains("open") ? el.dataset.key : "", true);
+}
+function activeView(){ const v = document.querySelector(".view.active"); return v ? v.id : "v-home"; }
 
 document.getElementById("characters").addEventListener("click", function(event){
   const card = event.target.closest(".card");
@@ -1857,26 +1905,37 @@ function applyFilter(){
   /* 必须限定在 #characters 内：灵兽/灵草也用了 .card 类，但它们不在 .chapter 里，
      全局选择器会让 closest(".chapter") 返回 null 直接抛错（篇章切换与下方分节隐藏都会失效） */
   const cards = document.querySelectorAll("#characters .card");
+  const kw = keyword.trim().toLowerCase();
   let visible = 0;
   cards.forEach(card=>{
     const chapter = card.closest(".chapter").dataset.chapter;
-    const chOk = currentTab==="all" || chapter===currentTab;
-    const kw = keyword.trim().toLowerCase();
+    const chOk = currentTab === "all" || chapter === currentTab;
     const name = (card.dataset.name || "").toLowerCase();
     const aka = (card.dataset.aka || "").toLowerCase();
     const kwOk = !kw || name.includes(kw) || aka.includes(kw);
-    const show = chOk && kwOk;
+    /* 关键词非空时忽略核心圈：找路人也得找得到 */
+    const coreOk = !coreOnly || !!kw || isCore(card.dataset.key);
+    const show = chOk && kwOk && coreOk;
     card.style.display = show ? "" : "none";
     if(show) visible++;
   });
   document.querySelectorAll(".chapter").forEach(sec=>{
     const ch = sec.dataset.chapter;
-    sec.style.display = (currentTab==="all" || ch===currentTab) ? "" : "none";
+    const chOk = currentTab === "all" || ch === currentTab;
+    /* 该篇在降噪后可能一张卡都不剩（如仙界篇的核心条目已列在首页）→ 整段收起 */
+    const any = [...sec.querySelectorAll(".card")].some(c => c.style.display !== "none");
+    sec.style.display = (chOk && any) ? "" : "none";
   });
-  document.getElementById("emptyTip").classList.toggle("show", visible===0);
+  document.getElementById("emptyTip").classList.toggle("show", visible === 0);
 }
 
 document.getElementById("tabs").addEventListener("click", e=>{
+  const segBtn = e.target.closest(".seg-btn");
+  if(segBtn){
+    const next = segBtn.dataset.core === "1";
+    if(next !== coreOnly){ coreOnly = next; renderTabs(); applyFilter(); }
+    return;
+  }
   const btn = e.target.closest(".tab");
   if(!btn) return;
   document.querySelectorAll("#tabs .tab").forEach(t=>t.classList.remove("active"));
@@ -1913,7 +1972,7 @@ function renderBeasts(){
   const el = document.getElementById("beasts");
   if(!el) return;
   el.innerHTML = BEASTS.map(function(c,i){
-    const key = "beast#" + i;
+    const key = "beast-" + i;
     const safeName = escapeAttr(c.n || "");
     const safeTitle = escapeAttr(c.t || "");
     const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -1978,7 +2037,7 @@ document.getElementById("beastSearchInput").addEventListener("input", function(e
 document.getElementById("beasts").addEventListener("click", function(event){
   const card = event.target.closest(".card");
   if (!card) return;
-  card.classList.toggle("open");
+  toggleCard(card);
 });
 
 
@@ -2004,7 +2063,7 @@ function renderHerbs(){
   const el = document.getElementById("herbs");
   if(!el) return;
   el.innerHTML = HERBS.map(function(c,i){
-    const key = "herb#" + i;
+    const key = "herb-" + i;
     const safeName = escapeAttr(c.n || "");
     const safeTitle = escapeAttr(c.t || "");
     const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -2068,17 +2127,18 @@ document.getElementById("herbSearchInput").addEventListener("input", function(e)
 document.getElementById("herbs").addEventListener("click", function(event){
   const card = event.target.closest(".card");
   if (!card) return;
-  card.classList.toggle("open");
+  toggleCard(card);
 });
 
 /* ===== 启动 ===== */
 renderTimeline();
-renderTabs();
 renderBars();
 renderLegend();
-renderMain();
+renderMain();      // 必须早于 renderTabs：核心圈计数要从已渲染的卡片上读 data-key
+renderTabs();
 applyFilter();
 document.getElementById("beast-total").textContent = BEASTS.length;
+document.getElementById("lore-nodes").textContent = TL.length;
 document.getElementById("beast-cats").textContent = BEAST_CATS.length - 1;
 renderBeastRail();
 renderBeastTabs();
@@ -2115,7 +2175,7 @@ function renderTreasures(list){
     const name=esc(t.n);                                 // 文本节点：与灵兽/灵草一致过 esc
     const nameAttr=escapeAttr(t.n||"");                 // 属性值：额外转義引号
     const imgHtml=t.img?`<img class="tc-img" src="assets/${esc(t.img)}" alt="${nameAttr}" loading="lazy">`:`<div class="tc-img" style="display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--gold);opacity:.3">${esc((t.n||"?")[0])}</div>`;
-    const key="tres#"+TREASURES.indexOf(t);
+    const key="tres-"+TREASURES.indexOf(t);
     return `<div class="treasure-card" data-key="${key}" data-name="${nameAttr}">
       ${imgHtml}
       <div class="tc-body">
@@ -2145,10 +2205,30 @@ function applyTreasureFilter(){
   renderTreasures(list);
 }
 
+/* ===== 路由：视图切换 + 条目深链 =====
+   深链形如 #v-chars/qixuanmen-0、#v-treasures/tres-12，可直接分享到某个人在某一篇的那张卡。
+   用 - 而不是 # 当分隔符，否则 URL 会被当成新锚点截断。 */
+const VIEWS = ["v-home","v-chars","v-lore","v-realms","v-beasts","v-herbs","v-treasures"];
+
+function switchView(id){
+  if(VIEWS.indexOf(id) < 0) id = "v-home";
+  document.querySelectorAll(".view").forEach(function(v){ v.classList.toggle("active", v.id === id); });
+  document.querySelectorAll(".topnav a").forEach(function(a){ a.classList.toggle("active", a.getAttribute("data-view") === id); });
+}
+function parseHash(){
+  const raw = (location.hash || "").replace(/^#/, "");
+  const i = raw.indexOf("/");
+  return i < 0 ? { view: raw, target: "" } : { view: raw.slice(0, i), target: raw.slice(i + 1) };
+}
+function setHash(view, target, replace){
+  const h = "#" + view + (target ? "/" + target : "");
+  if(location.hash === h) return;
+  /* file:// 直开时个别浏览器会对 replaceState 抛 SecurityError，忽略即可（视图仍会切换） */
+  try { history[replace ? "replaceState" : "pushState"](null, "", h); } catch(err){}
+}
+
 /* ===== 视图切换（hash 路由） + v-treasures 启动 ===== */
 (function(){
-  var VIEWS = ["v-home","v-chars","v-lore","v-realms","v-beasts","v-herbs","v-treasures"];
-
   // 首页统计
   (function(){
     var c = 0; for (var k in DATA) c += DATA[k].length;
@@ -2166,16 +2246,8 @@ function applyTreasureFilter(){
   // 卡片展开用事件委派（与灵兽/灵草一致）：过滤重渲染不再重复绑定 N 个监听器
   document.getElementById("treasureGrid").addEventListener("click", function(e){
     var card = e.target.closest(".treasure-card");
-    if (card) card.classList.toggle("open");
+    if (card) toggleCard(card);
   });
-
-  function switchView(id){
-    if (VIEWS.indexOf(id) < 0) id = "v-home";
-    document.querySelectorAll(".view").forEach(function(v){ v.classList.toggle("active", v.id === id); });
-    document.querySelectorAll(".topnav a").forEach(function(a){ a.classList.toggle("active", a.getAttribute("data-view") === id); });
-  }
-  function fromHash(){ return (location.hash || "").replace("#", ""); }
-  window.addEventListener("hashchange", function(){ switchView(fromHash()); });
 
   /* ===== 返回顶部（本页最长视图 6 万像素以上，必须给一个回到顶部的出口） ===== */
   (function(){
@@ -2299,15 +2371,17 @@ function applyTreasureFilter(){
   function spotIsOpen(){ return !spotEl.hidden; }
 
   /* 定位：先复位目标库的筛选（否则卡片可能被筛掉），再切视图、展开并滚动过去。
-     搜索命中与卡片互引 chip 共用这一个入口。 */
-  function gotoEntry(key){
+     搜索命中、卡片互引 chip、URL 深链共用这一个入口。 */
+  function gotoEntry(key, keepHash){
     var e = ENTRY_BY_KEY[key];
     if(!e) return;
     var meta = LIBS.filter(function(x){ return x.id===e.lib; })[0];
     if(e.lib === "chars"){
       keyword = ""; currentTab = "all";
+      /* 跳转即退出核心圈降噪：否则被引为 0 的路人会被筛掉，滚过去只看到空白 */
+      coreOnly = false;
       document.getElementById("searchInput").value = "";
-      document.querySelectorAll("#tabs .tab").forEach(function(t){ t.classList.toggle("active", t.dataset.ch === "all"); });
+      renderTabs();
       applyFilter();
     } else if(e.lib === "beasts"){
       beastKeyword = ""; beastTab = "all";
@@ -2324,8 +2398,7 @@ function applyTreasureFilter(){
       document.querySelectorAll("#treasureTabs .tab").forEach(function(t){ t.classList.toggle("active", t.dataset.cat === "all"); });
       applyTreasureFilter();
     }
-    /* file:// 直开时个别浏览器会对 replaceState 抛 SecurityError，忽略即可（视图仍会切换） */
-    try { if(location.hash !== "#" + meta.view) history.replaceState(null, "", "#" + meta.view); } catch(err){}
+    if(!keepHash) setHash(meta.view, key, true);
     switchView(meta.view);
     /* 切视图会让文档高度突变（首页 2 千 px ↔ 人物图谱 4.5 万 px），浏览器可能把滚动量带到奇怪位置。
        先显式瞬时归零（behavior:"auto" 会覆盖 CSS 的 scroll-behavior:smooth），再平滑滚到目标。 */
@@ -2386,7 +2459,13 @@ function applyTreasureFilter(){
     if(ev.key === "/" && !typing && !spotIsOpen()){ ev.preventDefault(); spotOpen(); }
   });
 
-  switchView(fromHash());
+  /* 深链：#v-chars/qixuanmen-0 这种地址进来要直接打开那张卡 */
+  /* 地址栏 hash 被直接改写、或前进/后退时，视图与目标卡都要跟上。
+     注意 setHash 走 replaceState/pushState：前者不触发任何事件，后者只触发 popstate */
+  function applyHash(){ var p = parseHash(); switchView(p.view); if(p.target) gotoEntry(p.target, true); }
+  window.addEventListener("hashchange", applyHash);
+  window.addEventListener("popstate", applyHash);
+  applyHash();
 })();
 
 </script>
