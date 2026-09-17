@@ -24,7 +24,7 @@ public/                     ← 唯一发布目录（Pages 只上传这里）
 └── robots.txt
 ```
 
-仓库只发布 `public/`。根目录另有 `LICENSE`、`NOTICE`、`README.md` 与 `.github/workflows/deploy.yml`。开发文档（`dev/Agent.md`）、验收脚本、迭代备份与中间数据都在本地 `dev/` 目录，已列入 `.gitignore`，**不随仓库发布**。
+仓库只发布 `public/`，根目录另有 `LICENSE`、`NOTICE`、`README.md`、`.github/workflows/deploy.yml`。开发文档、验收脚本与迭代备份都在本地 `dev/`，已 `.gitignore`，**不随仓库发布**。
 
 > 图片已统一瘦身：卡片实际只显示 180–240px 宽，发布图压到**长边 ≤ 800px / JPEG q76**（90MB → 20MB）。
 
@@ -45,33 +45,30 @@ node dev/tools/verify.mjs                                        # 默认 file:/
 node dev/tools/verify.mjs --url http://localhost:8123/index.html # 或指定地址
 ```
 
-27 条断言，每条只查一件事：七个视图容器与各自的唯一 h1 / 四库卡片数（221/40/64/65）/ **图片引用无缺图且全部能解码** / 互引网络规模 / **开源入口齐全（顶栏图标 / hero / 首页卡片 / 页脚同指一仓）** / **反馈入口统一指向 GitHub Issues（无主站评论区旧链接）** / 核心圈默认生效且可一键切回全部 / 无横向溢出与无竖条文本（桌面 1440×900 与移动 390×844 各跑一遍）/ 篇章筛选 / 三库分类筛选与搜索（含搜索深度一致性）/ 搜索定位落点 / 卡片互引跳转 / 返回顶部与进度环 / 深链冷启动 / 点卡片同步 URL / 浏览器返回后视图与地址一致 / 无第三方资源请求 / 控制台无报错。失败会打印实测值并以非 0 退出码结束。
+27 条断言，每条只查一件事：七视图容器与唯一 h1、四库卡片数（221/40/64/65）、图片无缺图且全部可解码、互引网络规模、开源与反馈入口、核心圈默认生效、双视口（桌面 1440×900 / 移动 390×844）无横向溢出与竖条文本、篇章与三库筛选、搜索与定位、互引跳转、返回顶部、深链冷启动与 URL 同步、浏览器返回后路由一致、无第三方请求、无控制台报错。失败会打印实测值并以非 0 退出码结束。
 
 零依赖：只需 **Node ≥ 22**（内建 WebSocket/fetch）与**本机 Chrome**，不需要 `npm install`；Chrome 不在默认位置时用 `--chrome <路径>` 或 `CHROME_PATH` 指定。
 
-用 CDP 而不是 puppeteer，是为了不引入 node_modules —— 脚本挂在 `dev/` 下，不影响 `public/` 的零构建交付。
+用 CDP 而非 puppeteer，避免引入 node_modules；脚本在 `dev/`，不影响 `public/` 的零构建交付。
 
 ## 发布
 
-推送到 `main` → GitHub Actions 只把 **`public/`** 上传为 Pages 产物（`dev/` 永不上站）。
-
-- 首次需要在仓库 **Settings → Pages → Source** 选择 **GitHub Actions**
-- 自定义域名继承自用户站，项目页自动落在 `bunnychen.top/fanren-wiki/`，本仓库不需要 `CNAME` 文件
+推送到 `main` → GitHub Actions 只把 `public/` 上传为 Pages 产物。需在仓库 **Settings → Pages → Source** 选 **GitHub Actions**；自定义域名继承自用户站，项目页落在 `bunnychen.top/fanren-wiki/`，本仓库不需要 `CNAME`。
 
 ## 来历
 
 原为 `Lizhenghe-Chen.github.io` 仓库下的静态目录（`docs/docs/Other/fanren-characters/`，2026-09-14 起随主站发布），2026-09-17 拆分独立，**git 提交历史完整保留**。主站旧路径保留跳转桩指向本站。
 
-反馈与勘误入口：**GitHub Issues** —— <https://github.com/Lizhenghe-Chen/fanren-wiki/issues/new/choose>（勘误请附依据：原著章节 / 起点《凡人必备手册》/ 动画集数）。
+反馈与勘误：<https://github.com/Lizhenghe-Chen/fanren-wiki/issues>（附原著章节、《凡人必备手册》或动画集数等依据更好核对）。
 
-主站《凡人修仙传》资料页 <https://bunnychen.top/docs/Other/fanren-xiuxian/> 仍是首页文案的素材来源，但**已不再是反馈入口**。
+首页文案的素材来源是主站资料页 <https://bunnychen.top/docs/Other/fanren-xiuxian/>。
 
 ## 许可
 
 **Apache License 2.0**，全文见 `LICENSE`；授权范围与第三方素材声明见 `NOTICE`。
 
-- **原创部分**（页面代码、资料的采集与编排、页面设计与文案）：可自由使用、复制、修改、分发，**含商业用途**；条件为保留版权与许可声明、保留 `NOTICE`、修改过的文件注明改动
-- **角色图片不在授权范围内**：网络检索素材（动画截图 / 官方概念图 / 百科插画 / 同人立绘），**版权归各自权利人**，本仓库不主张任何权利，权利人可要求删除
-- **非官方项目**：《凡人修仙传》原著及衍生作品的权利归原作者忘语及相关出版 / 发行方所有，本项目与其无关联，未获授权或背书
+- **原创部分**（页面代码、资料编排、页面设计与文案）：可自由使用、修改、分发，含商业用途。条件：保留版权与许可声明、保留 `NOTICE`、修改处注明改动
+- **角色图片不在授权范围内**（网络检索素材），版权归各自权利人，本仓库不主张任何权利；权利人可要求删除
+- **非官方项目**：原著及衍生作品的权利归原作者忘语与出版方，本项目与其无关联，未获授权或背书
 
 

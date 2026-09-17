@@ -1,12 +1,11 @@
 name: 勘误 / 纠错
 description: 人物、境界、剧情、灵兽、丹药、法宝条目中的事实错误，或配图错配
 title: "[勘误] "
-labels: ["勘误"]
 body:
   - type: markdown
     attributes:
       value: |
-        感谢指正。**依据越具体，核对越快** —— 原著章节、起点《凡人必备手册》、动画集数、官方设定集等，有原文摘录更佳。
+        依据越具体，核对越快：原著章节、《凡人必备手册》、动画集数等，附原文更好。
   - type: input
     id: entry
     attributes:

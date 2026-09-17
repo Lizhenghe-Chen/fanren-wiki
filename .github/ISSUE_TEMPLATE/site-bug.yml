@@ -1,12 +1,11 @@
 name: 站点问题
 description: 显示异常、筛选与搜索失灵、链接失效、移动端布局、无障碍或性能问题
 title: "[站点] "
-labels: ["站点"]
 body:
   - type: markdown
     attributes:
       value: |
-        本站是**单文件静态页面**（CSS/JS 全内联、零第三方请求），若问题与浏览器或屏幕宽度有关，请尽量在「环境」里写清。
+        本站是单文件静态页面（CSS/JS 全内联、无第三方请求）。若问题与浏览器或屏幕宽度有关，请在「环境」里写明。
   - type: textarea
     id: what
     attributes:
