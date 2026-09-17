@@ -34,7 +34,7 @@
 }
 </script>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230f1117'/%3E%3Ctext x='32' y='44' font-size='34' text-anchor='middle' fill='%23d4af6a' font-family='serif'%3E凡%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://miaoda.feishu.cn/fonts/css2?family=Noto+Serif+SC:wght@400;600;700;900&family=Noto+Sans+SC:wght@300;400;500;700&display=swap">
+<!-- 字体走系统栈：原先引第三方 CDN（miaoda.feishu.cn），实测会拉 11.35MB 未子集化 TTF，且只提供 400 字重（标题的 900 实为浏览器合成假粗体） -->
 <link rel="stylesheet" href="cultivation.css">
 <style>
 :root{
@@ -48,27 +48,34 @@
   --ink3:#7d7564;
   --gold:#d4af6a;
   --gold2:#b8904a;
-  --c1:#d4af6a; /* 七玄门 金 */
-  --c2:#7fb3d9; /* 黄枫谷 青蓝 */
-  --c3:#6fa8dc; /* 乱星海 海蓝 */
-  --c4:#b06ad4; /* 大晋 紫 */
-  --c5:#4ec9a0; /* 灵界 青绿 */
-  --c6:#e07b54; /* 仙界 赤金 */
+  /* 全站仅用这 6 个色相承载语义（篇章 / 条目类别），其余一律中性色 + 金色
+     （原 c3 与 c2 是两个几乎同色的蓝，c4 是饱和度过高的紫，已收敛） */
+  --c1:#d4af6a; /* 金 */
+  --c2:#7fb3d9; /* 青蓝 */
+  --c3:#5b8fc9; /* 深海蓝 */
+  --c4:#a68bc9; /* 青莲 */
+  --c5:#4ec9a0; /* 碧 */
+  --c6:#e07b54; /* 赤金 */
   --danger:#c0554f;
   --ok:#4e9e6f;
+  /* 字体角色：只用系统已装字体，零下载、无缺字风险（中文 webfont 子集化对持续增补的内容站不划算） */
+  --font-serif:"Noto Serif SC","Source Han Serif SC","Songti SC","STSong","SimSun",serif;
+  --font-sans:"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Noto Sans CJK SC","Source Han Sans SC","Segoe UI",sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
+/* 注意：不要设 html{scroll-behavior:smooth}。hash 切换视图本身就是一次锚点导航，
+   全局平滑会让它变成异步动画，与“搜索定位 / 返回顶部”的程序化滚动互相覆盖（实测会跑到文末）。
+   需要平滑的地方在 JS 里显式写 behavior:"smooth"。 */
 body{
   background:
     radial-gradient(1200px 500px at 80% -10%, rgba(212,175,106,.08), transparent 60%),
     radial-gradient(900px 400px at 0% 0%, rgba(78,201,160,.05), transparent 60%),
     var(--bg);
   color:var(--ink);
-  font-family:"Noto Sans SC","PingFang SC","Microsoft YaHei",sans-serif;
+  font-family:var(--font-sans);
   line-height:1.6;
 }
-.serif{font-family:"Noto Serif SC","Songti SC",serif}
+.serif{font-family:var(--font-serif)}
 .wrap{max-width:1500px;margin:0 auto;padding:0 12px}
 
 /* ===== Hero ===== */
@@ -93,7 +100,7 @@ body{
   white-space:nowrap;
 }
 h1{
-  font-family:"Noto Serif SC",serif;font-weight:900;
+  font-family:var(--font-serif);font-weight:900;
   font-size:clamp(30px,5vw,48px);line-height:1.2;
 }
 h1 .accent{
@@ -107,7 +114,7 @@ h1 .accent{
 .project-link:hover{transform:translateY(-2px);background:rgba(212,175,106,.14)}
 .project-link.primary:hover{background:#e2bf79}
 .stats{display:flex;gap:26px;margin-top:26px;flex-wrap:wrap}
-.stat b{font-family:"Noto Serif SC",serif;font-size:30px;color:var(--gold);display:block;line-height:1.2}
+.stat b{font-family:var(--font-serif);font-size:30px;color:var(--gold);display:block;line-height:1.2;font-variant-numeric:tabular-nums}
 .stat span{font-size:12px;color:var(--ink3);letter-spacing:.12em}
 .hero-cover{flex:0 0 240px;position:relative}
 .hero-cover img{
@@ -120,10 +127,24 @@ h1 .accent{
   border-radius:20px;pointer-events:none;
 }
 
+/* ===== 紧凑页头（列表型视图用它替代大 hero：首屏就能看到内容） ===== */
+.page-head{padding:22px 0 14px}
+.ph-inner{display:flex;align-items:flex-end;justify-content:space-between;gap:14px 20px;flex-wrap:wrap}
+.page-head h1{font-size:clamp(24px,3.4vw,34px);line-height:1.24}
+.page-head .kicker{margin-top:8px}
+.page-head .stats{margin-top:0;gap:22px;align-items:flex-end}
+.page-head .stat b{font-size:26px}
+@media (max-width:640px){
+  .page-head{padding:16px 0 2px}
+  .ph-inner{gap:10px}
+  .page-head .stat b{font-size:22px}
+  .page-head .stats{gap:18px}
+}
+
 /* ===== 韩立境界时间轴 ===== */
 .timeline-sec{padding:34px 0 44px}
 .sec-title{
-  font-family:"Noto Serif SC",serif;font-weight:700;font-size:22px;
+  font-family:var(--font-serif);font-weight:700;font-size:22px;
   display:flex;align-items:center;gap:10px;margin-bottom:6px;
 }
 .sec-title::before{content:"";width:4px;height:22px;background:var(--gold);border-radius:2px}
@@ -144,18 +165,22 @@ h1 .accent{
 .tl-dot.hot{background:var(--gold);box-shadow:0 0 0 4px rgba(212,175,106,.2)}
 .tl-bot{text-align:center;padding-top:8px}
 .tl-bot .realm{
-  font-family:"Noto Serif SC",serif;font-weight:700;font-size:15px;color:var(--ink);
+  font-family:var(--font-serif);font-weight:700;font-size:15px;color:var(--ink);
   white-space:nowrap;
 }
 .tl-bot .age{font-size:11px;color:var(--ink3);white-space:nowrap}
 
 /* ===== 导航 ===== */
 .navbar{
-  position:sticky;top:0;z-index:50;background:rgba(14,16,22,.92);
+  position:sticky;top:49px;z-index:50;background:rgba(14,16,22,.92);
   backdrop-filter:blur(10px);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
 }
-.nav-inner{display:flex;align-items:center;gap:12px;padding:12px 20px;max-width:1200px;margin:0 auto;flex-wrap:wrap}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;flex:1 1 auto}
+@media (max-width:640px){.navbar{top:45px}}
+.nav-inner{display:flex;align-items:center;gap:12px;padding:10px 20px;max-width:1200px;margin:0 auto;flex-wrap:nowrap}
+/* 篇章标签组自己横向滚动，任何宽度下都保持单行（原先窄屏换行成两行 = 109px 常驻高度） */
+.tabs{display:flex;gap:8px;flex-wrap:nowrap;flex:1 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%);-webkit-mask-image:linear-gradient(90deg,#000 0,#000 calc(100% - 22px),transparent 100%)}
+.tabs::-webkit-scrollbar{display:none}
+.tabs .tab{flex:none}
 .tab{
   border:1px solid var(--line);background:var(--card);color:var(--ink2);
   font-size:13px;padding:7px 13px;border-radius:8px;cursor:pointer;
@@ -173,16 +198,16 @@ h1 .accent{
 .search-box input::placeholder{color:var(--ink3)}
 
 /* ===== 篇章区块 ===== */
-.chapter{padding:34px 0 10px;scroll-margin-top:90px}
+.chapter{padding:34px 0 10px;scroll-margin-top:108px}
 .ch-head{display:flex;align-items:center;gap:14px;margin-bottom:20px;flex-wrap:wrap}
 .ch-badge{
-  font-family:"Noto Serif SC",serif;font-weight:700;font-size:15px;
+  font-family:var(--font-serif);font-weight:700;font-size:15px;
   border:1px solid;padding:6px 14px;border-radius:10px;letter-spacing:.08em;
 }
 .ch-meta{color:var(--ink3);font-size:13px}
 .grid{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
-  gap:18px;
+  gap:18px;align-items:start;
 }
 .card{
   background:linear-gradient(180deg,var(--card),var(--card2));
@@ -195,7 +220,7 @@ h1 .accent{
 .card-top img{width:100%;height:100%;object-fit:cover;object-position:top center}
 .card-top .ph{
   width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  font-family:"Noto Serif SC",serif;font-weight:900;font-size:56px;color:rgba(255,255,255,.16);
+  font-family:var(--font-serif);font-weight:900;font-size:56px;color:rgba(255,255,255,.16);
   background:radial-gradient(circle at 50% 120%,rgba(255,255,255,.05),transparent 70%);
 }
 .card-tag{
@@ -204,7 +229,7 @@ h1 .accent{
 }
 .card-body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:8px;flex:1}
 .card-name{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
-.card-name h3{font-family:"Noto Serif SC",serif;font-size:19px;font-weight:700}
+.card-name h3{font-family:var(--font-serif);font-size:19px;font-weight:700}
 .card-name .aka{font-size:12px;color:var(--ink3)}
 .card-row{font-size:12.5px;line-height:1.65}
 .card-row .lb{display:inline-block;min-width:3.4em;vertical-align:top;color:var(--gold);font-weight:600;margin-right:6px;white-space:nowrap}
@@ -226,12 +251,14 @@ h1 .accent{
 .card-extra .card-row .tx{display:block}
 .card-chips{display:flex;flex-wrap:wrap;gap:5px}
 .chip{
-  font-size:10.5px;line-height:1.4;padding:2px 8px;border-radius:999px;border:1px solid;
+  font-size:10.5px;line-height:1.4;padding:2px 8px;border-radius:999px;
+  border:1px solid color-mix(in srgb,currentColor 38%,transparent);
+  background:color-mix(in srgb,currentColor 10%,transparent);
   white-space:nowrap;letter-spacing:.02em;
 }
-.chip.rel{color:#d4af6a;border-color:rgba(212,175,106,.45);background:rgba(212,175,106,.08)}
-.chip.camp{color:#7ec8a8;border-color:rgba(126,200,168,.4);background:rgba(126,200,168,.08)}
-.chip.race{color:#b39ddb;border-color:rgba(179,157,219,.4);background:rgba(179,157,219,.08)}
+.chip.rel{color:var(--c1)}  /* 与韩立的关系 */
+.chip.camp{color:var(--c5)} /* 势力阵营 */
+.chip.race{color:var(--c4)} /* 种族 */
 @keyframes fadeIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
 
 
@@ -263,9 +290,15 @@ h1 .accent{
 }
 
 
-/* ===== 顶部主导航 ===== */
-.topnav{background:linear-gradient(180deg,rgba(12,14,20,.98),rgba(12,14,20,.9));border-bottom:1px solid rgba(212,175,106,.18)}
+/* ===== 顶部主导航（粘性，任何视图下都能切库） ===== */
+.topnav{position:sticky;top:0;z-index:55;background:linear-gradient(180deg,rgba(12,14,20,.98),rgba(12,14,20,.9));backdrop-filter:blur(10px);border-bottom:1px solid rgba(212,175,106,.18)}
 .topnav .wrap{display:flex;gap:4px;align-items:center;height:48px;flex-wrap:nowrap}
+/* 全库搜索入口 */
+.tn-search{flex:none;display:inline-flex;align-items:center;gap:7px;height:30px;padding:0 10px;margin-left:6px;border:1px solid rgba(212,175,106,.35);border-radius:8px;background:rgba(212,175,106,.07);color:var(--gold);font:inherit;font-size:12.5px;cursor:pointer;white-space:nowrap;transition:background .18s,border-color .18s}
+.tn-search:hover{background:rgba(212,175,106,.16);border-color:var(--gold)}
+.tn-search kbd{font:inherit;font-size:10.5px;letter-spacing:.06em;padding:1px 5px;border:1px solid var(--line);border-radius:4px;color:var(--ink3);background:rgba(0,0,0,.25)}
+@media (max-width:1100px){.tn-search kbd{display:none}}
+@media (max-width:640px){.tn-search span{display:none}.tn-search{padding:0 8px}}
 /* 链接组自己横向滚动（品牌与右侧状态固定不动）——任何宽度下都不会把页面撑出横向漂移 */
 .tn-links{display:flex;gap:4px;align-items:center;flex:1 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
 .tn-links::-webkit-scrollbar{display:none}
@@ -290,11 +323,11 @@ h1 .accent{
 .home-why{background:linear-gradient(160deg,rgba(212,175,106,.07),rgba(212,175,106,.02));border:1px solid rgba(212,175,106,.18);border-radius:14px;padding:22px 26px;line-height:1.95;color:var(--ink2);font-size:14.5px}
 .home-why p{margin:0 0 12px}
 .home-why p:last-child{margin-bottom:0}
-.home-why .lead{color:var(--gold);font-weight:600;font-family:"Noto Serif SC",serif;font-size:16.5px;letter-spacing:.04em}
+.home-why .lead{color:var(--gold);font-weight:600;font-family:var(--font-serif);font-size:16.5px;letter-spacing:.04em}
 .home-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:4px}
 .home-card{display:block;background:rgba(255,255,255,.028);border:1px solid rgba(212,175,106,.16);border-radius:14px;padding:20px 18px 18px;text-decoration:none;transition:.22s;position:relative;overflow:hidden}
 .home-card:hover{background:rgba(212,175,106,.08);transform:translateY(-2px);border-color:rgba(212,175,106,.42)}
-.home-card b{display:block;color:var(--gold);font-size:16px;font-family:"Noto Serif SC",serif;margin-bottom:8px;letter-spacing:.05em}
+.home-card b{display:block;color:var(--gold);font-size:16px;font-family:var(--font-serif);margin-bottom:8px;letter-spacing:.05em}
 .home-card span{color:var(--ink3);font-size:12.5px;line-height:1.75}
 .home-note{background:rgba(255,255,255,.02);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 10px 10px 0;color:var(--ink3);font-size:13px;line-height:1.85}
 @media (max-width:860px){.home-cards{grid-template-columns:1fr 1fr}}
@@ -312,7 +345,7 @@ h1 .accent{
 .src-list a:hover{color:#fff;border-bottom-style:solid}
 .src-list .src-site{display:block;margin-top:2px;font-size:11.5px;color:var(--ink3);word-break:break-all;overflow-wrap:anywhere}
 /* ===== 视图切换 ===== */
-.view{display:none}
+.view{display:none;scroll-margin-top:49px}
 .view.active{display:block}
 @media (max-width:640px){
   .tn-brand{display:none}
@@ -325,26 +358,40 @@ h1 .accent{
 .legend{display:flex;gap:18px;flex-wrap:wrap;align-items:center;padding:14px 16px;border:1px dashed var(--line);border-radius:12px}
 .legend .item{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--ink2)}
 .legend .dot{width:11px;height:11px;border-radius:3px;flex:none}
+/* 可折叠的声明条：折起来只有一行（详见 .img-note 标记） */
 .img-note{
-  margin-top:12px;padding:11px 15px;border:1px solid rgba(224,123,84,.5);
-  background:rgba(224,123,84,.07);border-radius:10px;
-  font-size:12.5px;line-height:1.75;color:#e8b89a;
+  margin-top:10px;border:1px solid rgba(224,123,84,.42);
+  background:rgba(224,123,84,.06);border-radius:10px;
+  font-size:12.5px;line-height:1.75;color:#e0b49a;
 }
+.img-note>summary{
+  cursor:pointer;list-style:none;display:flex;align-items:center;gap:6px;
+  padding:9px 14px;color:#e8b89a;font-size:12.5px;
+}
+.img-note>summary::-webkit-details-marker{display:none}
+/* 文本必需单独成项才能真的出省略号：flex 容器上的 text-overflow 不生效 */
+.img-note>summary .tt{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.img-note>summary .ic{flex:none}
+.img-note>summary::after{content:"▾";flex:none;opacity:.75}
+.img-note[open]>summary::after{content:"▴"}
+.img-note[open]>summary{border-bottom:1px dashed rgba(224,123,84,.3)}
+.img-note[open]>summary .tt{white-space:normal;overflow:visible}
+.img-note p{margin:0;padding:11px 14px 13px}
 .img-note b{color:#e07b54}
-.img-note .ic{font-weight:900;margin-right:6px}
+.img-note .ic{font-weight:900}
 .realm-sec{padding:38px 0 10px;border-top:1px solid var(--line)}
 .realm-intro{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(240px,.8fr);gap:18px;margin:18px 0 20px}
 .realm-lead,.realm-note{padding:18px 20px;border:1px solid var(--line);background:rgba(25,29,42,.72);border-radius:12px}
 .realm-lead p,.realm-note p{color:var(--ink2);font-size:13px;line-height:1.8}
-.realm-note strong{display:block;color:var(--gold);font-family:"Noto Serif SC",serif;font-size:18px;margin-bottom:5px}
+.realm-note strong{display:block;color:var(--gold);font-family:var(--font-serif);font-size:18px;margin-bottom:5px}
 .realm-rail{display:grid;grid-template-columns:repeat(13,minmax(68px,1fr));gap:4px;overflow-x:auto;padding:4px 0 12px}
 .realm-node{min-width:68px;padding:13px 8px 11px;border-top:3px solid var(--gold);background:rgba(255,255,255,.035);text-align:center}
-.realm-node:nth-child(-n+5){border-color:#d4af6a}.realm-node:nth-child(n+6):nth-child(-n+8){border-color:#4ec9a0}.realm-node:nth-child(n+9){border-color:#e07b54}
-.realm-node b{display:block;font-family:"Noto Serif SC",serif;font-size:14px;white-space:nowrap}.realm-node span{display:block;color:var(--ink3);font-size:11px;margin-top:4px}
+.realm-node:nth-child(-n+5){border-color:var(--c1)}.realm-node:nth-child(n+6):nth-child(-n+8){border-color:var(--c5)}.realm-node:nth-child(n+9){border-color:var(--c6)}
+.realm-node b{display:block;font-family:var(--font-serif);font-size:14px;white-space:nowrap}.realm-node span{display:block;color:var(--ink3);font-size:11px;margin-top:4px}
 .realm-chart-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:24px}
 .realm-chart-panel{padding:18px 20px;border:1px solid var(--line);background:rgba(25,29,42,.72);border-radius:12px}
 .realm-chart-panel.wide{grid-column:1/-1}
-.realm-chart-panel h3{font-family:"Noto Serif SC",serif;font-size:17px;margin-bottom:8px}
+.realm-chart-panel h3{font-family:var(--font-serif);font-size:17px;margin-bottom:8px}
 .realm-chart-panel p{color:var(--ink2);font-size:13px;line-height:1.8}
 .realm-chart-panel .cv-chart{margin-top:16px}
 @media (max-width:760px){.realm-intro,.realm-chart-grid{grid-template-columns:1fr}.realm-chart-panel.wide{grid-column:auto}}
@@ -358,7 +405,7 @@ footer .note{margin-top:6px}
 .bar-item{text-align:center}
 .bar-track{height:120px;display:flex;align-items:flex-end;justify-content:center;border-radius:8px;background:rgba(255,255,255,.03);overflow:hidden}
 .bar-fill{width:70%;border-radius:6px 6px 0 0;min-height:4px;transition:height 1s ease}
-.bar-item .bn{font-family:"Noto Serif SC",serif;font-weight:700;font-size:20px;color:var(--ink);margin-top:10px}
+.bar-item .bn{font-family:var(--font-serif);font-weight:700;font-size:20px;color:var(--ink);margin-top:10px;font-variant-numeric:tabular-nums}
 .bar-item .bt{font-size:12px;color:var(--ink3);margin-top:2px}
 
 /* ===== 响应式 ===== */
@@ -402,11 +449,11 @@ footer .note{margin-top:6px}
 .beast-rail-sec{padding:4px 0 8px}
 .beast-rail{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:8px;overflow-x:auto;padding:4px 0 12px}
 .beast-node{min-width:150px;padding:14px 12px;border-top:3px solid var(--gold);background:rgba(255,255,255,.035);border-radius:0 0 10px 10px}
-.beast-node:nth-child(-n+2){border-color:#7fb3d9}
-.beast-node:nth-child(n+3):nth-child(-n+4){border-color:#b06ad4}
-.beast-node:nth-child(n+5){border-color:#4ec9a0}
-.beast-node:nth-child(n+6){border-color:#e07b54}
-.beast-node b{display:block;font-family:"Noto Serif SC",serif;font-size:15px;white-space:nowrap}
+.beast-node:nth-child(-n+2){border-color:var(--c2)}
+.beast-node:nth-child(n+3):nth-child(-n+4){border-color:var(--c4)}
+.beast-node:nth-child(n+5){border-color:var(--c5)}
+.beast-node:nth-child(n+6){border-color:var(--c6)}
+.beast-node b{display:block;font-family:var(--font-serif);font-size:15px;white-space:nowrap}
 .beast-node .bl{display:block;color:var(--gold);font-size:12px;margin-top:3px;font-weight:600}
 .beast-node span{display:block;color:var(--ink3);font-size:11px;margin-top:5px;line-height:1.65}
 .beast-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 18px}
@@ -430,11 +477,11 @@ footer .note{margin-top:6px}
 .herb-rail-sec{padding:4px 0 8px}
 .herb-rail{display:grid;grid-template-columns:repeat(6,minmax(150px,1fr));gap:8px;overflow-x:auto;padding:4px 0 12px}
 .herb-node{min-width:150px;padding:14px 12px;border-top:3px solid var(--gold);background:rgba(255,255,255,.035);border-radius:0 0 10px 10px}
-.herb-node:nth-child(-n+2){border-color:#7ec97e}
-.herb-node:nth-child(n+3):nth-child(-n+4){border-color:#d4a843}
-.herb-node:nth-child(n+5){border-color:#e06060}
-.herb-node:nth-child(n+6){border-color:#b06ad4}
-.herb-node b{display:block;font-family:"Noto Serif SC",serif;font-size:15px;white-space:nowrap}
+.herb-node:nth-child(-n+2){border-color:var(--c5)}
+.herb-node:nth-child(n+3):nth-child(-n+4){border-color:var(--c1)}
+.herb-node:nth-child(n+5){border-color:var(--c6)}
+.herb-node:nth-child(n+6){border-color:var(--c4)}
+.herb-node b{display:block;font-family:var(--font-serif);font-size:15px;white-space:nowrap}
 .herb-node .bl{display:block;color:var(--gold);font-size:12px;margin-top:3px;font-weight:600}
 .herb-node span{display:block;color:var(--ink3);font-size:11px;margin-top:5px;line-height:1.65}
 .herb-tabs{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
@@ -512,34 +559,47 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 /* 阶段介绍：6 列一行。列宽允许收缩到 0，窄屏靠媒体查询减列，绝不把页面撑出横向滚动。 */
 #v-treasures .treasure-rail{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:8px;padding:4px 0 10px;margin:14px 0 10px}
 #v-treasures .treasure-rail .rail-item{min-width:0;padding:11px 12px;border-top:3px solid var(--gold);background:rgba(255,255,255,.035);border-radius:0 0 10px 10px}
-#v-treasures .treasure-rail .rail-item b{display:block;font-family:"Noto Serif SC",serif;font-size:14px;white-space:nowrap}
+#v-treasures .treasure-rail .rail-item b{display:block;font-family:var(--font-serif);font-size:14px;white-space:nowrap}
 #v-treasures .treasure-rail .rail-item .bl{display:block;color:var(--gold);font-size:11.5px;margin-top:2px;font-weight:600}
-#v-treasures .treasure-rail .rail-item span{display:block;color:var(--ink3);font-size:11px;margin-top:4px;line-height:1.6;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* 说明最多两行：单行截断会让“等级制度”说明失去信息量 */
+#v-treasures .treasure-rail .rail-item span{display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden;color:var(--ink3);font-size:11px;margin-top:4px;line-height:1.6}
 /* 必须带 #v-treasures 前缀：基础规则的 id 优先级会压过裸类选择器的媒体查询。
    6 列单排最省纵向空间（标题/境界那一行只付一次），所以尽量保持 6 列，只在列宽窄到不可读时才减列。 */
 @media (max-width:760px){#v-treasures .treasure-rail{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:520px){#v-treasures .treasure-rail{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:380px){#v-treasures .treasure-rail{grid-template-columns:1fr}}
-#v-treasures .treasure-tabs{display:flex;gap:6px;margin:14px 0;flex-wrap:wrap}
-#v-treasures .treasure-tabs .tab{padding:6px 14px;border-radius:20px;border:1px solid rgba(255,255,255,.15);cursor:pointer;font-size:13px;color:var(--ink2);transition:all .2s}
-#v-treasures .treasure-tabs .tab.active{background:var(--gold);color:#1a1a2e;border-color:var(--gold);font-weight:700}
-#v-treasures .treasure-search{width:100%;max-width:400px;padding:9px 14px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(0,0,0,.3);color:var(--ink);font-size:14px;margin:10px 0}
-#v-treasures .treasure-search:focus{outline:none;border-color:var(--gold)}
-#v-treasures .treasure-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:14px}
-#v-treasures .treasure-card{background:linear-gradient(160deg,rgba(30,30,50,.8),rgba(20,20,35,.9));border:1px solid rgba(255,255,255,.08);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .25s}
-#v-treasures .treasure-card:hover{border-color:rgba(212,168,67,.5);transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,0,0,.4)}
-#v-treasures .treasure-card .tc-img{width:100%;height:160px;object-fit:cover;background:#1a1a2e}
-#v-treasures .treasure-card .tc-body{padding:12px 14px}
-#v-treasures .treasure-card .tc-name{font-size:16px;font-weight:700;color:var(--gold);margin-bottom:4px}
-#v-treasures .treasure-card .tc-title{font-size:12px;color:var(--ink3);margin-bottom:6px}
-#v-treasures .treasure-card .tc-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
-#v-treasures .treasure-card .tc-tag{font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(212,168,67,.15);color:var(--gold)}
-#v-treasures .treasure-card .tc-realm{font-size:11px;padding:2px 8px;border-radius:10px;background:rgba(111,168,220,.15);color:#6fa8dc}
-#v-treasures .treasure-card .tc-end{font-size:12px;color:var(--ink2);margin-top:4px;font-style:italic}
-#v-treasures .treasure-detail{display:none;padding:12px 14px;border-top:1px solid rgba(255,255,255,.08);font-size:13px;color:var(--ink2);line-height:1.7}
-#v-treasures .treasure-card.open .treasure-detail{display:block}
-#v-treasures .treasure-detail .dl-row{margin-bottom:6px}
+/* 标签与搜索框对齐全站（灵兽/灵草那套胶囊 + 金色 focus），不再用白色 15% 边框 */
+#v-treasures .treasure-tabs{display:flex;gap:8px;margin:14px 0 12px;flex-wrap:wrap}
+#v-treasures .treasure-tabs .tab{padding:7px 15px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--ink2);font-family:inherit;font-size:13px;letter-spacing:.03em;cursor:pointer;transition:.18s}
+#v-treasures .treasure-tabs .tab:hover{color:var(--gold);border-color:rgba(212,175,106,.5)}
+#v-treasures .treasure-tabs .tab.active{background:var(--gold);border-color:var(--gold);color:#14161d;font-weight:700}
+#v-treasures .treasure-search{width:100%;max-width:360px;padding:9px 12px 9px 34px;border:1px solid var(--line);border-radius:10px;color:var(--ink);font:inherit;font-size:13px;margin:4px 0 12px;outline:none;transition:border-color .18s;background:rgba(255,255,255,.04) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23a89f8b' stroke-width='2.4'%3E%3Ccircle cx='11' cy='11' r='7'/%3E%3Cpath d='M20 20l-3.5-3.5'/%3E%3C/svg%3E") no-repeat 12px center/14px 14px}
+#v-treasures .treasure-search::placeholder{color:var(--ink3)}
+#v-treasures .treasure-search:focus{border-color:var(--gold)}
+#v-treasures .treasure-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:14px;align-items:start}
+@media (min-width:1200px){#v-treasures .treasure-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}}
+@media (min-width:1600px){#v-treasures .treasure-grid{grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}}
+@media (max-width:760px){#v-treasures .treasure-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}}
+@media (max-width:480px){#v-treasures .treasure-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}}
+/* 卡片外壳与 .card 完全一致（同渐变、同圆角、同 hover） */
+#v-treasures .treasure-card{display:flex;flex-direction:column;min-width:0;background:linear-gradient(180deg,var(--card),var(--card2));border:1px solid var(--line);border-radius:14px;overflow:hidden;cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+#v-treasures .treasure-card:hover{transform:translateY(-3px);border-color:rgba(212,175,106,.5);box-shadow:0 12px 30px rgba(0,0,0,.35)}
+/* 道具图比例差异极大（65 张中 28 张竖构图、25 张宽幅），统一按 contain 摆在“陈列盘”上，不裁切 */
+#v-treasures .treasure-card .tc-img{width:100%;aspect-ratio:4/3;box-sizing:border-box;padding:12px;object-fit:contain;background:radial-gradient(ellipse at 50% 42%,rgba(212,175,106,.07),transparent 70%),var(--bg2);border-bottom:1px solid var(--line)}
+#v-treasures .treasure-card .tc-body{padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px;flex:1}
+#v-treasures .treasure-card .tc-name{font-family:var(--font-serif);font-size:17px;font-weight:700;color:var(--gold)}
+#v-treasures .treasure-card .tc-title{font-size:12px;color:var(--ink3);line-height:1.6}
+#v-treasures .treasure-card .tc-meta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+#v-treasures .treasure-card .tc-tag{font-size:10.5px;padding:2px 8px;border-radius:999px;line-height:1.5;white-space:nowrap;border:1px solid color-mix(in srgb,currentColor 42%,transparent);background:color-mix(in srgb,currentColor 12%,transparent)}
+#v-treasures .treasure-card .tc-realm{font-size:10.5px;padding:2px 8px;border-radius:999px;line-height:1.5;color:var(--ink2);border:1px solid rgba(212,175,106,.28);background:rgba(212,175,106,.07)}
+#v-treasures .treasure-card .tc-end{font-size:12px;color:var(--ink2);line-height:1.7;margin-top:auto;padding-top:6px}
+#v-treasures .treasure-detail{display:none;padding:0 14px 14px;font-size:12.5px;color:var(--ink2);line-height:1.7}
+#v-treasures .treasure-card.open .treasure-detail{display:block;animation:fadeIn .28s ease}
+#v-treasures .treasure-detail .dl-row{margin-top:8px;padding-top:8px;border-top:1px dashed var(--line)}
 #v-treasures .treasure-detail .dl-label{color:var(--gold);font-weight:600;margin-right:6px}
+@media (max-width:760px){#v-treasures .treasure-card .tc-name{font-size:15px}#v-treasures .treasure-card .tc-body{padding:10px}}
+#v-treasures .treasure-count{color:var(--ink3);font-size:12.5px;margin:-2px 0 12px;letter-spacing:.04em}
+#v-treasures .treasure-count b{color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums}
 
 /* ===== 页面包含（功能清单，双列） ===== */
 .home-feats{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:6px 22px}
@@ -553,7 +613,56 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 .home-quest{background:linear-gradient(160deg,rgba(212,175,106,.055),rgba(212,175,106,.015));border:1px solid rgba(212,175,106,.18);border-left:3px solid var(--gold);border-radius:0 12px 12px 0;padding:20px 24px}
 .home-quest p{margin:0 0 12px;font-size:14px;line-height:2;color:var(--ink2)}
 .home-quest p:last-child{margin-bottom:0}
-.home-quest .q-closing{font-family:"Noto Serif SC",serif;font-size:15.5px;color:var(--gold);letter-spacing:.04em;padding-top:14px;border-top:1px dashed rgba(212,175,106,.28)}
+.home-quest .q-closing{font-family:var(--font-serif);font-size:15.5px;color:var(--gold);letter-spacing:.04em;padding-top:14px;border-top:1px dashed rgba(212,175,106,.28)}
+
+/* ===== 返回顶部 ===== */
+.back-top{position:fixed;right:16px;bottom:18px;z-index:58;width:44px;height:44px;display:grid;place-items:center;border:1px solid rgba(212,175,106,.45);border-radius:50%;background:rgba(20,23,34,.88);backdrop-filter:blur(6px);color:var(--gold);font:inherit;font-size:17px;line-height:1;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(10px);transition:opacity .25s,transform .25s,visibility .25s}
+.back-top.show{opacity:1;visibility:visible;transform:none}
+.back-top:hover{border-color:var(--gold);background:rgba(212,175,106,.18)}
+@media (max-width:640px){.back-top{right:10px;bottom:12px;width:40px;height:40px}}
+
+/* 从搜索/跳转命中的卡片闪一下，告诉用户“就是这张” */
+.card.flash,.treasure-card.flash{animation:card-flash 1.5s ease both}
+@keyframes card-flash{
+  0%{box-shadow:0 0 0 0 rgba(212,175,106,.6)}
+  30%{box-shadow:0 0 0 4px rgba(212,175,106,.28)}
+  100%{box-shadow:0 0 0 0 transparent}
+}
+
+/* ===== 全库搜索面板（⌘K / Ctrl+K / /） ===== */
+.spot{position:fixed;inset:0;z-index:80;display:flex;justify-content:center;align-items:flex-start;padding:10vh 16px 16px}
+.spot[hidden]{display:none}
+.spot-mask{position:absolute;inset:0;background:rgba(6,7,10,.72);backdrop-filter:blur(3px)}
+.spot-panel{position:relative;width:min(760px,100%);max-height:74vh;display:flex;flex-direction:column;overflow:hidden;border:1px solid rgba(212,175,106,.3);border-radius:14px;background:linear-gradient(180deg,#1a1e2b,#141722);box-shadow:0 30px 70px -20px #000,inset 0 1px 0 rgba(255,255,255,.04);animation:spot-in .2s ease both}
+@keyframes spot-in{from{opacity:0;transform:translateY(-8px) scale(.99)}to{opacity:1;transform:none}}
+.spot-input{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);flex:none}
+.spot-input svg{flex:none;opacity:.6;color:var(--gold)}
+.spot-input input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--ink);font:inherit;font-size:15px}
+.spot-input input::placeholder{color:var(--ink3)}
+.spot-input .spot-esc{flex:none;font:inherit;font-size:10.5px;letter-spacing:.08em;padding:2px 6px;border:1px solid var(--line);border-radius:5px;background:rgba(0,0,0,.3);color:var(--ink3);cursor:pointer}
+.spot-list{overflow-y:auto;overscroll-behavior:contain;padding:6px 6px 10px}
+.spot-group{margin-top:6px}
+.spot-group-h{display:flex;align-items:center;gap:7px;padding:7px 10px 5px;font-size:11.5px;letter-spacing:.1em;color:var(--ink3)}
+.spot-group-h .dot{width:7px;height:7px;border-radius:2px;flex:none}
+.spot-group-h .n{margin-left:auto;font-variant-numeric:tabular-nums;opacity:.7}
+.spot-row{display:flex;align-items:baseline;gap:9px;width:100%;text-align:left;padding:7px 10px;border:0;border-left:2px solid transparent;border-radius:8px;background:transparent;color:var(--ink);font:inherit;font-size:13.5px;cursor:pointer}
+.spot-row:hover{background:rgba(255,255,255,.04)}
+.spot-row.on{background:rgba(212,175,106,.1);border-left-color:var(--gold)}
+.spot-row .rn{font-family:var(--font-serif);font-weight:700;white-space:nowrap;flex:none}
+.spot-row .rt{color:var(--ink2);font-size:12px;flex:none;max-width:34%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.spot-row .rs{color:var(--ink2);font-size:11.5px;min-width:0;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;opacity:.8}
+.spot-row .rc{flex:none;font-size:11px;color:var(--ink3);letter-spacing:.04em}
+.spot-row mark{background:transparent;color:var(--gold);font-weight:700}
+.spot-empty{padding:32px 16px 8px;text-align:center;color:var(--ink3);font-size:13px}
+.spot-chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px;padding-bottom:8px}
+.spot-chip{padding:5px 12px;border:1px solid rgba(212,175,106,.3);border-radius:999px;background:rgba(212,175,106,.06);color:var(--gold);font:inherit;font-size:12.5px;cursor:pointer}
+.spot-chip:hover{background:rgba(212,175,106,.16)}
+.spot-foot{flex:none;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 14px;border-top:1px solid var(--line);font-size:11px;color:var(--ink3)}
+@media (max-width:640px){
+  .spot{padding:6vh 10px 10px}
+  .spot-panel{max-height:80vh}
+  .spot-row .rt{display:none}
+}
 
 </style>
 </head>
@@ -573,6 +682,10 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
       <a href="#v-herbs" data-view="v-herbs">灵草丹药</a>
       <a href="#v-treasures" data-view="v-treasures">法器法宝</a>
     </div>
+    <button class="tn-search" id="openSearch" type="button" aria-label="全库搜索">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <span>全库搜索</span><kbd>⌘K</kbd>
+    </button>
     <span class="tn-update">持续更新中 · <a class="tn-author" href="https://lizhenghe-chen.github.io/" target="_blank" rel="noopener">作者主页</a> · 更新 2026-09-17</span>
   </div>
 </nav>
@@ -680,7 +793,7 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 <!-- ===== 收录说明 ===== -->
 <section class="wrap home-section">
   <div class="sec-title">收录说明</div>
-  <div class="home-note">资料整理自《凡人修仙传》原著读书笔记与公开考据资料，正文包含剧情剧透。境界战力层级采用自建量化模型，仅用于直观体现量级差距，并非原著官方设定数值。角色图片为网络检索素材（动画截图 / 官方概念图 / 同人立绘），部分篇章角色动画未登场，图片仅供回忆辅助、不保证与官方形象完全一致，如有偏差请以文字资料为准。</div>
+  <div class="home-note">资料整理自《凡人修仙传》原著读书笔记与公开考据资料，<b>正文包含全书剧情与结局（剧透注意）</b>。境界战力层级为本页自建量化模型，仅用于直观体现量级差距，并非原著官方设定数值。配图来源与准确性说明见页脚。</div>
   <div class="home-note" style="margin-top:10px">资料如有疏漏或错讹，欢迎到 <a href="https://bunnychen.top/docs/Other/fanren-xiuxian/#__comments" style="color:var(--gold);text-decoration:none">《凡人修仙传》资料页评论区</a> 留言指正。</div>
   <div class="home-note" style="margin-top:10px">本站持续更新中：资料依据原著逐章考据整理，含全书剧情与结局（剧透注意）；人物生平、法宝丹药与配图仍在陆续补充。</div>
 </section>
@@ -697,36 +810,25 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
     <li><b>百度百科及粉丝社区公开考据</b> —— 冷门角色、法器法宝、妖兽设定的补充参考；境界体系另核验起点官方资源站。<a href="https://baike.baidu.com/item/%E5%87%A1%E4%BA%BA%E4%BF%AE%E4%BB%99%E4%BC%A0/10375488" target="_blank" rel="noopener">百度百科·凡人修仙传</a> · <a href="https://m.qidian.com/ziyuan/fanrenxiuxianzhuan/post/jingjie" target="_blank" rel="noopener">起点资源站·境界体系</a></li>
     <li><b>图片素材</b> —— 动画正片截图、官方概念图与人物设定、百科插画、同人立绘；均为网络检索素材，仅供回忆辅助，不保证与官方形象完全一致。<a href="https://image.baidu.com/" target="_blank" rel="noopener">百度图片</a> · <a href="https://cn.bing.com/images" target="_blank" rel="noopener">必应图片</a> · <a href="https://huaban.com/" target="_blank" rel="noopener">花瓣</a></li>
   </ul>
-  <div class="home-note" style="margin-top:12px">境界战力层级采用本页自建量化模型，仅用于直观体现量级差距，并非原著官方设定数值；其余未列出的零散来源请以原著为准。</div>
+  <div class="home-note" style="margin-top:12px">未列出的零散来源以原著为准。</div>
 </section>
 </div>
 
 <div class="view" id="v-chars">
-<!-- ===== Hero ===== -->
-<section class="hero">
-  <div class="wrap hero-inner">
-    <div class="hero-copy">
-      <div class="hero-title">
-        <h1>凡人修仙传<br><span class="accent">全篇人物图谱</span></h1>
-        <span class="kicker">忘语 · 仙侠巨著 · 全角色档案</span>
-      </div>
-      <p class="hero-sub">六卷篇章 · 二百二十余位人物 · 境界演进与命运结局一览。按篇章浏览，人物跨篇重复出现即重复收录；角色图片为网络检索素材，仅供参考，可能与官方形象存在偏差（详见图例区声明）。</p>
-      <div class="project-links">
-        <a class="project-link primary" href="#v-chars">浏览人物图谱</a>
-        <a class="project-link" href="#v-realms">查看境界体系</a>
-        <a class="project-link" href="https://bunnychen.top/docs/Other/fanren-xiuxian/">勘误与反馈</a>
-      </div>
-      <div class="stats">
-        <div class="stat"><b id="st-total">0</b><span>收录人物记录</span></div>
-        <div class="stat"><b>6</b><span>篇章</span></div>
-        <div class="stat"><b id="st-img">0</b><span>配图角色</span></div>
-      </div>
+<!-- ===== 紧凑页头（原大 hero 会把首屏吃满，卡片要滚一屏才出现） ===== -->
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>《凡人修仙传》<span class="accent">全篇人物图谱</span></h1>
+      <span class="kicker">忘语 · 仙侠巨著 · 六卷篇章 · 跨篇重复出现即重复收录</span>
     </div>
-    <div class="hero-cover">
-      <img src="assets/hanli.webp" alt="韩立">
+    <div class="stats">
+      <div class="stat"><b id="st-total">0</b><span>收录记录</span></div>
+      <div class="stat"><b id="st-uniq">0</b><span>唯一角色</span></div>
+      <div class="stat"><b>6</b><span>篇章</span></div>
     </div>
   </div>
-</section>
+</header>
 
 <!-- ===== 导航 ===== -->
 <nav class="navbar">
@@ -741,7 +843,10 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 
 <!-- ===== 篇章 ===== -->
 <div class="wrap" style="padding-top:0">
-  <div class="img-note"><span class="ic">⚠</span><b>图片准确性声明：</b>本页角色图片均为网络检索爬取素材，来源包括动画截图、官方概念图、百科插画及同人立绘。受动画进度限制（目前播至人界篇·慕兰之战），大晋篇部分角色及灵界、仙界篇绝大多数角色在动画中尚未登场，其形象多取自概念图或同人创作，<b>可能与原著/官方设定存在偏差，个别角色甚至可能出现错配</b>。图片仅供回忆辅助，准确信息请以人物文字资料（身份/修为/结局/生平）为准。</div>
+  <details class="img-note">
+    <summary><span class="ic">⚠</span><span class="tt">图片准确性声明：角色图均为网络检索素材，动画未登场角色（大晋篇部分 + 灵界/仙界篇绝大多数）多为概念图或同人图，可能与官方设定有偏差，个别可能错配</span></summary>
+    <p>本页角色图片均为网络检索爬取素材，来源包括动画截图、官方概念图、百科插画及同人立绘。受动画进度限制（目前播至人界篇·慕兰之战），大晋篇部分角色及灵界、仙界篇绝大多数角色在动画中尚未登场，其形象多取自概念图或同人创作，<b>可能与原著/官方设定存在偏差，个别角色甚至可能出现错配</b>。图片仅供回忆辅助，准确信息请以人物文字资料（身份/修为/结局/生平）为准。</p>
+  </details>
 </div>
 <main class="wrap" id="characters">
 </main>
@@ -862,8 +967,7 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
       <p class="hero-sub">韩立的本命灵虫与灵宠、乱星海大妖、灵界魔物与上古真灵，按类别与等级归档整理。妖兽等级与人界境界的对应关系见下方「等级制度」。</p>
       <div class="stats">
         <div class="stat"><b id="beast-total">0</b><span>收录条目</span></div>
-        <div class="stat"><b>5</b><span>类别</span></div>
-        <div class="stat"><b id="beast-img">0</b><span>配图条目</span></div>
+        <div class="stat"><b id="beast-cats">0</b><span>类别</span></div>
       </div>
     </div>
     <div class="hero-cover"><img src="assets/jintong_lingjie.webp" alt="噬金虫"></div>
@@ -883,7 +987,7 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 <section class="beast-main-sec">
   <div class="wrap">
     <div class="sec-title">灵兽灵虫图谱</div>
-    <div class="sec-desc">点击卡片展开详情（含结局与生平），默认仅显示类别与等级、不剧透。图片为网络检索素材（动画截图/概念图/同人图），冷门角色以首字占位，形象可能与官方设定存在偏差，请以文字资料为准。</div>
+    <div class="sec-desc">点击卡片展开详情（含结局与生平），默认仅显示类别与等级、不剧透。</div>
     <div class="beast-search">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <input id="beastSearchInput" type="text" placeholder="搜索灵兽灵虫…" autocomplete="off">
@@ -905,8 +1009,7 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
       <p class="hero-sub">韩立修仙路上的灵草灵药、天材地宝、突破丹药与辅助丹方，按类别与年份等级归档整理。灵药年份与人界境界的对应关系见下方「灵药年份等级」。数据依据起点《凡人必备手册》及原著情节交叉验证。</p>
       <div class="stats">
         <div class="stat"><b id="herb-total">0</b><span>收录条目</span></div>
-        <div class="stat"><b>5</b><span>类别</span></div>
-        <div class="stat"><b id="herb-img">0</b><span>配图条目</span></div>
+        <div class="stat"><b id="herb-cats">0</b><span>类别</span></div>
       </div>
     </div>
     <div class="hero-cover"><img src="assets/zhangtianping.webp" alt="掌天瓶"></div>
@@ -926,7 +1029,7 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 <section class="beast-main-sec">
   <div class="wrap">
     <div class="sec-title">灵草丹药图谱</div>
-    <div class="sec-desc">点击卡片展开详情（含结局与相关事件），默认仅显示类别与等级、不剧透。图片为中国风插画（动画未具象化的道具以插画呈现），冷门条目以首字占位，形象可能与官方设定存在偏差，请以文字资料为准。</div>
+    <div class="sec-desc">点击卡片展开详情（含结局与相关事件），默认仅显示类别与等级、不剧透。图片多为中国风插画：动画未具象化的道具以插画呈现。</div>
     <div class="herb-search-row">
       <div class="herb-search-box">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -942,24 +1045,55 @@ url("assets/huashilaozu.webp"),url("assets/xuellincao.webp"),url("assets/shouyua
 </div>
 <!-- ===== v-treasures 法器法宝 ===== -->
 <div class="view" id="v-treasures">
-  <div class="wrap">
-    <h2 class="section-title">法器法宝</h2>
-    <div class="note" style="margin-bottom:10px">收录《凡人修仙传》全篇重要法器法宝，按品阶与类型分类。数据依据起点《凡人必备手册》第二版+原著情节+多源交叉验证。</div>
-    <div class="treasure-rail" id="treasureRail"></div>
-    <div class="treasure-tabs" id="treasureTabs"></div>
-    <input type="text" class="treasure-search" id="treasureSearchInput" placeholder="搜索法器法宝名称、持有者、出处...">
-    <div class="stats" style="margin:8px 0;font-size:13px;color:var(--ink3)">
-      共 <span id="treasure-total" style="color:var(--gold);font-weight:700">0</span> 件 · 有图 <span id="treasure-img" style="color:var(--gold);font-weight:700">0</span> 件
+<!-- ===== 紧凑页头（原来只有一个未定义样式的 h2，与其他视图不一致） ===== -->
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>《凡人修仙传》<span class="accent">法器法宝图鉴</span></h1>
+      <span class="kicker">玄天之宝 · 本命法宝 · 灵宝古宝 · 傀儡机关</span>
     </div>
-    <div class="treasure-grid" id="treasureGrid"></div>
+    <div class="stats">
+      <div class="stat"><b id="treasure-total">0</b><span>收录法宝</span></div>
+      <div class="stat"><b id="treasure-cats">0</b><span>品类</span></div>
+    </div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="sec-title">品阶体系</div>
+  <div class="sec-desc">收录全篇重要法器法宝，按品阶与类型分类；数据依据《凡人必备手册》第二版 + 原著情节 + 多源交叉验证。</div>
+  <div class="treasure-rail" id="treasureRail"></div>
+  <div class="treasure-tabs" id="treasureTabs"></div>
+  <input type="text" class="treasure-search" id="treasureSearchInput" placeholder="搜索法宝名称、持有者、出处…" autocomplete="off">
+  <div class="treasure-count">筛选结果 <b id="treasureShown">0</b> 件</div>
+  <div class="treasure-grid" id="treasureGrid"></div>
+</div>
+</div>
+
+<!-- ===== 返回顶部 ===== -->
+<button class="back-top" id="backTop" type="button" aria-label="返回顶部" title="返回顶部">↑</button>
+
+<!-- ===== 全库搜索面板（⌘K / Ctrl+K / /） ===== -->
+<div class="spot" id="spot" hidden>
+  <div class="spot-mask" data-spot-close></div>
+  <div class="spot-panel" role="dialog" aria-modal="true" aria-label="全库搜索">
+    <div class="spot-input">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="spotInput" type="text" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="spotList" placeholder="搜索人物 / 灵兽 / 灵草 / 法宝：名称、生平、结局、修为、势力、出处…">
+      <button class="spot-esc" type="button" data-spot-close>esc</button>
+    </div>
+    <div class="spot-list" id="spotList" role="listbox" aria-label="搜索结果"></div>
+    <div class="spot-foot">
+      <span>↑↓ 选择 · ↵ 定位到条目 · esc 关闭</span>
+      <span id="spotCount"></span>
+    </div>
   </div>
 </div>
 
 <footer>
   <div class="wrap">
     <div class="serif" style="color:var(--ink2);font-weight:700">《凡人修仙传》百科 · 全篇资料图谱</div>
-    <div class="note">内容依据《凡人修仙传》原著及公开资料整理；境界为人界（炼气/筑基/结丹/元婴/化神）、灵界（化神/炼虚/合体/大乘）、仙界（真仙/金仙/太乙/大罗/道祖）三界体系。角色图片为网络检索素材（动画截图/官方概念图/同人立绘），部分篇章角色动画未登场，图片仅供回忆辅助、不保证与官方形象完全一致，如有偏差请以文字资料为准。</div>
-    <div class="note">本页人物、境界资料如有疏漏或错讹，欢迎到 <a href="https://bunnychen.top/docs/Other/fanren-xiuxian/" style="color:var(--gold);text-decoration:none">《凡人修仙传》资料页</a> 的<a href="https://bunnychen.top/docs/Other/fanren-xiuxian/#__comments" style="color:var(--gold);text-decoration:none">评论区</a>留言反馈。</div>
+    <div class="note">内容依据《凡人修仙传》原著及公开资料整理。角色图片为网络检索素材（动画截图 / 官方概念图 / 同人立绘），部分篇章角色动画未登场，<b>图片仅供回忆辅助、不保证与官方形象完全一致</b>，如有偏差请以文字资料为准。</div>
+    <div class="note">资料如有疏漏或错讹，欢迎到 <a href="https://bunnychen.top/docs/Other/fanren-xiuxian/" style="color:var(--gold);text-decoration:none">《凡人修仙传》资料页</a> 的<a href="https://bunnychen.top/docs/Other/fanren-xiuxian/#__comments" style="color:var(--gold);text-decoration:none">评论区</a>留言反馈。</div>
     <div class="note"><span style="color:var(--gold)">最后更新：2026-09-17</span> · 持续整理维护中</div>
     <div class="note">© BunnyChen.top · 本页为个人整理的《凡人修仙传》资料，遵循 <a href="https://bunnychen.top/about/LICENSE/" style="color:var(--gold);text-decoration:none">CC-BY-NC 4.0</a>：欢迎署名非商业转载，禁止商业使用、禁止去除署名或水印后发布。</div>
   </div>
@@ -1212,11 +1346,11 @@ DATA.xianjie = [{n:"韩立", t:"全书主角", r:"真仙（飞升后失忆重修
 /* ===== 灵兽灵虫数据：n名称 / t身份 / r等级（对应修为）/ e结局 / img配图 / s生平 / rel归属 / camp来源 / race种族 / cat类别 / ev演进 ===== */
 const BEAST_CATS = [
   {id:"all",   name:"全部",     color:"var(--gold)"},
-  {id:"chong", name:"灵虫",     color:"#7fb3d9"},
-  {id:"shou",  name:"灵兽",     color:"#6fa8dc"},
-  {id:"yao",   name:"妖兽妖修", color:"#b06ad4"},
-  {id:"zhen",  name:"真灵·神兽", color:"#4ec9a0"},
-  {id:"lian",  name:"炼尸魔物", color:"#e07b54"}
+  {id:"chong", name:"灵虫",     color:"var(--c2)"},
+  {id:"shou",  name:"灵兽",     color:"var(--c3)"},
+  {id:"yao",   name:"妖兽妖修", color:"var(--c4)"},
+  {id:"zhen",  name:"真灵·神兽", color:"var(--c5)"},
+  {id:"lian",  name:"炼尸魔物", color:"var(--c6)"}
 ];
 const BEAST_RAIL = [
   {lv:"一级",     realm:"≈ 炼气期",       note:"初启灵智，体型稍大于野兽。双瞳鼠、云翅鸟等。"},
@@ -1274,11 +1408,11 @@ const BEASTS = [
 ];
 const HERB_CATS = [
   {id:"all",    name:"全部",       color:"var(--gold)"},
-  {id:"lingcao", name:"灵草灵药",  color:"#7ec97e"},
-  {id:"tiancai", name:"天材地宝",  color:"#d4a843"},
-  {id:"tupo",    name:"突破丹药",  color:"#e06060"},
-  {id:"fuzhu",   name:"辅助丹药",  color:"#6fa8dc"},
-  {id:"danfang", name:"丹方·主材", color:"#b06ad4"}
+  {id:"lingcao", name:"灵草灵药",  color:"var(--c5)"},
+  {id:"tiancai", name:"天材地宝",  color:"var(--c1)"},
+  {id:"tupo",    name:"突破丹药",  color:"var(--c6)"},
+  {id:"fuzhu",   name:"辅助丹药",  color:"var(--c2)"},
+  {id:"danfang", name:"丹方·主材", color:"var(--c4)"}
 ];
 
 const HERB_RAIL = [
@@ -1375,12 +1509,12 @@ const HERBS = [
 
 const TREASURE_CATS = [
   {id:"all",     name:"全部",         color:"var(--gold)"},
-  {id:"xuanbao", name:"玄天之宝·至宝", color:"#d4a843"},
-  {id:"benming", name:"本命法宝",     color:"#e06060"},
-  {id:"lingbao", name:"灵宝·古宝",    color:"#b06ad4"},
-  {id:"fabao",   name:"法宝·灵器",    color:"#6fa8dc"},
-  {id:"kuilei",  name:"傀儡·机关",    color:"#7ec97e"},
-  {id:"fuzhu",   name:"辅助宝物",     color:"#8db6cd"}
+  {id:"xuanbao", name:"玄天之宝·至宝", color:"var(--c1)"},
+  {id:"benming", name:"本命法宝",     color:"var(--c6)"},
+  {id:"lingbao", name:"灵宝·古宝",    color:"var(--c4)"},
+  {id:"fabao",   name:"法宝·灵器",    color:"var(--c2)"},
+  {id:"kuilei",  name:"傀儡·机关",    color:"var(--c5)"},
+  {id:"fuzhu",   name:"辅助宝物",     color:"var(--c3)"}
 ];
 
 const TREASURE_RAIL = [
@@ -1498,9 +1632,12 @@ function renderTimeline(){
 }
 
 /* ===== 统计与渲染 ===== */
-const IMG_COUNT = new Set(Object.values(DATA).flat().filter(c=>c.img).map(c=>c.img)).size;
-document.getElementById("st-total").textContent = Object.values(DATA).flat().length;
-document.getElementById("st-img").textContent = IMG_COUNT;
+const CHAR_CARDS = Object.values(DATA).flat();
+const CHAR_TOTAL = CHAR_CARDS.length;
+/* 唯一角色数：跨篇重复收录后真正不同的人名数 */
+const CHAR_UNIQ = new Set(CHAR_CARDS.map(c=>c.n)).size;
+document.getElementById("st-total").textContent = CHAR_TOTAL;
+document.getElementById("st-uniq").textContent = CHAR_UNIQ;
 
 function esc(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;")}
 function escapeAttr(s){return esc(s).replace(/\"/g,"&quot;").replace(/'/g,"&#39;")}
@@ -1537,7 +1674,7 @@ function renderLegend(){
 function renderMain(){
   const main = document.getElementById("characters");
   main.innerHTML = CHAPTERS.map(ch=>{
-    const cards = DATA[ch.id].map(c=>{
+    const cards = DATA[ch.id].map((c,i)=>{
       const safeName = escapeAttr(c.n || "");
       const safeTitle = escapeAttr(c.t || "");
       const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -1545,7 +1682,7 @@ function renderMain(){
         ? `<img class="card-img" src="assets/${escapeAttr(c.img)}" alt="${safeName}" loading="lazy">`
         : `<div class="ph">${fallbackLetter}</div>`;
 
-      return `<div class="card" data-name="${safeName}" data-aka="${safeTitle}">
+      return `<div class="card" data-key="${ch.id}#${i}" data-name="${safeName}" data-aka="${safeTitle}">
         <div class="card-top">${img}<span class="card-tag" style="background:${ch.color}">${esc(ch.name)}</span></div>
         <div class="card-body">
           <div class="card-name"><h3>${esc(c.n)}</h3>${c.t?`<span class="aka">${esc(c.t)}</span>`:""}</div>
@@ -1597,7 +1734,9 @@ document.getElementById("characters").addEventListener("click", function(event){
 });
 
 function applyFilter(){
-  const cards = document.querySelectorAll(".card");
+  /* 必须限定在 #characters 内：灵兽/灵草也用了 .card 类，但它们不在 .chapter 里，
+     全局选择器会让 closest(".chapter") 返回 null 直接抛错（篇章切换与下方分节隐藏都会失效） */
+  const cards = document.querySelectorAll("#characters .card");
   let visible = 0;
   cards.forEach(card=>{
     const chapter = card.closest(".chapter").dataset.chapter;
@@ -1620,7 +1759,7 @@ function applyFilter(){
 document.getElementById("tabs").addEventListener("click", e=>{
   const btn = e.target.closest(".tab");
   if(!btn) return;
-  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  document.querySelectorAll("#tabs .tab").forEach(t=>t.classList.remove("active"));
   btn.classList.add("active");
   currentTab = btn.dataset.ch;
   applyFilter();
@@ -1653,7 +1792,7 @@ function renderBeastTabs(){
 function renderBeasts(){
   const el = document.getElementById("beasts");
   if(!el) return;
-  el.innerHTML = BEASTS.map(function(c){
+  el.innerHTML = BEASTS.map(function(c,i){
     const safeName = escapeAttr(c.n || "");
     const safeTitle = escapeAttr(c.t || "");
     const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -1661,7 +1800,7 @@ function renderBeasts(){
       ? '<img class="card-img" src="assets/' + escapeAttr(c.img) + '" alt="' + safeName + '" loading="lazy">'
       : '<div class="ph">' + fallbackLetter + '</div>';
     const cat = BEAST_CATS.find(function(x){return x.id===c.cat;}) || BEAST_CATS[0];
-    return '<div class="card" data-name="' + safeName + '" data-aka="' + safeTitle + '" data-cat="' + c.cat + '">' +
+    return '<div class="card" data-key="beast#' + i + '" data-name="' + safeName + '" data-aka="' + safeTitle + '" data-cat="' + c.cat + '">' +
       '<div class="card-top">' + img + '<span class="beast-cat-tag" style="color:' + cat.color + ';border-color:' + cat.color + '">' + esc(cat.name) + '</span></div>' +
       '<div class="card-body">' +
         '<div class="card-name"><h3>' + esc(c.n) + '</h3>' + (c.t?'<span class="aka">' + esc(c.t) + '</span>':"") + '</div>' +
@@ -1742,7 +1881,7 @@ function renderHerbTabs(){
 function renderHerbs(){
   const el = document.getElementById("herbs");
   if(!el) return;
-  el.innerHTML = HERBS.map(function(c){
+  el.innerHTML = HERBS.map(function(c,i){
     const safeName = escapeAttr(c.n || "");
     const safeTitle = escapeAttr(c.t || "");
     const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
@@ -1750,7 +1889,7 @@ function renderHerbs(){
       ? '<img class="card-img" src="assets/' + escapeAttr(c.img) + '" alt="' + safeName + '" loading="lazy">'
       : '<div class="ph">' + fallbackLetter + '</div>';
     const cat = HERB_CATS.find(function(x){return x.id===c.cat;}) || HERB_CATS[0];
-    return '<div class="card" data-name="' + safeName + '" data-aka="' + safeTitle + '" data-cat="' + c.cat + '">' +
+    return '<div class="card" data-key="herb#' + i + '" data-name="' + safeName + '" data-aka="' + safeTitle + '" data-cat="' + c.cat + '">' +
       '<div class="card-top">' + img + '<span class="herb-cat-tag" style="color:' + cat.color + ';border-color:' + cat.color + '">' + esc(cat.name) + '</span></div>' +
       '<div class="card-body">' +
         '<div class="card-name"><h3>' + esc(c.n) + '</h3>' + (c.t?'<span class="aka">' + esc(c.t) + '</span>':"") + '</div>' +
@@ -1816,13 +1955,13 @@ renderLegend();
 renderMain();
 applyFilter();
 document.getElementById("beast-total").textContent = BEASTS.length;
-document.getElementById("beast-img").textContent = new Set(BEASTS.filter(function(c){return c.img;}).map(function(c){return c.img;})).size;
+document.getElementById("beast-cats").textContent = BEAST_CATS.length - 1;
 renderBeastRail();
 renderBeastTabs();
 renderBeasts();
 applyBeastFilter();
 document.getElementById("herb-total").textContent = HERBS.length;
-document.getElementById("herb-img").textContent = new Set(HERBS.filter(function(c){return c.img;}).map(function(c){return c.img;})).size;
+document.getElementById("herb-cats").textContent = HERB_CATS.length - 1;
 renderHerbRail();
 renderHerbTabs();
 renderHerbs();
@@ -1844,19 +1983,21 @@ function renderTreasureTabs(){
 }
 function renderTreasures(list){
   const grid=document.getElementById("treasureGrid");
-  if(!list.length){grid.innerHTML='<div class="note" style="grid-column:1/-1;text-align:center;padding:40px">未找到匹配的法器法宝</div>';return;}
+  const shown=document.getElementById("treasureShown");
+  if(shown)shown.textContent=list.length;
+  if(!list.length){grid.innerHTML='<div class="empty-tip show" style="grid-column:1/-1;padding:50px 0">未找到匹配的法器法宝，换个关键词试试。</div>';return;}
   grid.innerHTML=list.map(t=>{
     const cat=TREASURE_CATS.find(c=>c.id===t.cat);
     const name=esc(t.n);                                 // 文本节点：与灵兽/灵草一致过 esc
     const nameAttr=escapeAttr(t.n||"");                 // 属性值：额外转義引号
-    const imgHtml=t.img?`<img class="tc-img" src="assets/${esc(t.img)}" alt="${nameAttr}" loading="lazy">`:`<div class="tc-img" style="display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--gold);opacity:.3">${esc((t.n||"?")[0])}</div>`;
-    return `<div class="treasure-card" data-name="${nameAttr}">
+    const imgHtml=t.img?`<img class="tc-img" src="assets/${esc(t.img)}" alt="${nameAttr}" loading="lazy">`:`<div class="tc-img" style="display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--gold);opacity:.3">${esc((t.n||"?")[0])}</div>`;
+    return `<div class="treasure-card" data-key="tres#${TREASURES.indexOf(t)}" data-name="${nameAttr}">
       ${imgHtml}
       <div class="tc-body">
         <div class="tc-name">${name}</div>
         <div class="tc-title">${esc(t.t)}</div>
         <div class="tc-meta">
-          <span class="tc-tag" style="background:${cat?cat.color+"22":"rgba(212,168,67,.15)"};color:${cat?cat.color:"var(--gold)"}">${cat?esc(cat.name):esc(t.cat)}</span>
+          <span class="tc-tag" style="color:${cat?cat.color:"var(--gold)"}">${cat?esc(cat.name):esc(t.cat)}</span>
           <span class="tc-realm">${esc(t.r)}</span>
         </div>
         <div class="tc-end">${esc(t.e)}</div>
@@ -1868,8 +2009,6 @@ function renderTreasures(list){
       </div>
     </div>`;
   }).join("");
-  document.getElementById("treasure-total").textContent=list.length;
-  document.getElementById("treasure-img").textContent=list.filter(t=>t.img).length;
 }
 function applyTreasureFilter(){
   const cat=document.querySelector("#treasureTabs .tab.active").dataset.cat;
@@ -1894,6 +2033,8 @@ function applyTreasureFilter(){
   })();
   renderTreasureRail();
   renderTreasureTabs();
+  document.getElementById("treasure-total").textContent = TREASURES.length;
+  document.getElementById("treasure-cats").textContent = TREASURE_CATS.length - 1;
   applyTreasureFilter();
   document.getElementById("treasureSearchInput").addEventListener("input",applyTreasureFilter);
   // 卡片展开用事件委派（与灵兽/灵草一致）：过滤重渲染不再重复绑定 N 个监听器
@@ -1909,6 +2050,238 @@ function applyTreasureFilter(){
   }
   function fromHash(){ return (location.hash || "").replace("#", ""); }
   window.addEventListener("hashchange", function(){ switchView(fromHash()); });
+
+  /* ===== 返回顶部（本页最长视图 6 万像素以上，必须给一个回到顶部的出口） ===== */
+  (function(){
+    var btn = document.getElementById("backTop"), ticking = false;
+    function update(){
+      if(ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        ticking = false;
+        btn.classList.toggle("show", window.scrollY > 700);
+      });
+    }
+    window.addEventListener("scroll", update, { passive: true });
+    btn.addEventListener("click", function(){
+      var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    });
+    update();
+  })();
+
+  /* ===== 全库搜索（⌘K / Ctrl+K / /） =====
+     四个库各自的内联搜索框只能搜自己那一库（且只匹配名称与身份）；
+     这里建一份统一索引：名称、身份、类别、生平、结局、修为演进、势力、出处全部可搜，
+     命中后跨库定位到具体卡片并展开。 */
+  var SPOT_LIBS = [
+    { id:"chars",  name:"人物图谱", view:"v-chars",     color:"var(--c1)" },
+    { id:"beasts", name:"灵兽灵虫", view:"v-beasts",    color:"var(--c2)" },
+    { id:"herbs",  name:"灵草丹药", view:"v-herbs",     color:"var(--c5)" },
+    { id:"tres",   name:"法器法宝", view:"v-treasures", color:"var(--c6)" }
+  ];
+  var SPOT_HOT = ["韩立","南宫婉","掌天瓶","噬金虫","筑基丹","虚天鼎","墨大夫","乱星海"];
+  var SPOT_INDEX = [];
+  (function buildSearchIndex(){
+    function push(lib, key, o, name, sub, tag){
+      SPOT_INDEX.push({
+        lib:lib, key:key, name:name, sub:sub || "", tag:tag || "",
+        /* 正文不含 sub：它在行内已有独立列位，重复收录会让“命中片段”与身份撞车 */
+        text:[o.r,o.e,o.ev,o.s,o.rel,o.camp,o.race].filter(Boolean).join(" ")
+      });
+    }
+    CHAPTERS.forEach(function(ch){
+      DATA[ch.id].forEach(function(c,i){ push("chars", ch.id+"#"+i, c, c.n, c.t, ch.name); });
+    });
+    BEASTS.forEach(function(b,i){
+      var cat = BEAST_CATS.find(function(x){ return x.id===b.cat; });
+      push("beasts", "beast#"+i, b, b.n, b.t, cat ? cat.name : "灵兽灵虫");
+    });
+    HERBS.forEach(function(h,i){
+      var cat = HERB_CATS.find(function(x){ return x.id===h.cat; });
+      push("herbs", "herb#"+i, h, h.n, h.t, cat ? cat.name : "灵草丹药");
+    });
+    TREASURES.forEach(function(t,i){
+      var cat = TREASURE_CATS.find(function(x){ return x.id===t.cat; });
+      push("tres", "tres#"+i, t, t.n, t.t, cat ? cat.name : "法器法宝");
+    });
+  })();
+
+  var spotEl = document.getElementById("spot"),
+      spotInput = document.getElementById("spotInput"),
+      spotList = document.getElementById("spotList"),
+      spotCount = document.getElementById("spotCount"),
+      spotRows = [], spotCur = -1, spotLastFocus = null;
+
+  function spotHay(e){
+    if(e.hay === undefined) e.hay = (e.name + " " + e.sub + " " + e.tag + " " + e.text).toLowerCase();
+    return e.hay;
+  }
+  function spotHighlight(s, q){
+    s = String(s || "");
+    var i = s.toLowerCase().indexOf(q);
+    if(i < 0) return esc(s);
+    return esc(s.slice(0,i)) + "<mark>" + esc(s.slice(i, i+q.length)) + "</mark>" + esc(s.slice(i+q.length));
+  }
+  function spotSnippet(e, q){
+    var i = e.text.toLowerCase().indexOf(q);
+    if(i < 0) return e.text.slice(0, 46) + (e.text.length > 46 ? "…" : "");
+    var a = Math.max(0, i-14), b = Math.min(e.text.length, i+q.length+26);
+    return (a > 0 ? "…" : "") + e.text.slice(a,b) + (b < e.text.length ? "…" : "");
+  }
+  function spotSearch(q){
+    var out = [];
+    for(var i=0;i<SPOT_INDEX.length;i++){
+      var e = SPOT_INDEX[i], n = e.name.toLowerCase(), s = 0;
+      if(n === q) s = 100;
+      else if(n.indexOf(q) === 0) s = 80;
+      else if(n.indexOf(q) >= 0) s = 60;
+      else if(e.sub.toLowerCase().indexOf(q) >= 0) s = 40;
+      else if(spotHay(e).indexOf(q) >= 0) s = 20;
+      if(s) out.push({ e:e, s:s });
+    }
+    out.sort(function(x,y){ return y.s - x.s || x.e.name.length - y.e.name.length; });
+    return out;
+  }
+  function spotRender(){
+    var q = spotInput.value.trim().toLowerCase();
+    spotRows = []; spotCur = -1;
+    if(!q){
+      spotCount.textContent = "索引 " + SPOT_INDEX.length + " 条";
+      spotList.innerHTML = '<div class="spot-empty">跨库检索四个库：名称、身份、生平、结局、修为、势力、出处</div>'
+        + '<div class="spot-chips">' + SPOT_HOT.map(function(w){
+            return '<button class="spot-chip" type="button" data-w="' + esc(w) + '">' + esc(w) + '</button>';
+          }).join("") + '</div>';
+      return;
+    }
+    var hits = spotSearch(q), groups = {}, counts = {}, order = [];
+    hits.forEach(function(h){
+      var lib = h.e.lib;
+      if(!groups[lib]){ groups[lib] = []; counts[lib] = 0; order.push(lib); }
+      counts[lib]++;
+      if(groups[lib].length < 8) groups[lib].push(h.e);
+    });
+    if(!order.length){
+      spotCount.textContent = "命中 0 条";
+      spotList.innerHTML = '<div class="spot-empty">没有匹配的条目<br><span style="opacity:.7;font-size:12px">试试：'
+        + SPOT_HOT.slice(0,4).join(" · ") + '</span></div>';
+      return;
+    }
+    spotCount.textContent = "命中 " + hits.length + " 条";
+    var html = "";
+    order.forEach(function(lib){
+      var meta = SPOT_LIBS.filter(function(x){ return x.id===lib; })[0];
+      html += '<div class="spot-group"><div class="spot-group-h"><span class="dot" style="background:' + meta.color + '"></span>'
+        + meta.name + '<span class="n">' + counts[lib] + ' 条</span></div>';
+      groups[lib].forEach(function(e){
+        var idx = spotRows.push(e) - 1;
+        html += '<button class="spot-row" type="button" role="option" data-i="' + idx + '">'
+          + '<span class="rn">' + spotHighlight(e.name, q) + '</span>'
+          + '<span class="rt">' + esc(e.sub) + '</span>'
+          + '<span class="rs">' + spotHighlight(spotSnippet(e, q), q) + '</span>'
+          + '<span class="rc">' + esc(e.tag) + '</span></button>';
+      });
+      html += '</div>';
+    });
+    spotList.innerHTML = html;
+  }
+  function spotMove(step){
+    if(!spotRows.length) return;
+    spotCur = (spotCur + step + spotRows.length) % spotRows.length;
+    var nodes = spotList.querySelectorAll(".spot-row");
+    nodes.forEach(function(n,i){ n.classList.toggle("on", i === spotCur); });
+    if(nodes[spotCur]) nodes[spotCur].scrollIntoView({ block:"nearest" });
+  }
+  function spotOpen(){
+    spotLastFocus = document.activeElement;
+    spotEl.hidden = false;
+    spotInput.value = "";
+    spotRender();
+    spotInput.focus({ preventScroll: true });   // 不加会连带把文档滚到别处
+  }
+  function spotClose(){
+    spotEl.hidden = true;
+    if(spotLastFocus && spotLastFocus.focus) spotLastFocus.focus({ preventScroll:true });
+  }
+  function spotIsOpen(){ return !spotEl.hidden; }
+
+  /* 定位：先复位目标库的筛选（否则卡片可能被筛掉），再切视图、展开并滚动过去 */
+  function spotLocate(e){
+    var meta = SPOT_LIBS.filter(function(x){ return x.id===e.lib; })[0];
+    if(e.lib === "chars"){
+      keyword = ""; currentTab = "all";
+      document.getElementById("searchInput").value = "";
+      document.querySelectorAll("#tabs .tab").forEach(function(t){ t.classList.toggle("active", t.dataset.ch === "all"); });
+      applyFilter();
+    } else if(e.lib === "beasts"){
+      beastKeyword = ""; beastTab = "all";
+      document.getElementById("beastSearchInput").value = "";
+      document.querySelectorAll("#beastTabs .beast-tab").forEach(function(t){ t.classList.toggle("active", t.dataset.cat === "all"); });
+      applyBeastFilter();
+    } else if(e.lib === "herbs"){
+      herbKeyword = ""; herbTab = "all";
+      document.getElementById("herbSearchInput").value = "";
+      document.querySelectorAll("#herbTabs .herb-tab").forEach(function(t){ t.classList.toggle("active", t.dataset.cat === "all"); });
+      applyHerbFilter();
+    } else {
+      document.getElementById("treasureSearchInput").value = "";
+      document.querySelectorAll("#treasureTabs .tab").forEach(function(t){ t.classList.toggle("active", t.dataset.cat === "all"); });
+      applyTreasureFilter();
+    }
+    /* file:// 直开时个别浏览器会对 replaceState 抛 SecurityError，忽略即可（视图仍会切换） */
+    try { if(location.hash !== "#" + meta.view) history.replaceState(null, "", "#" + meta.view); } catch(err){}
+    switchView(meta.view);
+    /* 切视图会让文档高度突变（首页 2 千 px ↔ 人物图谱 4.5 万 px），浏览器可能把滚动量带到奇怪位置。
+       先显式瞬时归零（behavior:"auto" 会覆盖 CSS 的 scroll-behavior:smooth），再平滑滚到目标。 */
+    window.scrollTo({ top: 0, behavior: "auto" });
+    var el = document.querySelector('[data-key="' + e.key + '"]');
+    if(!el) return;
+    el.classList.add("open");
+    el.classList.remove("flash");
+    void el.offsetWidth;               // 强制回流，保证连续两次定位都能重放动画
+    el.classList.add("flash");
+    var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    /* v-chars 里还有一条 52px 的粘性篇章栏，偏移要一起算 */
+    var off = (meta.view === "v-chars" ? 120 : 76);
+    var top = Math.max(0, el.getBoundingClientRect().top + window.scrollY - off);
+    /* 必须等这一帧的布局（视图切换 + 卡片展开）落定再滚：
+       同一帧里发起平滑滚动，会被紧随其后的重排/滚动锚定打断（实测只滚了 160px 就停住） */
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){
+      window.scrollTo({ top: top, behavior: reduce ? "auto" : "smooth" });
+    }); });
+  }
+
+  document.getElementById("openSearch").addEventListener("click", spotOpen);
+  spotInput.addEventListener("input", spotRender);
+  spotInput.addEventListener("keydown", function(ev){
+    if(ev.key === "ArrowDown"){ ev.preventDefault(); spotMove(1); }
+    else if(ev.key === "ArrowUp"){ ev.preventDefault(); spotMove(-1); }
+    else if(ev.key === "Escape"){ ev.preventDefault(); spotClose(); }
+    else if(ev.key === "Enter"){
+      ev.preventDefault();
+      if(spotRows.length) spotLocate(spotRows[spotCur < 0 ? 0 : spotCur]);
+      spotClose();
+    }
+  });
+  spotEl.addEventListener("click", function(ev){
+    if(ev.target.closest("[data-spot-close]")){ spotClose(); return; }
+    var chip = ev.target.closest(".spot-chip");
+    if(chip){ spotInput.value = chip.dataset.w; spotRender(); spotInput.focus(); return; }
+    var row = ev.target.closest(".spot-row");
+    if(row){ spotLocate(spotRows[+row.dataset.i]); spotClose(); }
+  });
+  window.addEventListener("keydown", function(ev){
+    var tag = (ev.target && ev.target.tagName) || "";
+    var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(tag);
+    if((ev.metaKey || ev.ctrlKey) && ev.key.toLowerCase() === "k"){
+      ev.preventDefault();
+      if(spotIsOpen()) spotClose(); else spotOpen();
+      return;
+    }
+    if(ev.key === "Escape" && spotIsOpen()){ spotClose(); return; }
+    if(ev.key === "/" && !typing && !spotIsOpen()){ ev.preventDefault(); spotOpen(); }
+  });
+
   switchView(fromHash());
 })();
 
