@@ -10,7 +10,7 @@
  * 设计约定：每条断言只断一件事，失败时打印实测值，便于定位是哪一层坏了。
  */
 import { spawn } from 'node:child_process'
-import { existsSync, mkdtempSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -135,6 +135,19 @@ const HELPERS = `
   window.addEventListener('error', e => window.__errors.push(String(e.message)));
   window.__click = sel => { const el = document.querySelector(sel); if (!el) throw new Error('找不到 ' + sel); el.click(); return true; };
   window.__sleep = ms => new Promise(r => setTimeout(r, ms));
+  /* 逐张探活：只靠 <img> 子资源加载判定，不走 fetch（file:// 下 fetch 会被同源策略拦） */
+  window.__probeImgs = async list => {
+    const bad = [];
+    await Promise.all(list.map(src => new Promise(done => {
+      const im = new Image();
+      im.onload = done;
+      im.onerror = () => { bad.push(src); done(); };
+      im.src = src;
+    })));
+    return bad;
+  };
+  /* 某个容器里当前可见（未被 display:none 过滤掉）的卡片数 */
+  window.__vis = sel => [...document.querySelectorAll(sel)].filter(c => c.style.display !== 'none').length;
 `
 
 const VIEWS = ['v-home', 'v-chars', 'v-lore', 'v-realms', 'v-beasts', 'v-herbs', 'v-treasures']
@@ -161,6 +174,24 @@ try {
     document.querySelectorAll('#herbs .card').length,
     document.querySelectorAll('#treasureGrid .treasure-card').length])`)
   check('四库卡片数量正确（221/40/64/65）', counts === '[221,40,64,65]', `实际 ${counts}`)
+
+  /* 图片完整性：DOM 实际引用的图必须都能在 assets 里找到、且都能解码。
+     这是从页面迁出的 .asset-manifest（300 行 display:none）留下的真空 —— 那份清单既不加载
+     也不校验、只能人工同步；这里改成真实断言：缺图与裂图一个都跑不掉。
+     反过来「目录里有、页面没用」只做提示不判失败：那是备用的实名角色图（14 张），
+     多半不在归档备份里，删掉会丢唯一副本，属于内容决策而非缺陷。 */
+  const domImgs = JSON.parse(await evaluate(`JSON.stringify([...new Set([...document.querySelectorAll('img[src]')].map(i => i.getAttribute('src')))].sort())`))
+  const refNames = domImgs.map(s => s.replace(/^assets\//, ''))
+  const files = readdirSync(join(ROOT, 'public', 'assets')).filter(f => !f.startsWith('.'))
+  const missing = refNames.filter(n => !files.includes(n))
+  const spare = files.filter(f => !refNames.includes(f))
+  check(`图片引用无缺图（页面引用 ${domImgs.length} 张，assets 目录 ${files.length} 张）`,
+    missing.length === 0,
+    `缺 ${JSON.stringify(missing.slice(0, 5))}`)
+  if (spare.length) console.log(`  提示   目录里另有 ${spare.length} 张未被引用（备用素材，不计入失败）：${spare.slice(0, 6).join(' ')}${spare.length > 6 ? ' …' : ''}`)
+
+  const broken = JSON.parse(await evaluate(`window.__probeImgs(${JSON.stringify(domImgs)}).then(a => JSON.stringify(a))`))
+  check(`全部 ${domImgs.length} 张引用图都能解码加载`, broken.length === 0, `裂图 ${JSON.stringify(broken.slice(0, 5))}`)
 
   const refStat = await evaluate(`JSON.stringify({
     badges: document.querySelectorAll('.ref-count').length,
@@ -224,6 +255,71 @@ try {
     filter.chapters.length === 1 && filter.chapters[0] === 'huangfeng' && filter.cards === 29,
     `可见章节 ${JSON.stringify(filter.chapters)}，可见卡 ${filter.cards}（期望 29）`)
   await evaluate(`document.querySelector('#tabs .tab[data-ch="all"]').click()`)
+
+  /* 灵兽 / 灵草：分类 tab 上的计数必须等于实际可见卡数（tab 文案与实际过滤任何一边错了都会被抳住） */
+  const tabFilter = JSON.parse(await evaluate(`(() => {
+    const out = {};
+    for (const [name, tabs, cards] of [['beast', '#beastTabs .beast-tab', '#beasts .card'], ['herb', '#herbTabs .herb-tab', '#herbs .card']]) {
+      const btn = [...document.querySelectorAll(tabs)];
+      const rows = [];
+      for (const b of btn) {
+        b.click();
+        rows.push([b.dataset.cat, Number((b.querySelector('.cnt') || {}).textContent), window.__vis(cards)]);
+      }
+      btn[0].click();
+      out[name] = { rows, all: window.__vis(cards) };
+    }
+    return JSON.stringify(out);
+  })()`))
+  const tabBad = []
+  for (const [name, lib] of Object.entries(tabFilter)) {
+    for (const [cat, label, visible] of lib.rows) if (label !== visible) tabBad.push(`${name}/${cat} 标 ${label} 实 ${visible}`)
+  }
+  check('灵兽灵草分类筛选：tab 计数与实际可见卡数一致，全部时回到总数',
+    tabBad.length === 0 && tabFilter.beast.all === 40 && tabFilter.herb.all === 64,
+    tabBad.join('，') || JSON.stringify(tabFilter))
+
+  /* 法宝：筛选是重渲染（不是 display 切换），所以比 展示计数 / 实际卡片 / 分类是否变窄 */
+  const tresFilter = JSON.parse(await evaluate(`(() => {
+    const tabs = [...document.querySelectorAll('#treasureTabs .tab')];
+    const shown = () => Number(document.getElementById('treasureShown').textContent);
+    const cards = () => document.querySelectorAll('#treasureGrid .treasure-card').length;
+    const rows = [];
+    for (const t of tabs) {
+      t.click();
+      rows.push([t.dataset.cat, shown(), cards()]);
+    }
+    tabs.find(t => t.dataset.cat === 'all').click();
+    return JSON.stringify({ rows, all: [shown(), cards()] });
+  })()`))
+  const tresBad = tresFilter.rows.filter(([cat, shown, cards]) => shown !== cards || (cat === 'all' && shown !== 65)).map(r => r.join('/'))
+  const narrowed = tresFilter.rows.some(([cat, shown]) => cat !== 'all' && shown < 65)
+  check('法宝分类筛选：展示计数与卡片数一致，且分类确实收窄',
+    tresBad.length === 0 && tresFilter.all[0] === 65 && tresFilter.all[1] === 65 && narrowed,
+    `异常 ${tresBad.join('，')}；全部=${tresFilter.all.join('/')}；有收窄=${narrowed}`)
+
+  /* 三库各自的搜索框（灵草搜索框还需要把关键词转小写后匹配，历史上两库写法不一致） */
+  const searches = JSON.parse(await evaluate(`(() => {
+    const probe = (input, cards, kw) => {
+      const el = document.getElementById(input);
+      el.value = kw;
+      el.dispatchEvent(new Event('input', { bubbles: true }));
+      return window.__vis(cards);
+    };
+    return JSON.stringify({
+      beast: probe('beastSearchInput', '#beasts .card', '噬金虫'),
+      herb: probe('herbSearchInput', '#herbs .card', '筑基丹'),
+    });
+  })()`))
+  const tresSearch = await evaluate(`(() => {
+    const el = document.getElementById('treasureSearchInput');
+    el.value = '掌天瓶'; el.dispatchEvent(new Event('input', { bubbles: true }));
+    return document.getElementById('treasureShown').textContent;
+  })()`)
+  check('三库搜索框都能按名称定位（灵兽/灵草/法宝）',
+    searches.beast === 1 && searches.herb >= 1 && Number(tresSearch) >= 1,
+    JSON.stringify({ ...searches, tres: tresSearch }))
+  await evaluate(`['beastSearchInput','herbSearchInput','treasureSearchInput'].forEach(id => { const el = document.getElementById(id); el.value = ''; el.dispatchEvent(new Event('input', { bubbles: true })); })`)
 
   const locate = JSON.parse(await evaluate(`(async () => {
     window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true, bubbles: true }));
