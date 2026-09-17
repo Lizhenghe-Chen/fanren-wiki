@@ -1,0 +1,3845 @@
+[
+ {
+  "name": "aoxiao.jpg",
+  "jpeg_bytes": 71674,
+  "jpeg_ssim": 0.966,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 45978,
+   "ssim_vs_ref": 0.9653,
+   "gain_pct": -35.9
+  }
+ },
+ {
+  "name": "baiguoerhaidashao.jpg",
+  "jpeg_bytes": 36715,
+  "jpeg_ssim": 0.9832,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 21172,
+   "ssim_vs_ref": 0.9817,
+   "gain_pct": -42.3
+  }
+ },
+ {
+  "name": "bailiyan.jpg",
+  "jpeg_bytes": 67953,
+  "jpeg_ssim": 0.9794,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 57906,
+   "ssim_vs_ref": 0.9816,
+   "gain_pct": -14.8
+  }
+ },
+ {
+  "name": "baimengxinouyang.jpg",
+  "jpeg_bytes": 34313,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "baiyoudao.jpg",
+  "jpeg_bytes": 91845,
+  "jpeg_ssim": 0.9394,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 67358,
+   "ssim_vs_ref": 0.948,
+   "gain_pct": -26.7
+  }
+ },
+ {
+  "name": "baiyundaozu.jpg",
+  "jpeg_bytes": 58709,
+  "jpeg_ssim": 0.9717,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 37922,
+   "ssim_vs_ref": 0.9704,
+   "gain_pct": -35.4
+  }
+ },
+ {
+  "name": "balingchi.jpg",
+  "jpeg_bytes": 35701,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "baohua.jpg",
+  "jpeg_bytes": 80960,
+  "jpeg_ssim": 0.963,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 48718,
+   "ssim_vs_ref": 0.9624,
+   "gain_pct": -39.8
+  }
+ },
+ {
+  "name": "baolinshou.jpg",
+  "jpeg_bytes": 38915,
+  "jpeg_ssim": 0.9662,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 19760,
+   "ssim_vs_ref": 0.9647,
+   "gain_pct": -49.2
+  }
+ },
+ {
+  "name": "bingfeng.jpg",
+  "jpeg_bytes": 54166,
+  "jpeg_ssim": 0.9744,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 45302,
+   "ssim_vs_ref": 0.9781,
+   "gain_pct": -16.4
+  }
+ },
+ {
+  "name": "bingfeng_dajin.jpg",
+  "jpeg_bytes": 45438,
+  "jpeg_ssim": 0.9745,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 27248,
+   "ssim_vs_ref": 0.9734,
+   "gain_pct": -40.0
+  }
+ },
+ {
+  "name": "bingfeng_lingjie.jpg",
+  "jpeg_bytes": 48190,
+  "jpeg_ssim": 0.9811,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 38888,
+   "ssim_vs_ref": 0.9819,
+   "gain_pct": -19.3
+  }
+ },
+ {
+  "name": "bingpoxianzi.jpg",
+  "jpeg_bytes": 69978,
+  "jpeg_ssim": 0.9674,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 45488,
+   "ssim_vs_ref": 0.9666,
+   "gain_pct": -35.0
+  }
+ },
+ {
+  "name": "biyuechanshi.jpg",
+  "jpeg_bytes": 32053,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "butiandan.jpg",
+  "jpeg_bytes": 81899,
+  "jpeg_ssim": 0.9445,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 56464,
+   "ssim_vs_ref": 0.9491,
+   "gain_pct": -31.1
+  }
+ },
+ {
+  "name": "butianzhi.jpg",
+  "jpeg_bytes": 93501,
+  "jpeg_ssim": 0.9514,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 65534,
+   "ssim_vs_ref": 0.9558,
+   "gain_pct": -29.9
+  }
+ },
+ {
+  "name": "changshengdan.jpg",
+  "jpeg_bytes": 101416,
+  "jpeg_ssim": 0.944,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 62714,
+   "ssim_vs_ref": 0.9441,
+   "gain_pct": -38.2
+  }
+ },
+ {
+  "name": "changzheng.jpg",
+  "jpeg_bytes": 70828,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "chelaoyao.jpg",
+  "jpeg_bytes": 67094,
+  "jpeg_ssim": 0.95,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 44214,
+   "ssim_vs_ref": 0.9502,
+   "gain_pct": -34.1
+  }
+ },
+ {
+  "name": "chengtiankun.jpg",
+  "jpeg_bytes": 40498,
+  "jpeg_ssim": 0.9734,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 34168,
+   "ssim_vs_ref": 0.9802,
+   "gain_pct": -15.6
+  }
+ },
+ {
+  "name": "chenqiaoqian.jpg",
+  "jpeg_bytes": 37282,
+  "jpeg_ssim": 0.9851,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 29276,
+   "ssim_vs_ref": 0.984,
+   "gain_pct": -21.5
+  }
+ },
+ {
+  "name": "chenruyan.jpg",
+  "jpeg_bytes": 92350,
+  "jpeg_ssim": 0.9659,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 59494,
+   "ssim_vs_ref": 0.9646,
+   "gain_pct": -35.6
+  }
+ },
+ {
+  "name": "chentuan.jpg",
+  "jpeg_bytes": 59730,
+  "jpeg_ssim": 0.9476,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 32870,
+   "ssim_vs_ref": 0.9475,
+   "gain_pct": -45.0
+  }
+ },
+ {
+  "name": "chenyang.jpg",
+  "jpeg_bytes": 58888,
+  "jpeg_ssim": 0.9796,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 49174,
+   "ssim_vs_ref": 0.9818,
+   "gain_pct": -16.5
+  }
+ },
+ {
+  "name": "chijingzhi.jpg",
+  "jpeg_bytes": 98335,
+  "jpeg_ssim": 0.952,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 76696,
+   "ssim_vs_ref": 0.9568,
+   "gain_pct": -22.0
+  }
+ },
+ {
+  "name": "chirong.jpg",
+  "jpeg_bytes": 86058,
+  "jpeg_ssim": 0.9618,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 55238,
+   "ssim_vs_ref": 0.9603,
+   "gain_pct": -35.8
+  }
+ },
+ {
+  "name": "chirong2.jpg",
+  "jpeg_bytes": 58391,
+  "jpeg_ssim": 0.9988,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "chousuiwan.jpg",
+  "jpeg_bytes": 65457,
+  "jpeg_ssim": 0.9533,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 57862,
+   "ssim_vs_ref": 0.962,
+   "gain_pct": -11.6
+  }
+ },
+ {
+  "name": "chunye.jpg",
+  "jpeg_bytes": 121670,
+  "jpeg_ssim": 0.9502,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 75562,
+   "ssim_vs_ref": 0.9543,
+   "gain_pct": -37.9
+  }
+ },
+ {
+  "name": "chuwudai.jpg",
+  "jpeg_bytes": 29472,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 84,
+   "bytes": 21804,
+   "ssim_vs_ref": 0.9919,
+   "gain_pct": -26.0
+  }
+ },
+ {
+  "name": "daier.jpg",
+  "jpeg_bytes": 69343,
+  "jpeg_ssim": 0.977,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 42692,
+   "ssim_vs_ref": 0.9778,
+   "gain_pct": -38.4
+  }
+ },
+ {
+  "name": "dan_blue.jpg",
+  "jpeg_bytes": 48881,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "dan_gold.jpg",
+  "jpeg_bytes": 37809,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "dan_green.jpg",
+  "jpeg_bytes": 82604,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "dan_purple.jpg",
+  "jpeg_bytes": 39443,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "dan_red.jpg",
+  "jpeg_bytes": 40977,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "danuoyiling.jpg",
+  "jpeg_bytes": 52237,
+  "jpeg_ssim": 0.9533,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 37846,
+   "ssim_vs_ref": 0.9529,
+   "gain_pct": -27.5
+  }
+ },
+ {
+  "name": "dayan.jpg",
+  "jpeg_bytes": 63661,
+  "jpeg_ssim": 0.9808,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 45050,
+   "ssim_vs_ref": 0.9815,
+   "gain_pct": -29.2
+  }
+ },
+ {
+  "name": "dayan_dajin.jpg",
+  "jpeg_bytes": 63121,
+  "jpeg_ssim": 0.9821,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 52798,
+   "ssim_vs_ref": 0.9823,
+   "gain_pct": -16.4
+  }
+ },
+ {
+  "name": "dayan_luanxing.jpg",
+  "jpeg_bytes": 69343,
+  "jpeg_ssim": 0.9318,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 39986,
+   "ssim_vs_ref": 0.9329,
+   "gain_pct": -42.3
+  }
+ },
+ {
+  "name": "dayanjue.jpg",
+  "jpeg_bytes": 24671,
+  "jpeg_ssim": 0.9885,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "dayanrenxingkuilei.jpg",
+  "jpeg_bytes": 39564,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "diandao5xingzhen.jpg",
+  "jpeg_bytes": 39944,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "dinglingdan.jpg",
+  "jpeg_bytes": 70624,
+  "jpeg_ssim": 0.9483,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 48130,
+   "ssim_vs_ref": 0.9514,
+   "gain_pct": -31.9
+  }
+ },
+ {
+  "name": "dinglingdan_fang.jpg",
+  "jpeg_bytes": 81435,
+  "jpeg_ssim": 0.9498,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 47164,
+   "ssim_vs_ref": 0.9484,
+   "gain_pct": -42.1
+  }
+ },
+ {
+  "name": "dingyandan.jpg",
+  "jpeg_bytes": 49701,
+  "jpeg_ssim": 0.9471,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 36938,
+   "ssim_vs_ref": 0.9488,
+   "gain_pct": -25.7
+  }
+ },
+ {
+  "name": "dongxuaner.jpg",
+  "jpeg_bytes": 44781,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "dongxuaner_dajin.jpg",
+  "jpeg_bytes": 37672,
+  "jpeg_ssim": 0.9843,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "dongxuaner_huangfeng.jpg",
+  "jpeg_bytes": 30679,
+  "jpeg_ssim": 0.986,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 20332,
+   "ssim_vs_ref": 0.9847,
+   "gain_pct": -33.7
+  }
+ },
+ {
+  "name": "dulong.jpg",
+  "jpeg_bytes": 109634,
+  "jpeg_ssim": 0.9682,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 73160,
+   "ssim_vs_ref": 0.968,
+   "gain_pct": -33.3
+  }
+ },
+ {
+  "name": "ekuai.jpg",
+  "jpeg_bytes": 87630,
+  "jpeg_ssim": 0.9626,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 48666,
+   "ssim_vs_ref": 0.9624,
+   "gain_pct": -44.5
+  }
+ },
+ {
+  "name": "fangfuren.jpg",
+  "jpeg_bytes": 97189,
+  "jpeg_ssim": 0.9795,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 65072,
+   "ssim_vs_ref": 0.9791,
+   "gain_pct": -33.0
+  }
+ },
+ {
+  "name": "fangpan.jpg",
+  "jpeg_bytes": 73698,
+  "jpeg_ssim": 0.9677,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 56994,
+   "ssim_vs_ref": 0.9706,
+   "gain_pct": -22.7
+  }
+ },
+ {
+  "name": "fangzongzhu.jpg",
+  "jpeg_bytes": 32208,
+  "jpeg_ssim": 0.9862,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 21676,
+   "ssim_vs_ref": 0.9856,
+   "gain_pct": -32.7
+  }
+ },
+ {
+  "name": "fanjingmei.jpg",
+  "jpeg_bytes": 69442,
+  "jpeg_ssim": 0.9591,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "fenglaoguai.jpg",
+  "jpeg_bytes": 78044,
+  "jpeg_ssim": 0.9285,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 53730,
+   "ssim_vs_ref": 0.9326,
+   "gain_pct": -31.2
+  }
+ },
+ {
+  "name": "fengleichi.jpg",
+  "jpeg_bytes": 30787,
+  "jpeg_ssim": 0.9842,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 20232,
+   "ssim_vs_ref": 0.9841,
+   "gain_pct": -34.3
+  }
+ },
+ {
+  "name": "fengqingshui.jpg",
+  "jpeg_bytes": 35601,
+  "jpeg_ssim": 0.9988,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "fengtiandu.jpg",
+  "jpeg_bytes": 72995,
+  "jpeg_ssim": 0.9699,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 47310,
+   "ssim_vs_ref": 0.9729,
+   "gain_pct": -35.2
+  }
+ },
+ {
+  "name": "fengxi.jpg",
+  "jpeg_bytes": 22546,
+  "jpeg_ssim": 0.9989,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "ganjiuzhen.jpg",
+  "jpeg_bytes": 41298,
+  "jpeg_ssim": 0.9786,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 32806,
+   "ssim_vs_ref": 0.9812,
+   "gain_pct": -20.6
+  }
+ },
+ {
+  "name": "ganrushuang.jpg",
+  "jpeg_bytes": 33411,
+  "jpeg_ssim": 0.9822,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 23488,
+   "ssim_vs_ref": 0.9808,
+   "gain_pct": -29.7
+  }
+ },
+ {
+  "name": "ganyingling.jpg",
+  "jpeg_bytes": 6704,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "gaosheng.jpg",
+  "jpeg_bytes": 111051,
+  "jpeg_ssim": 0.9704,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 67602,
+   "ssim_vs_ref": 0.9693,
+   "gain_pct": -39.1
+  }
+ },
+ {
+  "name": "gejiangjun.jpg",
+  "jpeg_bytes": 93435,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "gongshujiu.jpg",
+  "jpeg_bytes": 38550,
+  "jpeg_ssim": 0.9915,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 30712,
+   "ssim_vs_ref": 0.9919,
+   "gain_pct": -20.3
+  }
+ },
+ {
+  "name": "gongsunxing.jpg",
+  "jpeg_bytes": 32345,
+  "jpeg_ssim": 0.983,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 24200,
+   "ssim_vs_ref": 0.982,
+   "gain_pct": -25.2
+  }
+ },
+ {
+  "name": "guhuojin.jpg",
+  "jpeg_bytes": 72082,
+  "jpeg_ssim": 0.9607,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 43510,
+   "ssim_vs_ref": 0.9591,
+   "gain_pct": -39.6
+  }
+ },
+ {
+  "name": "guiling.jpg",
+  "jpeg_bytes": 64398,
+  "jpeg_ssim": 0.9769,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 61768,
+   "ssim_vs_ref": 0.9813,
+   "gain_pct": -4.1
+  }
+ },
+ {
+  "name": "guiluofan.jpg",
+  "jpeg_bytes": 93029,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "hanjiajiaren.jpg",
+  "jpeg_bytes": 26012,
+  "jpeg_ssim": 0.9987,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "hanli.jpg",
+  "jpeg_bytes": 58222,
+  "jpeg_ssim": 0.9767,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 43786,
+   "ssim_vs_ref": 0.9749,
+   "gain_pct": -24.8
+  }
+ },
+ {
+  "name": "hanli_dajin.jpg",
+  "jpeg_bytes": 27810,
+  "jpeg_ssim": 0.9833,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 17326,
+   "ssim_vs_ref": 0.9827,
+   "gain_pct": -37.7
+  }
+ },
+ {
+  "name": "hanli_huangfeng.jpg",
+  "jpeg_bytes": 37975,
+  "jpeg_ssim": 0.9889,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "hanli_lingjie.jpg",
+  "jpeg_bytes": 45078,
+  "jpeg_ssim": 0.9765,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 39032,
+   "ssim_vs_ref": 0.9794,
+   "gain_pct": -13.4
+  }
+ },
+ {
+  "name": "hanli_luanxing.jpg",
+  "jpeg_bytes": 42741,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "hanli_qixuan.jpg",
+  "jpeg_bytes": 41737,
+  "jpeg_ssim": 0.9866,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 28180,
+   "ssim_vs_ref": 0.988,
+   "gain_pct": -32.5
+  }
+ },
+ {
+  "name": "hanli_xianjie.jpg",
+  "jpeg_bytes": 70532,
+  "jpeg_ssim": 0.9578,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 41944,
+   "ssim_vs_ref": 0.9566,
+   "gain_pct": -40.5
+  }
+ },
+ {
+  "name": "hanling.jpg",
+  "jpeg_bytes": 92661,
+  "jpeg_ssim": 0.9692,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 54900,
+   "ssim_vs_ref": 0.9684,
+   "gain_pct": -40.8
+  }
+ },
+ {
+  "name": "hanlishangren.jpg",
+  "jpeg_bytes": 73357,
+  "jpeg_ssim": 0.9808,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 44038,
+   "ssim_vs_ref": 0.9811,
+   "gain_pct": -40.0
+  }
+ },
+ {
+  "name": "hanming.jpg",
+  "jpeg_bytes": 70659,
+  "jpeg_ssim": 0.9762,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 50026,
+   "ssim_vs_ref": 0.9747,
+   "gain_pct": -29.2
+  }
+ },
+ {
+  "name": "hansui.jpg",
+  "jpeg_bytes": 105474,
+  "jpeg_ssim": 0.9543,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 62996,
+   "ssim_vs_ref": 0.9539,
+   "gain_pct": -40.3
+  }
+ },
+ {
+  "name": "hanyuanren.jpg",
+  "jpeg_bytes": 11578,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 72,
+   "bytes": 7848,
+   "ssim_vs_ref": 0.9901,
+   "gain_pct": -32.2
+  }
+ },
+ {
+  "name": "hanyunzhi.jpg",
+  "jpeg_bytes": 26459,
+  "jpeg_ssim": 0.9831,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 16746,
+   "ssim_vs_ref": 0.9823,
+   "gain_pct": -36.7
+  }
+ },
+ {
+  "name": "hehuanlaomo.jpg",
+  "jpeg_bytes": 60567,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "heishajiaojiaozhu.jpg",
+  "jpeg_bytes": 26991,
+  "jpeg_ssim": 0.9857,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "hongfu.jpg",
+  "jpeg_bytes": 51658,
+  "jpeg_ssim": 0.9503,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 40310,
+   "ssim_vs_ref": 0.9557,
+   "gain_pct": -22.0
+  }
+ },
+ {
+  "name": "hongxiandunguangzhen.jpg",
+  "jpeg_bytes": 9321,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 78,
+   "bytes": 4994,
+   "ssim_vs_ref": 0.9917,
+   "gain_pct": -46.4
+  }
+ },
+ {
+  "name": "hualangubao.jpg",
+  "jpeg_bytes": 120166,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "huangkun.jpg",
+  "jpeg_bytes": 61732,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "huanglinjia.jpg",
+  "jpeg_bytes": 48354,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "huanglongdan.jpg",
+  "jpeg_bytes": 56605,
+  "jpeg_ssim": 0.9448,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 48112,
+   "ssim_vs_ref": 0.9511,
+   "gain_pct": -15.0
+  }
+ },
+ {
+  "name": "huashilaozu.jpg",
+  "jpeg_bytes": 124983,
+  "jpeg_ssim": 0.9559,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 78196,
+   "ssim_vs_ref": 0.9549,
+   "gain_pct": -37.4
+  }
+ },
+ {
+  "name": "huazhou.jpg",
+  "jpeg_bytes": 8439,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 66,
+   "bytes": 4734,
+   "ssim_vs_ref": 0.9907,
+   "gain_pct": -43.9
+  }
+ },
+ {
+  "name": "huishawan.jpg",
+  "jpeg_bytes": 73517,
+  "jpeg_ssim": 0.9485,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 68692,
+   "ssim_vs_ref": 0.9576,
+   "gain_pct": -6.6
+  }
+ },
+ {
+  "name": "huiyangzhenshui.jpg",
+  "jpeg_bytes": 38359,
+  "jpeg_ssim": 0.9572,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 23984,
+   "ssim_vs_ref": 0.9561,
+   "gain_pct": -37.5
+  }
+ },
+ {
+  "name": "huiyangzhenshui_fang.jpg",
+  "jpeg_bytes": 72436,
+  "jpeg_ssim": 0.9457,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 46246,
+   "ssim_vs_ref": 0.9479,
+   "gain_pct": -36.2
+  }
+ },
+ {
+  "name": "hujun.jpg",
+  "jpeg_bytes": 103942,
+  "jpeg_ssim": 0.9644,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 60116,
+   "ssim_vs_ref": 0.9648,
+   "gain_pct": -42.2
+  }
+ },
+ {
+  "name": "hunyuanbo.jpg",
+  "jpeg_bytes": 27350,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "huohuozi.jpg",
+  "jpeg_bytes": 113525,
+  "jpeg_ssim": 0.9619,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 70240,
+   "ssim_vs_ref": 0.9642,
+   "gain_pct": -38.1
+  }
+ },
+ {
+  "name": "huoxuzi.jpg",
+  "jpeg_bytes": 92646,
+  "jpeg_ssim": 0.9651,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 61996,
+   "ssim_vs_ref": 0.9638,
+   "gain_pct": -33.1
+  }
+ },
+ {
+  "name": "huuqinglei.jpg",
+  "jpeg_bytes": 72595,
+  "jpeg_ssim": 0.979,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 59354,
+   "ssim_vs_ref": 0.9826,
+   "gain_pct": -18.2
+  }
+ },
+ {
+  "name": "huyan.jpg",
+  "jpeg_bytes": 88265,
+  "jpeg_ssim": 0.9719,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 60568,
+   "ssim_vs_ref": 0.9711,
+   "gain_pct": -31.4
+  }
+ },
+ {
+  "name": "jiangchendan.jpg",
+  "jpeg_bytes": 65807,
+  "jpeg_ssim": 0.9398,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 59742,
+   "ssim_vs_ref": 0.9494,
+   "gain_pct": -9.2
+  }
+ },
+ {
+  "name": "jiangyun.jpg",
+  "jpeg_bytes": 74539,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "jinbeiyaolang.jpg",
+  "jpeg_bytes": 39020,
+  "jpeg_ssim": 0.985,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "jinfuzimuren.jpg",
+  "jpeg_bytes": 37028,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 78,
+   "bytes": 26476,
+   "ssim_vs_ref": 0.9901,
+   "gain_pct": -28.5
+  }
+ },
+ {
+  "name": "jingangzhao.jpg",
+  "jpeg_bytes": 54686,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 78,
+   "bytes": 41286,
+   "ssim_vs_ref": 0.9912,
+   "gain_pct": -24.5
+  }
+ },
+ {
+  "name": "jinguangshangren.jpg",
+  "jpeg_bytes": 38310,
+  "jpeg_ssim": 0.9891,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "jingyantongzi.jpg",
+  "jpeg_bytes": 75350,
+  "jpeg_ssim": 0.9732,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 50872,
+   "ssim_vs_ref": 0.972,
+   "gain_pct": -32.5
+  }
+ },
+ {
+  "name": "jinhuolaozu.jpg",
+  "jpeg_bytes": 45264,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "jinjiaowang.jpg",
+  "jpeg_bytes": 52358,
+  "jpeg_ssim": 0.9751,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 36962,
+   "ssim_vs_ref": 0.9742,
+   "gain_pct": -29.4
+  }
+ },
+ {
+  "name": "jinkui_luanxing.jpg",
+  "jpeg_bytes": 24095,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "jinleizhu.jpg",
+  "jpeg_bytes": 120877,
+  "jpeg_ssim": 0.96,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 72578,
+   "ssim_vs_ref": 0.9638,
+   "gain_pct": -40.0
+  }
+ },
+ {
+  "name": "jinshenyueshi.jpg",
+  "jpeg_bytes": 18278,
+  "jpeg_ssim": 0.9985,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "jintong.jpg",
+  "jpeg_bytes": 38779,
+  "jpeg_ssim": 0.9846,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 20068,
+   "ssim_vs_ref": 0.983,
+   "gain_pct": -48.3
+  }
+ },
+ {
+  "name": "jintong_lingjie.jpg",
+  "jpeg_bytes": 76850,
+  "jpeg_ssim": 0.9843,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 54232,
+   "ssim_vs_ref": 0.9839,
+   "gain_pct": -29.4
+  }
+ },
+ {
+  "name": "jintong_xianjie.jpg",
+  "jpeg_bytes": 75922,
+  "jpeg_ssim": 0.9602,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 50510,
+   "ssim_vs_ref": 0.9619,
+   "gain_pct": -33.5
+  }
+ },
+ {
+  "name": "jinwu.jpg",
+  "jpeg_bytes": 111205,
+  "jpeg_ssim": 0.9609,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 87694,
+   "ssim_vs_ref": 0.9637,
+   "gain_pct": -21.1
+  }
+ },
+ {
+  "name": "jinzhufubi.jpg",
+  "jpeg_bytes": 30499,
+  "jpeg_ssim": 0.9879,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 20874,
+   "ssim_vs_ref": 0.9875,
+   "gain_pct": -31.6
+  }
+ },
+ {
+  "name": "jiuqulingshen.jpg",
+  "jpeg_bytes": 66647,
+  "jpeg_ssim": 0.9694,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 43690,
+   "ssim_vs_ref": 0.9705,
+   "gain_pct": -34.4
+  }
+ },
+ {
+  "name": "jiuqulinshendan.jpg",
+  "jpeg_bytes": 76599,
+  "jpeg_ssim": 0.9476,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 68886,
+   "ssim_vs_ref": 0.9579,
+   "gain_pct": -10.1
+  }
+ },
+ {
+  "name": "jiuqulinshendan_fang.jpg",
+  "jpeg_bytes": 70713,
+  "jpeg_ssim": 0.9474,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 45706,
+   "ssim_vs_ref": 0.947,
+   "gain_pct": -35.4
+  }
+ },
+ {
+  "name": "jiyin.jpg",
+  "jpeg_bytes": 52458,
+  "jpeg_ssim": 0.9851,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 36382,
+   "ssim_vs_ref": 0.9838,
+   "gain_pct": -30.6
+  }
+ },
+ {
+  "name": "juguikuilei.jpg",
+  "jpeg_bytes": 34924,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "juhunbo.jpg",
+  "jpeg_bytes": 39071,
+  "jpeg_ssim": 0.9848,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "julingdan.jpg",
+  "jpeg_bytes": 65129,
+  "jpeg_ssim": 0.9529,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 38322,
+   "ssim_vs_ref": 0.9521,
+   "gain_pct": -41.2
+  }
+ },
+ {
+  "name": "juyuankuilei.jpg",
+  "jpeg_bytes": 28342,
+  "jpeg_ssim": 0.999,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "kuzulaoren.jpg",
+  "jpeg_bytes": 64634,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "langshoukuilei.jpg",
+  "jpeg_bytes": 93721,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 84,
+   "bytes": 88646,
+   "ssim_vs_ref": 0.9907,
+   "gain_pct": -5.4
+  }
+ },
+ {
+  "name": "langshouruyi.jpg",
+  "jpeg_bytes": 28455,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 78,
+   "bytes": 21946,
+   "ssim_vs_ref": 0.9904,
+   "gain_pct": -22.9
+  }
+ },
+ {
+  "name": "leipeng.jpg",
+  "jpeg_bytes": 102233,
+  "jpeg_ssim": 0.9597,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 56428,
+   "ssim_vs_ref": 0.9593,
+   "gain_pct": -44.8
+  }
+ },
+ {
+  "name": "leiwanhe.jpg",
+  "jpeg_bytes": 33980,
+  "jpeg_ssim": 0.9887,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "lengyanlaozu.jpg",
+  "jpeg_bytes": 75461,
+  "jpeg_ssim": 0.9685,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 49304,
+   "ssim_vs_ref": 0.9666,
+   "gain_pct": -34.7
+  }
+ },
+ {
+  "name": "lifeiyu.jpg",
+  "jpeg_bytes": 47522,
+  "jpeg_ssim": 0.9885,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "lifeiyu_xianjie.jpg",
+  "jpeg_bytes": 105576,
+  "jpeg_ssim": 0.9719,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 61542,
+   "ssim_vs_ref": 0.9706,
+   "gain_pct": -41.7
+  }
+ },
+ {
+  "name": "lihuayuan.jpg",
+  "jpeg_bytes": 41665,
+  "jpeg_ssim": 0.9819,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 31988,
+   "ssim_vs_ref": 0.9843,
+   "gain_pct": -23.2
+  }
+ },
+ {
+  "name": "lihuuoqilin.jpg",
+  "jpeg_bytes": 104311,
+  "jpeg_ssim": 0.9754,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 65956,
+   "ssim_vs_ref": 0.975,
+   "gain_pct": -36.8
+  }
+ },
+ {
+  "name": "linghu.jpg",
+  "jpeg_bytes": 49688,
+  "jpeg_ssim": 0.9867,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 40436,
+   "ssim_vs_ref": 0.9877,
+   "gain_pct": -18.6
+  }
+ },
+ {
+  "name": "linghu_dajin.jpg",
+  "jpeg_bytes": 31653,
+  "jpeg_ssim": 0.9808,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 22372,
+   "ssim_vs_ref": 0.9801,
+   "gain_pct": -29.3
+  }
+ },
+ {
+  "name": "linghu_huangfeng.jpg",
+  "jpeg_bytes": 56285,
+  "jpeg_ssim": 0.9843,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 45046,
+   "ssim_vs_ref": 0.9862,
+   "gain_pct": -20.0
+  }
+ },
+ {
+  "name": "lingwang.jpg",
+  "jpeg_bytes": 71891,
+  "jpeg_ssim": 0.9703,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 54498,
+   "ssim_vs_ref": 0.9731,
+   "gain_pct": -24.2
+  }
+ },
+ {
+  "name": "lingyanzhiquan.jpg",
+  "jpeg_bytes": 89859,
+  "jpeg_ssim": 0.9496,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 54764,
+   "ssim_vs_ref": 0.9497,
+   "gain_pct": -39.1
+  }
+ },
+ {
+  "name": "lingyanzhishu.jpg",
+  "jpeg_bytes": 127182,
+  "jpeg_ssim": 0.947,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 82692,
+   "ssim_vs_ref": 0.9541,
+   "gain_pct": -35.0
+  }
+ },
+ {
+  "name": "lingyuling.jpg",
+  "jpeg_bytes": 38363,
+  "jpeg_ssim": 0.9827,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 27876,
+   "ssim_vs_ref": 0.9837,
+   "gain_pct": -27.3
+  }
+ },
+ {
+  "name": "lingyuling_lingjie.jpg",
+  "jpeg_bytes": 33744,
+  "jpeg_ssim": 0.9796,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 26792,
+   "ssim_vs_ref": 0.9806,
+   "gain_pct": -20.6
+  }
+ },
+ {
+  "name": "lingyuling_luanxing.jpg",
+  "jpeg_bytes": 45239,
+  "jpeg_ssim": 0.9689,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 27840,
+   "ssim_vs_ref": 0.968,
+   "gain_pct": -38.5
+  }
+ },
+ {
+  "name": "lingzhuguo.jpg",
+  "jpeg_bytes": 73217,
+  "jpeg_ssim": 0.9569,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 40770,
+   "ssim_vs_ref": 0.9573,
+   "gain_pct": -44.3
+  }
+ },
+ {
+  "name": "linshixiong.jpg",
+  "jpeg_bytes": 65424,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "liudaojisheng.jpg",
+  "jpeg_bytes": 76787,
+  "jpeg_ssim": 0.9659,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 61284,
+   "ssim_vs_ref": 0.9654,
+   "gain_pct": -20.2
+  }
+ },
+ {
+  "name": "liudaolunhuipan.jpg",
+  "jpeg_bytes": 30028,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 84,
+   "bytes": 26558,
+   "ssim_vs_ref": 0.9933,
+   "gain_pct": -11.6
+  }
+ },
+ {
+  "name": "liugongzhu.jpg",
+  "jpeg_bytes": 70164,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "liuji.jpg",
+  "jpeg_bytes": 117634,
+  "jpeg_ssim": 0.9561,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 72292,
+   "ssim_vs_ref": 0.959,
+   "gain_pct": -38.5
+  }
+ },
+ {
+  "name": "liujing.jpg",
+  "jpeg_bytes": 32634,
+  "jpeg_ssim": 0.974,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 25366,
+   "ssim_vs_ref": 0.9776,
+   "gain_pct": -22.3
+  }
+ },
+ {
+  "name": "liuleer.jpg",
+  "jpeg_bytes": 30683,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "liuqi.jpg",
+  "jpeg_bytes": 97279,
+  "jpeg_ssim": 0.9744,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 60158,
+   "ssim_vs_ref": 0.9729,
+   "gain_pct": -38.2
+  }
+ },
+ {
+  "name": "liusansheng.jpg",
+  "jpeg_bytes": 88846,
+  "jpeg_ssim": 0.9753,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 58744,
+   "ssim_vs_ref": 0.9761,
+   "gain_pct": -33.9
+  }
+ },
+ {
+  "name": "liuyishuangwu.jpg",
+  "jpeg_bytes": 44228,
+  "jpeg_ssim": 0.9987,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "liuyu.jpg",
+  "jpeg_bytes": 66833,
+  "jpeg_ssim": 0.9714,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "liyuanjiu.jpg",
+  "jpeg_bytes": 40261,
+  "jpeg_ssim": 0.9882,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "longfuren.jpg",
+  "jpeg_bytes": 49374,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "longlinguo.jpg",
+  "jpeg_bytes": 119456,
+  "jpeg_ssim": 0.9476,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 74130,
+   "ssim_vs_ref": 0.9483,
+   "gain_pct": -37.9
+  }
+ },
+ {
+  "name": "longmeng.jpg",
+  "jpeg_bytes": 48151,
+  "jpeg_ssim": 0.9697,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 41762,
+   "ssim_vs_ref": 0.9753,
+   "gain_pct": -13.3
+  }
+ },
+ {
+  "name": "lufuren.jpg",
+  "jpeg_bytes": 42160,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "lunhuidianzhu.jpg",
+  "jpeg_bytes": 68571,
+  "jpeg_ssim": 0.9623,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 41628,
+   "ssim_vs_ref": 0.9609,
+   "gain_pct": -39.3
+  }
+ },
+ {
+  "name": "luochangkong.jpg",
+  "jpeg_bytes": 15378,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 84,
+   "bytes": 12222,
+   "ssim_vs_ref": 0.993,
+   "gain_pct": -20.5
+  }
+ },
+ {
+  "name": "luohou.jpg",
+  "jpeg_bytes": 82186,
+  "jpeg_ssim": 0.9606,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 56616,
+   "ssim_vs_ref": 0.9629,
+   "gain_pct": -31.1
+  }
+ },
+ {
+  "name": "luohunsha.jpg",
+  "jpeg_bytes": 40196,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "luweiying.jpg",
+  "jpeg_bytes": 41281,
+  "jpeg_ssim": 0.9832,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 31712,
+   "ssim_vs_ref": 0.9858,
+   "gain_pct": -23.2
+  }
+ },
+ {
+  "name": "luyunfeng.jpg",
+  "jpeg_bytes": 41174,
+  "jpeg_ssim": 0.969,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 35790,
+   "ssim_vs_ref": 0.9727,
+   "gain_pct": -13.1
+  }
+ },
+ {
+  "name": "lvhuanjian.jpg",
+  "jpeg_bytes": 17778,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "lvluo.jpg",
+  "jpeg_bytes": 37830,
+  "jpeg_ssim": 0.9841,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 29810,
+   "ssim_vs_ref": 0.9822,
+   "gain_pct": -21.2
+  }
+ },
+ {
+  "name": "maliang.jpg",
+  "jpeg_bytes": 74197,
+  "jpeg_ssim": 0.9702,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 44850,
+   "ssim_vs_ref": 0.9685,
+   "gain_pct": -39.6
+  }
+ },
+ {
+  "name": "manhuzi.jpg",
+  "jpeg_bytes": 52536,
+  "jpeg_ssim": 0.9809,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 48018,
+   "ssim_vs_ref": 0.9802,
+   "gain_pct": -8.6
+  }
+ },
+ {
+  "name": "mashibo_huangfeng.jpg",
+  "jpeg_bytes": 32170,
+  "jpeg_ssim": 0.9867,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 20158,
+   "ssim_vs_ref": 0.986,
+   "gain_pct": -37.3
+  }
+ },
+ {
+  "name": "meining.jpg",
+  "jpeg_bytes": 30090,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "miaohezhenren.jpg",
+  "jpeg_bytes": 25631,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "miluolaozu.jpg",
+  "jpeg_bytes": 67582,
+  "jpeg_ssim": 0.9659,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 42146,
+   "ssim_vs_ref": 0.9643,
+   "gain_pct": -37.6
+  }
+ },
+ {
+  "name": "mingchongzhimu.jpg",
+  "jpeg_bytes": 62901,
+  "jpeg_ssim": 0.9756,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 50402,
+   "ssim_vs_ref": 0.9786,
+   "gain_pct": -19.9
+  }
+ },
+ {
+  "name": "minghunzhu.jpg",
+  "jpeg_bytes": 27144,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "mingqilingshui.jpg",
+  "jpeg_bytes": 56028,
+  "jpeg_ssim": 0.9485,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 41316,
+   "ssim_vs_ref": 0.9552,
+   "gain_pct": -26.3
+  }
+ },
+ {
+  "name": "mocaihuan.jpg",
+  "jpeg_bytes": 24936,
+  "jpeg_ssim": 0.988,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 16216,
+   "ssim_vs_ref": 0.9874,
+   "gain_pct": -35.0
+  }
+ },
+ {
+  "name": "modafu.jpg",
+  "jpeg_bytes": 30642,
+  "jpeg_ssim": 0.9885,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "mofengwu.jpg",
+  "jpeg_bytes": 24449,
+  "jpeg_ssim": 0.9897,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 18360,
+   "ssim_vs_ref": 0.9892,
+   "gain_pct": -24.9
+  }
+ },
+ {
+  "name": "moguang.jpg",
+  "jpeg_bytes": 63636,
+  "jpeg_ssim": 0.9645,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 48472,
+   "ssim_vs_ref": 0.9688,
+   "gain_pct": -23.8
+  }
+ },
+ {
+  "name": "moguang_lingjie.jpg",
+  "jpeg_bytes": 59017,
+  "jpeg_ssim": 0.9868,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "mojianli.jpg",
+  "jpeg_bytes": 82830,
+  "jpeg_ssim": 0.9722,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 64842,
+   "ssim_vs_ref": 0.9738,
+   "gain_pct": -21.7
+  }
+ },
+ {
+  "name": "mojiao.jpg",
+  "jpeg_bytes": 82232,
+  "jpeg_ssim": 0.9628,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 51042,
+   "ssim_vs_ref": 0.9637,
+   "gain_pct": -37.9
+  }
+ },
+ {
+  "name": "molongren.jpg",
+  "jpeg_bytes": 15758,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "mosuizuan.jpg",
+  "jpeg_bytes": 34307,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "moxiaobai.jpg",
+  "jpeg_bytes": 58730,
+  "jpeg_ssim": 0.9878,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 34030,
+   "ssim_vs_ref": 0.9858,
+   "gain_pct": -42.1
+  }
+ },
+ {
+  "name": "moyuzhu.jpg",
+  "jpeg_bytes": 33729,
+  "jpeg_ssim": 0.9885,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 20678,
+   "ssim_vs_ref": 0.9872,
+   "gain_pct": -38.7
+  }
+ },
+ {
+  "name": "mozhu.jpg",
+  "jpeg_bytes": 87841,
+  "jpeg_ssim": 0.9601,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 58548,
+   "ssim_vs_ref": 0.9599,
+   "gain_pct": -33.3
+  }
+ },
+ {
+  "name": "mupeiling.jpg",
+  "jpeg_bytes": 43442,
+  "jpeg_ssim": 0.966,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 29840,
+   "ssim_vs_ref": 0.965,
+   "gain_pct": -31.3
+  }
+ },
+ {
+  "name": "mutengzi.jpg",
+  "jpeg_bytes": 33407,
+  "jpeg_ssim": 0.9875,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "nangongwan.jpg",
+  "jpeg_bytes": 64687,
+  "jpeg_ssim": 0.9793,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 32516,
+   "ssim_vs_ref": 0.9788,
+   "gain_pct": -49.7
+  }
+ },
+ {
+  "name": "nangongwan_dajin.jpg",
+  "jpeg_bytes": 41494,
+  "jpeg_ssim": 0.9851,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 25308,
+   "ssim_vs_ref": 0.9839,
+   "gain_pct": -39.0
+  }
+ },
+ {
+  "name": "nangongwan_huangfeng.jpg",
+  "jpeg_bytes": 31538,
+  "jpeg_ssim": 0.9828,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 19638,
+   "ssim_vs_ref": 0.9836,
+   "gain_pct": -37.7
+  }
+ },
+ {
+  "name": "nangongwan_lingjie.jpg",
+  "jpeg_bytes": 30855,
+  "jpeg_ssim": 0.9882,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "nangongwan_xianjie.jpg",
+  "jpeg_bytes": 27246,
+  "jpeg_ssim": 0.9864,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 20182,
+   "ssim_vs_ref": 0.987,
+   "gain_pct": -25.9
+  }
+ },
+ {
+  "name": "nanlonghou.jpg",
+  "jpeg_bytes": 44996,
+  "jpeg_ssim": 0.9884,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "niepan.jpg",
+  "jpeg_bytes": 86300,
+  "jpeg_ssim": 0.9663,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 55608,
+   "ssim_vs_ref": 0.9667,
+   "gain_pct": -35.6
+  }
+ },
+ {
+  "name": "nieying.jpg",
+  "jpeg_bytes": 93594,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "nishangcao.jpg",
+  "jpeg_bytes": 102536,
+  "jpeg_ssim": 0.9603,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 56132,
+   "ssim_vs_ref": 0.9613,
+   "gain_pct": -45.3
+  }
+ },
+ {
+  "name": "nuanyangbaoyu.jpg",
+  "jpeg_bytes": 68153,
+  "jpeg_ssim": 0.9475,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 63882,
+   "ssim_vs_ref": 0.9579,
+   "gain_pct": -6.3
+  }
+ },
+ {
+  "name": "peiyingdan.jpg",
+  "jpeg_bytes": 72124,
+  "jpeg_ssim": 0.9467,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 64194,
+   "ssim_vs_ref": 0.957,
+   "gain_pct": -11.0
+  }
+ },
+ {
+  "name": "peiyuandan.jpg",
+  "jpeg_bytes": 74062,
+  "jpeg_ssim": 0.9454,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 49270,
+   "ssim_vs_ref": 0.9453,
+   "gain_pct": -33.5
+  }
+ },
+ {
+  "name": "pingling.jpg",
+  "jpeg_bytes": 68079,
+  "jpeg_ssim": 0.968,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 40052,
+   "ssim_vs_ref": 0.9666,
+   "gain_pct": -41.2
+  }
+ },
+ {
+  "name": "qiankunta.jpg",
+  "jpeg_bytes": 22376,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "qianlanbingyan.jpg",
+  "jpeg_bytes": 53741,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "qianlaomo.jpg",
+  "jpeg_bytes": 38967,
+  "jpeg_ssim": 0.9815,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "qilingzi.jpg",
+  "jpeg_bytes": 102929,
+  "jpeg_ssim": 0.97,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 61168,
+   "ssim_vs_ref": 0.9698,
+   "gain_pct": -40.6
+  }
+ },
+ {
+  "name": "qimozi.jpg",
+  "jpeg_bytes": 69361,
+  "jpeg_ssim": 0.9715,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 63424,
+   "ssim_vs_ref": 0.973,
+   "gain_pct": -8.6
+  }
+ },
+ {
+  "name": "qinghuozhang.jpg",
+  "jpeg_bytes": 34688,
+  "jpeg_ssim": 0.9797,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 26836,
+   "ssim_vs_ref": 0.9808,
+   "gain_pct": -22.6
+  }
+ },
+ {
+  "name": "qingjiaoqi.jpg",
+  "jpeg_bytes": 56332,
+  "jpeg_ssim": 0.9694,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 47298,
+   "ssim_vs_ref": 0.9692,
+   "gain_pct": -16.0
+  }
+ },
+ {
+  "name": "qinglingsan.jpg",
+  "jpeg_bytes": 48532,
+  "jpeg_ssim": 0.9672,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 27746,
+   "ssim_vs_ref": 0.9663,
+   "gain_pct": -42.8
+  }
+ },
+ {
+  "name": "qingmingzhen.jpg",
+  "jpeg_bytes": 49048,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "qingyi.jpg",
+  "jpeg_bytes": 61148,
+  "jpeg_ssim": 0.9803,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 53708,
+   "ssim_vs_ref": 0.9821,
+   "gain_pct": -12.2
+  }
+ },
+ {
+  "name": "qingyuanzi.jpg",
+  "jpeg_bytes": 60082,
+  "jpeg_ssim": 0.9779,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 54868,
+   "ssim_vs_ref": 0.9804,
+   "gain_pct": -8.7
+  }
+ },
+ {
+  "name": "qingzhufengyunjian.jpg",
+  "jpeg_bytes": 27415,
+  "jpeg_ssim": 0.986,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 17678,
+   "ssim_vs_ref": 0.986,
+   "gain_pct": -35.5
+  }
+ },
+ {
+  "name": "qixialian.jpg",
+  "jpeg_bytes": 91318,
+  "jpeg_ssim": 0.9452,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 53368,
+   "ssim_vs_ref": 0.9446,
+   "gain_pct": -41.6
+  }
+ },
+ {
+  "name": "qiyanshan.jpg",
+  "jpeg_bytes": 70747,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "qiyunxiao.jpg",
+  "jpeg_bytes": 26301,
+  "jpeg_ssim": 0.9837,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "quhun.jpg",
+  "jpeg_bytes": 66506,
+  "jpeg_ssim": 0.9735,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "renhuyao.jpg",
+  "jpeg_bytes": 54416,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "shaxin.jpg",
+  "jpeg_bytes": 102002,
+  "jpeg_ssim": 0.957,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 64554,
+   "ssim_vs_ref": 0.9587,
+   "gain_pct": -36.7
+  }
+ },
+ {
+  "name": "shenfengzhou.jpg",
+  "jpeg_bytes": 34972,
+  "jpeg_ssim": 0.9775,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 27026,
+   "ssim_vs_ref": 0.9779,
+   "gain_pct": -22.7
+  }
+ },
+ {
+  "name": "shengxianling.jpg",
+  "jpeg_bytes": 22198,
+  "jpeg_ssim": 0.9891,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 15004,
+   "ssim_vs_ref": 0.9889,
+   "gain_pct": -32.4
+  }
+ },
+ {
+  "name": "sheweikuilei.jpg",
+  "jpeg_bytes": 22861,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "shichuankong.jpg",
+  "jpeg_bytes": 79398,
+  "jpeg_ssim": 0.9613,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 46414,
+   "ssim_vs_ref": 0.9593,
+   "gain_pct": -41.5
+  }
+ },
+ {
+  "name": "shijian.jpg",
+  "jpeg_bytes": 33037,
+  "jpeg_ssim": 0.9963,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "shikongmo.jpg",
+  "jpeg_bytes": 27935,
+  "jpeg_ssim": 0.9894,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 17368,
+   "ssim_vs_ref": 0.9883,
+   "gain_pct": -37.8
+  }
+ },
+ {
+  "name": "shiling.jpg",
+  "jpeg_bytes": 39705,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "shiqinshoumuchaomu.jpg",
+  "jpeg_bytes": 45435,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "shixiao.jpg",
+  "jpeg_bytes": 75438,
+  "jpeg_ssim": 0.9652,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 43618,
+   "ssim_vs_ref": 0.9652,
+   "gain_pct": -42.2
+  }
+ },
+ {
+  "name": "shouyuanguo.jpg",
+  "jpeg_bytes": 98055,
+  "jpeg_ssim": 0.9543,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 59858,
+   "ssim_vs_ref": 0.9528,
+   "gain_pct": -39.0
+  }
+ },
+ {
+  "name": "shuangtongshu.jpg",
+  "jpeg_bytes": 48131,
+  "jpeg_ssim": 0.9856,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "silingwan.jpg",
+  "jpeg_bytes": 79854,
+  "jpeg_ssim": 0.9458,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 54414,
+   "ssim_vs_ref": 0.9497,
+   "gain_pct": -31.9
+  }
+ },
+ {
+  "name": "songmeng.jpg",
+  "jpeg_bytes": 38962,
+  "jpeg_ssim": 0.9984,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "songyu.jpg",
+  "jpeg_bytes": 73457,
+  "jpeg_ssim": 0.9705,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 64104,
+   "ssim_vs_ref": 0.9707,
+   "gain_pct": -12.7
+  }
+ },
+ {
+  "name": "sunergou.jpg",
+  "jpeg_bytes": 31190,
+  "jpeg_ssim": 0.9827,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 21790,
+   "ssim_vs_ref": 0.9821,
+   "gain_pct": -30.1
+  }
+ },
+ {
+  "name": "taiyangjingshi.jpg",
+  "jpeg_bytes": 45319,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "tayunxue.jpg",
+  "jpeg_bytes": 25222,
+  "jpeg_ssim": 0.9822,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 17498,
+   "ssim_vs_ref": 0.9845,
+   "gain_pct": -30.6
+  }
+ },
+ {
+  "name": "tianbuque.jpg",
+  "jpeg_bytes": 23130,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 78,
+   "bytes": 20384,
+   "ssim_vs_ref": 0.9914,
+   "gain_pct": -11.9
+  }
+ },
+ {
+  "name": "tianduyaoshi.jpg",
+  "jpeg_bytes": 92406,
+  "jpeg_ssim": 0.9671,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 56726,
+   "ssim_vs_ref": 0.9658,
+   "gain_pct": -38.6
+  }
+ },
+ {
+  "name": "tianfeng.jpg",
+  "jpeg_bytes": 159075,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "tiankuilangwang.jpg",
+  "jpeg_bytes": 44571,
+  "jpeg_ssim": 0.979,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 33200,
+   "ssim_vs_ref": 0.98,
+   "gain_pct": -25.5
+  }
+ },
+ {
+  "name": "tiankushangren.jpg",
+  "jpeg_bytes": 20784,
+  "jpeg_ssim": 0.987,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 14886,
+   "ssim_vs_ref": 0.9861,
+   "gain_pct": -28.4
+  }
+ },
+ {
+  "name": "tianleizi.jpg",
+  "jpeg_bytes": 22015,
+  "jpeg_ssim": 0.9873,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 14730,
+   "ssim_vs_ref": 0.9871,
+   "gain_pct": -33.1
+  }
+ },
+ {
+  "name": "tianlingguo.jpg",
+  "jpeg_bytes": 70830,
+  "jpeg_ssim": 0.9558,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 47952,
+   "ssim_vs_ref": 0.9567,
+   "gain_pct": -32.3
+  }
+ },
+ {
+  "name": "tianluyin.jpg",
+  "jpeg_bytes": 26562,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "tianmiaolinghuang.jpg",
+  "jpeg_bytes": 125536,
+  "jpeg_ssim": 0.9628,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 77632,
+   "ssim_vs_ref": 0.9631,
+   "gain_pct": -38.2
+  }
+ },
+ {
+  "name": "tianqiner.jpg",
+  "jpeg_bytes": 40509,
+  "jpeg_ssim": 0.9915,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "tianshizhu.jpg",
+  "jpeg_bytes": 9320,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 60,
+   "bytes": 3546,
+   "ssim_vs_ref": 0.9925,
+   "gain_pct": -62.0
+  }
+ },
+ {
+  "name": "tianwuzi.jpg",
+  "jpeg_bytes": 40689,
+  "jpeg_ssim": 0.9863,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "tianyaofan.jpg",
+  "jpeg_bytes": 19534,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "tianyuanguo.jpg",
+  "jpeg_bytes": 65431,
+  "jpeg_ssim": 0.9517,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 33600,
+   "ssim_vs_ref": 0.9512,
+   "gain_pct": -48.6
+  }
+ },
+ {
+  "name": "tianyuanshenghuang.jpg",
+  "jpeg_bytes": 43644,
+  "jpeg_ssim": 0.9787,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 27874,
+   "ssim_vs_ref": 0.9769,
+   "gain_pct": -36.1
+  }
+ },
+ {
+  "name": "tihun.jpg",
+  "jpeg_bytes": 29641,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "tihun_lingjie.jpg",
+  "jpeg_bytes": 41095,
+  "jpeg_ssim": 0.9833,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "tihun_luanxing.jpg",
+  "jpeg_bytes": 37283,
+  "jpeg_ssim": 0.9642,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 33732,
+   "ssim_vs_ref": 0.9711,
+   "gain_pct": -9.5
+  }
+ },
+ {
+  "name": "tihun_xianjie.jpg",
+  "jpeg_bytes": 60568,
+  "jpeg_ssim": 0.9676,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 39022,
+   "ssim_vs_ref": 0.9657,
+   "gain_pct": -35.6
+  }
+ },
+ {
+  "name": "tujialong.jpg",
+  "jpeg_bytes": 76962,
+  "jpeg_ssim": 0.9759,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "wangchan.jpg",
+  "jpeg_bytes": 43028,
+  "jpeg_ssim": 0.9827,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 34734,
+   "ssim_vs_ref": 0.9826,
+   "gain_pct": -19.3
+  }
+ },
+ {
+  "name": "wangchan_dajin.jpg",
+  "jpeg_bytes": 35587,
+  "jpeg_ssim": 0.988,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "wangchan_huangfeng.jpg",
+  "jpeg_bytes": 43114,
+  "jpeg_ssim": 0.9734,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 32536,
+   "ssim_vs_ref": 0.9783,
+   "gain_pct": -24.5
+  }
+ },
+ {
+  "name": "wangjuechu.jpg",
+  "jpeg_bytes": 100175,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "wannianlingru.jpg",
+  "jpeg_bytes": 54658,
+  "jpeg_ssim": 0.96,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 41464,
+   "ssim_vs_ref": 0.9658,
+   "gain_pct": -24.1
+  }
+ },
+ {
+  "name": "wansangu_luanxing.jpg",
+  "jpeg_bytes": 34136,
+  "jpeg_ssim": 0.9845,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 23942,
+   "ssim_vs_ref": 0.9827,
+   "gain_pct": -29.9
+  }
+ },
+ {
+  "name": "wantianming.jpg",
+  "jpeg_bytes": 32554,
+  "jpeg_ssim": 0.9842,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "wanyaofan.jpg",
+  "jpeg_bytes": 85263,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "weiwuya.jpg",
+  "jpeg_bytes": 60304,
+  "jpeg_ssim": 0.9675,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 51930,
+   "ssim_vs_ref": 0.9754,
+   "gain_pct": -13.9
+  }
+ },
+ {
+  "name": "weixingzhanglao.jpg",
+  "jpeg_bytes": 46580,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 84,
+   "bytes": 38720,
+   "ssim_vs_ref": 0.9907,
+   "gain_pct": -16.9
+  }
+ },
+ {
+  "name": "wenfuren.jpg",
+  "jpeg_bytes": 39217,
+  "jpeg_ssim": 0.9721,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 27376,
+   "ssim_vs_ref": 0.9739,
+   "gain_pct": -30.2
+  }
+ },
+ {
+  "name": "wensiyue.jpg",
+  "jpeg_bytes": 44377,
+  "jpeg_ssim": 0.9852,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 32776,
+   "ssim_vs_ref": 0.9846,
+   "gain_pct": -26.1
+  }
+ },
+ {
+  "name": "wentianren.jpg",
+  "jpeg_bytes": 56170,
+  "jpeg_ssim": 0.9788,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 43158,
+   "ssim_vs_ref": 0.9788,
+   "gain_pct": -23.2
+  }
+ },
+ {
+  "name": "wuchou.jpg",
+  "jpeg_bytes": 27556,
+  "jpeg_ssim": 0.9859,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "wufeng_huangfeng.jpg",
+  "jpeg_bytes": 44852,
+  "jpeg_ssim": 0.9901,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "wuguangkongque.jpg",
+  "jpeg_bytes": 72883,
+  "jpeg_ssim": 0.9703,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "wulongduo.jpg",
+  "jpeg_bytes": 29230,
+  "jpeg_ssim": 0.9875,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 18380,
+   "ssim_vs_ref": 0.9856,
+   "gain_pct": -37.1
+  }
+ },
+ {
+  "name": "wuxuan_huangfeng.jpg",
+  "jpeg_bytes": 27438,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "wuyan.jpg",
+  "jpeg_bytes": 17217,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "wuyang.jpg",
+  "jpeg_bytes": 59481,
+  "jpeg_ssim": 0.9762,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 40036,
+   "ssim_vs_ref": 0.9755,
+   "gain_pct": -32.7
+  }
+ },
+ {
+  "name": "xiangzhili.jpg",
+  "jpeg_bytes": 50540,
+  "jpeg_ssim": 0.9765,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 43416,
+   "ssim_vs_ref": 0.9809,
+   "gain_pct": -14.1
+  }
+ },
+ {
+  "name": "xiangzhili_dajin.jpg",
+  "jpeg_bytes": 50540,
+  "jpeg_ssim": 0.9765,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 43416,
+   "ssim_vs_ref": 0.9809,
+   "gain_pct": -14.1
+  }
+ },
+ {
+  "name": "xiangzhili_huangfeng.jpg",
+  "jpeg_bytes": 28546,
+  "jpeg_ssim": 0.9863,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "xiaobuyehuangfuyu.jpg",
+  "jpeg_bytes": 43743,
+  "jpeg_ssim": 0.9738,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 32428,
+   "ssim_vs_ref": 0.9731,
+   "gain_pct": -25.9
+  }
+ },
+ {
+  "name": "xiaocuier.jpg",
+  "jpeg_bytes": 34462,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "xiaojinhan.jpg",
+  "jpeg_bytes": 38665,
+  "jpeg_ssim": 0.9576,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 23062,
+   "ssim_vs_ref": 0.9577,
+   "gain_pct": -40.4
+  }
+ },
+ {
+  "name": "xiedaoren.jpg",
+  "jpeg_bytes": 46331,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "xiedaoren_lingjie.jpg",
+  "jpeg_bytes": 82534,
+  "jpeg_ssim": 0.9672,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 52936,
+   "ssim_vs_ref": 0.9656,
+   "gain_pct": -35.9
+  }
+ },
+ {
+  "name": "xiedaoren_xianjie.jpg",
+  "jpeg_bytes": 49474,
+  "jpeg_ssim": 0.9989,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "xinggongshuangsheng.jpg",
+  "jpeg_bytes": 46794,
+  "jpeg_ssim": 0.9832,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 38584,
+   "ssim_vs_ref": 0.9819,
+   "gain_pct": -17.5
+  }
+ },
+ {
+  "name": "xinruyin.jpg",
+  "jpeg_bytes": 28337,
+  "jpeg_ssim": 0.9858,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 20396,
+   "ssim_vs_ref": 0.9859,
+   "gain_pct": -28.0
+  }
+ },
+ {
+  "name": "xiongshan.jpg",
+  "jpeg_bytes": 62661,
+  "jpeg_ssim": 0.9773,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 53140,
+   "ssim_vs_ref": 0.9796,
+   "gain_pct": -15.2
+  }
+ },
+ {
+  "name": "xiongshi.jpg",
+  "jpeg_bytes": 34848,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "xuangushangren.jpg",
+  "jpeg_bytes": 50723,
+  "jpeg_ssim": 0.983,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 27878,
+   "ssim_vs_ref": 0.9823,
+   "gain_pct": -45.0
+  }
+ },
+ {
+  "name": "xuanhuangjing.jpg",
+  "jpeg_bytes": 14734,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 60,
+   "bytes": 7706,
+   "ssim_vs_ref": 0.9916,
+   "gain_pct": -47.7
+  }
+ },
+ {
+  "name": "xuantianhulu.jpg",
+  "jpeg_bytes": 67448,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "xuantianzhanlingjian.jpg",
+  "jpeg_bytes": 56058,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "xuantiefeitiandun.jpg",
+  "jpeg_bytes": 32127,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "xuanwu.jpg",
+  "jpeg_bytes": 81540,
+  "jpeg_ssim": 0.9712,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "xuanwubahuang.jpg",
+  "jpeg_bytes": 50655,
+  "jpeg_ssim": 0.9994,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "xuanxantianteng.jpg",
+  "jpeg_bytes": 129714,
+  "jpeg_ssim": 0.953,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 82932,
+   "ssim_vs_ref": 0.9596,
+   "gain_pct": -36.1
+  }
+ },
+ {
+  "name": "xuanyewang.jpg",
+  "jpeg_bytes": 53476,
+  "jpeg_ssim": 0.9825,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 43986,
+   "ssim_vs_ref": 0.9827,
+   "gain_pct": -17.7
+  }
+ },
+ {
+  "name": "xuanyuanjie.jpg",
+  "jpeg_bytes": 32556,
+  "jpeg_ssim": 0.9874,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 23360,
+   "ssim_vs_ref": 0.9863,
+   "gain_pct": -28.2
+  }
+ },
+ {
+  "name": "xueguang.jpg",
+  "jpeg_bytes": 79385,
+  "jpeg_ssim": 0.9605,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 52588,
+   "ssim_vs_ref": 0.9605,
+   "gain_pct": -33.8
+  }
+ },
+ {
+  "name": "xuellincao.jpg",
+  "jpeg_bytes": 103490,
+  "jpeg_ssim": 0.9514,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 63624,
+   "ssim_vs_ref": 0.9498,
+   "gain_pct": -38.5
+  }
+ },
+ {
+  "name": "xuepowan.jpg",
+  "jpeg_bytes": 87164,
+  "jpeg_ssim": 0.946,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 62830,
+   "ssim_vs_ref": 0.9485,
+   "gain_pct": -27.9
+  }
+ },
+ {
+  "name": "xueyanzhuhun.jpg",
+  "jpeg_bytes": 104390,
+  "jpeg_ssim": 0.9764,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 73958,
+   "ssim_vs_ref": 0.9761,
+   "gain_pct": -29.2
+  }
+ },
+ {
+  "name": "xueyuzhizhu.jpg",
+  "jpeg_bytes": 45457,
+  "jpeg_ssim": 0.9851,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "xuhuangding.jpg",
+  "jpeg_bytes": 58471,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "xutianding.jpg",
+  "jpeg_bytes": 77333,
+  "jpeg_ssim": 0.9804,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 73442,
+   "ssim_vs_ref": 0.984,
+   "gain_pct": -5.0
+  }
+ },
+ {
+  "name": "yanghunmu.jpg",
+  "jpeg_bytes": 85091,
+  "jpeg_ssim": 0.9532,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 50604,
+   "ssim_vs_ref": 0.9523,
+   "gain_pct": -40.5
+  }
+ },
+ {
+  "name": "yangjingdan.jpg",
+  "jpeg_bytes": 73006,
+  "jpeg_ssim": 0.9397,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 48238,
+   "ssim_vs_ref": 0.9404,
+   "gain_pct": -33.9
+  }
+ },
+ {
+  "name": "yanli.jpg",
+  "jpeg_bytes": 42103,
+  "jpeg_ssim": 0.9776,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 26208,
+   "ssim_vs_ref": 0.9776,
+   "gain_pct": -37.8
+  }
+ },
+ {
+  "name": "yanli_dajin.jpg",
+  "jpeg_bytes": 22897,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yanli_luanxing.jpg",
+  "jpeg_bytes": 64591,
+  "jpeg_ssim": 0.9861,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 46516,
+   "ssim_vs_ref": 0.986,
+   "gain_pct": -28.0
+  }
+ },
+ {
+  "name": "yanruyan_huangfeng.jpg",
+  "jpeg_bytes": 23242,
+  "jpeg_ssim": 0.9808,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 16982,
+   "ssim_vs_ref": 0.9829,
+   "gain_pct": -26.9
+  }
+ },
+ {
+  "name": "yelangbangzhu.jpg",
+  "jpeg_bytes": 34234,
+  "jpeg_ssim": 0.9829,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 19026,
+   "ssim_vs_ref": 0.9811,
+   "gain_pct": -44.4
+  }
+ },
+ {
+  "name": "yeshixiong.jpg",
+  "jpeg_bytes": 39758,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "yincehengquan.jpg",
+  "jpeg_bytes": 61318,
+  "jpeg_ssim": 0.9637,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 43752,
+   "ssim_vs_ref": 0.9677,
+   "gain_pct": -28.6
+  }
+ },
+ {
+  "name": "yinchiyecha.jpg",
+  "jpeg_bytes": 77190,
+  "jpeg_ssim": 0.98,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 60142,
+   "ssim_vs_ref": 0.9824,
+   "gain_pct": -22.1
+  }
+ },
+ {
+  "name": "yinglishou.jpg",
+  "jpeg_bytes": 32895,
+  "jpeg_ssim": 0.9829,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 25894,
+   "ssim_vs_ref": 0.9819,
+   "gain_pct": -21.3
+  }
+ },
+ {
+  "name": "yinhunzhong.jpg",
+  "jpeg_bytes": 24900,
+  "jpeg_ssim": 0.9888,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yinluosizhanglao.jpg",
+  "jpeg_bytes": 63495,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "yinming.jpg",
+  "jpeg_bytes": 68140,
+  "jpeg_ssim": 0.9677,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 41868,
+   "ssim_vs_ref": 0.9698,
+   "gain_pct": -38.6
+  }
+ },
+ {
+  "name": "yinningcao.jpg",
+  "jpeg_bytes": 104314,
+  "jpeg_ssim": 0.9585,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 64180,
+   "ssim_vs_ref": 0.958,
+   "gain_pct": -38.5
+  }
+ },
+ {
+  "name": "yinyue.jpg",
+  "jpeg_bytes": 59766,
+  "jpeg_ssim": 0.979,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 45214,
+   "ssim_vs_ref": 0.9797,
+   "gain_pct": -24.3
+  }
+ },
+ {
+  "name": "yinyue_dajin.jpg",
+  "jpeg_bytes": 48151,
+  "jpeg_ssim": 0.9697,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 41762,
+   "ssim_vs_ref": 0.9753,
+   "gain_pct": -13.3
+  }
+ },
+ {
+  "name": "yinyue_lingjie.jpg",
+  "jpeg_bytes": 34932,
+  "jpeg_ssim": 0.9832,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 23032,
+   "ssim_vs_ref": 0.9814,
+   "gain_pct": -34.1
+  }
+ },
+ {
+  "name": "yinyue_luanxing.jpg",
+  "jpeg_bytes": 32035,
+  "jpeg_ssim": 0.9857,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 22970,
+   "ssim_vs_ref": 0.9843,
+   "gain_pct": -28.3
+  }
+ },
+ {
+  "name": "yixitian.jpg",
+  "jpeg_bytes": 39653,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "youtiankunpeng.jpg",
+  "jpeg_bytes": 79762,
+  "jpeg_ssim": 0.9246,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 45192,
+   "ssim_vs_ref": 0.9312,
+   "gain_pct": -43.3
+  }
+ },
+ {
+  "name": "yuanmingdeng.jpg",
+  "jpeg_bytes": 35540,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "yuanshafenhun.jpg",
+  "jpeg_bytes": 27461,
+  "jpeg_ssim": 0.9995,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yuanyan.jpg",
+  "jpeg_bytes": 66224,
+  "jpeg_ssim": 0.9586,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 40100,
+   "ssim_vs_ref": 0.958,
+   "gain_pct": -39.4
+  }
+ },
+ {
+  "name": "yuanyao.jpg",
+  "jpeg_bytes": 23292,
+  "jpeg_ssim": 0.9892,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yuanyao_dajin.jpg",
+  "jpeg_bytes": 21673,
+  "jpeg_ssim": 0.9878,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yuanyao_lingjie.jpg",
+  "jpeg_bytes": 26787,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yuanyao_luanxing.jpg",
+  "jpeg_bytes": 50554,
+  "jpeg_ssim": 0.987,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 37692,
+   "ssim_vs_ref": 0.9852,
+   "gain_pct": -25.4
+  }
+ },
+ {
+  "name": "yuanyao_xianjie.jpg",
+  "jpeg_bytes": 48795,
+  "jpeg_ssim": 0.9765,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 38564,
+   "ssim_vs_ref": 0.9795,
+   "gain_pct": -21.0
+  }
+ },
+ {
+  "name": "yuanyingkuilei.jpg",
+  "jpeg_bytes": 50170,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "yuhuafuren.jpg",
+  "jpeg_bytes": 32945,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 84,
+   "bytes": 30942,
+   "ssim_vs_ref": 0.9904,
+   "gain_pct": -6.1
+  }
+ },
+ {
+  "name": "yunchiniao.jpg",
+  "jpeg_bytes": 51230,
+  "jpeg_ssim": 0.9988,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yunlulaomo.jpg",
+  "jpeg_bytes": 36400,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yunlulaomo_dajin.jpg",
+  "jpeg_bytes": 61436,
+  "jpeg_ssim": 0.978,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 55974,
+   "ssim_vs_ref": 0.9801,
+   "gain_pct": -8.9
+  }
+ },
+ {
+  "name": "yunlulaomo_huangfeng.jpg",
+  "jpeg_bytes": 36400,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "yusuizhi.jpg",
+  "jpeg_bytes": 80683,
+  "jpeg_ssim": 0.958,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 54750,
+   "ssim_vs_ref": 0.961,
+   "gain_pct": -32.1
+  }
+ },
+ {
+  "name": "yuzitong.jpg",
+  "jpeg_bytes": 20063,
+  "jpeg_ssim": 0.986,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "zaohuadan.jpg",
+  "jpeg_bytes": 110282,
+  "jpeg_ssim": 0.9434,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 68414,
+   "ssim_vs_ref": 0.9424,
+   "gain_pct": -38.0
+  }
+ },
+ {
+  "name": "zaohuadan_fang.jpg",
+  "jpeg_bytes": 63042,
+  "jpeg_ssim": 0.9463,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 52542,
+   "ssim_vs_ref": 0.9555,
+   "gain_pct": -16.7
+  }
+ },
+ {
+  "name": "zhangkui.jpg",
+  "jpeg_bytes": 101153,
+  "jpeg_ssim": 0.9668,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 62708,
+   "ssim_vs_ref": 0.9667,
+   "gain_pct": -38.0
+  }
+ },
+ {
+  "name": "zhangtianping.jpg",
+  "jpeg_bytes": 46071,
+  "jpeg_ssim": 0.9819,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 36766,
+   "ssim_vs_ref": 0.983,
+   "gain_pct": -20.2
+  }
+ },
+ {
+  "name": "zhangtianyin.jpg",
+  "jpeg_bytes": 78157,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "zhangtie.jpg",
+  "jpeg_bytes": 28069,
+  "jpeg_ssim": 0.9846,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "zhangxiuer.jpg",
+  "jpeg_bytes": 17194,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "zhenhaizhong.jpg",
+  "jpeg_bytes": 91985,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": null
+ },
+ {
+  "name": "zhenlong.jpg",
+  "jpeg_bytes": 138229,
+  "jpeg_ssim": 0.925,
+  "mode": "ref",
+  "webp": {
+   "q": 60,
+   "bytes": 91822,
+   "ssim_vs_ref": 0.9278,
+   "gain_pct": -33.6
+  }
+ },
+ {
+  "name": "zhiyangshangren.jpg",
+  "jpeg_bytes": 66494,
+  "jpeg_ssim": 0.981,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 41438,
+   "ssim_vs_ref": 0.9794,
+   "gain_pct": -37.7
+  }
+ },
+ {
+  "name": "zhonglingdao_huangfeng.jpg",
+  "jpeg_bytes": 31823,
+  "jpeg_ssim": 0.9859,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "zhongweiniang.jpg",
+  "jpeg_bytes": 48464,
+  "jpeg_ssim": 0.9811,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 30110,
+   "ssim_vs_ref": 0.9811,
+   "gain_pct": -37.9
+  }
+ },
+ {
+  "name": "zhongwulang.jpg",
+  "jpeg_bytes": 26877,
+  "jpeg_ssim": 0.985,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 19014,
+   "ssim_vs_ref": 0.9838,
+   "gain_pct": -29.3
+  }
+ },
+ {
+  "name": "zhuguoer.jpg",
+  "jpeg_bytes": 64020,
+  "jpeg_ssim": 0.9797,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 47144,
+   "ssim_vs_ref": 0.9787,
+   "gain_pct": -26.4
+  }
+ },
+ {
+  "name": "zhujidan.jpg",
+  "jpeg_bytes": 73300,
+  "jpeg_ssim": 0.9473,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 48660,
+   "ssim_vs_ref": 0.9516,
+   "gain_pct": -33.6
+  }
+ },
+ {
+  "name": "zhujidan_fang.jpg",
+  "jpeg_bytes": 69464,
+  "jpeg_ssim": 0.9485,
+  "mode": "ref",
+  "webp": {
+   "q": 78,
+   "bytes": 43668,
+   "ssim_vs_ref": 0.9492,
+   "gain_pct": -37.1
+  }
+ },
+ {
+  "name": "zhujiuyin.jpg",
+  "jpeg_bytes": 113569,
+  "jpeg_ssim": 0.9509,
+  "mode": "ref",
+  "webp": {
+   "q": 66,
+   "bytes": 74118,
+   "ssim_vs_ref": 0.9531,
+   "gain_pct": -34.7
+  }
+ },
+ {
+  "name": "zhuquehuan.jpg",
+  "jpeg_bytes": 19418,
+  "jpeg_ssim": null,
+  "mode": "jpeg",
+  "webp": {
+   "q": 84,
+   "bytes": 15710,
+   "ssim_vs_ref": 0.9903,
+   "gain_pct": -19.1
+  }
+ },
+ {
+  "name": "zihouhua.jpg",
+  "jpeg_bytes": 79735,
+  "jpeg_ssim": 0.9544,
+  "mode": "ref",
+  "webp": {
+   "q": 72,
+   "bytes": 46292,
+   "ssim_vs_ref": 0.9527,
+   "gain_pct": -41.9
+  }
+ },
+ {
+  "name": "ziling.jpg",
+  "jpeg_bytes": 29054,
+  "jpeg_ssim": 0.9861,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 21042,
+   "ssim_vs_ref": 0.9852,
+   "gain_pct": -27.6
+  }
+ },
+ {
+  "name": "ziling_dajin.jpg",
+  "jpeg_bytes": 29054,
+  "jpeg_ssim": 0.9861,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 21042,
+   "ssim_vs_ref": 0.9852,
+   "gain_pct": -27.6
+  }
+ },
+ {
+  "name": "ziling_lingjie.jpg",
+  "jpeg_bytes": 29631,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ },
+ {
+  "name": "ziling_luanxing.jpg",
+  "jpeg_bytes": 24202,
+  "jpeg_ssim": 0.9845,
+  "mode": "ref",
+  "webp": {
+   "q": 84,
+   "bytes": 16044,
+   "ssim_vs_ref": 0.9839,
+   "gain_pct": -33.7
+  }
+ },
+ {
+  "name": "ziling_xianjie.jpg",
+  "jpeg_bytes": 51089,
+  "jpeg_ssim": 1.0,
+  "mode": "ref",
+  "webp": null
+ }
+]

@@ -19,13 +19,15 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 │   ├── index.html          # 唯一交付物（自包含：内联 CSS/JS + 相对路径图片）
 │   ├── cultivation.css     # 【用户自加，不可改动】境界图表样式
 │   ├── javascripts/cultivation-chart.js   # 图表脚本（本站自持，不再依赖主站）
-│   ├── assets/             # 302 张被引用的角色/灵兽/灵草丹药/法宝图（命名见 §6）
+│   ├── assets/             # 374 张被引用的图（.webp 245 / .jpg 129，逐图最优，见 §6）
 │   ├── sitemap.xml
 │   └── robots.txt
 └── dev/                    # 开发资料，永不上站
     ├── Agent.md            # 本文档
     ├── _review.md          # 数据审校笔记
     ├── _backup/            # 迭代备份与脚本（index-vNN.html + apply_*.py）
+    ├── tools/image-slim.py # 图片瘦身工具（逐图判定是否转 WebP，见 §6）
+    ├── _image-slim-report.json  # 瘦身逐图决策记录（体积/SSIM/所选质量档）
     ├── unused-assets/      # 未被当前页面引用的实名角色/法宝图（备用素材，删了不影响线上）
     └── watermark.svg       # 仅供 _backup/index-v*.html 引用的水印瓦片
 ```
@@ -162,15 +164,19 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 
 ## 6. 图片体系（重要红线）
 
-- **图片文件**：`public/assets/<拼音名>[_<篇章>].jpg`，跨篇同角色可不同文件（如 `hanli_qixuanmen.jpg` / `hanli_xianjie.jpg`）。
-- **⚠️ 引用分两种，统计时必须都算**：① 页面里的字面量 `assets/xxx.jpg`；② **数据里的 `img:"xxx.jpg"` 字段**（渲染时才拼成路径，如丹药/灵草/法宝的 `img`）。
+- **图片文件**：`public/assets/<拼音名>[_<篇章>].<ext>`，跨篇同角色可不同文件（如 `hanli_qixuanmen.webp` / `hanli_xianjie.webp`）。
+  **扩展名不固定**：`.webp` 或 `.jpg` 都可能，**以文件实际存在为准，不要凭名字猜**（见下方「体积规范」）。
+- **⚠️ 引用分两种，统计时必须都算**：① 页面里的字面量 `assets/xxx.ext`；② **数据里的 `img:"xxx.ext"` 字段**（渲染时才拼成路径，如丹药/灵草/法宝的 `img`）。
   只查字面量会漏掉约 72 张（当前：字面量 302 + 数据字段 359，去重共 **374**）。曾因此误删了 5 张被数据引用的丹药图（`dan_blue/gold/green/purple/red.jpg`）。
-  校验脚本：`引用 = set(re.findall(字面量)) | set(re.findall(r'img\s*:\s*["\']([^"\']+\.jpg)["\']'))`，然后断言 `引用 == set(os.listdir('public/assets'))`。
-- **图片体积规范（2026-09-17 定）**：卡片实际只显示 180–240px，发布图统一 **长边 ≤ 800px / JPEG q76 / 渐进式 / 去元数据**（90.4MB → 20.0MB，-78%）。
-  新增或替换图片时按同一标准压一遍（Pillow，无构建工具）：resize LANCZOS → `save(quality=76, optimize=True, progressive=True)`，**仅在输出更小时才替换原文件**。
+  校验脚本：`引用 = set(re.findall(r'assets/([\w.]+\.(?:webp|jpg|png))', h)) | set(re.findall(r'img\s*:\s*["\']([\w.]+\.(?:webp|jpg|png))["\']', h))`，然后断言 `引用 == set(os.listdir('public/assets'))`。
+- **图片体积规范（2026-09-17 定）**：卡片实际只显示 180–360px，发布图统一 **长边 ≤ 800px / 渐进式 / 去元数据**（90.4MB → 20.0MB，-78%）。
+  新增或替换图片时按同一标准压一遍：resize LANCZOS → 存 JPEG q76 与 WebP 各一份取小者，**仅在输出更小时才替换原文件**。
   原始高清图保留在 git 历史里，随时可取回：`git show 15cfee4:dev/unused-assets/<名>`（迁移前）或 `git show 143a8c9:public/assets/<名>`（瘦身前）。
+- **格式：逐图最优，不是一刀切（2026-09-17 晚）**。WebP 并非总比 JPEG 小：本仓库的 JPEG 已是 q76 压缩产物，其中约 1/3 已接近无损，硬转 WebP 反而最大 +13.7%。
+  故用 `python3 dev/tools/image-slim.py --dry-run` 逐图试 WebP q∈{60,66,72,78,84}，只取「**相对高清原图的 SSIM 不低于当前 JPEG（容差 0.002）** 且明显更小」的档位；达不到就保留 JPEG。实测 **245 张转 WebP / 129 张保留**，21.0MB → 15.8MB（-22.3%，单张中位 -32%）。
+  ⇒ 新增图片无需手动跑工具，但要遵守同一逻辑：**画质不降级优先，格式之争让数据决定**。工具里的坑：编码源必须是「原图降采样」的无损图，**不能拿已压过的 JPEG 再编码**（体积与画质双输）。
 - **引用方式（发布链路硬规则）**：图片路径只能出现在 **`<img src="assets/…">`** 或 **CSS `url()`** 中。JS 常量数组、`data-src` 等一律发布后裂图。
-- **隐藏清单**：`<style>` 内 `.asset-manifest{display:none;background-image:url("assets/…"),…}` 列出**字面量引用**的图片（当前 302 条，**不含数据 `img` 字段引用的 72 张**）。新增图片必须同步追加登记，否则发布后裂图——⚠️ 但注意该清单与 `publishBrokenAssets` 规则**都只认 src 与 CSS url() 静态引用**，数据字段引用的图缺失时它们检不出来，需另外跑上面那条完整性断言。
+- **隐藏清单**：`<style>` 内 `.asset-manifest{display:none;background-image:url("assets/…"),…}` 列出**字面量引用**的图片（当前 302 条，**不含数据 `img` 字段引用的那部分**）。该元素 `display:none`，**不会真的下载图片**（已实测：全站 0 失败请求）；它只为「引用登记」与发布前破图自检服务。新增图片必须同步追加登记——⚠️ 但注意该清单与 `publishBrokenAssets` 规则**都只认 src 与 CSS url() 静态引用**，数据字段引用的图缺失时它们检不出来，需另外跑上面那条完整性断言。
 - **无图角色**：不硬凑图，卡片显示姓氏首字占位（渲染逻辑：`c.img ? '<img …>' : '<div class="ph">首字</div>'`）。
 - **准确性声明**：页面已含多处声明（v-home 收录说明、hero 副标题、v-chars 卡片区上方橙色警示框、页脚）——图片是网络检索素材（动画截图/官方概念图/百科插画/同人立绘），受动画进度限制（播至人界篇·慕兰之战），灵界/仙界多数角色未在动画登场，**可能与官方形象存在偏差甚至错配**。此声明是用户明确要求，勿删除。
 - **找图规范**：优先动画形象 → 官方概念图 → 百科插画 → 同人图；下载后必须用读图能力逐张核对角色身份、清晰度、无水印，错配宁可不用。用户提供图源优先级：百度图片 / 必应图片 / 搜狗图片 / 花瓣网 / B站专栏 / 豆瓣剧照 / 站酷 / trace.moe 识图。
