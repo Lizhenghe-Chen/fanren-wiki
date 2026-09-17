@@ -1,7 +1,7 @@
 # macOS
 .DS_Store
 
-# 自检产物（html skill 的 shot.py 输出，用完即清，见 dev/Agent.md §8）
+# 自检/调试临时产物（用完即删，验收流程见 dev/Agent.md §8）
 dev/_shots/
 dev/_chk_*.html
 
