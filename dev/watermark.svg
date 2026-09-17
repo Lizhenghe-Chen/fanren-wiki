@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="420" height="240" viewBox="0 0 420 240">
-  <!-- 循环水印瓦片：斜向两行，标明出处（bunnychen.top）。颜色与透明度可直接改 -->
-  <g font-family="Noto Sans SC, PingFang SC, Microsoft YaHei, sans-serif">
-    <text x="210" y="112" text-anchor="middle" transform="rotate(-24 210 112)"
-          font-size="17" letter-spacing="2" fill="#e9e4d8" fill-opacity="0.075">bunnychen.top</text>
-    <text x="210" y="140" text-anchor="middle" transform="rotate(-24 210 140)"
-          font-size="16" letter-spacing="3" fill="#d4af6a" fill-opacity="0.06">凡人修仙传 · 人物图谱</text>
-  </g>
-</svg>

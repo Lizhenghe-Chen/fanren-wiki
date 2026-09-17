@@ -6,10 +6,10 @@
 <title>《凡人修仙传》百科 · 全篇资料图谱</title>
 <!--
   《凡人修仙传》百科 · 全篇资料图谱
-  © 2026 Lizhenghe Chen（BunnyChen.top）· 保留所有未明确授权的权利
-  原创整理内容（人物/境界/结局/生平的采集、编排，以及页面设计与文案）遵循 CC-BY-NC 4.0：
-  允许署名 + 非商业转载；禁止商业使用；禁止去除署名与页面水印后发布。
-  角色图片为网络检索素材，版权归各自权利人所有，如有异议请联系删除。
+  © 2026 Lizhenghe Chen（BunnyChen.top）
+  本页原创部分（资料的采集与编排、页面设计与文案、页面代码）依 Apache License 2.0 授权：
+  可自由使用、修改、再分发（含商业用途），保留版权与许可声明即可，详见仓库 LICENSE 与 NOTICE。
+  角色图片为网络检索素材，版权归各自权利人所有，不在上述许可范围内，如有异议请联系删除。
   源码仓库：https://github.com/Lizhenghe-Chen/fanren-wiki
   首次发布：2026-09-14 · 最后更新：2026-09-17
 -->
@@ -28,7 +28,7 @@
   "copyrightYear": 2026,
   "datePublished": "2026-09-14",
   "dateModified": "2026-09-17",
-  "license": "https://creativecommons.org/licenses/by-nc/4.0/",
+  "license": "https://www.apache.org/licenses/LICENSE-2.0",
   "isBasedOn": { "@type": "Book", "name": "凡人修仙传", "author": { "@type": "Person", "name": "忘语" } },
   "description": "个人整理的《凡人修仙传》全篇资料图谱：六个篇章二百二十余位人物、灵兽灵虫、灵草丹药、法器法宝，含境界演进与命运结局。"
 }
@@ -308,6 +308,11 @@ h1 .accent{
 .tn-search kbd{font:inherit;font-size:10.5px;letter-spacing:.06em;padding:1px 5px;border:1px solid var(--line);border-radius:4px;color:var(--ink3);background:rgba(0,0,0,.25)}
 @media (max-width:1100px){.tn-search kbd{display:none}}
 @media (max-width:640px){.tn-search span{display:none}.tn-search{padding:0 8px}}
+/* 开源仓库入口（图标按钮，与搜索框同形态）
+   ⚠️ 必须写 `.topnav a.tn-github`：上方 `.topnav a` 的 padding 选择器权重更高，裸类名盖不住 */
+.topnav a.tn-github{flex:none;display:inline-flex;align-items:center;justify-content:center;width:30px;height:30px;padding:0;margin-left:6px;border:1px solid rgba(212,175,106,.35);border-radius:8px;background:rgba(212,175,106,.07);color:var(--gold);transition:background .18s,border-color .18s}
+.topnav a.tn-github:hover{background:rgba(212,175,106,.16);border-color:var(--gold);color:#fff}
+.topnav a.tn-github svg{display:block}
 /* 链接组自己横向滚动（品牌与右侧状态固定不动）——任何宽度下都不会把页面撑出横向漂移 */
 .tn-links{display:flex;gap:4px;align-items:center;flex:1 1 auto;min-width:0;overflow-x:auto;overflow-y:hidden;scrollbar-width:none}
 .tn-links::-webkit-scrollbar{display:none}
@@ -319,6 +324,10 @@ h1 .accent{
   .topnav a{padding:6px 12px;font-size:12.5px}
   .tn-brand{font-size:13.5px;margin-right:8px}
   .tn-update{display:none}
+  /* 仓库图标同 tn-update 一样让位：宽度不够时优先保证 7 个视图入口完整可见
+     （实测 698px 下链接区本已差 33px，图标再占 40px 会把末个入口整个切掉）。
+     首页开源卡片 / hero 按钮 / 页脚三处入口仍在，不影响可达性 */
+  .topnav a.tn-github{display:none}
 }
 /* ≤880px 再让出品牌位（页面标题在 hero 里已有），避免末个入口被截一截 */
 @media (max-width:880px){.tn-brand{display:none}}
@@ -359,6 +368,17 @@ h1 .accent{
 .src-list b{color:var(--gold);font-weight:600}
 .src-list a{color:var(--gold);text-decoration:none;border-bottom:1px dashed rgba(212,175,106,.45);word-break:break-all;overflow-wrap:anywhere}
 .src-list a:hover{color:#fff;border-bottom-style:solid}
+/* ===== 开源仓库卡片（首页 / 全站可见） ===== */
+.repo-card{display:flex;align-items:center;gap:16px;flex-wrap:wrap;min-width:0;background:rgba(255,255,255,.028);border:1px solid rgba(212,175,106,.16);border-radius:14px;padding:18px 20px;text-decoration:none;transition:.22s}
+.repo-card:hover{background:rgba(212,175,106,.08);border-color:rgba(212,175,106,.42)}
+.repo-mark{flex:none;display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:11px;border:1px solid rgba(212,175,106,.3);background:rgba(212,175,106,.08);color:var(--gold)}
+.repo-mark svg{display:block}
+.repo-body{flex:1 1 240px;min-width:0}
+.repo-body .repo-name{display:block;color:var(--gold);font-family:var(--font-serif);font-size:15px;letter-spacing:.04em;margin-bottom:5px;overflow-wrap:anywhere}
+.repo-body span{display:block;color:var(--ink3);font-size:12.5px;line-height:1.8;overflow-wrap:anywhere}
+.repo-body span b{color:var(--ink2);font-weight:600}
+.repo-go{flex:none;color:var(--gold);font-size:12.5px;letter-spacing:.05em;white-space:nowrap;border-bottom:1px dashed rgba(212,175,106,.45)}
+.repo-card:hover .repo-go{border-bottom-style:solid}
 /* ===== 视图切换 ===== */
 .view{display:none;scroll-margin-top:49px}
 .view.active{display:block}
@@ -411,6 +431,7 @@ h1 .accent{
 .realm-chart-panel .cv-chart{margin-top:16px}
 @media (max-width:760px){.realm-intro,.realm-chart-grid{grid-template-columns:1fr}.realm-chart-panel.wide{grid-column:auto}}
 @media (max-width:760px){.realm-intro{grid-template-columns:1fr}.project-link{flex:1 1 180px;justify-content:center}}
+.project-link svg{flex:none;margin-right:7px}
 footer{border-top:1px solid var(--line);margin-top:44px;padding:26px 0 40px;color:var(--ink3);font-size:12px}
 footer .note{margin-top:6px}
 .empty-tip{display:none;text-align:center;color:var(--ink3);padding:60px 0;font-size:14px}
@@ -668,6 +689,9 @@ footer .note{margin-top:6px}
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
       <span>全库搜索</span><kbd>⌘K</kbd>
     </button>
+    <a class="tn-github" href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener" aria-label="GitHub 源码仓库" title="GitHub 源码仓库 · Apache License 2.0">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+    </a>
     <span class="tn-update">持续更新中 · <a class="tn-author" href="https://lizhenghe-chen.github.io/" target="_blank" rel="noopener">作者主页</a> · 更新 2026-09-17</span>
   </div>
 </nav>
@@ -686,6 +710,7 @@ footer .note{margin-top:6px}
         <a class="project-link primary" href="#v-chars">进入人物图谱</a>
         <a class="project-link" href="#v-lore">剧情速览</a>
         <a class="project-link" href="https://bunnychen.top/docs/Other/fanren-xiuxian/">勘误与反馈</a>
+        <a class="project-link" href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub 源码</a>
       </div>
       <div class="stats">
         <div class="stat"><b id="home-st-chars">0</b><span>人物记录</span></div>
@@ -779,6 +804,20 @@ footer .note{margin-top:6px}
     <li><b>图片素材</b> —— 动画正片截图、官方概念图与人物设定、百科插画、同人立绘；均为网络检索素材，仅供回忆辅助，不保证与官方形象完全一致。<a href="https://image.baidu.com/" target="_blank" rel="noopener">百度图片</a> · <a href="https://cn.bing.com/images" target="_blank" rel="noopener">必应图片</a> · <a href="https://huaban.com/" target="_blank" rel="noopener">花瓣</a></li>
   </ul>
   <div class="home-note" style="margin-top:12px">未列出的零散来源以原著为准。</div>
+</section>
+
+<!-- ===== 开源 ===== -->
+<section class="wrap home-section">
+  <div class="sec-title">开源</div>
+  <div class="sec-desc">本页源码已在 GitHub 公开，欢迎取用、镜像与改进</div>
+  <a class="repo-card" href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener">
+    <span class="repo-mark"><svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></span>
+    <span class="repo-body">
+      <b class="repo-name">Lizhenghe-Chen / fanren-wiki</b>
+      <span>单文件静态站，无构建、无依赖。页面代码与原创整理内容依 <b>Apache License 2.0</b> 授权，可自由使用、修改、再分发（含商业用途），保留版权与署名声明即可；角色图片为第三方素材，不在该许可范围内。</span>
+    </span>
+    <span class="repo-go">前往仓库 →</span>
+  </a>
 </section>
 </div>
 
@@ -1092,7 +1131,8 @@ footer .note{margin-top:6px}
     <div class="note">内容依据《凡人修仙传》原著及公开资料整理。角色图片为网络检索素材（动画截图 / 官方概念图 / 同人立绘），部分篇章角色动画未登场，<b>图片仅供回忆辅助、不保证与官方形象完全一致</b>，如有偏差请以文字资料为准。</div>
     <div class="note">资料如有疏漏或错讹，欢迎到 <a href="https://bunnychen.top/docs/Other/fanren-xiuxian/" style="color:var(--gold);text-decoration:none">《凡人修仙传》资料页</a> 的<a href="https://bunnychen.top/docs/Other/fanren-xiuxian/#__comments" style="color:var(--gold);text-decoration:none">评论区</a>留言反馈。</div>
     <div class="note"><span style="color:var(--gold)">最后更新：2026-09-17</span> · 持续整理维护中</div>
-    <div class="note">© BunnyChen.top · 本页为个人整理的《凡人修仙传》资料，遵循 <a href="https://bunnychen.top/about/LICENSE/" style="color:var(--gold);text-decoration:none">CC-BY-NC 4.0</a>：欢迎署名非商业转载，禁止商业使用、禁止去除署名或水印后发布。</div>
+    <div class="note">源码已开源：<a href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">GitHub · Lizhenghe-Chen/fanren-wiki</a>（Apache License 2.0，欢迎取用与镜像）</div>
+    <div class="note">© BunnyChen.top · 本页为个人整理的《凡人修仙传》资料，依 <a href="https://www.apache.org/licenses/LICENSE-2.0" style="color:var(--gold);text-decoration:none">Apache License 2.0</a> 授权：可自由使用、修改与再分发（含商业用途），请保留版权与署名声明。页面水印与署名为出处标识，欢迎保留。</div>
   </div>
 </footer>
 
