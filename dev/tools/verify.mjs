@@ -171,6 +171,24 @@ try {
   check('互引已生成（≥ 100 张卡有被引徽记）', refs.badges >= 100, `实际 ${refs.badges} 张卡有被引徽记`)
   check('被引数最高者 > 100（韩立应是全网中心）', refs.max > 100, `最高被引 ${refs.max}`)
 
+  const h1s = await evaluate(`JSON.stringify(${JSON.stringify(VIEWS)}.map(id => document.querySelectorAll('#' + id + ' h1').length))`)
+  check('七个视图各有且仅有一个 h1', h1s === '[1,1,1,1,1,1,1]', h1s)
+
+  /* 核心圈：默认只显示被引 ≥ 5 的条目（被引分布是长尾，208/381 条为 0） */
+  const core = JSON.parse(await evaluate(`(() => {
+    const visible = () => [...document.querySelectorAll('#characters .card')].filter(c => c.style.display !== 'none').length;
+    const seg = n => [...document.querySelectorAll('.seg-btn')].find(b => b.dataset.core === n);
+    const on = visible();
+    seg('0').click();
+    const all = visible();
+    seg('1').click();
+    return JSON.stringify({ on, all, backOn: visible(),
+      labels: [...document.querySelectorAll('.seg-btn')].map(b => b.textContent.trim()) });
+  })()`))
+  check('核心圈默认生效（只显示被引 ≥ 5 的条目），可一键切回全部 221',
+    core.on > 20 && core.on < 100 && core.all === 221 && core.backOn === core.on,
+    JSON.stringify(core))
+
   /* ========== 2. 无横向溢出（桌面 + 移动） ========== */
   for (const [label, w, h] of [['桌面 1440×900', 1440, 900], ['移动 390×844', 390, 844]]) {
     await viewport(w, h)
@@ -194,6 +212,8 @@ try {
   await sleep(250)
 
   const filter = JSON.parse(await evaluate(`(() => {
+    /* 先退出核心圈降噪，否则数不到整篇的卡片 */
+    [...document.querySelectorAll('.seg-btn')].find(b => b.dataset.core === '0').click();
     const tabs = [...document.querySelectorAll('#tabs .tab')];
     tabs.find(t => t.dataset.ch === 'huangfeng').click();
     return JSON.stringify({
@@ -220,7 +240,7 @@ try {
       paletteClosed: document.getElementById('spot').hidden });
   })()`))
   check('搜索定位：切到法宝库、展开目标卡并滚到顶栏之下',
-    locate.key === 'tres#12' && locate.paletteClosed && locate.top !== null && locate.top > 30 && locate.top < 160,
+    locate.key === 'tres-12' && locate.paletteClosed && locate.top !== null && locate.top > 30 && locate.top < 160,
     JSON.stringify(locate))
 
   const jump = JSON.parse(await evaluate(`(async () => {
@@ -255,6 +275,62 @@ try {
   })()`))
   check('返回顶部：滚动后出现、点击后归零',
     backTop.shown && backTop.y === 0, JSON.stringify(backTop))
+
+  /* 深链：以 #v-treasures/tres-2 冷启动（先 about:blank 保证是一次完整加载） */
+  await goto('about:blank')
+  await goto(`${TARGET}#v-treasures/tres-2`)
+  await sleep(1400)
+  const deep = JSON.parse(await evaluate(`(() => {
+    const open = document.querySelector('.view.active .treasure-card.open');
+    return JSON.stringify({
+      view: document.querySelector('.view.active').id,
+      hash: location.hash,
+      key: open ? open.dataset.key : null,
+      top: open ? Math.round(open.getBoundingClientRect().top) : null });
+  })()`))
+  check('深链冷启动：#v-treasures/tres-2 直接打开对应卡片',
+    deep.view === 'v-treasures' && deep.key === 'tres-2' && deep.hash === '#v-treasures/tres-2'
+      && deep.top !== null && deep.top > 30 && deep.top < 160,
+    JSON.stringify(deep))
+
+  /* 点开卡片要把 URL 同步成深链，便于复制分享 */
+  await evaluate(HELPERS)
+  const share = JSON.parse(await evaluate(`(async () => {
+    location.hash = '#v-chars';
+    await window.__sleep(250);
+    const card = [...document.querySelectorAll('#characters .card')].find(c => c.dataset.name === '南宫婉');
+    card.click();
+    const opened = location.hash;
+    card.click();
+    return JSON.stringify({ opened, closed: location.hash, key: card.dataset.key });
+  })()`))
+  check('点击卡片同步 URL（可复制分享），收起后去掉目标',
+    share.opened === '#v-chars/' + share.key && share.closed === '#v-chars',
+    JSON.stringify(share))
+
+  /* 浏览器返回：popstate / hashchange 都要接住。
+     不断言"退到哪一条历史"（file:// headless 下 pushState 不新增条目，条数是浏览器语义），
+     改断言路由不变量：不管落到哪一条，激活视图都必须与地址栏 hash 一致 */
+  await evaluate(`location.hash = '#v-treasures'`)
+  await sleep(200)
+  const backNav = JSON.parse(await evaluate(`(async () => {
+    const act = () => document.querySelector('.view.active').id;
+    const want = () => (location.hash.replace(/^#/, '').split('/')[0] || 'v-home');
+    /* 挑一张指向别库的 chip，这样"确实跳走了"是可判定的 */
+    const chip = [...document.querySelectorAll('.view.active [data-goto]')]
+      .find(c => !c.dataset.goto.startsWith('tres-'));
+    if(!chip) return JSON.stringify({ skipped: true });
+    const before = act();
+    chip.click();
+    await window.__sleep(300);
+    const jumped = act();
+    history.back();
+    await window.__sleep(500);
+    return JSON.stringify({ before, jumped, hash: location.hash, got: act(), want: want() });
+  })()`))
+  check('互引 chip 跳转后按浏览器返回，激活视图仍与地址栏一致',
+    !backNav.skipped && backNav.jumped !== backNav.before && backNav.got === backNav.want,
+    JSON.stringify(backNav))
 
   /* 只看真正会发起请求的标签：canonical / alternate 这类 href 不是资源请求 */
   const thirdParty = await evaluate(`JSON.stringify(
