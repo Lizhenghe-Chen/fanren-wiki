@@ -163,8 +163,14 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 ## 6. 图片体系（重要红线）
 
 - **图片文件**：`public/assets/<拼音名>[_<篇章>].jpg`，跨篇同角色可不同文件（如 `hanli_qixuanmen.jpg` / `hanli_xianjie.jpg`）。
+- **⚠️ 引用分两种，统计时必须都算**：① 页面里的字面量 `assets/xxx.jpg`；② **数据里的 `img:"xxx.jpg"` 字段**（渲染时才拼成路径，如丹药/灵草/法宝的 `img`）。
+  只查字面量会漏掉约 72 张（当前：字面量 302 + 数据字段 359，去重共 **374**）。曾因此误删了 5 张被数据引用的丹药图（`dan_blue/gold/green/purple/red.jpg`）。
+  校验脚本：`引用 = set(re.findall(字面量)) | set(re.findall(r'img\s*:\s*["\']([^"\']+\.jpg)["\']'))`，然后断言 `引用 == set(os.listdir('public/assets'))`。
+- **图片体积规范（2026-09-17 定）**：卡片实际只显示 180–240px，发布图统一 **长边 ≤ 800px / JPEG q76 / 渐进式 / 去元数据**（90.4MB → 20.0MB，-78%）。
+  新增或替换图片时按同一标准压一遍（Pillow，无构建工具）：resize LANCZOS → `save(quality=76, optimize=True, progressive=True)`，**仅在输出更小时才替换原文件**。
+  原始高清图保留在 git 历史里，随时可取回：`git show 15cfee4:dev/unused-assets/<名>`（迁移前）或 `git show 143a8c9:public/assets/<名>`（瘦身前）。
 - **引用方式（发布链路硬规则）**：图片路径只能出现在 **`<img src="assets/…">`** 或 **CSS `url()`** 中。JS 常量数组、`data-src` 等一律发布后裂图。
-- **隐藏清单**：`<style>` 内 `.asset-manifest{display:none;background-image:url("assets/…"),…}` 列出**所有**被引用的图片。**新增图片必须同步追加登记**，否则发布后裂图（`publishBrokenAssets` 规则只认 src 与 CSS url() 静态引用）。
+- **隐藏清单**：`<style>` 内 `.asset-manifest{display:none;background-image:url("assets/…"),…}` 列出**字面量引用**的图片（当前 302 条，**不含数据 `img` 字段引用的 72 张**）。新增图片必须同步追加登记，否则发布后裂图——⚠️ 但注意该清单与 `publishBrokenAssets` 规则**都只认 src 与 CSS url() 静态引用**，数据字段引用的图缺失时它们检不出来，需另外跑上面那条完整性断言。
 - **无图角色**：不硬凑图，卡片显示姓氏首字占位（渲染逻辑：`c.img ? '<img …>' : '<div class="ph">首字</div>'`）。
 - **准确性声明**：页面已含多处声明（v-home 收录说明、hero 副标题、v-chars 卡片区上方橙色警示框、页脚）——图片是网络检索素材（动画截图/官方概念图/百科插画/同人立绘），受动画进度限制（播至人界篇·慕兰之战），灵界/仙界多数角色未在动画登场，**可能与官方形象存在偏差甚至错配**。此声明是用户明确要求，勿删除。
 - **找图规范**：优先动画形象 → 官方概念图 → 百科插画 → 同人图；下载后必须用读图能力逐张核对角色身份、清晰度、无水印，错配宁可不用。用户提供图源优先级：百度图片 / 必应图片 / 搜狗图片 / 花瓣网 / B站专栏 / 豆瓣剧照 / 站酷 / trace.moe 识图。
