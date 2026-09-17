@@ -11,8 +11,9 @@
   可自由使用、修改、再分发（含商业用途），保留版权与许可声明即可，详见仓库 LICENSE 与 NOTICE。
   角色图片为网络检索素材，版权归各自权利人所有，不在上述许可范围内，如有异议请联系删除。
   源码仓库：https://github.com/Lizhenghe-Chen/fanren-wiki
-  访问统计：页脚浏览量由「不蒜子」(busuanzi.ibruce.info) 提供，是全页唯一的外部请求，
-  不写 cookie、不采集个人标识，且只在真实域名下按需加载（file:// 与本地预览不加载）。
+  访问统计：首页 hero 的「次浏览」来自「不蒜子」(busuanzi.ibruce.info)，是全页唯一的外部请求，
+  不写 cookie、不采集个人标识；同一浏览器 30 分钟内只计一次，且只在真实域名下发起
+  （file:// 与本地预览不发起）。
   首次发布：2026-09-14 · 最后更新：2026-09-17
 -->
 <link rel="canonical" href="https://bunnychen.top/fanren-wiki/">
@@ -720,6 +721,7 @@ footer .note{margin-top:6px}
         <div class="stat"><b id="home-st-beasts">0</b><span>灵兽灵虫</span></div>
         <div class="stat"><b id="home-st-herbs">0</b><span>灵草丹药</span></div>
         <div class="stat"><b id="home-st-treas">0</b><span>法器法宝</span></div>
+        <div class="stat" id="stat-views" style="display:none" title="累计浏览次数：同一浏览器 30 分钟内只计一次，刷屏不叠加"><b id="stat-views-num">0</b><span>次浏览</span></div>
       </div>
     </div>
     <div class="hero-cover">
@@ -1131,35 +1133,45 @@ footer .note{margin-top:6px}
     <div class="serif" style="color:var(--ink2);font-weight:700">《凡人修仙传》百科 · 全篇资料图谱</div>
     <div class="note">内容依据原著及公开资料整理。配图为网络检索素材，部分角色动画未登场，<b>仅供回忆辅助，不保证与官方形象一致</b>，有偏差以文字资料为准。</div>
     <div class="note">疏漏错讹请到 <a href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">GitHub Issues</a> 提交，也可<a href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">查看已提交的问题</a>。</div>
-    <div class="note"><span style="color:var(--gold)">最后更新：2026-09-17</span><span id="busuanzi_container_page_pv" style="display:none" title="本文累计浏览次数（PV）· 由不蒜子统计，免费第三方、不写 cookie，同一 IP/客户端可能重复计入"> · 本文浏览 <b id="busuanzi_value_page_pv" style="color:var(--gold);font-weight:600">…</b> 次</span></div>
+    <div class="note"><span style="color:var(--gold)">最后更新：2026-09-17</span></div>
     <div class="note">© BunnyChen.top · 依 <a href="https://www.apache.org/licenses/LICENSE-2.0" style="color:var(--gold);text-decoration:none">Apache License 2.0</a> 授权（含商业用途，保留版权与署名即可）· 源码 <a href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">GitHub</a></div>
   </div>
 </footer>
 
 <script>
-/* ===== 访问统计（不蒜子）=====
-   全页唯一的外部请求，只在真实域名下按需注入：file:// 直开与本地预览（localhost/127.0.0.1）
-   完全不加载，因此不产生任何外部请求、也不会把本地调试写进线上计数。
-   不蒜子不写 cookie、不采集个人标识；服务不可用时两个计数容器保持隐藏，页面不留残缺文案。
-   本地想预览效果：加 ?stats=1。 */
+/* ===== 访问统计（不蒜子 page_pv）=====
+   展示位置：首页 hero 统计行；数据源：busuanzi.ibruce.info（全页唯一外部请求，不写 cookie）。
+   去重：同一浏览器 30 分钟内只上报一次 —— 反复刷新不再叠加；窗口内直接显示上次拿到的值。
+   缓存不可用（隐私模式/禁存储）时退回「每次都上报」。
+   只在真实域名下发起：file:// 与本地预览不上报（本地想看加 ?stats=1）。
+   ⚠️ 自己发 JSONP 而不是引它那支 1.9KB 脚本：少一个请求，且能显式声明 referrerPolicy
+   —— 默认的 strict-origin-when-cross-origin 只发 origin，服务端拿不到路径，页面计数会退化成站点计数。 */
 (function () {
+  var KEY = 'fw-pv-v1', TTL = 30 * 60 * 1000;
+  var box = document.getElementById('stat-views'), num = document.getElementById('stat-views-num');
+  if (!box || !num) return;
+
+  var show = function (n) { num.textContent = Number(n).toLocaleString('zh-CN'); box.style.display = ''; };
+
+  var cached = null;
+  try { cached = JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) {}
+  var recent = cached && typeof cached.v === 'number' && Date.now() - cached.t < TTL;
+  if (recent) show(cached.v);            /* 窗口内：只显示缓存，不再上报 */
+
   var isReal = /^https?:$/.test(location.protocol) &&
     !/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
-  if (!isReal && !/[?&]stats=1\b/.test(location.search)) return;
+  if (recent || (!isReal && !/[?&]stats=1\b/.test(location.search))) return;
 
+  window.__fwPv = function (o) {
+    if (!o || typeof o.page_pv !== 'number') return;
+    show(o.page_pv);
+    try { localStorage.setItem(KEY, JSON.stringify({ v: o.page_pv, t: Date.now() })); } catch (e) {}
+  };
   var s = document.createElement('script');
-  s.async = true;
-  s.src = 'https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js';
-  s.onerror = function () {};            /* 静默失败：容器本就隐藏 */
+  s.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=__fwPv';
+  s.referrerPolicy = 'no-referrer-when-downgrade';
+  s.onerror = function () {};            /* 静默失败：统计位保持隐藏 */
   document.body.appendChild(s);
-
-  /* 计数到手后补千位分隔（服务返回纯数字；占位符为省略号，故不会误判） */
-  var tries = 0, timer = setInterval(function () {
-    var el = document.getElementById('busuanzi_value_page_pv');
-    var t = el ? (el.textContent || '').trim() : '';
-    if (/^\d+$/.test(t)) { el.textContent = Number(t).toLocaleString('zh-CN'); clearInterval(timer); }
-    else if (++tries > 60) clearInterval(timer);
-  }, 250);
 })();
 </script>
 
