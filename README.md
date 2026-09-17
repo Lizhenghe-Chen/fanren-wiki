@@ -19,7 +19,7 @@ public/                     ← 唯一发布目录（Pages 只上传这里）
 ├── index.html              # 交付物：单文件页面
 ├── cultivation.css         # 境界图表样式（外部依赖，勿改）
 ├── javascripts/cultivation-chart.js
-├── assets/                 # 302 张发布图
+├── assets/                 # 374 张发布图
 ├── sitemap.xml
 └── robots.txt
 
@@ -27,6 +27,9 @@ dev/                        ← 开发资料，永不上站
 ├── Agent.md                # 开发文档（改代码前先读）
 ├── _review.md              # 数据审校笔记
 ├── _backup/                # 迭代备份与脚本（index-vNN.html + apply_*.py）
+├── tools/
+│   ├── image-slim.py       # 图片瘦身（逐图判定 WebP/JPEG）
+│   └── verify.mjs          # 零依赖验收脚本（见下）
 └── watermark.svg           # 仅供 _backup 旧版引用的水印瓦片
 ```
 
@@ -39,6 +42,19 @@ cd public && python3 -m http.server 8123   # 打开 http://127.0.0.1:8123/
 ```
 
 或直接双击 `public/index.html`（图片为相对路径，`file://` 可用）。
+
+## 改完先过验收
+
+```bash
+node dev/tools/verify.mjs                                        # 默认 file:// 直开 public/index.html
+node dev/tools/verify.mjs --url http://localhost:8123/index.html # 或指定地址
+```
+
+14 条断言，每条只查一件事：七个视图齐全 / 四库卡片数 / 互引已生成 / 无横向溢出（桌面 1440×900 与移动 390×844 各跑一遍）/ 无竖条文本 / 篇章筛选 / 搜索定位落点 / 卡片互引跳转 / 返回顶部 / 无第三方资源请求 / 控制台无报错。失败会打印实测值并以非 0 退出码结束。
+
+零依赖：只需 **Node ≥ 22**（内建 WebSocket/fetch）与**本机 Chrome**，不需要 `npm install`；Chrome 不在默认位置时用 `--chrome <路径>` 或 `CHROME_PATH` 指定。
+
+用 CDP 而不是 puppeteer，是因为本仓库刻意不引入 node_modules —— 脚本挂在 `dev/` 下，不影响 `public/` 的零构建交付。
 
 ## 发布
 
