@@ -34,7 +34,7 @@
 - **全站搜索**：`Ctrl/⌘ + K` 唤起，跨四库命中、关键词高亮、方向键定位。
 - **跨库互引**：四库记录统一编号，卡片互挂「相关条目 / 被引用于」，人物与三库条目互相跳转。
 - **默认不剧透**：卡片只显示身份与本篇修为，展开后才看生平与结局。
-- **零外部依赖**：ECharts 本地按需构建，`file://` 双击即开；全页唯一外部请求是首页的浏览计数。
+- **零外部依赖**：不加载任何 CDN，离线也能打开；全页唯一外部请求是首页的浏览计数。
 
 ## 收录内容
 
@@ -44,48 +44,9 @@
 | 灵兽灵虫 | **40** | 灵虫 / 灵兽 / 妖兽妖修 / 真灵·神兽 / 炼尸魔物 |
 | 灵草丹药 | **64** | 灵草灵药 / 天材地宝 / 突破丹药 / 辅助丹药 / 丹方·主材 |
 | 法器法宝 | **65** | 玄天之宝·至宝 / 本命法宝 / 神通秘术 / 功法秘典 / 符箓阵法 / 其他 |
-| 配图 | **360** | `public/assets/`，另有 14 张备用素材 |
+| 配图 | **360** | 站内配图，另有 14 张备用素材 |
 
 数据来源：起点官方《凡人必备手册》第二版 + 原著与公开资料交叉验证。
-
-## 本地运行
-
-```bash
-cd public && python3 -m http.server 8123   # 打开 http://127.0.0.1:8123/
-```
-
-也可以直接双击 `public/index.html`（不需要构建与依赖，`file://` 可用）。
-
-## 项目结构
-
-```
-fanren-wiki/
-├── public/                  # 唯一发布目录（整目录即成品）
-│   ├── index.html           # 页面本体（内联 CSS/JS 与全部条目数据）
-│   ├── cultivation.css      # 图表样式
-│   ├── javascripts/         # 境界阶梯图 / 关系图谱 + 旭日图 / 本地 ECharts
-│   └── assets/              # 374 张配图（同目录另有 sitemap.xml、robots.txt）
-├── dev/                     # 开发资料，不进发布产物
-│   ├── Agent.md             # 开发文档：架构、数据模型、交互与踩坑
-│   └── tools/               # verify.mjs / image-slim.py / readme-shots.py / echarts-entry.js
-├── image/README/shots/      # 本 README 的页面截图
-├── .github/                 # 发布工作流 / Issue 模板 / README 图标
-├── LICENSE
-├── NOTICE
-└── README.md
-```
-
-## 开发与验收
-
-条目数据内联在 `public/index.html`（`DATA` / `BEASTS` / `HERBS` / `TREASURES` 四个常量），新增记录＝往对应数组加一个对象；字段口径与踩坑见 [`dev/Agent.md`](dev/Agent.md)。
-
-改完跑一次验收：
-
-```bash
-node dev/tools/verify.mjs
-```
-
-35 条断言覆盖结构 / 布局 / 交互 / 图表 / 网络，只需 **Node ≥ 22** 与本机 Chrome，不需要 `npm install`。
 
 ## 反馈与勘误
 
