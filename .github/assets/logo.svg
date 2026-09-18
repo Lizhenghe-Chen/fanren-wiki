@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64" role="img" aria-label="《凡人修仙传》百科 · 全篇资料图谱">
+  <!-- 与 public/index.html 的 favicon 同一设计：暗底圆角方块 + 金色「凡」字 -->
+  <rect width="64" height="64" rx="14" fill="#0f1117"/>
+  <text x="32" y="44" font-size="34" text-anchor="middle" fill="#d4af6a"
+        font-family="'Songti SC','SimSun','Noto Serif CJK SC','Source Han Serif SC',serif">凡</text>
+</svg>
