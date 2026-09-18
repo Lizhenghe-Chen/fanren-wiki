@@ -9,12 +9,25 @@ Copyright 2026 Lizhenghe Chen (BunnyChen.top)
 Apache-2.0 适用于本仓库的原创部分：
 
 · 页面代码：public/index.html 内联的 HTML / CSS / JavaScript、
-  public/cultivation.css、public/javascripts/cultivation-chart.js
+  public/cultivation.css、public/javascripts/cultivation-chart.js、
+  public/javascripts/overview-charts.js（两份图表脚本均为本项目原创）
 · 原创整理内容：人物 / 灵兽灵虫 / 灵草丹药 / 法器法宝条目的采集与编排、
   境界与发展脉络梳理、页面设计与文案
 
 可自由使用、修改、分发，含商业用途。条件见 LICENSE，要点：
 保留版权与许可声明、保留本 NOTICE、修改过的文件注明改动。
+
+────────────────────────────────────────────────────────────
+第三方组件
+────────────────────────────────────────────────────────────
+public/javascripts/echarts.min.js 是 Apache ECharts 5.6.0 的**按需构建产物**：
+源码取自官方 npm 包 echarts@5.6.0（未经修改，仅重新打包与压缩，只包含本页
+用到的 graph / sunburst 两种图与 tooltip / legend 组件）。
+
+ECharts 由 The Apache Software Foundation 开发，同样以 Apache License 2.0
+授权。其版权与许可声明保留在该文件头部，项目主页：
+  https://echarts.apache.org/
+重建方式见 dev/tools/echarts-entry.js。
 
 ────────────────────────────────────────────────────────────
 不在授权范围内

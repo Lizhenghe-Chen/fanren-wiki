@@ -744,6 +744,13 @@ footer .note{margin-top:6px}
   </details>
 </section>
 
+<!-- ===== 篇章×势力 全景（旭日图） ===== -->
+<section class="wrap home-section">
+  <div class="sec-title">篇章 × 势力全景</div>
+  <div class="sec-desc">外圈六篇章，内圈各篇主要势力（每篇取前列 + 其余归"其他"）；扇形面积 = 收录人数，点击可下钻</div>
+  <div id="chart-sunburst"></div>
+</section>
+
 <!-- ===== 收录内容 ===== -->
 <section class="wrap home-section">
   <div class="sec-title">收录内容</div>
@@ -858,6 +865,18 @@ footer .note{margin-top:6px}
     <p>图片来自动画截图、官方概念图、百科插画与同人立绘。动画播至人界篇·慕兰之战，大晋篇部分角色及灵界、仙界篇绝大多数尚未登场，形象多取自概念图或同人创作，<b>可能与原著设定偏差，个别错配</b>。图片仅供回忆辅助，准确信息以文字资料（身份/修为/结局/生平）为准。<b>发现错配或带第三方水印，到 <a href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener" style="color:#e07b54">GitHub Issues</a> 指出。</b></p>
   </details>
 </div>
+<!-- ===== 人物关系图谱（力导向） ===== -->
+<section class="wrap" style="padding-bottom:0">
+  <details class="graph-fold" open>
+    <summary>
+      <span class="sec-title" style="display:inline">人物关系图谱 · 核心圈</span>
+      <span class="graph-fold-hint"><span id="graph-core-n">34</span> 位核心人物 · 按篇章逐批生长 · 点节点看生平</span>
+    </summary>
+    <div class="sec-desc">基础名级被引 ≥ 3 的核心人物；节点大小 = 被引数，颜色 = 首次登场篇章，连线 = 条目正文互相提及。点击节点跳转该角色卡片，拖拽空白可平移，滚轮照常滚动页面。</div>
+    <div id="chart-graph"></div>
+  </details>
+</section>
+
 <main class="wrap" id="characters">
 </main>
 <div class="empty-tip" id="emptyTip">没有找到匹配的人物，换个关键词试试。</div>
@@ -2456,5 +2475,7 @@ function setHash(view, target, replace){
 
 </script>
 <script src="javascripts/cultivation-chart.js"></script>
+<script src="javascripts/echarts.min.js"></script>
+<script src="javascripts/overview-charts.js"></script>
 </body>
 </html>
