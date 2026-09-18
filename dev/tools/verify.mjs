@@ -631,7 +631,18 @@ try {
     };
   })())`)
   const visits = JSON.parse(await readVisits())
-  check('首页浏览统计默认隐藏且本地未上报', visits.box === 'none' && visits.injected === 0, JSON.stringify(visits))
+  /* 这条分环境：本地/file:// 下应「隐藏且不发起上报」（免得调试流量污染线上计数），
+     真实域名下正好反过来 —— 应显示取到的 PV，且按设计自己发 JSONP（不引不蒜子脚本）。
+     否则拿 --url 验线上时，这里会永远挂一条假失败。 */
+  const hostInfo = await evaluate(`location.protocol + location.hostname`)
+  const localRun = hostInfo.startsWith('file:') || /^https?:(localhost|127\.0\.0\.1)$/.test(hostInfo)
+  if (localRun) {
+    check('首页浏览统计默认隐藏且本地不发起上报', visits.box === 'none' && visits.injected === 0, JSON.stringify(visits))
+  } else {
+    const pv = Number(String(visits.num).replace(/[^0-9]/g, ''))
+    check('真实域名下：浏览统计显示已取到的 PV，且未引入不蒜子脚本',
+      visits.box !== 'none' && pv > 0 && visits.injected === 0, JSON.stringify(visits))
+  }
 
   await evaluate(`localStorage.setItem('fw-pv-v1', JSON.stringify({ v: 1234, t: Date.now() }))`)
   await goto(TARGET)
