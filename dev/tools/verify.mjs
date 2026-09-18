@@ -309,8 +309,10 @@ try {
     const want = +document.getElementById('graph-core-n').textContent;
     return !!inst && inst.getOption().series[0].data.length === want;
   }, 10000)`)
-  /* 并入新节点后力导向会继续微动，等它收敛 —— 否则下面扫出来的坐标，点下去时节点已经移开了 */
-  await sleep(1500)
+  /* 并入新节点后力导向会继续微动，等它收敛 —— 否则下面扫出来的坐标，点下去时节点已经移开了。
+     等待时长与图谱规模相关：人物生平扩写后互引变密、核心节点数从 34 增至 49，1500ms 不够（实测
+     扫描点仍会漂移导致点空，hash 停在 #v-chars），故提到 4000ms。 */
+  await sleep(4000)
   const graph = JSON.parse(await evaluate(`JSON.stringify((() => {
     const el = document.getElementById('chart-graph');
     const inst = echarts.getInstanceByDom(el);
