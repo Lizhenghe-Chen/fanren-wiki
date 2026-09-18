@@ -377,6 +377,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   ② **图谱观感**：① 标签重叠 → `labelLayout: { hideOverlap: true }`（需注册 LabelLayout 特性，定制包里已含）；② 边缘节点贴边被裁 → 力导向的落点**不受** `top/left/right/bottom` 约束，改用 `zoom: 0.86` 整体留白 + `bottom: 56` 给图例让位；③ 旭日图内外圈同色 → `levels` 把内圈势力压暗（opacity 0.7）并与外圈用边框分开；root 标签（「全书人物」）挤在中心洞里读不了，已隐藏。
   ③ **dev/ 部分入库**：`.gitignore` 由 `dev/` 改为 `dev/*` + 放行 `Agent.md` / `_review.md` / `tools/` / `_image-slim-report.json`（`_backup/` `demos/` `watermark.svg` 仍仅本地）。入库前清掉唯一一处本机路径（`/Users/bunnychen/Downloads/…` → `~/Downloads/…`）。
   ④ **验收 33 → 35 条**：新增「图谱节点可点击：中心节点 → 深链 + 对应卡片展开」与「图谱折叠再展开：canvas 尺寸自动恢复」。
+     ⚠️ 提交后连跑验收出现过 **34/35 波动**：该断言在「分批生长刚到 20 个节点」时就去扫节点坐标，而力导向还在动，点下去时节点已经移开。已改为等**全部节点并入**（`data.length === graph-core-n`）再 `sleep(1500)` 等布局收敛 —— 连跑两次稳定 35/35。
      ⚠️ 写这两条踩了三个坑：① `JSON.parse(await evaluate(\`…\`))` 的收尾括号连写错三次（应为 `})()` + 反引号 + `))`）；② **不能假设几何中心就是节点** —— 实测中心点没命中（力导向质心≠几何中心），改用 `zr.handler.findHover()` 环形扫描找真正命中节点的点；③ zrender 里图谱节点的元素类型是 **`path`**（连线是 `ec-line`、标签是 `tspan`），不是想当然的 `symbol`。改用真实鼠标事件（mousemove→mousedown→mouseup）后跳转正常 —— 说明**真人点击本来就是好的**，错的是断言探测点。
   ⑤ **系统测试 19 项全过**（临时 CDP 脚本）：10 档宽度 360→1600px × 七视图无横向溢出；图表高度断点（>760px 为 460/540，≤760px 为 380/420）与 canvas 跟随容器；键盘搜索面板（`/` 唤起 → 输入「韩立」有结果 → `Esc` 关闭）；桌面/移动三张截图人工核对。
   ⑥ 体积：`echarts.min.js` 1006 → **527KB**；`overview-charts.js` → 258 行。

@@ -303,11 +303,14 @@ try {
     JSON.stringify(sun))
 
   await evaluate(`location.hash = '#v-chars'`)
-  /* 节点按篇章分 6 批并入（每批 450ms），等长齐再判 */
+  /* 节点按篇章分 6 批并入（每批 450ms）：等**全部**到齐再量，否则量到的是生长中的中间态 */
   await evaluate(`window.__until(() => {
     const inst = window.echarts && echarts.getInstanceByDom(document.getElementById('chart-graph'));
-    return !!inst && inst.getOption().series[0].data.length >= 20;
-  }, 8000)`)
+    const want = +document.getElementById('graph-core-n').textContent;
+    return !!inst && inst.getOption().series[0].data.length === want;
+  }, 10000)`)
+  /* 并入新节点后力导向会继续微动，等它收敛 —— 否则下面扫出来的坐标，点下去时节点已经移开了 */
+  await sleep(1500)
   const graph = JSON.parse(await evaluate(`JSON.stringify((() => {
     const el = document.getElementById('chart-graph');
     const inst = echarts.getInstanceByDom(el);
