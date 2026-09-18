@@ -7,7 +7,13 @@ dev/*
 !dev/Agent.md
 !dev/_review.md
 !dev/_image-slim-report.json
+!dev/_readme-shots-report.json
 !dev/tools/
+
+# README 宣传图：原图是整页长图（合计 7MB），只留本地；
+# 入库的是加工后的缩略图，加工方式见 dev/tools/readme-shots.py
+image/README/*
+!image/README/shots/
 
 # 编辑器
 .vscode/

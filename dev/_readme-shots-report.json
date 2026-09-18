@@ -1,0 +1,156 @@
+[
+  {
+    "src": "屏幕截图_18-9-2026_21518_bunnychen.top.jpeg",
+    "out": "01-home.webp",
+    "src_size": [
+      2403,
+      3551
+    ],
+    "crop": [
+      0,
+      0,
+      2403,
+      1502
+    ],
+    "crop_frac": 0.0,
+    "out_size": [
+      1440,
+      900
+    ],
+    "src_kb": 527.2,
+    "out_kb": 39.5,
+    "saved": "93%"
+  },
+  {
+    "src": "屏幕截图_18-9-2026_215342_bunnychen.top.jpeg",
+    "out": "02-characters.webp",
+    "src_size": [
+      1249,
+      3377
+    ],
+    "crop": [
+      0,
+      355,
+      1249,
+      1136
+    ],
+    "crop_frac": 0.105,
+    "out_size": [
+      1249,
+      781
+    ],
+    "src_kb": 1579.1,
+    "out_kb": 30.4,
+    "saved": "98%"
+  },
+  {
+    "src": "屏幕截图_18-9-2026_215353_bunnychen.top.jpeg",
+    "out": "03-lore.webp",
+    "src_size": [
+      1129,
+      1670
+    ],
+    "crop": [
+      0,
+      100,
+      1129,
+      806
+    ],
+    "crop_frac": 0.06,
+    "out_size": [
+      1129,
+      706
+    ],
+    "src_kb": 271.6,
+    "out_kb": 44.8,
+    "saved": "84%"
+  },
+  {
+    "src": "屏幕截图_18-9-2026_21540_bunnychen.top.jpeg",
+    "out": "04-realms.webp",
+    "src_size": [
+      1129,
+      2538
+    ],
+    "crop": [
+      0,
+      228,
+      1129,
+      934
+    ],
+    "crop_frac": 0.09,
+    "out_size": [
+      1129,
+      706
+    ],
+    "src_kb": 310.2,
+    "out_kb": 29.8,
+    "saved": "90%"
+  },
+  {
+    "src": "屏幕截图_18-9-2026_215424_bunnychen.top.jpeg",
+    "out": "05-beasts.webp",
+    "src_size": [
+      1242,
+      2905
+    ],
+    "crop": [
+      0,
+      232,
+      1242,
+      1008
+    ],
+    "crop_frac": 0.08,
+    "out_size": [
+      1242,
+      776
+    ],
+    "src_kb": 1703.9,
+    "out_kb": 58.4,
+    "saved": "97%"
+  },
+  {
+    "src": "屏幕截图_18-9-2026_215454_bunnychen.top.jpeg",
+    "out": "06-herbs.webp",
+    "src_size": [
+      1253,
+      2449
+    ],
+    "crop": [
+      0,
+      196,
+      1253,
+      979
+    ],
+    "crop_frac": 0.08,
+    "out_size": [
+      1253,
+      783
+    ],
+    "src_kb": 1581.6,
+    "out_kb": 74.0,
+    "saved": "95%"
+  },
+  {
+    "src": "屏幕截图_18-9-2026_215514_bunnychen.top.jpeg",
+    "out": "07-treasures.webp",
+    "src_size": [
+      1255,
+      2273
+    ],
+    "crop": [
+      0,
+      182,
+      1255,
+      966
+    ],
+    "crop_frac": 0.08,
+    "out_size": [
+      1255,
+      784
+    ],
+    "src_kb": 1247.2,
+    "out_kb": 62.4,
+    "saved": "95%"
+  }
+]
