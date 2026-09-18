@@ -1,9 +1,13 @@
 # macOS
 .DS_Store
 
-# 开发资料（开发文档 / 验收脚本 / 迭代备份 / 中间数据）
-# 仅本地保留：不随仓库发布，也不参与 Pages 产物（详见 dev/Agent.md）
-dev/
+# 开发资料：只跟踪「活文档 + 工具」，迭代备份与一次性实验产物留在本地
+# （dev/_backup/ 是历史堆积、dev/demos/ 是接入 ECharts 时的一次性实验，详见 dev/Agent.md §2）
+dev/*
+!dev/Agent.md
+!dev/_review.md
+!dev/_image-slim-report.json
+!dev/tools/
 
 # 编辑器
 .vscode/
