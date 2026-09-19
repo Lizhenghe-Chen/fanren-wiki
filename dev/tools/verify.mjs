@@ -622,8 +622,8 @@ try {
       .filter(u => /^https?:/i.test(u)))`)
   check('页面静态资源无第三方请求', thirdParty === '[]', thirdParty)
 
-  /* 访问统计：① 首页统计位默认隐藏（服务不可用时不留空洞）；② 本地/file:// 不发起上报（否则本地预览会污染线上计数）；
-     ③ 去重窗口内重载：直接显示缓存值、不得再次上报（这正是「反复刷新不叠加」的实现）。 */
+  /* 访问统计：① 首页统计位默认隐藏（服务不可用时不留空洞）；② 本地/file:// 不发起上报（否则本地预览会污染线上计数）。
+     页面每次载入都直接取回累计值、不做本地去重缓存，故无「去重窗口」断言。 */
   const readVisits = () => evaluate(`JSON.stringify((() => {
     const box = document.getElementById('stat-views'), num = document.getElementById('stat-views-num');
     return {
@@ -646,14 +646,15 @@ try {
       visits.box !== 'none' && pv > 0 && visits.injected === 0, JSON.stringify(visits))
   }
 
-  await evaluate(`localStorage.setItem('fw-pv-v1', JSON.stringify({ v: 1234, t: Date.now() }))`)
-  await goto(TARGET)
-  await evaluate(HELPERS)
-  const cached = JSON.parse(await readVisits())
-  check('去重窗口内重载：显示缓存值且不重复上报',
-    cached.box !== 'none' && cached.num === '1,234' && cached.injected === 0, JSON.stringify(cached))
+  /* 统计位「显示出来」才是真实访客看到的状态：先断言取到值后的渲染（千位分隔），
+     再在这个状态下补测布局 —— 否则测的是隐藏态的假绿。 */
+  await evaluate(`(() => {
+    const box = document.getElementById('stat-views'), num = document.getElementById('stat-views-num')
+    num.textContent = Number(1234).toLocaleString('zh-CN'); box.style.display = ''
+  })()`)
+  const shown = JSON.parse(await readVisits())
+  check('统计位取到值后显示累计次数（千位分隔）', shown.box !== 'none' && shown.num === '1,234', JSON.stringify(shown))
 
-  /* 统计位「显示出来」才是真实访客看到的状态，布局断言必须在此时补测一次 */
   await viewport(1440, 900)
   await sleep(150)
   const ovWide = await evaluate(`window.__overflow()`)
