@@ -674,7 +674,7 @@ try {
   const metaDates = {
     头注释: grabMeta(/首次发布：\d{4}-\d{2}-\d{2} · 最后更新：(\d{4}-\d{2}-\d{2})/),
     JSONLD: grabMeta(/"dateModified": "(\d{4}-\d{2}-\d{2})"/),
-    导航栏: grabMeta(/· 更新 (\d{4}-\d{2}-\d{2})/),
+    导航栏: grabMeta(/<\/span>更新 (\d{4}-\d{2}-\d{2})/),
     页脚: grabMeta(/<span style="color:var\(--gold\)">最后更新：(\d{4}-\d{2}-\d{2})<\/span>/),
   }
   check('「最后更新」四处同源一致（头注释 / JSON-LD / 导航栏 / 页脚）',
