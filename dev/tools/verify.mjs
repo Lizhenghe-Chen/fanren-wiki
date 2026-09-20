@@ -182,7 +182,7 @@ try {
     document.querySelectorAll('#beasts .card').length,
     document.querySelectorAll('#herbs .card').length,
     document.querySelectorAll('#treasureGrid .treasure-card').length])`)
-  check('四库卡片数量正确（221/40/64/65）', counts === '[221,40,64,65]', `实际 ${counts}`)
+  check('四库卡片数量正确（251/40/64/65）', counts === '[251,40,64,65]', `实际 ${counts}`)
 
   /* 图片完整性：DOM 实际引用的图必须都能在 assets 里找到、且都能解码。
      这是从页面迁出的 .asset-manifest（300 行 display:none）留下的真空 —— 那份清单既不加载
@@ -259,8 +259,8 @@ try {
     return JSON.stringify({ on, all, backOn: visible(),
       labels: [...document.querySelectorAll('.seg-btn')].map(b => b.textContent.trim()) });
   })()`))
-  check('核心圈默认生效（只显示被引 ≥ 5 的条目），可一键切回全部 221',
-    core.on > 20 && core.on < 100 && core.all === 221 && core.backOn === core.on,
+  check('核心圈默认生效（只显示被引 ≥ 5 的条目），可一键切回全部 251',
+    core.on > 20 && core.on < 100 && core.all === 251 && core.backOn === core.on,
     JSON.stringify(core))
 
   /* ========== 2. 无横向溢出（桌面 + 移动） ========== */
@@ -298,8 +298,8 @@ try {
       colorMatch: kids.length === 6 && kids.every((c, i) => c.itemStyle.color === css(i + 1))
     };
   })())`))
-  check('旭日图：画布已渲染，六篇章齐全，人数合计 221，配色取自页面 --cN',
-    sun.inited && sun.canvas === 1 && sun.arcs.length === 6 && sun.people === 221 && sun.colorMatch,
+  check('旭日图：画布已渲染，六篇章齐全，人数合计 251，配色取自页面 --cN',
+    sun.inited && sun.canvas === 1 && sun.arcs.length === 6 && sun.people === 251 && sun.colorMatch,
     JSON.stringify(sun))
 
   await evaluate(`location.hash = '#v-chars'`)
@@ -361,11 +361,12 @@ try {
   const nodePt = JSON.parse(await evaluate(`(async () => {
     const el = document.getElementById('chart-graph');
     el.scrollIntoView({ block: 'center', behavior: 'instant' });
-    await window.__sleep(250);
+    /* 图谱为力导向布局，节点越多收敛越慢：251 节点下 250ms 常在布局未稳时扫描，偶发扫不到中心节点导致点击断言抖动，故放宽至 2000ms；扫描半径 140→260 以容忍中心节点漂移 */
+    await window.__sleep(2000);
     const r = el.getBoundingClientRect();
     const zr = echarts.getInstanceByDom(el).getZr();
     let hit = null;
-    for (let rad = 0; rad <= 140 && !hit; rad += 10) {
+    for (let rad = 0; rad <= 260 && !hit; rad += 10) {
       const n = rad === 0 ? 1 : 16;
       for (let k = 0; k < n; k++) {
         const a = Math.PI * 2 * k / n;
@@ -422,8 +423,8 @@ try {
       cards: [...document.querySelectorAll('#characters .card')].filter(c => c.style.display !== 'none').length });
   })()`))
   check('篇章筛选：只留该篇且卡片数一致',
-    filter.chapters.length === 1 && filter.chapters[0] === 'huangfeng' && filter.cards === 29,
-    `可见章节 ${JSON.stringify(filter.chapters)}，可见卡 ${filter.cards}（期望 29）`)
+    filter.chapters.length === 1 && filter.chapters[0] === 'huangfeng' && filter.cards === 35,
+    `可见章节 ${JSON.stringify(filter.chapters)}，可见卡 ${filter.cards}（期望 35）`)
   await evaluate(`document.querySelector('#tabs .tab[data-ch="all"]').click()`)
 
   /* 灵兽 / 灵草：分类 tab 上的计数必须等于实际可见卡数（tab 文案与实际过滤任何一边错了都会被抳住） */
