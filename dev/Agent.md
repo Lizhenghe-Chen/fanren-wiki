@@ -29,7 +29,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 └── dev/                    # 开发资料：永不上站；只跟踪文档与工具（见下方说明）
     ├── Agent.md            # 本文档
     ├── _review.md          # 数据审校笔记
-    ├── tools/              # 在用的工具：image-slim.py（图片瘦身，见 §6）、verify.mjs（零依赖验收，见 §8.3）、echarts-entry.js（ECharts 按需构建入口，见 §7）、readme-shots.py（README 宣传图：整页截图 → 16:10 缩略图，输出 image/README/shots/，原图被 .gitignore 忽略）
+    ├── tools/              # 在用的工具：image-slim.py（图片瘦身，见 §6）、verify.mjs（零依赖验收，见 §8.3）、echarts-entry.js（ECharts 按需构建入口，见 §7）、readme-shots.py（README 宣传图：整页截图 → 16:10 缩略图，输出 image/README/shots/，原图被 .gitignore 忽略）、stamp.mjs（部署时把「最后更新」+ 提交说明注入 index.html、把 lastmod 注入 sitemap.xml，见 §7「元数据」）
     ├── _image-slim-report.json  # 瘦身逐图决策记录（体积/SSIM/所选质量档）
     ├── _backup/            # 历史堆积：index-vNN.html 版本次级（21 个）+ 一次性的 migrate 脚本（apply_*/add_*/fix_*/sync_*）+ meta/stories/ev/herbs_data/treasures_data 等中间数据
     └── watermark.svg       # 仅供 _backup/index-v*.html 引用的水印瓦片（当前页面已内联 base64）
@@ -249,7 +249,10 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - **无 `@media print` 例外**：打印/导出 PDF 也带水印（`position:fixed` 在分页媒体里逐页重复），别再加 `display:none` 把它关掉。
 - **不在卡片图片上盖章**：曾经加过 `.card-top::after{content:"bunnychen.top"}` 的右下角标，**已移除且不要再加**——图片本身是网络检索的第三方素材，不是本站作品，在别人的图上盖自己的出处站不住脚（真有争议时也不占理）。图片区保持干净。
 - **元数据**：`<head>` 里三件套——版权注释块（含版本/日期/仓库地址，抄整页的人会把出处一起带走）、`<link rel="canonical">`、JSON-LD（author / datePublished / dateModified / license / isBasedOn）。**改版必须同步**。许可字段当前为 `https://www.apache.org/licenses/LICENSE-2.0`。
-- **三处日期要一致**：页脚"最后更新"、注释块、JSON-LD `dateModified`。
+- **「最后更新」四处 + 两处元信息：全部自动注入，不要手写**（`dev/tools/stamp.mjs`，2026-09-20 起）。四处 = 页脚「最后更新」/ 头注释 / JSON-LD `dateModified` / 导航栏「更新 YYYY-MM-DD」，另加页脚 `.stamp-note` 里的本次提交说明首行（压平 → HTML 转义 → 截断 56 码点）与 `public/sitemap.xml` 的 `<lastmod>`。取值 = `git log -1` 的 `%cs` + `%s`；GitHub Actions 在 `upload-pages-artifact` **之前**跑 `node dev/tools/stamp.mjs --write`，改的是 runner 工作区里的 `public/index.html` 与 `public/sitemap.xml`，**不进 git**。
+  · **为什么不做成页面运行时拉 `api.github.com`**（2026-09-20 用户二选一后拍板 CI 注入）：国内经常超时（本站读者大多在国内）+ 未认证限流 60 次/小时/IP；静态注入零新增请求（不动「静态资源 0 第三方请求」红线），关掉 JS / 爬虫抓取 / 另存到本地日期与 JSON-LD 都是对的。
+  · **锚点必须恰好命中 1 次**，否则脚本报错退出且不写文件：动这些锚点（尤其页脚 `.stamp-note` 那个 `<span>`）就要同步改 `stamp.mjs` 的 `RULES`，宁可部署失败也不要静默退回手写（v38 之前手写就漂移过：导航 09-17 / 页脚 09-19 打架）。
+  · ⚠️ **本地不要对 `public/index.html` 跑 `--write`**（2026-09-20 实测坑）：VS Code 编辑器缓冲区会把它自己那份内容回写，把脚本写入的结果覆盖成"吞字"的坏文本（`<span …>` 变 `s`、`最后更新：` 整段消失），脚本自己的读回校验都查不出来，只能 `git checkout` 恢复。本地要动这四处日期就用编辑工具手改、保持同值（部署时会被刷成最新）；不带参数的体检模式只读不写，本地可放心跑。
 - **明确不做**：禁用右键/选择、JS 混淆、反调试——伤体验与无障碍、几秒可绕过，已否决。
 
 ## 8. 开发流程（照做）
@@ -267,7 +270,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
    - 快速 JS 语法检查：提取内联 `<script>` 块逐个 `node --check`。
    - ⚠️ **不要用 `perl -0pi` 改校验脚本**：`@` 在 perl 双引号串里会当数组插值，实测把 `history.length` 改成了 `history.length` 缺字符的语法错。要改就用编辑工具。
 4. **交付**：唯一产物就是 `public/index.html`（自包含）。
-5. **发布**：`git push origin main` → GitHub Actions 只把 `public/` 上传为 Pages 产物（线上 `https://bunnychen.top/fanren-wiki/`）。首次需在仓库 **Settings → Pages → Source** 选 **GitHub Actions**。推完等约 30s，用 `curl -sI` 看体积/状态码再抽查关键标记（`gh` CLI 未安装，Actions API 未鉴权返回 404，一律以线上地址为准）。
+5. **发布**：`git push origin main` → GitHub Actions 先跑 `node dev/tools/stamp.mjs --write` 把「最后更新」、提交说明与 `sitemap.xml` 的 `lastmod` 刷成本次提交（见 §7），再只把 `public/` 上传为 Pages 产物（线上 `https://bunnychen.top/fanren-wiki/`）。**提交时不必再手动改这些日期。**首次需在仓库 **Settings → Pages → Source** 选 **GitHub Actions**。推完等约 30s，用 `curl -sI` 看体积/状态码再抽查关键标记（`gh` CLI 未安装，Actions API 未鉴权返回 404，一律以线上地址为准）。
 6. **文档同步（交付的一部分）**：结构性改动、新增函数/常量、流程变化都要顺手更新本文档（§3 结构、§5 函数表、§10 迭代日志至少各改一处），别让它烂掉。
 
 ## 9. 数据来源与已核验事实
@@ -394,7 +397,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   ② **保留（与去重无关，别顺手删）**：真实域名判定（`file://` 与 `localhost/127.0.0.1` 仍**不发起**，本地想看加 `?stats=1`）、自己发 JSONP + 显式 `referrerPolicy='no-referrer-when-downgrade'`、`#stat-views` 默认 `display:none`、取到值才显示。
   ③ **文案同步**（漏一处就自相矛盾）：`<head>` 注释块去掉「同一浏览器 1 分钟内只计一次」；`#stat-views` 的 `title` 改为「累计浏览次数（不蒜子 page_pv）」（原文案承诺的行为已不存在）。
   ④ **验收仍 35 条**：删掉「去重窗口内重载：显示缓存值且不重复上报」（写 localStorage → 重载 → 断言缓存值，新实现下必挂），换成「**统计位取到值后显示累计次数（千位分隔）**」—— 直接按「接口取到值」后的 DOM 状态模拟，不再依赖 localStorage；紧随其后的「统计位显示后两套视口仍无横向溢出」照旧（布局断言仍须在统计位**可见**时测）。实测 **35/35 通过**（本机无 Chrome，用 Edge 作 `--chrome`）。
-  ⑤ **日期同步**：页脚「最后更新」/ `<head>` 注释块 / JSON-LD `dateModified` / `sitemap.xml` `lastmod` 一律 **2026-09-17 → 2026-09-19**（§7「三处日期要一致」）。
+  ⑤ **日期同步**：页脚「最后更新」/ `<head>` 注释块 / JSON-LD `dateModified` / `sitemap.xml` `lastmod` 一律 **2026-09-17 → 2026-09-19**（§7「最后更新」条；2026-09-20 起这四处改由 `dev/tools/stamp.mjs` 在部署时统一刷新，当时的日期同步记录仅存史）。
   ⑥ 体积：`public/index.html` 2453 → **2444 行**、350501 → **349968 字节**（-9 行 / -533B）；备份 `dev/_backup/index-v34.html`（改动前快照）。
   ⚠️ **不要再把去重加回来**：用户明确要「最简单」，v28 那套还要权衡窗口长短、隐私模式下行为还不一致，已否决。
 
@@ -469,3 +472,13 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   ⑥ **校验**：内联主脚本经 `dev/_shards2/_extract-inline.mjs` 提取后 `node --check` **通过**；两个新引用文件均在 `public/assets/` 且魔数为 `RIFF....WEBP`（20282B / 20418B）；`dev/tools/verify.mjs` **未改动任何内容**（图谱等待 / 半径参数保持 v35 调好的值）。
   ⑦ **验收**：`$env:CHROME_PATH=...msedge.exe; node dev/tools/verify.mjs` → **35/35 通过**。
   ⑧ 体积：public/index.html 431779 → **431811 字节**（净增 +32B，即两个文件名长度差）。改动前快照即已存在的 dev/_backup/index-v37.html（431779，勿删勿覆盖）。
+
+- **v38：页面「最后更新」改为部署时自动注入，不再手写（2026-09-20）**——用户指令「主页是否有可能直接读取 GitHub 更新时间或者一些其它信息，这样就不用手动写更新时间了」。
+  ① **背景**：页面上四处日期全是手写，且已经漂移 —— 导航写 `2026-09-17`、页脚与头注释写 `2026-09-19`，同一份交付物两个说法（四处 = 头注释 / JSON-LD `dateModified` / 导航栏 / 页脚）。
+  ② **方案**：新增 `dev/tools/stamp.mjs`（零依赖，`execFileSync` 调 git），取 `git log -1` 的 `%cs`（提交日期）+ `%s`（提交说明首行，压平 → HTML 转义 → 截断 56 码点），一次改写 4 处日期 + 页脚 `.stamp-note` 里的提交说明 + `public/sitemap.xml` 的 `<lastmod>`（用户选定「日期 + 提交说明首行」，未要 sha/Star 数）；`deploy.yml` 在 `actions/checkout` 之后、`upload-pages-artifact` 之前跑 `node dev/tools/stamp.mjs --write`，改的是 runner 工作区副本，**不进 git**。
+  ③ **不走运行时 GitHub API**（用户二选一后拍板）：`api.github.com` 国内经常超时、未认证 60 次/小时/IP；静态注入零新增请求（「静态资源 0 第三方请求」红线不动）、关掉 JS / 爬虫抓取 / 另存本地都正确，JSON-LD 也不再依赖 JS 执行。
+  ④ **防静默失效**：6 条锚点各自要求「在目标文件集合里恰好命中 1 次」（命中 2 次=页面里有两处同形文本、0 次=锚点被改没了），否则整体报错退出且不写任何文件 —— 页面改版动了锚点会**部署失败（可见）**，而不是退回手写后悄悄漂移。不带参数 = 体检模式（打印取值与命中数），`--write` 才落盘。
+  ⑤ **测试**：`verify.mjs` 断言 35 → **38 条**（新增「「最后更新」四处同源一致」「页脚提交说明非空且 ≤57 码点」「站点地图 lastmod 与页面同源」，直接读源文件，不受 `--url` 影响）。
+  ⑥ **本地不要跑 `--write`**（2026-09-20 实测坑）：VS Code 编辑器缓冲区会把它自己那份内容回写，把脚本写入的结果覆盖成"吞字"的坏文本（`<span …>` 变 `s`、`最后更新：` 整段消失），脚本自身的读回校验也查不出来 —— 只能 `git checkout` 恢复。CI 在 runner 上跑、没有编辑器，安全。
+  ⑦ **验收**：`$env:CHROME_PATH=...msedge.exe; node dev/tools/verify.mjs` → **38/38 通过**；页面未新增任何外部请求或第三方依赖；`sitemap.xml` 的 `lastmod` 已纳入同一次注入（本地仍手写、与页面日期保持同值）。
+  ⑧ 体积：仓库内版本 **431781 → 434351 字节**（+2570，其中 +2470 是本机检出把 LF 换成 CRLF 的行尾差，内容本身只多约 100 字节：导航栏日期对齐 + 页脚加提交说明注入位）。改动前快照 = `dev/_backup/index-v38.html`（431781，本机生成、不进 git）。

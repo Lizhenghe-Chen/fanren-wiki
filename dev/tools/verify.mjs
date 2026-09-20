@@ -10,7 +10,7 @@
  * 设计约定：每条断言只断一件事，失败时打印实测值，便于定位是哪一层坏了。
  */
 import { spawn } from 'node:child_process'
-import { existsSync, mkdtempSync, readdirSync, rmSync } from 'node:fs'
+import { existsSync, mkdtempSync, readFileSync, readdirSync, rmSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { join, resolve } from 'node:path'
 import { pathToFileURL } from 'node:url'
@@ -664,6 +664,32 @@ try {
   const ovNarrow = await evaluate(`window.__overflow()`)
   await viewport(1440, 900)
   check('统计位显示后两套视口仍无横向溢出', ovWide === 0 && ovNarrow === 0, `1440→${ovWide}px / 390→${ovNarrow}px`)
+
+  /* ========== 站点元信息（读源文件，与 --url 无关） ==========
+     「最后更新」四处必须同源同值：头注释 / JSON-LD dateModified / 导航栏 / 页脚。
+     v38 之前四处都是手写，已经漂移过（导航 09-17、页脚 09-19）；现在统一由
+     dev/tools/stamp.mjs 在部署时刷新，这里守住「一致」与「提交说明没被漏掉」。 */
+  const siteHtml = readFileSync(join(ROOT, 'public', 'index.html'), 'utf8')
+  const grabMeta = re => (siteHtml.match(re) || [])[1]
+  const metaDates = {
+    头注释: grabMeta(/首次发布：\d{4}-\d{2}-\d{2} · 最后更新：(\d{4}-\d{2}-\d{2})/),
+    JSONLD: grabMeta(/"dateModified": "(\d{4}-\d{2}-\d{2})"/),
+    导航栏: grabMeta(/· 更新 (\d{4}-\d{2}-\d{2})/),
+    页脚: grabMeta(/<span style="color:var\(--gold\)">最后更新：(\d{4}-\d{2}-\d{2})<\/span>/),
+  }
+  check('「最后更新」四处同源一致（头注释 / JSON-LD / 导航栏 / 页脚）',
+    Object.values(metaDates).every(Boolean) && new Set(Object.values(metaDates)).size === 1,
+    JSON.stringify(metaDates))
+
+  const stampNote = grabMeta(/<span class="stamp-note">([^<]*)<\/span>/)
+  check('页脚写着本次提交说明（stamp.mjs 注入：非空且未超长）',
+    !!stampNote && stampNote.trim().length > 3 && [...stampNote].length <= 57,
+    JSON.stringify(stampNote))
+
+  const sitemapDate = (readFileSync(join(ROOT, 'public', 'sitemap.xml'), 'utf8').match(/<lastmod>(\d{4}-\d{2}-\d{2})<\/lastmod>/) || [])[1]
+  check('站点地图 lastmod 与页面「最后更新」同源',
+    !!sitemapDate && sitemapDate === metaDates.页脚,
+    `sitemap ${sitemapDate} / 页面 ${metaDates.页脚}`)
 
   /* ========== 4. 控制台 ========== */
   check('控制台与页面均无报错', pageErrors.length === 0, pageErrors.slice(0, 3).join(' | '))

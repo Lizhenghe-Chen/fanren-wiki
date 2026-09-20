@@ -23,6 +23,10 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
+      # 部署前把页面上的「最后更新 / 提交说明」刷成本次提交（dev/tools/stamp.mjs）：
+      # 只改 runner 工作区里的 public/index.html，不进 git；锚点对不上就报错退出，不静默放过。
+      - name: 刷新首页最后更新时间
+        run: node dev/tools/stamp.mjs --write
       # 只上传 public/：dev/ 里的开发资料（Agent.md / _backup / 自检截图 / 备用素材）永远不上站
       - uses: actions/upload-pages-artifact@v3
         with:
