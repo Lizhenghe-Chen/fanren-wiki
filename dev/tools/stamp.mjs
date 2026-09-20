@@ -60,7 +60,7 @@ const note = (() => {
 const RULES = [
   { what: '首页 · 头注释 最后更新', anchor: '· 最后更新：', value: date },
   { what: '首页 · JSON-LD dateModified', anchor: '"dateModified": "', value: date },
-  { what: '首页 · 导航栏 更新', anchor: '</span>更新 ', value: date },
+  { what: '首页 · 导航栏 更新', anchor: '· 更新 ', value: date },
   { what: '首页 · 页脚 最后更新', anchor: '">最后更新：', value: date },
   { what: '首页 · 页脚 提交说明', anchor: '<span class="stamp-note">', until: '</span>', value: note },
   { what: '站点地图 · lastmod', anchor: '<lastmod>', until: '</lastmod>', value: date },
