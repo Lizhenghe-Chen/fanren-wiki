@@ -394,6 +394,11 @@ h1 .accent{
   .chapter{position:static}
   .view{scroll-margin-top:88px}
 }
+/* 超窄屏（≤400px，含 VS Code 内置浏览器这类窄窗口）：字号与内边距再降一档，7 个入口压到两行 */
+@media (max-width:400px){
+  .topnav a{padding:4px 8px;font-size:11.5px}
+  .tn-links{gap:2px}
+}
 
 /* ===== 图例与页脚 ===== */
 .legend-sec{padding:20px 0 10px}
