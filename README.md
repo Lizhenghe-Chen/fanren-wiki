@@ -48,6 +48,16 @@
 
 数据来源：起点官方《凡人必备手册》第二版 + 原著与公开资料交叉验证。
 
+## Star History
+
+<a href="https://www.star-history.com/?repos=lizhenghe-chen%2Ffanren-wiki&type=date&legend=bottom-right">
+ <picture>
+   <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/chart?repos=lizhenghe-chen/fanren-wiki&type=date&theme=dark&legend=top-left" />
+   <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/chart?repos=lizhenghe-chen/fanren-wiki&type=date&legend=top-left" />
+   <img alt="Star History Chart" src="https://api.star-history.com/chart?repos=lizhenghe-chen/fanren-wiki&type=date&legend=top-left" />
+ </picture>
+</a>
+
 ## 反馈与勘误
 
 勘误与建议请提 [Issue](https://github.com/Lizhenghe-Chen/fanren-wiki/issues)，附原著章节或动画集数等依据更好核对。
