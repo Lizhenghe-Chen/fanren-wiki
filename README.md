@@ -1,5 +1,6 @@
 <div align="center">
   <a href="https://bunnychen.top/fanren-wiki/"><img src=".github/assets/logo.svg" alt="《凡人修仙传》百科 · 全篇资料图谱" width="88" height="88"></a>
+</div>
 
 ## 页面速览
 
@@ -7,17 +8,17 @@
   <a href="https://bunnychen.top/fanren-wiki/"><img src="image/README/shots/封面.png" alt="首页" width="840"></a>
 </p>
 
-|                         人物图谱                         |                         剧情速览                         |
-| :-------------------------------------------------------: | :------------------------------------------------------: |
-| <a href="https://bunnychen.top/fanren-wiki/#v-chars"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-lore"></a> |
+| 人物图谱 | 剧情速览 |
+| :---: | :---: |
+| <a href="https://bunnychen.top/fanren-wiki/#v-chars"><img src="image/README/shots/02-characters.webp" alt="人物图谱" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-lore"><img src="image/README/shots/03-lore.webp" alt="剧情速览" width="400"></a> |
 
-|                          境界体系                          |                          灵兽灵虫                          |
-| :--------------------------------------------------------: | :--------------------------------------------------------: |
-| <a href="https://bunnychen.top/fanren-wiki/#v-realms"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-beasts"></a> |
+| 境界体系 | 灵兽灵虫 |
+| :---: | :---: |
+| <a href="https://bunnychen.top/fanren-wiki/#v-realms"><img src="image/README/shots/04-realms.webp" alt="境界体系" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-beasts"><img src="image/README/shots/05-beasts.webp" alt="灵兽灵虫" width="400"></a> |
 
-|                         灵草丹药                         |                           法器法宝                           |
-| :-------------------------------------------------------: | :-----------------------------------------------------------: |
-| <a href="https://bunnychen.top/fanren-wiki/#v-herbs"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-treasures"></a> |
+| 灵草丹药 | 法器法宝 |
+| :---: | :---: |
+| <a href="https://bunnychen.top/fanren-wiki/#v-herbs"><img src="image/README/shots/06-herbs.webp" alt="灵草丹药" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-treasures"><img src="image/README/shots/07-treasures.webp" alt="法器法宝" width="400"></a> |
 
 ## 特性
 
