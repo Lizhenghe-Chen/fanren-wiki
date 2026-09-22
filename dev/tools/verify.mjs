@@ -259,8 +259,8 @@ try {
     return JSON.stringify({ on, all, backOn: visible(),
       labels: [...document.querySelectorAll('.seg-btn')].map(b => b.textContent.trim()) });
   })()`))
-  check('核心圈默认生效（只显示被引 ≥ 5 的条目），可一键切回全部 251',
-    core.on > 20 && core.on < 100 && core.all === 251 && core.backOn === core.on,
+  check('默认显示全部 251 条，可一键切到核心圈（被引 ≥ 5 的 74 条）',
+    core.on === 251 && core.all === 251 && core.backOn > 20 && core.backOn < 100,
     JSON.stringify(core))
 
   /* ========== 2. 无横向溢出（桌面 + 移动） ========== */
