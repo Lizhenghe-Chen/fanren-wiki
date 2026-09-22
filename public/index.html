@@ -230,6 +230,14 @@ h1 .accent{
 .card:hover{transform:translateY(-3px);border-color:rgba(212,175,106,.5);box-shadow:0 12px 30px rgba(0,0,0,.35)}
 .card-top{position:relative;aspect-ratio:3/4;overflow:hidden;background:var(--bg2)}
 .card-top img{width:100%;height:100%;object-fit:contain;object-position:center center}
+.card-top .carousel{position:absolute;inset:0}
+.card-top .carousel .card-img.off{display:none}
+.car-btn{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:26px;height:26px;border-radius:50%;border:none;background:rgba(0,0,0,.5);color:#fff;font-size:16px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.car-btn:hover{background:rgba(212,175,106,.75)}
+.car-btn.prev{left:6px}.car-btn.next{right:6px}
+.car-dots{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);z-index:3;display:flex;gap:5px}
+.car-dots .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,.4);cursor:pointer}
+.car-dots .dot.active{background:var(--gold)}
 .card-top .ph{
   width:100%;height:100%;display:flex;align-items:center;justify-content:center;
   font-family:var(--font-serif);font-weight:900;font-size:56px;color:rgba(255,255,255,.16);
@@ -1279,7 +1287,7 @@ DATA.luanxing = [{n:"韩立", t:"全书主角", r:"筑基后期 → 结丹（126
   {n:"万三姑", t:"万法门总护法 · 逆星盟正道领袖", r:"元婴后期",ev:"元婴后期（正道散修）", e:"天星双圣潜入逆星盟总部自爆，当场被炸死；尸体被六道极圣捡回制成炼尸傀儡", img:"wansangu_luanxing.webp", s:"万法门总护法、乱星海正道第一人，元婴后期大修士，性格暴躁冲动，人称疯婆子。她与魔道魁首六道极圣齐名，又牵头整合正魔两道、共建逆星盟，企图推翻星宫统治；法宝众多、神通广大，曾独力单挑星宫八大长老。星宫双圣寿元将尽、突入逆星盟总坛自爆元磁神光时，她当场被炸死；死后尸体仍被旧识六道极圣捡回，炼成炼尸傀儡驱使，下场堪称乱星海结局最憋屈的元婴后期大修士。", rel:"逆星盟领袖", camp:"万法门·逆星盟", race:"人族"},
   {n:"万天明", t:"万法门门主", r:"元婴中期",ev:"元婴中期", e:"被六道极圣夺舍，后随六道被韩立斩杀", img:"wantianming.jpg", s:"万法门门主、万三姑之侄，元婴中期，持重宝玄黄镜，牵头整合正魔两道组建逆星盟对抗星宫，虚天殿一行未得实利。星宫双圣自爆逆星盟总坛时，他猝不及防被炸成重伤、玄黄镜碎裂；六道极圣趁其弥留夺舍其肉身、磨灭其神魂。此后假称突破元婴后期、号令逆星盟者已是六道极圣，真身随六道被韩立斩杀而灭。", rel:"敌对", camp:"万法门", race:"人族"},
   {n:"金蛟王", t:"外星海妖修", r:"十级妖修（≈元婴后期）",ev:"化形→九级→十级妖修（≈元婴后期）", e:"与韩立结怨夺灵石矿，后被韩立斩杀、取内丹", img:"jinjiaowang.webp", s:"外星海妖族之主，本体金甲蛟龙，十级妖修，堪比元婴后期巅峰，肉身强横、修淬骨诀，统御外海蛟族。早年亲率蛟众突袭人类岛屿、欲夺极品灵石矿，反被韩立趁乱掠走灵石，由此结怨。多年后他随风希移植龙鳞果树，遭已修成元婴后期的韩立设伏当场斩杀，金属性内丹被取去助韩立补全金灵根，一身血肉亦被收走。", rel:"仇敌", camp:"外星海妖族", race:"妖族·蛟龙"},
-  {n:"风希", t:"裂风兽妖修", r:"九级（≈元婴中期）",ev:"化形→九级妖修（≈元婴中期）", e:"炼风雷翅时胁迫韩立，后被韩立灭杀", img:"fengxi.jpg", s:"外星海裂风兽化形的九级妖修，堪比元婴中期，性情狡狠。他耗费数千年心血、投入三滴万年灵乳炼制风雷翅，炼宝之际胁迫同行的韩立配合，更暗中打入风灵劲以制其死命；不料被韩立寻机窃走风雷翅并暗算脱身，风雷翅遂成韩立日后飞行与逃命的依仗。多年后他傍上十级金蛟王，随其移植龙鳞果树，恰与已修成元婴后期的韩立重逢。韩立以八灵尺定住、虚天鼎收宝，又放出十余只六翼霜蚣将他冻成冰鸟，青竹蜂云剑连斩成七八截，妖魂被四翅蜈蚣吞噬，形神俱灭，一身收藏尽数归韩立。", rel:"仇敌", camp:"外星海妖族", race:"妖族·裂风兽"},
+  {n:"风希", t:"裂风兽妖修", r:"九级（≈元婴中期）",ev:"化形→九级妖修（≈元婴中期）", e:"炼风雷翅时胁迫韩立，后被韩立灭杀", img:"fengxi.jpg", imgs:["fengxi.jpg","fengxi_human.webp"], s:"外星海裂风兽化形的九级妖修，堪比元婴中期，性情狡狠。他耗费数千年心血、投入三滴万年灵乳炼制风雷翅，炼宝之际胁迫同行的韩立配合，更暗中打入风灵劲以制其死命；不料被韩立寻机窃走风雷翅并暗算脱身，风雷翅遂成韩立日后飞行与逃命的依仗。多年后他傍上十级金蛟王，随其移植龙鳞果树，恰与已修成元婴后期的韩立重逢。韩立以八灵尺定住、虚天鼎收宝，又放出十余只六翼霜蚣将他冻成冰鸟，青竹蜂云剑连斩成七八截，妖魂被四翅蜈蚣吞噬，形神俱灭，一身收藏尽数归韩立。", rel:"仇敌", camp:"外星海妖族", race:"妖族·裂风兽"},
   {n:"金花老祖", t:"乱星海散修", r:"元婴初期",ev:"元婴初期", e:"识破韩立身份，被韩立灭口", s:"乱星海元婴初期散修，法宝颇为不俗，蓄有金盾、金色符箓与培育多年的鬼鸠。蛮胡子坐化后，他觊觎魔湖岛藏宝洞遗留宝物，勾结蛮胡子门下女弟子潜往取宝，恰遇奉蛮胡子遗命前来收宝的韩立。他凭乱星海修士的音容面相认出韩立身怀虚天鼎，色变欲逃，被韩立当场出手灭杀；放出的鬼鸠亦被啼魂一声吓退、吞噬。", img:"jinhuolaozu.jpg", rel:"敌对", camp:"散修", race:"人族"},
   {n:"乌丑", t:"极阴之孙", r:"结丹中期",ev:"结丹中期（极阴祖师弟子）", e:"虚天殿内殿被玄骨斩杀", img:"wuchou.jpg", s:"极阴祖师之孙兼弟子，结丹中期，修炼家传玄阴魔功、手持魔刀，仗着祖父之势在乱星海横行。虚天殿开启时随极阴入殿，受命在旁监视韩立与玄骨上人；待众元婴修士退出内殿，被已夺舍曲魂的玄骨上人突然出手斩杀，一身宝物尽被取走。按：早年魁星岛之变中，亦是他策反长老、纵妖兽害死紫灵父母，结下深仇。", rel:"敌对", camp:"极阴岛", race:"人族"},
   {n:"妙鹤真人", t:"奇渊岛修士", r:"元婴中期",ev:"元婴中期", e:"被韩立搜魂灭杀", img:"miaohezhenren.jpg", s:"乱星海奇渊岛元婴中期修士，依附星宫一方，循踪追缉身怀虚天鼎的韩立，图谋其身上秘宝与虚天鼎。他自恃元婴中期修为、又仗岛上同党接应，一路堵截、以为手到擒来，反被早有防备的韩立设计擒获。韩立以法术搜魂，从其神识中问出奇渊岛虚实及同道追缉部署等诸多隐秘，确认无利用价值后将其灭口，储物袋与随身法宝一并收走。", rel:"仇敌", camp:"奇渊岛", race:"人族"},
@@ -1289,7 +1297,7 @@ DATA.luanxing = [{n:"韩立", t:"全书主角", r:"筑基后期 → 结丹（126
   {n:"木藤子", t:"逆星盟修士", r:"元婴",ev:"元婴", e:"冲击化神失败，寿元耗尽坐化", img:"mutengzi.jpg", s:"乱星海逆星盟元婴修士，与温天仁、天悟子同属逆星盟阵营，参与魔道势力对韩立的追缉与围剿，在乱星海后期正魔战事中露面。他寿元将尽而冲击化神失败，多年苦熬仍未能突破瓶颈，最终坐化于乱星海，原著对其来历师承与具体下场未作细述。", rel:"敌对", camp:"逆星盟", race:"人族"},
   {n:"范静梅", t:"妙音门左使", r:"结丹",ev:"结丹", e:"借魔道夺门主之位，结局未明", img:"fanjingmei.jpg", s:"妙音门左使，执掌宗门对外物资交易，城府深沉、精于权谋，善于周旋于星宫与魔道之间。原门主死后，她投靠星宫赵长老谋夺门主之位，却被紫灵凭星宫大长老支持空降门主，屈居其下。趁紫灵入虚天殿、门内空虚，她勾结魔修云天啸，率弟子远赴外星海自立坊市、自命门主，反被结丹的云天啸架空成傀儡，原著此后结局未明。", rel:"敌对", camp:"妙音门", race:"人族"},
   {n:"梅凝", t:"通玉凤髓体女修", r:"结丹",ev:"结丹", e:"助韩立脱困阴冥之地，结婴失败被心魔反噬而亡", img:"meining.jpg", s:"乱星海女修，身怀罕见的通玉凤髓之体：体内通灵之气须心甘情愿渡给一名男子方能发挥，对自身修炼却毫无裨益，反被高阶修士觊觎为炉鼎。她与兄长围观元瑶还魂术时，被诡异鬼雾卷入封绝法力的阴冥之地，与韩立结伴求生，将通灵之气渡给他使其暂时恢复法力，二人合力脱困。出绝地后潜心修行，结婴时心魔反噬而亡。", rel:"恩人", camp:"散修", race:"人族"},
-  {n:"文思月", t:"妙音门女修", r:"结丹",ev:"结丹（母为妙音门女修，父为散修文樯）", e:"后嫁田姓修士，生女田琴儿（韩立之徒），结局未明", img:"wensiyue.webp", s:"乱星海散修文樯之女，母亲为妙音门女修。文樯是韩立初至乱星海魁星岛结识的第一位好友与引路人，为偷渡而来、两眼一抹黑的韩立讲解诸岛规矩与势力分布，一生止步筑基中期；他与妙音门女弟子结缡，妻子生下文思月后病故，遂未再娶，独力抚女成人。文思月资质出众、二十年筑基，随母遗志加入妙音门。她容貌清丽如温玉凝脂，天生媚骨、体态婀娜，因交换会上韩立救人时手掌意外触及她胸前，被观众戏称为葡萄仙子。她成年后嫁与妙音门一名前途无量的年轻修士，旋即丈夫斗法身亡，年轻守寡；因天生媚骨遭同门觊觎，又得罪师长卓如婷。韩立往虚天殿途中路遇她与毒龙会修士缠斗，念及旧情出手相救，她遂以八级妖兽、伴妖草的消息相报，愿托身相随，被婉拒。其后她改嫁田姓结丹修士，生女田琴儿；田琴儿天生龙吟之体、先天不足、活不过二十，夫妇携女四处求医，甚至冒险赴外星海寻白鹭鱼妖内丹。多年后在天星城再遇已元婴后期的韩立，她哭求解救；韩立惊觉田琴儿体质与手心红痣酷似故友辛如音，念旧将其收为弟子、带离乱星海治病，文思月本人此后未再详写。", rel:"故人", camp:"妙音门", race:"人族"},
+  {n:"文思月", t:"妙音门女修", r:"结丹",ev:"结丹（母为妙音门女修，父为散修文樯）", e:"后嫁田姓修士，生女田琴儿（韩立之徒），结局未明", img:"wensiyue.webp", imgs:["wensiyue.webp","wensiyue_girl.webp"], s:"乱星海散修文樯之女，母亲为妙音门女修。文樯是韩立初至乱星海魁星岛结识的第一位好友与引路人，为偷渡而来、两眼一抹黑的韩立讲解诸岛规矩与势力分布，一生止步筑基中期；他与妙音门女弟子结缡，妻子生下文思月后病故，遂未再娶，独力抚女成人。文思月资质出众、二十年筑基，随母遗志加入妙音门。她容貌清丽如温玉凝脂，天生媚骨、体态婀娜，因交换会上韩立救人时手掌意外触及她胸前，被观众戏称为葡萄仙子。她成年后嫁与妙音门一名前途无量的年轻修士，旋即丈夫斗法身亡，年轻守寡；因天生媚骨遭同门觊觎，又得罪师长卓如婷。韩立往虚天殿途中路遇她与毒龙会修士缠斗，念及旧情出手相救，她遂以八级妖兽、伴妖草的消息相报，愿托身相随，被婉拒。其后她改嫁田姓结丹修士，生女田琴儿；田琴儿天生龙吟之体、先天不足、活不过二十，夫妇携女四处求医，甚至冒险赴外星海寻白鹭鱼妖内丹。多年后在天星城再遇已元婴后期的韩立，她哭求解救；韩立惊觉田琴儿体质与手心红痣酷似故友辛如音，念旧将其收为弟子、带离乱星海治病，文思月本人此后未再详写。", rel:"故人", camp:"妙音门", race:"人族"},
   {n:"公孙杏", t:"乱星海女修", r:"结丹",ev:"结丹", e:"被韩立救下并收为弟子，结局未明", img:"gongsunxing.webp", s:"乱星海没落小派青灵门掌门之女，至孝。父亲公孙云走火入魔、瘫痪在床，她为寻救命灵药闯入外星海妖兽禁地，被妖兽追至雾中岛韩立闭关洞府；韩立感其孝心，赠丹救治其父。后她又被风希掳作炉鼎，韩立再度将其救下。她持韩立所赠资源于远海孤岛低调修行，原著此后未再登场。按：动漫对其剧情有大量扩充。", rel:"弟子", camp:"韩立门下", race:"人族"},
   {n:"银月", t:"雪玲 · 虚天鼎器灵", r:"器灵（原灵界银月狼族公主，战力≈结丹—元婴）", e:"认韩立为主，成为本命飞剑器灵（大晋篇续）", img:"yinyue_luanxing.webp", s:"本名玲珑、人称雪玲，本是灵界银月狼族嫡亲公主、大乘老祖敖啸的孙女，天生七星月体，嫁与天奎狼王，为狼族第一美女。她察觉古魔入侵人界而下界支援，却遭元刹圣祖分魂暗算夺舍；昆吾三老无力除魔，只得将其肉身连同魔魂封印于昆吾山，分化出的一缕主魂辗转被古修士炼成狼首玉如意的器灵，封入虚天鼎中沉睡无数岁月。虚天殿事起，韩立取鼎时她方得脱身；因她知晓掌天瓶的隐秘，为守秘计，韩立将她收为己用，她遂成为韩立本命飞剑的器灵，一路随行、为其指路。此后她在灵界篇夺回身份、重归狼族，终随韩立大道同归。", rel:"伴身器灵", camp:"虚天鼎器灵", race:"器灵·狼族", ev:"器灵（≈结丹/元婴战力）→夺舍灵狐→化形→炼虚→合体→大乘"},
   {n:"啼魂", t:"刑兽后裔", r:"灵兽（吞噬精魂）", e:"自元瑶处所得，随韩立（后续续）", img:"tihun_luanxing.webp", s:"刑兽后裔，形似碧绿小猿、鼻子奇大，口喷黄色吸魂神光，天生以阴魂鬼物为食。它原属青阳门少主，少主被元瑶击杀后归入元瑶手中。虚天殿中元瑶放它吞噬殿中鬼魂，被韩立看中；后韩立于黑铁沙漠再救元瑶，元瑶遂将它与万年灵乳、青阳门典籍一并相赠。它入韩立麾下后，在阴冥之地大啖阴兽精魂、助韩立于封绝法力时辨敌脱困，玄骨上人残魂亦葬身其口；此后随韩立一路斩妖吞魂，逐渐成长为刑兽真灵，贯穿灵界、仙界诸篇。", rel:"伴身灵兽", camp:"韩立附属", race:"灵兽·刑兽", ev:"灵兽→噬魂真灵→合体期飞升→太乙→大罗"},
@@ -1502,7 +1510,7 @@ const BEASTS = [
   {n:"婴鲤兽", t:"黑煞教镇教水兽", cat:"yao", r:"五级水兽（≈结丹初期）",ev:"五级水兽（≈结丹初期）", e:"被韩立借曲魂挡下，最终被除，结局未细述", img:"yinglishou.webp", s:"黑煞教供奉的水域凶兽，婴啼摄魂、水战极强。韩立曾以曲魂作挡箭牌应对，最终将其除去。", rel:"敌兽", camp:"黑煞教", race:"水兽·婴鲤"},
   {n:"雷鹏", t:"风雷阁灵禽 · 雷遁极速", cat:"yao", r:"十级灵禽（≈元婴后期）",ev:"十级灵禽（≈元婴后期）", e:"背景设定级大妖，未与韩立直接交手，结局未明", img:"leipeng.webp", s:"风雷阁相关的高阶灵禽，雷遁极速、瞬息千里，为十级化形大妖；仅在设定中出现，未与韩立直接交手。", rel:"野生大妖", camp:"风雷阁", race:"灵禽·雷鹏"},
   {n:"金蛟王", t:"外星海妖修", cat:"yao", r:"十级妖修（≈元婴后期）",ev:"化形→九级→十级妖修（≈元婴后期）", e:"与韩立结怨夺灵石矿，被韩立斩杀取内丹", img:"jinjiaowang.webp", s:"乱星海外星海妖修、十级化形大妖，与韩立结怨争夺灵石矿，被韩立斩杀并取其内丹。", rel:"仇敌", camp:"外星海妖族", race:"妖族·蛟龙"},
-  {n:"风希（裂风兽）", t:"裂风兽妖修 · 风雷翅原主", cat:"yao", r:"九级妖修（≈元婴中期）",ev:"化形→九级妖修（≈元婴中期）", e:"炼风雷翅时胁迫韩立，后被韩立灭杀，妖魂被四翅蜈蚣吞噬", img:"fengxi.jpg", s:"裂风兽妖修、九级化形大妖，以自身本命神通炼制风雷翅时被韩立窃走灵羽；多年后联手金蛟王围攻韩立，被八灵尺定身、六翼霜蜈冰封、飞剑斩成数截，妖魂被四翅蜈蚣吞噬，形神俱灭。", rel:"仇敌", camp:"外星海妖族", race:"妖族·裂风兽"},
+  {n:"风希（裂风兽）", t:"裂风兽妖修 · 风雷翅原主", cat:"yao", r:"九级妖修（≈元婴中期）",ev:"化形→九级妖修（≈元婴中期）", e:"炼风雷翅时胁迫韩立，后被韩立灭杀，妖魂被四翅蜈蚣吞噬", img:"fengxi.jpg", imgs:["fengxi.jpg","fengxi_human.webp"], s:"裂风兽妖修、九级化形大妖，以自身本命神通炼制风雷翅时被韩立窃走灵羽；多年后联手金蛟王围攻韩立，被八灵尺定身、六翼霜蜈冰封、飞剑斩成数截，妖魂被四翅蜈蚣吞噬，形神俱灭。", rel:"仇敌", camp:"外星海妖族", race:"妖族·裂风兽"},
   {n:"冰凤", t:"冰海之主 · 天凤血脉", cat:"yao", r:"元婴后期（压境不化神）→ 化神 → 炼虚 → 合体 → 大乘", e:"韩立飞升时留驻青元宫，未入仙界", img:"bingfeng_lingjie.webp", s:"冰海之主、十级妖修，身具天凤血脉与空间神通，通体雪白。与小极宫混战被困虚天殿八十年，后与韩立结缘、随其偷渡灵界，入青元宫修至大乘；韩立飞升时留驻青元宫。", rel:"红颜盟友", camp:"青元宫", race:"妖族·冰凤", ev:"元婴后期（压境不化神）→化神→炼虚→合体→大乘"},
   {n:"银月（玲珑）", t:"银月狼族圣女 · 虚天鼎器灵", cat:"yao", r:"器灵 → 化形 → 炼虚 → 合体 → 大乘", e:"破除心魔、觉醒七星月体，修至大乘、坐镇银月狼族；韩立飞升时留在灵界", img:"yinyue_lingjie.webp", s:"银月狼族敖啸老祖孙女、真名玲珑，原为虚天鼎器灵，认韩立为主成为本命飞剑器灵，后夺舍四瞳灵狐化形。一路伴随韩立闯荡，破除忘情诀心魔、觉醒七星月体，修至大乘、坐镇银月狼族；韩立飞升时留在灵界。", rel:"红颜挚友", camp:"天狼族·妖族", race:"妖族·银月狼族", ev:"器灵（≈结丹/元婴战力）→夺舍灵狐→化形→炼虚→合体→大乘"},
   {n:"敖啸", t:"妖族唯一大乘 · 银月祖父", cat:"yao", r:"大乘",ev:"大乘（真龙一族老祖）", e:"第22次大天劫陨落，临终将银月托付韩立", img:"aoxiao.webp", s:"灵界妖族唯一大乘、银月狼族老祖，银月祖父。与韩立结盟，第22次大天劫时陨落，临终将银月托付韩立照拂。", rel:"盟友前辈", camp:"灵界妖族", race:"妖族·狼族"},
@@ -1920,8 +1928,16 @@ function renderMain(){
       const safeName = escapeAttr(c.n || "");
       const safeTitle = escapeAttr(c.t || "");
       const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
-      const img = c.img
-        ? `<img class="card-img" src="assets/${escapeAttr(c.img)}" alt="${safeName}" loading="lazy">`
+      const imgs = (c.imgs && c.imgs.length > 1) ? c.imgs : (c.img ? [c.img] : null);
+      const img = imgs
+        ? (c.imgs && c.imgs.length > 1
+          ? `<div class="carousel" data-cur="0">
+              ${c.imgs.map((f,j)=>`<img class="card-img${j===0?'':' off'}" src="assets/${escapeAttr(f)}" alt="${safeName}" loading="lazy">`).join("")}
+              <button class="car-btn prev" type="button" aria-label="上一形象">‹</button>
+              <button class="car-btn next" type="button" aria-label="下一形象">›</button>
+              <div class="car-dots">${c.imgs.map((_,j)=>`<span class="dot${j===0?' active':''}"></span>`).join("")}</div>
+            </div>`
+          : `<img class="card-img" src="assets/${escapeAttr(imgs[0])}" alt="${safeName}" loading="lazy">`)
         : `<div class="ph">${fallbackLetter}</div>`;
 
       return `<div class="card" data-key="${key}" data-name="${safeName}" data-aka="${safeTitle}">
@@ -1962,6 +1978,23 @@ function renderMain(){
       cardTop.innerHTML = `<div class="ph">${esc((img.alt || "?").charAt(0))}</div><span class="card-tag" style="background:${cardTop.dataset.chapterColor || "var(--gold)"}">${esc(cardTop.querySelector(".card-tag")?.textContent || "")}</span>`;
     });
   });
+
+  main.querySelectorAll(".carousel").forEach(car=>{
+    const imgs = car.querySelectorAll(".card-img");
+    const dots = car.querySelectorAll(".car-dots .dot");
+    if (imgs.length < 2) return;
+    let cur = 0;
+    const show = i => {
+      cur = ((i % imgs.length) + imgs.length) % imgs.length;
+      imgs.forEach((im,j)=>im.classList.toggle("off", j!==cur));
+      dots.forEach((d,j)=>d.classList.toggle("active", j===cur));
+    };
+    const prev = car.querySelector(".car-btn.prev");
+    const next = car.querySelector(".car-btn.next");
+    if (prev) prev.addEventListener("click", e=>{e.stopPropagation();show(cur-1);});
+    if (next) next.addEventListener("click", e=>{e.stopPropagation();show(cur+1);});
+    dots.forEach((d,j)=>d.addEventListener("click", e=>{e.stopPropagation();show(j);}));
+  });
 }
 
 /* ===== 交互：tab + 搜索 ===== */
@@ -1978,6 +2011,7 @@ function activeView(){ const v = document.querySelector(".view.active"); return 
 document.getElementById("characters").addEventListener("click", function(event){
   const card = event.target.closest(".card");
   if (!card) return;
+  if (event.target.closest(".car-btn") || event.target.closest(".car-dots .dot")) return;
   toggleCard(card);
 });
 
