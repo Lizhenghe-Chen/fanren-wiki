@@ -3,3 +3,32 @@
 /* ===== 概览图表（2026-09-18 追加：关系图谱折叠容器 + 两张图的画布尺寸）===== */
 /* 规矩：只在末尾追加，不重排、不删改上方任何 .cv-* 规则 */
 .graph-fold{border:1px solid var(--line,#2a3040);border-radius:12px;padding:14px 16px;background:rgba(255,255,255,.015);margin-bottom:18px}.graph-fold>summary{cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:12px;user-select:none}.graph-fold>summary::-webkit-details-marker{display:none}.graph-fold>summary::before{content:"▾";color:#d4af6a;font-size:13px;transition:transform .2s}.graph-fold:not([open])>summary::before{transform:rotate(-90deg)}.graph-fold-hint{font-size:11.5px;color:var(--ink3,#7a8296)}.graph-fold:not([open]) .sec-desc,.graph-fold:not([open]) #chart-graph{display:none}#chart-sunburst{width:100%;height:460px}#chart-graph{width:100%;height:540px}@media(max-width:760px){#chart-sunburst{height:380px}#chart-graph{height:420px}}
+
+/* 瀑布分批渲染哨兵：占位极小，接近视口时触发续传（grid 容器里横跨整行） */
+.batch-sentinel{width:100%;height:2px;grid-column:1/-1}
+
+/* ===== 剧情速览 · 情节梳理 tab（内容引自公众号「书生去哪了」，样式贴合站点暗色风） ===== */
+.lore-tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px auto 6px}
+.lore-tab{padding:9px 18px;border:1px solid var(--line);border-radius:999px;background:var(--card);color:var(--ink2);font-size:14px;cursor:pointer;transition:all .18s}
+.lore-tab:hover{color:var(--ink);border-color:var(--gold)}
+.lore-tab.active{background:var(--gold);border-color:var(--gold);color:#14120a;font-weight:700}
+.plot-sec{padding:26px 0 60px}
+.plot-credit{max-width:860px;margin:10px auto 22px;padding:12px 16px;border:1px dashed var(--line);border-left:3px solid var(--gold);border-radius:8px;background:var(--card);color:var(--ink2);font-size:13px;line-height:1.8}
+.plot-credit a{color:var(--gold);text-decoration:underline;text-underline-offset:3px}
+.plot-credit-foot{margin-top:26px;text-align:center;border-left:none;text-align:center}
+.plot-list{max-width:860px;margin:0 auto}
+.plot-vol{margin:0 0 26px;border:1px solid var(--line);border-radius:14px;background:var(--card);overflow:hidden}
+.plot-vol-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 18px;background:var(--card2);border-bottom:1px solid var(--line)}
+.plot-vol-head h3{margin:0;font-size:16.5px;color:var(--ink)}
+.plot-realm{flex:0 0 auto;padding:3px 12px;border:1px solid var(--gold);border-radius:999px;color:var(--gold);font-size:12px;white-space:nowrap}
+.plot-arc{display:grid;grid-template-columns:118px minmax(0,1fr);gap:0 14px;padding:11px 18px;border-bottom:1px dashed var(--line)}
+.plot-arc:last-child{border-bottom:none}
+.plot-place{color:var(--gold);font-size:13.5px;font-weight:600;line-height:1.9}
+.plot-step{position:relative;padding:3px 0 3px 14px;color:var(--ink2);font-size:13.5px;line-height:1.85}
+.plot-step::before{content:"";position:absolute;left:2px;top:.95em;width:5px;height:5px;border-radius:50%;background:var(--line)}
+.plot-note{color:var(--gold);font-style:normal;opacity:.92;font-size:12.5px}
+@media(max-width:640px){
+  .plot-arc{grid-template-columns:minmax(0,1fr);gap:2px 0}
+  .plot-place{line-height:1.6}
+  .plot-step{padding-left:12px}
+}

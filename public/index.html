@@ -914,6 +914,13 @@ footer .note{margin-top:6px}
   </div>
 </header>
 
+<!-- ===== 剧情速览页内切换 ===== -->
+<div class="lore-tabs wrap" role="tablist" aria-label="剧情速览内容切换">
+  <button class="lore-tab active" type="button" data-lore-tab="timeline" role="tab" aria-selected="true">境界时间线</button>
+  <button class="lore-tab" type="button" data-lore-tab="plot" role="tab" aria-selected="false">情节梳理 · 全书十一卷</button>
+</div>
+
+<div id="lorePaneTimeline">
 <!-- ===== 韩立境界时间轴 ===== -->
 <section class="timeline-sec">
   <div class="wrap">
@@ -954,6 +961,26 @@ footer .note{margin-top:6px}
     </div>
   </div>
 </section>
+</div>
+
+<!-- ===== 情节梳理（全书十一卷） ===== -->
+<div id="lorePanePlot" hidden>
+  <section class="plot-sec">
+    <div class="wrap">
+      <div class="sec-title">情节梳理 · 全书十一卷</div>
+      <div class="sec-desc">从七玄门到飞升仙界的完整剧情脉络，方括号内为该节点的关键物品 / 人物 / 事件注记</div>
+      <p class="plot-credit">
+        本页内容整理自微信公众号「书生去哪了」原创文章
+        <a href="https://mp.weixin.qq.com/s/jbp5FD4rk07W4aeNd9wFXQ" target="_blank" rel="noopener">《凡人修仙传》情节梳理（全）</a>（2026-05-27 发布），
+        版权归原作者所有，此处引用仅作学习交流，转载请保留本声明并附原文链接。
+      </p>
+      <div class="plot-list" id="plotList"></div>
+      <p class="plot-credit plot-credit-foot">
+        来源：微信公众号「书生去哪了」 · <a href="https://mp.weixin.qq.com/s/jbp5FD4rk07W4aeNd9wFXQ" target="_blank" rel="noopener">阅读原文</a>
+      </p>
+    </div>
+  </section>
+</div>
 
 </div>
 <div class="view" id="v-realms">
@@ -1760,6 +1787,131 @@ function renderTimeline(){
   el.innerHTML = `<div class="tl-row">${top}</div><div class="tl-row">${mid}</div><div class="tl-row">${bot}</div>`;
 }
 
+/* ===== 情节梳理（全书十一卷） =====
+   结构：卷[卷名, 境界, 地点篇[地点, 步骤...]]；方括号为原文注记（关键物品/人物/事件）。
+   内容引自微信公众号「书生去哪了」《凡人修仙传》情节梳理（全），
+   https://mp.weixin.qq.com/s/jbp5FD4rk07W4aeNd9wFXQ ，版权归原作者所有。 */
+const PLOT_VOLS = [
+  ["第一卷 · 七玄门风云", "炼气期", [
+    ["彩霞山", ["七玄门故事"]],
+  ]],
+  ["第二卷 · 初踏修仙界", "炼气期", [
+    ["嘉元城", ["墨府交易"]],
+    ["太南山", ["太南小会见闻"]],
+    ["黄枫谷", ["百药园潜修"]],
+  ]],
+  ["第三卷 · 魔道入侵", "炼气期", [
+    ["血色禁地", ["血禁试炼 [筑基丹]"]],
+    ["燕翎堡", ["夺宝大会 [师门任务]"]],
+    ["灵石矿", ["驻守灵石矿 [七派任务]"]],
+    ["越京", ["守护越京秦家 [师门任务]", "越京皇宫之变 [黑煞教主/五行凝血丹/虚天残图]"]],
+    ["撤离与转进", ["嘉元城寻曲魂 [决战消息]", "黄枫谷撤离队伍 [七派战败/弃子]", "修复古传送阵"]],
+  ]],
+  ["第四卷 · 风起海外", "筑基期 · 结丹期", [
+    ["魁星岛", ["小寰岛潜修", "猎杀婴鲤兽 [六连殿招募]", "海猿岛曲魂结丹"]],
+    ["天星城", ["租住洞府", "外海猎妖取丹", "洞府结丹", "寻回天雷竹 [妙音门招募]", "红尘历练 [青竹小轩]", "炼制本命法宝 [青竹蜂云剑]", "探索古修洞府 [玄骨]"]],
+    ["虚天殿", ["第一关：鬼冤之地 [鬼王]", "诱捕九曲灵参", "第二关：冰火道 [异变：熔岩路铁火蚁、玄晶道银光鼠]", "熔岩路 [元瑶/啼魂]", "宝光阁取宝 [五行环/血色披风]", "第三关：极妙幻境", "内殿：一层普通傀儡 → 二层厉害傀儡 → 三层石台祭坛 → 正魔拉动虚天鼎 [狼首玉如意] → 众元婴争夺补天丹 → 拉出虚天鼎 [血玉蜘蛛/乾蓝冰焰] → 激斗玄骨 [修罗圣火]", "秘殿：元瑶灵泉沐浴 → 联手破禁取宝 [万年灵液/养魂木]"]],
+    ["外海", ["小岛潜修：猎妖取丹 [真假虫魔]", "稚女求药救父 [公孙杏]", "四处寻药：妙音门交换会 [文思月/梵圣真片]", "八级裂风兽巢穴 [风希/风雷翅]", "逃避追杀 [风希/妙鹤真人/妙音门传送阵]"]],
+    ["内海", ["青阳门追凶 [元瑶/拘灵阵]", "无名小岛护法 [还魂术]", "激斗六道传人", "鬼雾突现", "被困阴冥之地 [梅凝/紫灵/元婴手记/妖文/降灵符]"]],
+  ]],
+  ["第五卷 · 名震一方", "元婴初期", [
+    ["落云宗", ["敛息入门", "捕捉雪云狐 [尸魈/银月认主]", "三派试剑大会 [灵眼之木/明清灵液]", "云梦山结婴 [大庚剑阵]", "灭元武国付家 [至木灵婴/玄牧化婴大法]", "重回韩家祠 [噬金灵剑]", "收徒柳玉 [六翼霜蚣]"]],
+    ["阗天城交易大会", ["南陇侯邀斗 [神识比拼]", "天晶上人交易会 [上古傀儡术/魂晶]", "南陇侯密会"]],
+    ["苍坤遗宝", ["路遇慕兰大上师 [御风车/千重峰]", "破太妙神禁", "阁楼分宝被围攻", "首杀元婴", "成功逃离 [两仪环阴环]"]],
+    ["重返阗天城", ["再见南宫婉 [血魔剑/两仪环阳环]", "又见南陇侯 [约定坠魔谷]", "令狐老祖之邀 [三符之约]"]],
+    ["慕兰大战", ["支援黄龙山 [声名渐起]", "再见紫灵 [约定坠魔谷]", "天南四方齐聚议事 [庚金/玄天仙藤]", "边界之战 [参加生死赌战/灭杀阴罗铜甲尸/大破慕兰圣禽]"]],
+    ["战后余波", ["南宫婉遇袭 [封魂咒]", "灭杀阴罗宗长老 [鬼罗幡]"]],
+  ]],
+  ["第六卷 · 通天灵宝", "元婴中期", [
+    ["坠魔谷", ["西极之地 [大衍神君]", "进入坠魔谷", "南陇侯取宝 [古修遗骸]", "紫灵寻踪 [灵烛果]", "古魔脱困", "激斗双魔", "被困灵缈园残骸 [绛云丹]"]],
+    ["天南魔影", ["重回落云宗", "古剑门观礼", "魔渊布阵 [魔髓钻]"]],
+    ["初入大晋", ["秘入慕兰草原 [五鬼锁神大法]", "再斗天澜圣女 [天澜圣兽]", "江中重伤被救 [大晋]", "江陵府参王大会 [火熔晶]", "冯家秘窟 [明王诀]", "三皇观潜修 [炼器术]"]],
+    ["寻材炼宝", ["化身巧取豪夺", "岳阳宫偷翎 [昊阳鸟长翎]", "晋京交易会 [天机屋]", "地下交易会 [五行玉/炫光晶]", "天符门之行 [向之礼/化灵符]", "炼制上古人形傀儡", "苦竹岛之行 [乌凤之翎]", "大衍神君坐化"]],
+    ["大晋南疆", ["双蝎山赴约 [富姓老者/白瑶怡]", "银蛟山炼宝 [七焰扇]", "探索阴阳窟 [阴芝马/银翅夜叉]"]],
+    ["昆吾山魔劫", ["传送入山", "炼制培婴丹", "登山寻路 [天晶碑]", "智斗大晋众修", "探索铸灵堂 [太阴真火]", "昆吾殿夺宝", "灭杀阴罗宗乾老魔 [五子同心魔]", "镇魔塔斗魔 [八灵尺/黑风旗]", "元刹圣祖化身降临", "重封真魔之气", "灭杀圣祖化身", "银月返回灵界 [空间节点]"]],
+    ["北冥岛妖乱", ["霜郡休整", "拜访北夜小极宫", "玄玉洞化神仪式 [寒骊上人/万年玄玉/五种寒焰/灭仙珠]", "冰海妖兽围攻 [万妖谷车老妖/冰凤/黄泉鬼母/破灭法目]"]],
+  ]],
+  ["第七卷 · 纵横人界", "元婴后期 → 化神期", [
+    ["重临乱星海", ["被困虚天殿 [突破元婴后期]", "天星城初遇双圣", "外海惊见巨禽跨界 [鲲鹏之羽]", "收集高阶灵石", "再见极阴/蛮胡子 [托天魔功]", "夺取极品灵石", "天星双圣之约 [元磁神光]", "魔湖岛宝藏 [金阙玉书外页-符箓]", "收徒田琴儿 [龙吟之体]"]],
+    ["回归落云宗", ["压服云梦山另两宗", "镇压魔化第二元婴", "助天澜圣兽化形 [帝流浆/化界珠]", "元婴后期庆典 [天南第一修/木生珠]"]],
+    ["星宫来讯", ["星宫之战", "灭杀万天明 [六道极圣]", "担任客卿长老 [元磁神山]"]],
+    ["化神准备", ["再往大晋", "天机阁交易 [炼化空间节点方法]", "图谋阴罗宗 [收集阴罗幡/灭仙珠]", "被风老怪追杀", "再见向之礼", "魔陀山聚会 [呼庆雷/紫灵/魔元丹]", "火狱禁地之行 [太阳精火]", "炼制回阳水 [玄天仙藤复活]", "乱星海伏击金蛟王 [金灵根/龙鳞果/淬骨诀]"]],
+    ["人界后续", ["坠魔谷闭关 [突破化神]", "探查五龙海空间节点", "劫掠天下 [寻找抵抗空间风暴的宝物]", "与冰凤联手进入空间节点"]],
+  ]],
+  ["第八卷 · 初入灵界", "化神期", [
+    ["重修炼体", ["青罗沙漠被救 [天东商号]", "安远城兽潮", "虞阳城潜修", "落日之墓历练 [豹鳞兽/噬灵真火]", "炙光潭大战 [灵族神血]", "初斗炼虚", "金刚诀圆满"]],
+    ["天渊城", ["重入化神", "两色雷劫降临 [天渊卫]", "前往天渊城 [青冥卫]", "灵地之争", "巡查浮黎沼泽", "天渊坊市拍卖会 [真灵鳞片]", "玉骨人魔遗地 [金阙玉书外页-百脉炼宝诀]", "异族攻城征兆", "飞升修士聚会"]],
+  ]],
+  ["第九卷 · 灵界百族", "化神期 → 炼虚期", [
+    ["风元大陆", ["天渊城任务小队汇合 [五人]", "途遇芝龙果", "黑叶森林遇袭", "击退木族敌人", "与木凤汇合 [木族情报]", "真灵世家弟子相斗 [真龙之血/真凤之血/天凤之翎]", "逃离木族 [重炼风雷翅]", "图谋真蟾液 [飞升修士之约]", "围攻真蟾巢穴", "夜叉族大军路过", "夜叉王的赌约", "超远距离传送阵逃离", "黑冥雾海巨岛潜修 [金晶髓虫]", "游历天鹏圣城 [青罗果]", "天鹏大长老的委托 [鲲鹏真血/惊蛰十二变]", "飞灵族圣子试炼 [四煞化甲术]", "地渊异变", "地渊四大妖王的图谋 [祭雷术]", "再见元瑶", "闯冥河之地", "误入冥河小界", "青元子的委托 [新青元剑诀/春黎/青幡]", "传送离开", "重回黑冥雾海", "巨岛潜修进阶 [炼虚期/血杏]", "玄天之宝异变 [玄天斩灵剑/异族血祭]", "重伤传送", "火珊瑚群岛养伤", "火阳族之劫 [灵漩邪光]", "修复古传送阵"]],
+    ["雷鸣大陆", ["初入雷鸣大陆", "绿光城战乱", "城主的委托 [广寒令]", "初斗角蚩族战舟", "救下天云族傀儡大师", "传送云城", "抵达云城", "见识天云十三族 [通灵傀儡/残破天外魔甲]", "再见向之礼", "四族拍卖会 [琉璃天火液]", "元磁之体的委托", "魔金山脉探险 [山岳巨猿真血/玄天如意残刃/金阙玉书外页-元合五极山/芝仙躯壳]", "返回云城", "修补天外魔甲", "云族许老怪的交易 [炎金之精]", "洞府潜修 [梵圣真魔法相]"]],
+    ["广寒界开启", ["暗兽森林斗兽", "仙人遗府：禁制之地破禁 [太乙青山] → 登山道阶梯 → 仙府偏殿 [黑幽冰香/金剑图] → 仙府药园 [蚀毒草/银色莲蓬] → 仙府主殿 [太虚妙灵丹] → 屏风洞天 [星空图/灌体进阶]", "密洞角蚩图谋 [炼神术]", "云城战乱", "天云大长老的委托 [跨大陆传送阵]", "灵药交易", "向之礼的阴谋", "传送风元大陆"]],
+  ]],
+  ["第十卷 · 魔界之战", "合体期", [
+    ["重返天渊城", ["闭关进阶合体", "真灵谷家和天渊城来人相邀", "许家之行 [冰魄仙子/血魄]", "游历人族三境"]],
+    ["九仙山万宝大会", ["路遇海大少和器灵子", "救治白果儿", "初见天元圣皇", "九仙山万宝大会 [泣血灵木]", "闯陇家救器灵子", "黑域交换会 [齐天锣/聚灵桩]", "再见冰凤"]],
+    ["真灵世家大典", ["万灵台血祭", "世家比斗", "陇家老祖之邀 [魔界之约]", "闭关潜修"]],
+    ["青元子的委托", ["再回天鹏圣城", "入地渊遇敌", "刑兽灭敌飞升", "再见青元子", "拜访金焰侯 [冥河神乳]", "初见浮游族渡劫修士 [噬金虫王秘术]"]],
+    ["魔劫降临", ["魔斑现世", "天渊城之危", "初斗魔尊 [镇魔锁]", "救援倚天城", "初斗血光圣祖化身", "再遇元刹圣祖", "逃离宝花圣祖的追踪 [双重雷阵]"]],
+    ["天渊城大战", ["回到天渊城", "斩杀青龙上人", "闭关进阶 [合体后期]", "魔族全面进攻天渊城", "斩杀血光圣祖分身和第一魔尊"]],
+    ["大乘机缘", ["偷入魔界", "血鸦城见闻 [异魔金/药灵遗骨/圣砖]", "魔虫兽潮来袭", "抵达幻夜城 [八足魔蜥]", "救下小灵天朱果儿", "进入幻啸沙漠", "兽尊殿魔尊拦路", "夺取青鸾真血", "抵达魔源海", "苦灵岛激斗", "灵王伪仙傀斗元魇始祖", "宝花圣祖现身", "达成交易", "进入洗灵池", "吞服净灵莲和太虚妙灵丹", "涅槃圣祖化身到来", "圣蟹灭敌", "带走蟹道人", "蓝瀑城广源斋 [异魔金/血牙米]", "再见紫灵", "击杀矿脉磁光兽 [阴阳大五行真光]"]],
+    ["木族惊变", ["回到灵界", "抵达木棉城", "初见敖啸和莫简离", "木族大战", "木族圣树被魔族摧毁", "木族败退"]],
+  ]],
+  ["第十一卷 · 真仙降世", "大乘期", [
+    ["大乘盛典", ["闭关潜修", "渡大乘天劫", "成功进阶", "重回天渊城", "压制圣岛使者", "举办大乘盛典", "重伤夜叉族黑枭王", "血魂传信定约"]],
+    ["魔界大劫", ["再入魔界", "见螟虫汹涌", "黑葫城探查", "万花山脉见邪莲圣祖", "各界大乘汇合", "前往上古封印", "激斗螟虫之母后代", "斩杀螟虫之母", "见被困仙人", "炼神术之约", "重会广源斋", "泣灵秘藏 [墨灵圣舟]"]],
+    ["灵族之行", ["初见灵王", "约定交易 [三清雷霄符]"]],
+    ["小修罗界", ["初入探索", "初斗修罗一族", "击杀巨龟 [玄武真血]", "围攻修罗蛛巢穴", "斩杀奕姓老者", "修罗蛛母的交易", "寒潭空鱼族圣物 [山海珠]", "收服空鱼族"]],
+    ["返回人族", ["敖啸之陨", "定居无涯海元合岛"]],
+    ["血魄之约", ["途遇飞灵族大乘 [极元晶]", "相助青元子渡劫", "赫连商盟拍卖会 [金阙玉书内页-五藏锻元功]", "传送血天大陆", "闯九鼎宫", "救出冰魄仙子"]],
+    ["寻找灵天", ["赫连商盟碧影之约 [元罡罩]", "对战阴司鬼王", "海域寻坐标", "进入小灵天", "终见南宫婉", "压服小灵天各异族", "带着小灵界百余人族离开"]],
+    ["真仙降世", ["血天大陆惊变", "真仙马良凶威", "雷鸣大陆角蚩族多座大城被血祭", "角蚩供奉的三大上古真灵战败", "风元大陆赫连商盟明尊的联手之邀", "返回天渊城"]],
+    ["斩杀真仙", ["风元大陆鸣煞之地", "灵界各族强者齐聚", "布置两仪灭尘大阵", "再见六翼", "真仙马良到来", "斩杀上古真灵阳鹿", "围攻真仙马良", "群强陨落", "大阵献祭", "斩杀真仙马良"]],
+    ["灵界余波", ["血天/雷鸣八强者来访，尽败八人，为灵界第一大乘", "再见灵族灵王，搜魂被封印的真仙", "再去魔源海，收回瓶灵", "前往真龙岛，参加广灵道果大会", "重回人界：见大晋乱象，掌灭昆吾山 → 去乱星海星宫，见宫主凌玉灵，打听人界之事 → 再回荒废韩家祠，点醒后辈韩鸣 → 入坠魔谷，收取北极元晶", "八千年后，韩立渡飞升之劫，飞升仙界"]],
+  ]],
+];
+
+function plotStepHTML(s){
+  /* 先整体转义，再把 [注记] 高亮成金色斜体 */
+  return esc(s).replace(/\[([^\]]+)\]/g, '<i class="plot-note">[$1]</i>');
+}
+function renderPlot(){
+  const el = document.getElementById("plotList");
+  if(!el) return;
+  el.innerHTML = PLOT_VOLS.map(([vt, realm, arcs]) => `
+    <section class="plot-vol">
+      <div class="plot-vol-head">
+        <h3>${esc(vt)}</h3>
+        <span class="plot-realm">${esc(realm)}</span>
+      </div>
+      ${arcs.map(([p, steps]) => `
+        <div class="plot-arc">
+          <div class="plot-place">${esc(p)}</div>
+          <div class="plot-steps">${steps.map(s => `<div class="plot-step">${plotStepHTML(s)}</div>`).join("")}</div>
+        </div>`).join("")}
+    </section>`).join("");
+}
+
+/* 剧情速览页内 tab：默认境界时间线，情节梳理首次点开才渲染 */
+(function(){
+  const paneTL = document.getElementById("lorePaneTimeline");
+  const panePlot = document.getElementById("lorePanePlot");
+  if(!paneTL || !panePlot) return;
+  let plotDone = false;
+  document.querySelectorAll(".lore-tab").forEach(btn => btn.addEventListener("click", () => {
+    document.querySelectorAll(".lore-tab").forEach(b => {
+      const on = b === btn;
+      b.classList.toggle("active", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    const showPlot = btn.dataset.loreTab === "plot";
+    paneTL.hidden = showPlot;
+    panePlot.hidden = !showPlot;
+    if(showPlot && !plotDone){ renderPlot(); plotDone = true; }
+    if(showPlot) window.scrollTo({ top: 0, behavior: "auto" });
+  }));
+})();
+
 /* ===== 统计与渲染 ===== */
 const CHAR_CARDS = Object.values(DATA).flat();
 const CHAR_TOTAL = CHAR_CARDS.length;
@@ -1883,7 +2035,62 @@ function refBadge(key){
 const CORE_MIN = 5;
 let coreOnly = false;
 const isCore = key => refCount(key) >= CORE_MIN;
-const coreCount = () => [...document.querySelectorAll("#characters .card")].filter(c => isCore(c.dataset.key)).length;
+/* 人物扁平索引（数据级筛选 + 瀑布分批渲染共用） */
+const CHAR_FLAT = [];
+CHAPTERS.forEach(ch => DATA[ch.id].forEach((c, i) => CHAR_FLAT.push({ ch, c, i, key: ch.id + "-" + i })));
+/* 核心圈计数改为纯数据计算：瀑布渲染下卡片是分批进 DOM 的，不能再扫 DOM */
+const coreCount = () => CHAR_FLAT.reduce((n, x) => n + (isCore(x.key) ? 1 : 0), 0);
+
+/* ===== 瀑布分批渲染引擎 =====
+   先挂 firstN 条立即出画面，其余由 IntersectionObserver 在滚动接近底部时按 stepN 续传，
+   筛选变化即整表重置。深链/互引定位用 ensureKey 按需补齐到目标卡。 */
+function makePager(o){
+  const p = { items: [], idx: 0, sentinel: null, io: null };
+  const firstN = o.firstN || 10, stepN = o.stepN || 12;
+  function finish(){
+    if(p.io){ p.io.disconnect(); p.io = null; }
+    if(p.sentinel) p.sentinel.style.display = "none";
+  }
+  function loadMore(){
+    if(p.idx >= p.items.length) return;
+    o.mount(p.items.slice(p.idx, p.idx + stepN), p);
+    p.idx = Math.min(p.idx + stepN, p.items.length);
+    if(p.idx >= p.items.length) finish();
+  }
+  function observe(){
+    if(!("IntersectionObserver" in window)){ p.ensureAll(); return; }
+    if(p.io) p.io.disconnect();
+    p.io = new IntersectionObserver(function(es){
+      if(es.some(e => e.isIntersecting)) loadMore();
+    }, { rootMargin: "800px 0px" });
+    p.io.observe(p.sentinel);
+  }
+  p.render = function(items){
+    p.items = items; p.idx = 0;
+    if(p.io){ p.io.disconnect(); p.io = null; }
+    o.reset();
+    p.sentinel = document.createElement("div");
+    p.sentinel.className = "batch-sentinel";
+    o.sentinelHost.appendChild(p.sentinel);
+    o.mount(p.items.slice(0, firstN), p);
+    p.idx = Math.min(firstN, p.items.length);
+    if(p.idx < p.items.length) observe(); else finish();
+  };
+  p.ensureAll = function(){
+    if(p.idx < p.items.length){ o.mount(p.items.slice(p.idx), p); p.idx = p.items.length; }
+    finish();
+  };
+  p.ensureKey = function(key){
+    if(!key) return;
+    const has = () => p.items.slice(0, p.idx).some(it => o.keyOf(it) === key);
+    while(p.idx < p.items.length && !has()){
+      o.mount(p.items.slice(p.idx, p.idx + stepN), p);
+      p.idx = Math.min(p.idx + stepN, p.items.length);
+    }
+    if(p.idx >= p.items.length) finish();
+  };
+  return p;
+}
 
 function renderTabs(){
   const tabs = document.getElementById("tabs");
@@ -1920,81 +2127,127 @@ function renderLegend(){
   `).join("");
 }
 
-function renderMain(){
+/* 人物图谱：骨架（篇章分节 + 标题）一次成型，卡片按瀑布分批挂进各篇章网格 */
+function renderCharSkeleton(){
   const main = document.getElementById("characters");
   main.innerHTML = CHAPTERS.map(ch=>{
-    const cards = DATA[ch.id].map((c,i)=>{
-      const key = ch.id + "-" + i;
-      const safeName = escapeAttr(c.n || "");
-      const safeTitle = escapeAttr(c.t || "");
-      const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
-      const imgs = (c.imgs && c.imgs.length > 1) ? c.imgs : (c.img ? [c.img] : null);
-      const img = imgs
-        ? (c.imgs && c.imgs.length > 1
-          ? `<div class="carousel" data-cur="0">
-              ${c.imgs.map((f,j)=>`<img class="card-img${j===0?'':' off'}" src="assets/${escapeAttr(f)}" alt="${safeName}" loading="lazy">`).join("")}
-              <button class="car-btn prev" type="button" aria-label="上一形象">‹</button>
-              <button class="car-btn next" type="button" aria-label="下一形象">›</button>
-              <div class="car-dots">${c.imgs.map((_,j)=>`<span class="dot${j===0?' active':''}"></span>`).join("")}</div>
-            </div>`
-          : `<img class="card-img" src="assets/${escapeAttr(imgs[0])}" alt="${safeName}" loading="lazy">`)
-        : `<div class="ph">${fallbackLetter}</div>`;
-
-      return `<div class="card" data-key="${key}" data-name="${safeName}" data-aka="${safeTitle}">
-        <div class="card-top">${img}<span class="card-tag" style="background:${ch.color}">${esc(ch.name)}</span></div>
-        <div class="card-body">
-          <div class="card-name"><h3>${esc(c.n)}</h3>${c.t?`<span class="aka">${esc(c.t)}</span>`:""}</div>
-          ${(c.rel||c.camp||c.race)?`<div class="card-chips">
-            ${c.rel?`<span class="chip rel" title="与韩立的关系">${esc(c.rel)}</span>`:""}
-            ${c.camp?`<span class="chip camp" title="势力阵营">${esc(c.camp)}</span>`:""}
-            ${c.race?`<span class="chip race" title="种族">${esc(c.race)}</span>`:""}
-          </div>`:""}
-          <div class="card-row realm"><span class="lb">修为</span><span class="tx">${esc(c.r)}</span></div>
-          <div class="card-extra">
-            <div class="card-row"><span class="lb">结局</span><span class="tx">${esc(c.e)}</span></div>
-            ${c.ev?`<div class="card-row"><span class="lb">修为演进</span><span class="tx">${esc(c.ev)}</span></div>`:""}
-            ${c.s?`<div class="card-row"><span class="lb">生平</span><span class="tx">${esc(c.s)}</span></div>`:""}
-            ${refsBlock(key)}
-          </div>
-          <div class="card-hint"><span class="chev">▾</span>点击展开生平${refBadge(key)}</div>
-        </div>
-      </div>`;
-    }).join("");
-    return `<section class="chapter" id="ch-${ch.id}" data-chapter="${ch.id}">
+    return `<section class="chapter" id="ch-${ch.id}" data-chapter="${ch.id}" style="display:none">
       <div class="wrap">
         <div class="ch-head">
           <span class="ch-badge" style="color:${ch.color};border-color:${ch.color}">${esc(ch.full)}</span>
           <span class="ch-meta">${esc(ch.sub)} · ${DATA[ch.id].length} 条人物记录</span>
         </div>
-        <div class="grid">${cards}</div>
+        <div class="grid"></div>
       </div>
     </section>`;
   }).join("");
+}
 
-  main.querySelectorAll(".card-img").forEach(img=>{
+function charCardHTML(x){
+  const ch = x.ch, c = x.c, key = x.key;
+  const safeName = escapeAttr(c.n || "");
+  const safeTitle = escapeAttr(c.t || "");
+  const fallbackLetter = escapeAttr(((c.n || "")[0]) || "?");
+  const imgs = (c.imgs && c.imgs.length > 1) ? c.imgs : (c.img ? [c.img] : null);
+  const img = imgs
+    ? (c.imgs && c.imgs.length > 1
+      ? `<div class="carousel" data-cur="0">
+          ${c.imgs.map((f,j)=>`<img class="card-img${j===0?'':' off'}" src="assets/${escapeAttr(f)}" alt="${safeName}" loading="lazy">`).join("")}
+          <button class="car-btn prev" type="button" aria-label="上一形象">‹</button>
+          <button class="car-btn next" type="button" aria-label="下一形象">›</button>
+          <div class="car-dots">${c.imgs.map((_,j)=>`<span class="dot${j===0?' active':''}"></span>`).join("")}</div>
+        </div>`
+      : `<img class="card-img" src="assets/${escapeAttr(imgs[0])}" alt="${safeName}" loading="lazy">`)
+    : `<div class="ph">${fallbackLetter}</div>`;
+
+  return `<div class="card" data-key="${key}" data-name="${safeName}" data-aka="${safeTitle}">
+    <div class="card-top">${img}<span class="card-tag" style="background:${ch.color}">${esc(ch.name)}</span></div>
+    <div class="card-body">
+      <div class="card-name"><h3>${esc(c.n)}</h3>${c.t?`<span class="aka">${esc(c.t)}</span>`:""}</div>
+      ${(c.rel||c.camp||c.race)?`<div class="card-chips">
+        ${c.rel?`<span class="chip rel" title="与韩立的关系">${esc(c.rel)}</span>`:""}
+        ${c.camp?`<span class="chip camp" title="势力阵营">${esc(c.camp)}</span>`:""}
+        ${c.race?`<span class="chip race" title="种族">${esc(c.race)}</span>`:""}
+      </div>`:""}
+      <div class="card-row realm"><span class="lb">修为</span><span class="tx">${esc(c.r)}</span></div>
+      <div class="card-extra">
+        <div class="card-row"><span class="lb">结局</span><span class="tx">${esc(c.e)}</span></div>
+        ${c.ev?`<div class="card-row"><span class="lb">修为演进</span><span class="tx">${esc(c.ev)}</span></div>`:""}
+        ${c.s?`<div class="card-row"><span class="lb">生平</span><span class="tx">${esc(c.s)}</span></div>`:""}
+        ${refsBlock(key)}
+      </div>
+      <div class="card-hint"><span class="chev">▾</span>点击展开生平${refBadge(key)}</div>
+    </div>
+  </div>`;
+}
+
+/* 每张卡片挂载前就地绑定：裂图兜底 + 多形象轮播（瀑布分批下不能整表后补） */
+function bindCharCard(el){
+  el.querySelectorAll(".card-img").forEach(img=>{
     img.addEventListener("error", () => {
       const cardTop = img.parentElement;
       if (!cardTop || cardTop.querySelector(".ph")) return;
       cardTop.innerHTML = `<div class="ph">${esc((img.alt || "?").charAt(0))}</div><span class="card-tag" style="background:${cardTop.dataset.chapterColor || "var(--gold)"}">${esc(cardTop.querySelector(".card-tag")?.textContent || "")}</span>`;
     });
   });
+  const car = el.querySelector(".carousel");
+  if(!car) return;
+  const imgs = car.querySelectorAll(".card-img");
+  const dots = car.querySelectorAll(".car-dots .dot");
+  if (imgs.length < 2) return;
+  let cur = 0;
+  const show = i => {
+    cur = ((i % imgs.length) + imgs.length) % imgs.length;
+    imgs.forEach((im,j)=>im.classList.toggle("off", j!==cur));
+    dots.forEach((d,j)=>d.classList.toggle("active", j===cur));
+  };
+  const prev = car.querySelector(".car-btn.prev");
+  const next = car.querySelector(".car-btn.next");
+  if (prev) prev.addEventListener("click", e=>{e.stopPropagation();show(cur-1);});
+  if (next) next.addEventListener("click", e=>{e.stopPropagation();show(cur+1);});
+  dots.forEach((d,j)=>d.addEventListener("click", e=>{e.stopPropagation();show(j);}));
+}
 
-  main.querySelectorAll(".carousel").forEach(car=>{
-    const imgs = car.querySelectorAll(".card-img");
-    const dots = car.querySelectorAll(".car-dots .dot");
-    if (imgs.length < 2) return;
-    let cur = 0;
-    const show = i => {
-      cur = ((i % imgs.length) + imgs.length) % imgs.length;
-      imgs.forEach((im,j)=>im.classList.toggle("off", j!==cur));
-      dots.forEach((d,j)=>d.classList.toggle("active", j===cur));
-    };
-    const prev = car.querySelector(".car-btn.prev");
-    const next = car.querySelector(".car-btn.next");
-    if (prev) prev.addEventListener("click", e=>{e.stopPropagation();show(cur-1);});
-    if (next) next.addEventListener("click", e=>{e.stopPropagation();show(cur+1);});
-    dots.forEach((d,j)=>d.addEventListener("click", e=>{e.stopPropagation();show(j);}));
+function mountCharCards(batch){
+  const wrap = document.createElement("div");
+  const frags = {};
+  batch.forEach(x => {
+    const f = frags[x.ch.id] || (frags[x.ch.id] = document.createDocumentFragment());
+    wrap.innerHTML = charCardHTML(x);
+    const el = wrap.firstElementChild;
+    bindCharCard(el);
+    f.appendChild(el);
   });
+  for(const id in frags){
+    document.querySelector("#ch-" + id + " .grid").appendChild(frags[id]);
+  }
+}
+
+/* 筛选下沉到数据层（原来扫 DOM 逐卡 display 切换，瀑布渲染下改为按结果整表重排） */
+function charFiltered(){
+  const kw = keyword.trim().toLowerCase();
+  return CHAR_FLAT.filter(x => {
+    if(currentTab !== "all" && x.ch.id !== currentTab) return false;
+    if(coreOnly && !kw && !isCore(x.key)) return false;
+    if(kw){
+      const name = (x.c.n || "").toLowerCase();
+      const aka = (x.c.t || "").toLowerCase();
+      if(name.indexOf(kw) < 0 && aka.indexOf(kw) < 0) return false;
+    }
+    return true;
+  });
+}
+
+function applyCharsFilter(){
+  const list = charFiltered();
+  /* 篇章可见性按数据预判：一篇一张不剩就整段收起 */
+  const seen = {};
+  list.forEach(x => seen[x.ch.id] = true);
+  document.querySelectorAll(".chapter").forEach(sec => {
+    sec.style.display = seen[sec.dataset.chapter] ? "" : "none";
+  });
+  document.getElementById("emptyTip").classList.toggle("show", list.length === 0);
+  charPager.render(list);
 }
 
 /* ===== 交互：tab + 搜索 ===== */
@@ -2016,31 +2269,7 @@ document.getElementById("characters").addEventListener("click", function(event){
 });
 
 function applyFilter(){
-  /* 必须限定在 #characters 内：灵兽/灵草也用了 .card 类，但它们不在 .chapter 里，
-     全局选择器会让 closest(".chapter") 返回 null 直接抛错（篇章切换与下方分节隐藏都会失效） */
-  const cards = document.querySelectorAll("#characters .card");
-  const kw = keyword.trim().toLowerCase();
-  let visible = 0;
-  cards.forEach(card=>{
-    const chapter = card.closest(".chapter").dataset.chapter;
-    const chOk = currentTab === "all" || chapter === currentTab;
-    const name = (card.dataset.name || "").toLowerCase();
-    const aka = (card.dataset.aka || "").toLowerCase();
-    const kwOk = !kw || name.includes(kw) || aka.includes(kw);
-    /* 关键词非空时忽略核心圈：找路人也得找得到 */
-    const coreOk = !coreOnly || !!kw || isCore(card.dataset.key);
-    const show = chOk && kwOk && coreOk;
-    card.style.display = show ? "" : "none";
-    if(show) visible++;
-  });
-  document.querySelectorAll(".chapter").forEach(sec=>{
-    const ch = sec.dataset.chapter;
-    const chOk = currentTab === "all" || ch === currentTab;
-    /* 该篇在降噪后可能一张卡都不剩（如仙界篇的核心条目已列在首页）→ 整段收起 */
-    const any = [...sec.querySelectorAll(".card")].some(c => c.style.display !== "none");
-    sec.style.display = (chOk && any) ? "" : "none";
-  });
-  document.getElementById("emptyTip").classList.toggle("show", visible === 0);
+  applyCharsFilter();
 }
 
 document.getElementById("tabs").addEventListener("click", e=>{
@@ -2076,7 +2305,6 @@ function haystack(o){
 const LIB_UI = {};
 function initCardLib(cfg){
   const st = { tab: "all", kw: "" };
-  const HAY = new Map();   /* data-key → 命中文本：正文不进 DOM 属性，改存在 JS 里 */
   const q = id => document.getElementById(id);
   const cnt = id => id === "all" ? cfg.data.length : cfg.data.filter(x => x.cat === id).length;
 
@@ -2113,11 +2341,18 @@ function initCardLib(cfg){
     if(!el) return;
     el.innerHTML = cfg.cats.map(c => '<button class="' + cfg.tab + (c.id === st.tab ? " active" : "") + '" data-cat="' + c.id + '">' + esc(c.name) + '<span class="cnt">' + cnt(c.id) + '</span></button>').join("");
   }
-  function list(){
-    const el = q(cfg.listId);
-    if(!el) return;
-    el.innerHTML = cfg.data.map(cardHTML).join("");
-    cfg.data.forEach((c, i) => HAY.set(cfg.prefix + i, haystack(c)));
+  /* 数据级筛选 + 瀑布分批挂载（原先整表 innerHTML + 逐卡 display 切换，两步都省了） */
+  function libFiltered(){
+    return cfg.data.filter(c => {
+      const catOk = st.tab === "all" || c.cat === st.tab;
+      const kwOk = !st.kw || haystack(c).indexOf(st.kw) >= 0;
+      return catOk && kwOk;
+    });
+  }
+  function cardEl(c, i){
+    const wrap = document.createElement("div");
+    wrap.innerHTML = cardHTML(c, i);
+    const el = wrap.firstElementChild;
     /* 裂图兜底：换成首字占位（与人物/法宝一致） */
     el.querySelectorAll(".card-img").forEach(img => img.addEventListener("error", function(){
       const ph = document.createElement("div");
@@ -2125,45 +2360,51 @@ function initCardLib(cfg){
       ph.textContent = (img.alt || "?").charAt(0);
       img.replaceWith(ph);
     }));
+    return el;
   }
-  function filter(){
-    let visible = 0;
-    q(cfg.listId).querySelectorAll(".card").forEach(card => {
-      const catOk = st.tab === "all" || card.dataset.cat === st.tab;
-      const hay = HAY.get(card.dataset.key) || "";
-      const show = catOk && (!st.kw || hay.indexOf(st.kw) >= 0);
-      card.style.display = show ? "" : "none";
-      if(show) visible++;
-    });
+  const pager = makePager({
+    sentinelHost: q(cfg.listId),
+    keyOf: it => cfg.prefix + it.i,
+    reset(){ q(cfg.listId).innerHTML = ""; },
+    mount(batch, p){
+      const grid = q(cfg.listId);
+      batch.forEach(it => {
+        grid.insertBefore(cardEl(it.c, it.i), p.sentinel);
+      });
+    },
+  });
+  function apply(){
+    const list = libFiltered().map((c, i) => ({ c, i }));
     const empty = q(cfg.emptyId);
-    if(empty) empty.classList.toggle("show", visible === 0);
+    if(empty) empty.classList.toggle("show", list.length === 0);
+    pager.render(list);
   }
 
-  rail(); tabs(); list(); filter();
+  rail(); tabs(); apply();
 
   q(cfg.tabsId).addEventListener("click", function(e){
     const btn = e.target.closest("." + cfg.tab);
     if(!btn) return;
     q(cfg.tabsId).querySelectorAll("." + cfg.tab).forEach(t => t.classList.toggle("active", t === btn));
     st.tab = btn.dataset.cat;
-    filter();
+    apply();
   });
   q(cfg.searchId).addEventListener("input", function(e){
     st.kw = (e.target.value || "").trim().toLowerCase();
-    filter();
+    apply();
   });
   q(cfg.listId).addEventListener("click", function(e){
     const card = e.target.closest(".card");
     if(card) toggleCard(card);
   });
 
-  /* gotoEntry 只需复位筛选（否则目标卡可能正被筛掉），其余状态不必外露 */
+  /* gotoEntry 只需复位筛选（否则目标卡可能正被筛掉）+ 补齐渲染到目标卡，其余状态不必外露 */
   LIB_UI[cfg.id] = { reset: function(){
     st.tab = "all"; st.kw = "";
     q(cfg.searchId).value = "";
     q(cfg.tabsId).querySelectorAll("." + cfg.tab).forEach(t => t.classList.toggle("active", t.dataset.cat === "all"));
-    filter();
-  }};
+    apply();
+  }, ensureKey: key => pager.ensureKey(key) };
 }
 
 const BEAST_LIB = {
@@ -2187,9 +2428,16 @@ const HERB_LIB = {
 renderTimeline();
 renderBars();
 renderLegend();
-renderMain();      // 必须早于 renderTabs：核心圈计数要从已渲染的卡片上读 data-key
-renderTabs();
-applyFilter();
+renderCharSkeleton();   // 篇章骨架一次成型（卡片走瀑布）
+renderTabs();           // 核心圈计数已改纯数据计算，不再依赖卡片先渲染
+/* 人物卡片瀑布分批：先出 10 条，滚动接近底部时按批续传 */
+const charPager = makePager({
+  sentinelHost: document.getElementById("characters"),
+  keyOf: x => x.key,
+  reset(){ document.querySelectorAll("#characters .grid").forEach(g => g.innerHTML = ""); },
+  mount: mountCharCards,
+});
+applyCharsFilter();
 document.getElementById("beast-total").textContent = BEASTS.length;
 document.getElementById("lore-nodes").textContent = TL.length;
 document.getElementById("beast-cats").textContent = BEAST_CATS.length - 1;
@@ -2214,56 +2462,72 @@ function renderTreasureTabs(){
     applyTreasureFilter();
   }));
 }
-function renderTreasures(list){
-  const grid=document.getElementById("treasureGrid");
-  const shown=document.getElementById("treasureShown");
-  if(!grid) return;
-  if(shown)shown.textContent=list.length;
-  if(!list.length){grid.innerHTML='<div class="empty-tip show" style="grid-column:1/-1;padding:50px 0">未找到匹配的法器法宝，换个关键词试试。</div>';return;}
-  const phStyle="display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--gold);opacity:.3";
-  grid.innerHTML=list.map((t,i)=>{
-    const cat=TREASURE_CATS.find(c=>c.id===t.cat);
-    const name=esc(t.n);                                 // 文本节点：与灵兽/灵草一致过 esc
-    const nameAttr=escapeAttr(t.n||"");                 // 属性值：额外转義引号
-    const imgHtml=t.img?`<img class="tc-img" src="assets/${escapeAttr(t.img)}" alt="${nameAttr}" loading="lazy">`:`<div class="tc-img" style="${phStyle}">${esc((t.n||"?")[0])}</div>`;
-    const key="tres-"+i;   /* 列表即 TREASURES 原序，下标就是稳定主键（比 indexOf 更稳也更快） */
-    return `<div class="treasure-card" data-key="${key}" data-name="${nameAttr}">
-      ${imgHtml}
-      <div class="tc-body">
-        <div class="tc-name">${name}</div>
-        <div class="tc-title">${esc(t.t)}</div>
-        <div class="tc-meta">
-          <span class="tc-tag" style="color:${cat?cat.color:"var(--gold)"}">${cat?esc(cat.name):esc(t.cat)}</span>
-          <span class="tc-realm">${esc(t.r)}</span>
-        </div>
-        <div class="tc-end">${esc(t.e)}${refBadge(key)}</div>
+const treasurePhStyle="display:flex;align-items:center;justify-content:center;font-size:44px;color:var(--gold);opacity:.3";
+function treasureCardHTML(t,i){
+  const cat=TREASURE_CATS.find(c=>c.id===t.cat);
+  const name=esc(t.n);                                 // 文本节点：与灵兽/灵草一致过 esc
+  const nameAttr=escapeAttr(t.n||"");                 // 属性值：额外转義引号
+  const imgHtml=t.img?`<img class="tc-img" src="assets/${escapeAttr(t.img)}" alt="${nameAttr}" loading="lazy">`:`<div class="tc-img" style="${treasurePhStyle}">${esc((t.n||"?")[0])}</div>`;
+  const key="tres-"+i;   /* 列表即 TREASURES 原序，下标就是稳定主键（比 indexOf 更稳也更快） */
+  return `<div class="treasure-card" data-key="${key}" data-name="${nameAttr}">
+    ${imgHtml}
+    <div class="tc-body">
+      <div class="tc-name">${name}</div>
+      <div class="tc-title">${esc(t.t)}</div>
+      <div class="tc-meta">
+        <span class="tc-tag" style="color:${cat?cat.color:"var(--gold)"}">${cat?esc(cat.name):esc(t.cat)}</span>
+        <span class="tc-realm">${esc(t.r)}</span>
       </div>
-      <div class="treasure-detail">
-        <div class="dl-row"><span class="dl-label">来历：</span>${esc(t.s)}</div>
-        <div class="dl-row"><span class="dl-label">持有者：</span>${esc(t.rel)}</div>
-        <div class="dl-row"><span class="dl-label">出处：</span>${esc(t.camp)}</div>
-        ${refsBlock(key)}
-      </div>
-    </div>`;
-  }).join("");
-  /* 裂图兜底：换成首字占位，与灵兽/灵草行为一致（列表重渲染后监听器要重绑） */
-  grid.querySelectorAll("img.tc-img").forEach(img=>img.addEventListener("error",function(){
+      <div class="tc-end">${esc(t.e)}${refBadge(key)}</div>
+    </div>
+    <div class="treasure-detail">
+      <div class="dl-row"><span class="dl-label">来历：</span>${esc(t.s)}</div>
+      <div class="dl-row"><span class="dl-label">持有者：</span>${esc(t.rel)}</div>
+      <div class="dl-row"><span class="dl-label">出处：</span>${esc(t.camp)}</div>
+      ${refsBlock(key)}
+    </div>
+  </div>`;
+}
+function bindTreasureCard(el){
+  /* 裂图兜底：换成首字占位，与灵兽/灵草行为一致 */
+  el.querySelectorAll("img.tc-img").forEach(img=>img.addEventListener("error",function(){
     const ph=document.createElement("div");
     ph.className="tc-img";
-    ph.style.cssText=phStyle;
+    ph.style.cssText=treasurePhStyle;
     ph.textContent=(img.alt||"?").charAt(0);
     img.replaceWith(ph);
   }));
 }
+/* 法宝列表分批瀑布：先 10 条，滚动续传（深链定位由 ensureKey 补齐） */
+const treasurePager = makePager({
+  sentinelHost: document.getElementById("treasureGrid"),
+  keyOf: it => "tres-" + it.i,
+  reset(){ document.getElementById("treasureGrid").innerHTML = ""; },
+  mount(batch, p){
+    const grid = document.getElementById("treasureGrid");
+    const wrap = document.createElement("div");
+    batch.forEach(it => {
+      wrap.innerHTML = treasureCardHTML(it.t, it.i);
+      const el = wrap.firstElementChild;
+      bindTreasureCard(el);
+      grid.insertBefore(el, p.sentinel);
+    });
+  },
+});
 function applyTreasureFilter(){
   const activeTab=document.querySelector("#treasureTabs .tab.active");
   const cat=(activeTab&&activeTab.dataset.cat)||"all";   /* 没有活动 tab 时退回全部，不要抛 TypeError */
-  const q=(document.getElementById("treasureSearchInput").value||"").trim().toLowerCase();
-  let list=TREASURES;
-  if(cat!=="all")list=list.filter(t=>t.cat===cat);
+  const kw=(document.getElementById("treasureSearchInput").value||"").trim().toLowerCase();
+  let list=TREASURES.map((t,i)=>({t,i}));
+  if(cat!=="all")list=list.filter(it=>it.t.cat===cat);
   /* 与灵兽/灵草同一套命中范围（haystack） */
-  if(q)list=list.filter(t=>haystack(t).indexOf(q)>=0);
-  renderTreasures(list);
+  if(kw)list=list.filter(it=>haystack(it.t).indexOf(kw)>=0);
+  const shown=document.getElementById("treasureShown");
+  if(shown)shown.textContent=list.length;
+  const grid=document.getElementById("treasureGrid");
+  if(!grid) return;
+  if(!list.length){grid.innerHTML='<div class="empty-tip show" style="grid-column:1/-1;padding:50px 0">未找到匹配的法器法宝，换个关键词试试。</div>';return;}
+  treasurePager.render(list);
 }
 
 /* ===== 路由：视图切换 + 条目深链 =====
@@ -2454,14 +2718,18 @@ function setHash(view, target, replace){
       coreOnly = false;
       document.getElementById("searchInput").value = "";
       renderTabs();
-      applyFilter();
+      applyCharsFilter();
+      /* 瀑布渲染下目标卡可能还没挂上，先补齐渲染到它 */
+      charPager.ensureKey(e.key);
     } else if(LIB_UI[e.lib]){
       /* 灵兽 / 灵草：复位搜索与分类，否则目标卡可能正被筛掉 */
       LIB_UI[e.lib].reset();
+      LIB_UI[e.lib].ensureKey(e.key);
     } else {
       document.getElementById("treasureSearchInput").value = "";
       document.querySelectorAll("#treasureTabs .tab").forEach(function(t){ t.classList.toggle("active", t.dataset.cat === "all"); });
       applyTreasureFilter();
+      treasurePager.ensureKey(e.key);
     }
     if(!keepHash) setHash(meta.view, key, true);
     switchView(meta.view);
