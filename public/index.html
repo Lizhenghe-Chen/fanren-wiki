@@ -730,7 +730,9 @@ footer .note{margin-top:6px}
       <a href="#v-beasts" data-view="v-beasts">灵兽灵虫</a>
       <a href="#v-herbs" data-view="v-herbs">灵草丹药</a>
       <a href="#v-treasures" data-view="v-treasures">法器法宝</a>
-      <a href="#v-arts" data-view="v-arts">功法·阵法·符箓</a>
+      <a href="#v-gongfa" data-view="v-gongfa">功法</a>
+      <a href="#v-zhenfa" data-view="v-zhenfa">阵法</a>
+      <a href="#v-fu" data-view="v-fu">符箓</a>
     </div>
     <button class="tn-search" id="openSearch" type="button" aria-label="全库搜索">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
@@ -765,7 +767,9 @@ footer .note{margin-top:6px}
         <div class="stat"><b id="home-st-beasts">0</b><span>灵兽灵虫</span></div>
         <div class="stat"><b id="home-st-herbs">0</b><span>灵草丹药</span></div>
         <div class="stat"><b id="home-st-treas">0</b><span>法器法宝</span></div>
-        <div class="stat"><b id="home-st-arts">0</b><span>功法·阵法·符箓</span></div>
+        <div class="stat"><b id="home-st-gongfa">0</b><span>功法</span></div>
+        <div class="stat"><b id="home-st-zhenfa">0</b><span>阵法</span></div>
+        <div class="stat"><b id="home-st-fu">0</b><span>符箓</span></div>
         <div class="stat" id="stat-views" style="display:none" title="累计浏览次数（不蒜子 page_pv）"><b id="stat-views-num">0</b><span>次浏览</span></div>
       </div>
     </div>
@@ -824,9 +828,17 @@ footer .note{margin-top:6px}
             <b>法器法宝</b>
       <span>65 条：玄天之宝、本命法宝、神通秘术、符箓等分类与品阶。</span>
     </a>
-    <a class="home-card" href="#v-arts">
-            <b>功法·阵法·符箓</b>
-      <span>111 条：功法、阵法、符箓三脉归档，优先动画已出现条目，附原著出处。</span>
+    <a class="home-card" href="#v-gongfa">
+            <b>功法</b>
+      <span>40 条：主修功诀、神识、体修、身法魔功，从青元剑诀到大五行幻世诀。</span>
+    </a>
+    <a class="home-card" href="#v-zhenfa">
+            <b>阵法</b>
+      <span>37 条：护山杀阵、困敌禁制、传送辅助，韩立以阵道立身保命。</span>
+    </a>
+    <a class="home-card" href="#v-fu">
+            <b>符箓</b>
+      <span>34 条：攻击防御辅助通讯四类，从火弹符到符宝真宝。</span>
     </a>
   </div>
 </section>
@@ -1176,46 +1188,119 @@ footer .note{margin-top:6px}
 </div>
 </div>
 
-<!-- ===== v-arts 功法·阵法·符箓 ===== -->
-<div class="view" id="v-arts">
+
+<!-- ===== v-gongfa 功法 ===== -->
+<div class="view" id="v-gongfa">
 <header class="page-head">
   <div class="wrap ph-inner">
     <div>
-      <h1>《凡人修仙传》<span class="accent">功法·阵法·符箓</span></h1>
-      <span class="kicker">修行功诀 · 护山杀阵 · 符箓符宝</span>
-      <p class="ph-lead">韩立及各宗门修士所修的功法、所布之阵、所用的符箓，按类别与适用境界归档整理。优先收录官方动画已出现的内容（标注「动画已出现」），再补原著后续篇（标注「原著仅见」）；数据依据《凡人必备手册》及原著情节交叉验证。</p>
+      <h1>《凡人修仙传》<span class="accent">功法</span></h1>
+      <span class="kicker">修行功诀 · 主修攻伐 · 神识体修 · 身法魔功</span>
+      <p class="ph-lead">韩立及各宗门修士所修功法，从七玄门凡俗武学到仙界法则总纲，按品阶与类别归档。优先收录官方动画已出现的内容，再补原著后续篇；数据依据《凡人必备手册》及原著情节交叉验证。</p>
     </div>
     <div class="stats">
-      <div class="stat"><b id="art-total">0</b><span>收录条目</span></div>
-      <div class="stat"><b id="art-cats">0</b><span>类别</span></div>
+      <div class="stat"><b id="gongfa-total">0</b><span>收录功法</span></div>
+      <div class="stat"><b id="gongfa-anim">0</b><span>动画已出现</span></div>
     </div>
   </div>
 </header>
 
-<!-- ===== 三脉概览 ===== -->
 <section class="art-rail-sec">
   <div class="wrap">
-    <div class="sec-title">三脉概览</div>
-    <div class="sec-desc">功法、阵法、符箓是修仙界三大修行技艺：功法定根基，阵法守洞府，符箓为随身消耗神通。本库按此归档，共收录一百余条。</div>
-    <div class="art-rail" id="artRail"></div>
+    <div class="sec-title">功法概览</div>
+    <div class="sec-desc">主修攻伐、神识、体修、身法遁术与双修魔功；从青元剑诀到大衍诀、梵圣真魔功，构成韩立各阶段的修行根基。</div>
+    <div class="art-rail" id="gongfaRail"></div>
   </div>
 </section>
 
-<!-- ===== 分类浏览 ===== -->
 <section class="art-main-sec">
   <div class="wrap">
-    <div class="sec-title">功法·阵法·符箓图谱</div>
-    <div class="sec-desc">点击卡片展开详情（含来源与动画/原著标注）。「动画已出现」= B站动画正片有实据；「原著仅见」= 动画尚未播出到该内容。标注【存疑】的条目为仅二手来源、待核。</div>
-    <div class="art-tabs" id="artTabs"></div>
+    <div class="sec-title">功法图谱</div>
+    <div class="sec-desc"></div>
     <div class="lib-search">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input id="artSearchInput" type="text" placeholder="搜索功法阵法符箓：名称·品阶·用途·出处" autocomplete="off">
+      <input id="gongfaSearchInput" type="text" placeholder="搜索功法：名称·品阶·用途·出处" autocomplete="off">
     </div>
-    <div class="grid art-grid" id="arts"></div>
-    <div class="empty-tip" id="artEmpty">该类别暂无条目。</div>
+    <div class="grid art-grid" id="gongfaGrid"></div>
+    <div class="empty-tip" id="gongfaEmpty">未找到匹配的功法，换个关键词试试。</div>
+  </div>
+</section>
+</div>
+
+<!-- ===== v-zhenfa 阵法 ===== -->
+<div class="view" id="v-zhenfa">
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>《凡人修仙传》<span class="accent">阵法</span></h1>
+      <span class="kicker">护山杀阵 · 困敌禁制 · 传送辅助</span>
+      <p class="ph-lead">宗门护山大阵、困敌杀阵与传送禁制，从颠倒五行阵到小寰岛护岛禁制，韩立以阵道立身保命。优先收录官方动画已出现的内容，再补原著后续篇；数据依据《凡人必备手册》及原著情节交叉验证。</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="zhenfa-total">0</b><span>收录阵法</span></div>
+      <div class="stat"><b id="zhenfa-anim">0</b><span>动画已出现</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="art-rail-sec">
+  <div class="wrap">
+    <div class="sec-title">阵法概览</div>
+    <div class="sec-desc">护山大阵、困敌杀阵、传送禁制三路；从颠倒五行阵到小寰岛护岛禁制，韩立以阵道立身保命。</div>
+    <div class="art-rail" id="zhenfaRail"></div>
   </div>
 </section>
 
+<section class="art-main-sec">
+  <div class="wrap">
+    <div class="sec-title">阵法图谱</div>
+    <div class="sec-desc"></div>
+    <div class="lib-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="zhenfaSearchInput" type="text" placeholder="搜索阵法：名称·品阶·用途·出处" autocomplete="off">
+    </div>
+    <div class="grid art-grid" id="zhenfaGrid"></div>
+    <div class="empty-tip" id="zhenfaEmpty">未找到匹配的阵法，换个关键词试试。</div>
+  </div>
+</section>
+</div>
+
+<!-- ===== v-fu 符箓 ===== -->
+<div class="view" id="v-fu">
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>《凡人修仙传》<span class="accent">符箓</span></h1>
+      <span class="kicker">符箓符宝 · 攻击防御 · 辅助通讯</span>
+      <p class="ph-lead">各类符箓与符宝，从火弹符、金刚符到符宝与真宝，是人界到仙界通用的随身消耗神通。优先收录官方动画已出现的内容，再补原著后续篇；数据依据《凡人必备手册》及原著情节交叉验证。</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="fu-total">0</b><span>收录符箓</span></div>
+      <div class="stat"><b id="fu-anim">0</b><span>动画已出现</span></div>
+    </div>
+  </div>
+</header>
+
+<section class="art-rail-sec">
+  <div class="wrap">
+    <div class="sec-title">符箓概览</div>
+    <div class="sec-desc">攻击、防御、辅助、通讯四类；从火弹符、金刚符到符宝与真宝，是人界到仙界通用的消耗品。</div>
+    <div class="art-rail" id="fuRail"></div>
+  </div>
+</section>
+
+<section class="art-main-sec">
+  <div class="wrap">
+    <div class="sec-title">符箓图谱</div>
+    <div class="sec-desc"></div>
+    <div class="lib-search">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="fuSearchInput" type="text" placeholder="搜索符箓：名称·品阶·用途·出处" autocomplete="off">
+    </div>
+    <div class="grid art-grid" id="fuGrid"></div>
+    <div class="empty-tip" id="fuEmpty">未找到匹配的符箓，换个关键词试试。</div>
+  </div>
+</section>
 </div>
 
 <!-- ===== 返回顶部 ===== -->
@@ -1227,7 +1312,7 @@ footer .note{margin-top:6px}
   <div class="spot-panel" role="dialog" aria-modal="true" aria-label="全库搜索">
     <div class="spot-input">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-      <input id="spotInput" type="text" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="spotList" placeholder="搜索人物 / 灵兽 / 灵草 / 法宝 / 功法：名称、生平、结局、修为、势力、出处…">
+      <input id="spotInput" type="text" autocomplete="off" spellcheck="false" role="combobox" aria-expanded="true" aria-controls="spotList" placeholder="搜索人物 / 灵兽 / 灵草 / 法宝 / 功法 / 阵法 / 符箓：名称、生平、结局、修为、势力、出处…">
       <button class="spot-esc" type="button" data-spot-close>esc</button>
     </div>
     <div class="spot-list" id="spotList" role="listbox" aria-label="搜索结果"></div>
@@ -1957,6 +2042,11 @@ const ARTS = [
   {n:"玄化封灵符", t:"真仙界符箓序列之一，具封印之能", cat:"fu", r:"真仙界符箓", s:"起点《凡人必备手册》体系与起点资源站符箓分类中，列为真仙界符箓序列的一种，与三清雷霄符、金品替身仙符、避风符、桃僵李代符、分灵符并列，属韩立飞升仙界后接触的高阶符道产物，具封印类威能。其具体炼制、催动情节与何人使用，各二手资料仅列名而无详细情节，存疑待核，不单作情节展开。来源：起点资源站符箓分类（真仙界符箓）。【存疑】（仅分类列名，无原著情节佐证，具体威能与出处待核）【原著仅见】（仙界篇动画未覆盖）", rel:"仙界高阶封印类符箓", camp:"—（仙界符道）", img:""}
 ];
 
+/* ARTS 数据切片：功法/阵法/符箓三库各自取数 */
+const GONGFA = ARTS.filter(a => a.cat === "gongfa");
+const ZHENFA = ARTS.filter(a => a.cat === "zhenfa");
+const FU = ARTS.filter(a => a.cat === "fu");
+
 /* ===== 韩立境界时间轴 ===== */
 const TL = [
   {realm:"凡人", age:"10岁 · 入七玄门"},
@@ -2002,7 +2092,9 @@ const LIBS = [
   {id:"beasts", name:"灵兽灵虫", view:"v-beasts",    color:"var(--c2)"},
   {id:"herbs",  name:"灵草丹药", view:"v-herbs",     color:"var(--c5)"},
   {id:"tres",   name:"法器法宝", view:"v-treasures", color:"var(--c6)"},
-  {id:"arts",   name:"功法·阵法·符箓", view:"v-arts", color:"var(--c4)"}
+  {id:"gongfa", name:"功法", view:"v-gongfa", color:"var(--c1)"},
+  {id:"zhenfa", name:"阵法", view:"v-zhenfa", color:"var(--c4)"},
+  {id:"fu",     name:"符箓", view:"v-fu",     color:"var(--c6)"}
 ];
 const INDEX = [];          // {lib,key,name,sub,tag,text}
 const ENTRY_BY_KEY = {};   // key → INDEX 条目
@@ -2018,7 +2110,9 @@ const REFS = {};           // key → {out:[它提到的 key], in:[提到它的 
   BEASTS.forEach((b,i) => push("beasts", "beast-"+i, b, catName(BEAST_CATS, b.cat)));
   HERBS.forEach((h,i) => push("herbs", "herb-"+i, h, catName(HERB_CATS, h.cat)));
   TREASURES.forEach((t,i) => push("tres", "tres-"+i, t, catName(TREASURE_CATS, t.cat)));
-  ARTS.forEach((a,i) => push("arts", "art-"+i, a, catName(ARTS_CATS, a.cat)));
+  GONGFA.forEach((a,i) => push("gongfa", "gongfa-"+i, a, catName(ARTS_CATS, a.cat)));
+  ZHENFA.forEach((a,i) => push("zhenfa", "zhenfa-"+i, a, catName(ARTS_CATS, a.cat)));
+  FU.forEach((a,i) => push("fu", "fu-"+i, a, catName(ARTS_CATS, a.cat)));
   INDEX.forEach(e => { ENTRY_BY_KEY[e.key] = e; REFS[e.key] = {out:[], in:[]}; });
 
   const cands = new Map();   // 名称 → 候选 key（同名条目可能横跨多个库）
@@ -2335,6 +2429,7 @@ function initCardLib(cfg){
   function tabs(){
     const el = q(cfg.tabsId);
     if(!el) return;
+    if(cfg.cats.length <= 1) return;   /* 单分类库（功法/阵法/符箓）无需分类切换 */
     el.innerHTML = cfg.cats.map(c => '<button class="' + cfg.tab + (c.id === st.tab ? " active" : "") + '" data-cat="' + c.id + '">' + esc(c.name) + '<span class="cnt">' + cnt(c.id) + '</span></button>').join("");
   }
   function list(){
@@ -2365,10 +2460,11 @@ function initCardLib(cfg){
 
   rail(); tabs(); list(); filter();
 
-  q(cfg.tabsId).addEventListener("click", function(e){
+  const tabsEl = q(cfg.tabsId);
+  if(tabsEl) tabsEl.addEventListener("click", function(e){
     const btn = e.target.closest("." + cfg.tab);
     if(!btn) return;
-    q(cfg.tabsId).querySelectorAll("." + cfg.tab).forEach(t => t.classList.toggle("active", t === btn));
+    tabsEl.querySelectorAll("." + cfg.tab).forEach(t => t.classList.toggle("active", t === btn));
     st.tab = btn.dataset.cat;
     filter();
   });
@@ -2385,7 +2481,8 @@ function initCardLib(cfg){
   LIB_UI[cfg.id] = { reset: function(){
     st.tab = "all"; st.kw = "";
     q(cfg.searchId).value = "";
-    q(cfg.tabsId).querySelectorAll("." + cfg.tab).forEach(t => t.classList.toggle("active", t.dataset.cat === "all"));
+    const te = q(cfg.tabsId);
+    if(te) te.querySelectorAll("." + cfg.tab).forEach(t => t.classList.toggle("active", t.dataset.cat === "all"));
     filter();
   }};
 }
@@ -2406,10 +2503,27 @@ const HERB_LIB = {
   chips: [{f:"rel",t:"相关人物"},{f:"camp",t:"来源出处"}],
   rows:  [{f:"e",l:"结局",always:true},{f:"s",l:"详情"}],
 };
-const ARTS_LIB = {
-  id: "arts", data: ARTS, cats: ARTS_CATS, railData: ARTS_RAIL,
-  prefix: "art-", node: "art-node", tab: "art-tab", tag: "art-cat-tag",
-  railId: "artRail", tabsId: "artTabs", listId: "arts", searchId: "artSearchInput", emptyId: "artEmpty",
+/* 三库共用卡片模板，仅数据与概览不同 → 三个配置实例 */
+const GONGFA_LIB = {
+  id: "gongfa", data: GONGFA, cats: ARTS_CATS.slice(1,2), railData: ARTS_RAIL.slice(0,1),
+  prefix: "gongfa-", node: "art-node", tab: "art-tab", tag: "art-cat-tag",
+  railId: "gongfaRail", tabsId: "gongfaTabs", listId: "gongfaGrid", searchId: "gongfaSearchInput", emptyId: "gongfaEmpty",
+  unit: "品阶",
+  chips: [{f:"rel",t:"与韩立/势力关系"},{f:"camp",t:"归属出处"}],
+  rows:  [{f:"e",l:"结局",always:true},{f:"ev",l:"演进"},{f:"s",l:"详情"}],
+};
+const ZHENFA_LIB = {
+  id: "zhenfa", data: ZHENFA, cats: ARTS_CATS.slice(2,3), railData: ARTS_RAIL.slice(1,2),
+  prefix: "zhenfa-", node: "art-node", tab: "art-tab", tag: "art-cat-tag",
+  railId: "zhenfaRail", tabsId: "zhenfaTabs", listId: "zhenfaGrid", searchId: "zhenfaSearchInput", emptyId: "zhenfaEmpty",
+  unit: "品阶",
+  chips: [{f:"rel",t:"与韩立/势力关系"},{f:"camp",t:"归属出处"}],
+  rows:  [{f:"e",l:"结局",always:true},{f:"ev",l:"演进"},{f:"s",l:"详情"}],
+};
+const FU_LIB = {
+  id: "fu", data: FU, cats: ARTS_CATS.slice(3,4), railData: ARTS_RAIL.slice(2,3),
+  prefix: "fu-", node: "art-node", tab: "art-tab", tag: "art-cat-tag",
+  railId: "fuRail", tabsId: "fuTabs", listId: "fuGrid", searchId: "fuSearchInput", emptyId: "fuEmpty",
   unit: "品阶",
   chips: [{f:"rel",t:"与韩立/势力关系"},{f:"camp",t:"归属出处"}],
   rows:  [{f:"e",l:"结局",always:true},{f:"ev",l:"演进"},{f:"s",l:"详情"}],
@@ -2431,9 +2545,15 @@ document.getElementById("herb-cats").textContent = HERB_CATS.length - 1;
 /* 两库各自完成 rail + tabs + 卡片 + 筛选的事件接线 */
 initCardLib(BEAST_LIB);
 initCardLib(HERB_LIB);
-initCardLib(ARTS_LIB);
-document.getElementById("art-total").textContent = ARTS.length;
-document.getElementById("art-cats").textContent = ARTS_CATS.length - 1;
+initCardLib(GONGFA_LIB);
+initCardLib(ZHENFA_LIB);
+initCardLib(FU_LIB);
+document.getElementById("gongfa-total").textContent = GONGFA.length;
+document.getElementById("zhenfa-total").textContent = ZHENFA.length;
+document.getElementById("fu-total").textContent = FU.length;
+document.getElementById("gongfa-anim").textContent = GONGFA.filter(a=>a.s.includes("动画已出现")).length;
+document.getElementById("zhenfa-anim").textContent = ZHENFA.filter(a=>a.s.includes("动画已出现")).length;
+document.getElementById("fu-anim").textContent = FU.filter(a=>a.s.includes("动画已出现")).length;
 
 /* ===== v-treasures 渲染函数 ===== */
 function renderTreasureRail(){
@@ -2505,7 +2625,7 @@ function applyTreasureFilter(){
 /* ===== 路由：视图切换 + 条目深链 =====
    深链形如 #v-chars/qixuanmen-0、#v-treasures/tres-12，可直接分享到某个人在某一篇的那张卡。
    用 - 而不是 # 当分隔符，否则 URL 会被当成新锚点截断。 */
-const VIEWS = ["v-home","v-chars","v-lore","v-realms","v-beasts","v-herbs","v-treasures","v-arts"];
+const VIEWS = ["v-home","v-chars","v-lore","v-realms","v-beasts","v-herbs","v-treasures","v-gongfa","v-zhenfa","v-fu"];
 
 function switchView(id){
   if(VIEWS.indexOf(id) < 0) id = "v-home";
@@ -2533,7 +2653,9 @@ function setHash(view, target, replace){
     document.getElementById("home-st-beasts").textContent = (typeof BEASTS !== "undefined" ? BEASTS.length : 0);
     document.getElementById("home-st-herbs").textContent = (typeof HERBS !== "undefined" ? HERBS.length : 0);
     document.getElementById("home-st-treas").textContent = (typeof TREASURES !== "undefined" ? TREASURES.length : 0);
-    document.getElementById("home-st-arts").textContent = (typeof ARTS !== "undefined" ? ARTS.length : 0);
+    document.getElementById("home-st-gongfa").textContent = (typeof GONGFA !== "undefined" ? GONGFA.length : 0);
+    document.getElementById("home-st-zhenfa").textContent = (typeof ZHENFA !== "undefined" ? ZHENFA.length : 0);
+    document.getElementById("home-st-fu").textContent = (typeof FU !== "undefined" ? FU.length : 0);
   })();
   renderTreasureRail();
   renderTreasureTabs();
@@ -2622,7 +2744,7 @@ function setHash(view, target, replace){
     spotRows = []; spotCur = -1;
     if(!q){
       spotCount.textContent = "索引 " + INDEX.length + " 条";
-      spotList.innerHTML = '<div class="spot-empty">跨库检索五个库：名称、身份、生平、结局、修为、势力、出处</div>'
+      spotList.innerHTML = '<div class="spot-empty">跨库检索七大库：人物、灵兽、灵草、法宝、功法、阵法、符箓</div>'
         + '<div class="spot-chips">' + SPOT_HOT.map(function(w){
             return '<button class="spot-chip" type="button" data-w="' + esc(w) + '">' + esc(w) + '</button>';
           }).join("") + '</div>';
