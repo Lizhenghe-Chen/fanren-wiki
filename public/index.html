@@ -12,7 +12,7 @@
   角色图片为网络检索素材，版权归各自权利人所有，不在上述许可范围内，如有异议请联系删除。
   源码仓库：https://github.com/Lizhenghe-Chen/fanren-wiki
   访问统计：首页 hero 的「次浏览」来自「busuanzi.cc」(cdn.busuanzi.cc/api.php)，是全页唯一的外部请求，
-  原「不蒜子」官方自 2026-09 下旬起持续故障且无人维护，已迁移；原累计 page_pv≈1300 由代码叠加显示。
+  原「不蒜子」官方自 2026-09 下旬起持续故障且无人维护，已迁移；原累计 page_pv≈1400 由代码叠加显示。
   不写 cookie、不采集个人标识；每次载入直接取回累计值并显示，且只在真实域名下发起
   （file:// 与本地预览不发起）。
   首次发布：2026-09-14 · 最后更新：2026-09-19
@@ -771,7 +771,7 @@ footer .note{margin-top:6px}
         <div class="stat"><b id="home-st-gongfa">0</b><span>功法</span></div>
         <div class="stat"><b id="home-st-zhenfa">0</b><span>阵法</span></div>
         <div class="stat"><b id="home-st-fu">0</b><span>符箓</span></div>
-        <div class="stat" id="stat-views" style="display:none" title="累计浏览次数（busuanzi.cc page_pv + 原计数 1300）"><b id="stat-views-num">0</b><span>次浏览</span></div>
+        <div class="stat" id="stat-views" style="display:none" title="累计浏览次数（数据来源：busuanzi.cc）"><b id="stat-views-num">0</b><span>次浏览</span></div>
       </div>
     </div>
     <div class="hero-cover">
@@ -1339,7 +1339,7 @@ footer .note{margin-top:6px}
    展示位置：首页 hero 统计行；数据源：cdn.busuanzi.cc/api.php（全页唯一外部请求，不写 cookie）。
    每次载入都 POST 上报一次并显示接口返回的累计值：不写本地缓存、不做去重窗口。
    切换说明：原「不蒜子」官方（busuanzi.ibruce.info）自 2026-09 下旬起持续 502/超时且无人维护，
-   故迁移至 busuanzi.cc；原服务累计的 page_pv（≈1300）无法随迁，用下方 BASE_PV 常量叠加显示。
+   故迁移至 busuanzi.cc；原服务累计的 page_pv（≈1400）无法随迁，用下方 BASE_PV 常量叠加显示。
    只在真实域名下发起：file:// 与本地预览不上报（本地想看加 ?stats=1）。
    宕机兜底：请求失败或 6 秒无响应时，统计位显示「— 统计暂不可用」，不再静默隐藏。 */
 (function () {
@@ -1351,7 +1351,7 @@ footer .note{margin-top:6px}
     !/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
   if (!isReal && !/[?&]stats=1\b/.test(location.search)) return;
 
-  var BASE_PV = 1300; /* 原不蒜子累计 page_pv，切换后叠加显示 */
+  var BASE_PV = 1400; /* 原不蒜子累计 page_pv，切换后叠加显示 */
   var failTimer = null;
   function showFail() {
     if (failTimer) { clearTimeout(failTimer); failTimer = null; }
@@ -1367,7 +1367,7 @@ footer .note{margin-top:6px}
     if (!isFinite(pv)) { showFail(); return; }
     num.textContent = (BASE_PV + pv).toLocaleString('zh-CN');
     if (suffix) suffix.textContent = '次浏览';
-    box.title = '累计浏览次数（busuanzi.cc page_pv + 原计数 1300）';
+    box.title = '累计浏览次数（数据来源：busuanzi.cc）';
     box.style.display = '';
   }
 
