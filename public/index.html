@@ -11,7 +11,8 @@
   可自由使用、修改、再分发（含商业用途），保留版权与许可声明即可，详见仓库 LICENSE 与 NOTICE。
   角色图片为网络检索素材，版权归各自权利人所有，不在上述许可范围内，如有异议请联系删除。
   源码仓库：https://github.com/Lizhenghe-Chen/fanren-wiki
-  访问统计：首页 hero 的「次浏览」来自「不蒜子」(busuanzi.ibruce.info)，是全页唯一的外部请求，
+  访问统计：首页 hero 的「次浏览」来自「busuanzi.cc」(cdn.busuanzi.cc/api.php)，是全页唯一的外部请求，
+  原「不蒜子」官方自 2026-09 下旬起持续故障且无人维护，已迁移；原累计 page_pv≈1300 由代码叠加显示。
   不写 cookie、不采集个人标识；每次载入直接取回累计值并显示，且只在真实域名下发起
   （file:// 与本地预览不发起）。
   首次发布：2026-09-14 · 最后更新：2026-09-19
@@ -770,7 +771,7 @@ footer .note{margin-top:6px}
         <div class="stat"><b id="home-st-gongfa">0</b><span>功法</span></div>
         <div class="stat"><b id="home-st-zhenfa">0</b><span>阵法</span></div>
         <div class="stat"><b id="home-st-fu">0</b><span>符箓</span></div>
-        <div class="stat" id="stat-views" style="display:none" title="累计浏览次数（不蒜子 page_pv）"><b id="stat-views-num">0</b><span>次浏览</span></div>
+        <div class="stat" id="stat-views" style="display:none" title="累计浏览次数（busuanzi.cc page_pv + 原计数 1300）"><b id="stat-views-num">0</b><span>次浏览</span></div>
       </div>
     </div>
     <div class="hero-cover">
@@ -1334,13 +1335,13 @@ footer .note{margin-top:6px}
 </footer>
 
 <script>
-/* ===== 访问统计（不蒜子 page_pv）=====
-   展示位置：首页 hero 统计行；数据源：busuanzi.ibruce.info（全页唯一外部请求，不写 cookie）。
-   每次载入都直接上报一次并显示接口返回的累计值：不写本地缓存、不做去重窗口。
+/* ===== 访问统计（busuanzi.cc page_pv + 原计数叠加）=====
+   展示位置：首页 hero 统计行；数据源：cdn.busuanzi.cc/api.php（全页唯一外部请求，不写 cookie）。
+   每次载入都 POST 上报一次并显示接口返回的累计值：不写本地缓存、不做去重窗口。
+   切换说明：原「不蒜子」官方（busuanzi.ibruce.info）自 2026-09 下旬起持续 502/超时且无人维护，
+   故迁移至 busuanzi.cc；原服务累计的 page_pv（≈1300）无法随迁，用下方 BASE_PV 常量叠加显示。
    只在真实域名下发起：file:// 与本地预览不上报（本地想看加 ?stats=1）。
-   宕机兜底：脚本加载失败或 6 秒无响应时，统计位显示「— 统计暂不可用」，不再静默隐藏。
-   ⚠️ 自己发 JSONP 而不是引它那支 1.9KB 脚本：少一个请求，且能显式声明 referrerPolicy
-   —— 默认的 strict-origin-when-cross-origin 只发 origin，服务端拿不到路径，页面计数会退化成站点计数。 */
+   宕机兜底：请求失败或 6 秒无响应时，统计位显示「— 统计暂不可用」，不再静默隐藏。 */
 (function () {
   var box = document.getElementById('stat-views'), num = document.getElementById('stat-views-num');
   if (!box || !num) return;
@@ -1350,29 +1351,32 @@ footer .note{margin-top:6px}
     !/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
   if (!isReal && !/[?&]stats=1\b/.test(location.search)) return;
 
+  var BASE_PV = 1300; /* 原不蒜子累计 page_pv，切换后叠加显示 */
   var failTimer = null;
   function showFail() {
     if (failTimer) { clearTimeout(failTimer); failTimer = null; }
     num.textContent = '—';
     if (suffix) suffix.textContent = '统计暂不可用';
-    box.title = '计数服务（不蒜子）当前不可用，刷新页面重试';
+    box.title = '计数服务（busuanzi.cc）当前不可用，刷新页面重试';
     box.style.display = '';
   }
 
-  window.__fwPv = function (o) {
+  function onData(o) {
     if (failTimer) { clearTimeout(failTimer); failTimer = null; }
-    if (!o || typeof o.page_pv !== 'number') { showFail(); return; }
-    num.textContent = Number(o.page_pv).toLocaleString('zh-CN');
+    var pv = Number(o && o.busuanzi_page_pv);
+    if (!isFinite(pv)) { showFail(); return; }
+    num.textContent = (BASE_PV + pv).toLocaleString('zh-CN');
     if (suffix) suffix.textContent = '次浏览';
-    box.title = '累计浏览次数（不蒜子 page_pv）';
+    box.title = '累计浏览次数（busuanzi.cc page_pv + 原计数 1300）';
     box.style.display = '';
-  };
-  var s = document.createElement('script');
-  s.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=__fwPv';
-  s.referrerPolicy = 'no-referrer-when-downgrade';
-  s.onerror = showFail;                   /* 加载失败：显示不可用提示 */
+  }
+
+  fetch('https://cdn.busuanzi.cc/api.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: location.href, referrer: document.referrer })
+  }).then(function (r) { return r.json(); }).then(onData).catch(showFail);
   failTimer = setTimeout(showFail, 6000); /* 兜底超时：请求挂起时不至于一直空白 */
-  document.body.appendChild(s);
 })();
 </script>
 
