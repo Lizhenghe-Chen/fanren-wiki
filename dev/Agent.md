@@ -7,10 +7,11 @@
 一个**自包含单页 HTML** 的《凡人修仙传》全篇资料可视化站点，用户用于回忆剧情、检索人物、理解境界体系、查灵兽/丹药/法宝。
 
 - **默认首页（v-home）**：百科式介绍页——网站命名《凡人修仙传》百科，含"为什么做这个网站"（`<details class="home-why">` 折叠，摘要一句话 + "展开全文"，默认收起以缩首屏）、六大收录板块入口卡片、"问道自述"、"收录说明"、"数据来源"。用户明确要求"首页不要开门见山放人物图鉴"。（2026-09-17 已删掉"页面包含"功能清单区块——功能靠界面自身说明，不再用一段清单复述。）
-- **降噪优先**：人物图谱默认只显示「核心圈」（被引 ≥ 5 的条目），其余 200 余位路人不喧宾夺主；`#tabs` 内的分段选择器一键切「核心圈 N / 全部 221」。互引网络与定位能力见 §5。
-- 收录 **6 个篇章、221 条人物记录**（跨篇章重复出现的角色按"出现即写"重复收录，如韩立 6 篇、南宫婉 4 篇）+ **灵兽灵虫 40 条**（第四视图）+ **灵草丹药 64 条**（第五视图）+ **法器法宝 65 条**（第六视图）。
-- 每人默认卡片显示：**头像图、名字、身份、本篇修为、关系/势力/种族标签**；点击展开显示**生平梗概与结局**（默认不剧透）。**修为演进 ev 字段已全量补齐（221/221）**，卡片修为行显示本篇内的境界变化（如"炼气→筑基→结丹后期"）。
-- 页面支持 **人物图片**（优先动画形象）、**境界图表**（外部 cultivation-chart.js）、**妖兽等级制度**与**灵药年份等级**对照区块。
+- **降噪可选**：人物图谱**默认显示全部 263 条**（2026-09-22 起，见 v39；此前默认只显示被引 ≥ 5 的核心圈）；`#tabs` 内的分段选择器可一键切「核心圈 81 / 全部 263」。互引网络与定位能力见 §5。
+- 收录 **6 个篇章、263 条人物记录**（跨篇章重复出现的角色按"出现即写"重复收录，如韩立 6 篇、南宫婉 4 篇）+ **灵兽灵虫 40 条** + **灵草丹药 64 条** + **法器法宝 65 条** + **功法 40 条 / 阵法 39 条 / 符箓 34 条**（共 **十个视图**、合计 **545 条**，与全库索引 `INDEX` 条目数一致）。
+- 每人默认卡片显示：**头像图、名字、身份、本篇修为、关系/势力/种族标签**；点击展开显示**生平梗概与结局**（默认不剧透）。**修为演进 ev 字段已全量补齐（263/263）**，卡片修为行显示本篇内的境界变化（如"炼气→筑基→结丹后期"）。
+- 页面支持 **人物图片**（优先动画形象，同一角色可挂多形象轮播）、**境界图表**（外部 cultivation-chart.js）、**妖兽等级制度**与**灵药年份等级**对照区块。
+- **剧情速览分两栏（页内 tab）**：`境界时间线`（默认）与 `情节梳理 · 全书十一卷`（11 卷 / 55 地点篇 / 333 步，首次点开该 tab 才渲染）。后者内容整理自第三方公众号文章并已署名，见 §9 与 `NOTICE`。
 
 ## 2. 目录结构
 
@@ -23,7 +24,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 │   │   ├── cultivation-chart.js   # 境界阶梯图（本站自持，不再依赖主站）
 │   │   ├── echarts.min.js         # ECharts 5.6.0 **按需构建包**（527KB，零 CDN，可重建）
 │   │   └── overview-charts.js     # 人物关系图谱（力导向）+ 篇章×势力旭日图
-│   ├── assets/             # 374 张图：360 张被引用（.webp/.jpg 混合，逐图最优）+ 14 张实名备用图，见 §6
+│   ├── assets/             # 496 张图：481 张被引用（.webp/.jpg 混合，逐图最优）+ 15 张实名备用图，见 §6
 │   ├── sitemap.xml
 │   └── robots.txt
 └── dev/                    # 开发资料：永不上站；只跟踪文档与工具（见下方说明）
@@ -46,22 +47,23 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - ⚠️ **`dev/` 的跟踪策略（2026-09-18 调整）**：**只跟踪「活文档 + 工具」**（`Agent.md`、`_review.md`、`tools/`、`_image-slim-report.json`），`_backup/`、`demos/`、`watermark.svg` 仍在 `.gitignore` 里（仅本地保留）。理由是前者没有版本历史就只能靠本机磁盘活着、且与 `public/` 的改动一一对应；后者要么 git 历史里本来就有一份（`_backup/index-vNN.html` 就是各次提交的副本），要么是一次性产物。
   ⚠️ **`dev/` 仍然不会上站**（CI 只传 `public/`）：公开可见 ≠ 交付物，README 里不要把 `dev/` 当交付物引用。
 
-## 3. 页面结构：七视图 + hash 路由
+## 3. 页面结构：十视图 + hash 路由
 
 页面**不是单页长滚**，而是**页内多视图切换**（用户明确要求"分页面"，否决过"左右分栏"）：
 
 ```
 <body>
-  <div class="asset-manifest"></div>          # 图片引用隐藏清单（见 §6）
-  <nav class="topnav">                        # 顶部主导航（sticky top:0，48px 内容高+1px 边框=49px）：首页 | 人物图谱 | 剧情速览 | 境界体系 | 灵兽灵虫 | 灵草丹药 | 法器法宝 + 搜索按钮 + **GitHub 图标（≥1100px 才显示，见下）** + 持续更新·作者主页·日期
+  <nav class="topnav">                        # 顶部主导航（sticky top:0，48px 内容高+1px 边框=49px）：首页 | 人物图谱 | 剧情速览 | 境界体系 | 灵兽灵虫 | 灵草丹药 | 法器法宝 | 功法 | 阵法 | 符箓（**十入口**）+ 搜索按钮 + **GitHub 图标（≥1100px 才显示，见下）** + 持续更新·作者主页·日期
   <div class="view" id="v-home">              # 视图0 首页（默认）
     hero（标题/统计/按钮） → 为什么做这个网站（<details class="home-why">，默认收起） → **篇章×势力旭日图 #chart-sunburst**（ECharts sunburst，首页"收录内容"之前） → 收录内容 6 卡 → 问道自述（.home-quest） → 收录说明 → 数据来源（.src-list） → **开源（.repo-card）**
   </div>
   <div class="view" id="v-chars">             # 视图1 人物图谱
     .page-head（紧凑页头，含唯一的 h1 + 统计） → sticky .navbar（top:49px：.tabs 篇章 tab + .seg 核心圈切换 + 搜索框） → .img-note 图片准确性声明（<details>，默认收起） → **人物关系图谱 <details class="graph-fold">**（ECharts 力导向 #chart-graph，默认展开，可折叠） → 卡片区 <main id="characters">
   </div>
-  <div class="view" id="v-lore">              # 视图2 剧情速览（约 1 屏）
-    .page-head（h1 + 统计 #lore-nodes） → 韩立境界演进时间轴 #timeline → 故事脉络 6 卡 → 双韩立因果闭环
+  <div class="view" id="v-lore">              # 视图2 剧情速览（页内两支，由 .lore-tabs 切换）
+    .page-head（h1 + 统计 #lore-nodes） → .lore-tabs（境界时间线 / 情节梳理 · 全书十一卷）
+      ├ #lorePaneTimeline（默认显示）：韩立境界演进时间轴 #timeline → 故事脉络 6 卡 → 双韩立因果闭环
+      └ #lorePanePlot（hidden，首次点开才渲染）：#plotList ← renderPlot()，11 卷 → 地点篇 → 步骤
   </div>
   <div class="view" id="v-realms">            # 视图3 境界体系（约 1 屏）
     .page-head → 境界 rail → 3 个 data-cultivation 图表 → 各篇人数柱状 → 图例
@@ -74,6 +76,13 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   </div>
   <div class="view" id="v-treasures">         # 视图6 法器法宝（约 2-3 屏）
     .page-head → 法宝品阶 rail #treasureRail → 分类 tab #treasureTabs → 共用搜索框 .lib-search（#treasureSearchInput） → 展示计数 #treasureShown → 卡片区 #treasureGrid
+  </div>
+  <div class="view" id="v-gongfa">            # 视图7 功法（结构同 v-beasts，**单分类故不渲染分类 tab**）
+    .page-head（含 #gongfa-total / #gongfa-anim） → rail #gongfaRail → 搜索框 #gongfaSearchInput → 卡片区 #gongfaGrid
+  </div>
+  <div class="view" id="v-zhenfa">            # 视图8 阵法（同上：#zhenfaRail / #zhenfaGrid / #zhenfa-total / #zhenfa-anim）
+  </div>
+  <div class="view" id="v-fu">                # 视图9 符箓（同上：#fuRail / #fuGrid / #fu-total / #fu-anim）
   </div>
   <footer>…</footer>
   <button class="back-top" id="backTop">↑ + 进度环</button>   # 滚过 700px 后出现（.show）；环按滚动比例补满
@@ -88,8 +97,9 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   - **`hashchange` 与 `popstate` 都要监听**：`setHash` 走的是 History API —— `replaceState` 不触发任何事件，`pushState` 只触发 `popstate`，而手改地址栏/退后到带 hash 的历史条目触发的是 `hashchange`。少一个就会"地址变了、视图不动"（已踩过：旧实现 `openFromHash()` 只处理 target，从不切视图）。
   - **`data-key` 里不能用 `#`**：分隔符是 `-`（`qixuanmen-0` / `beast-0` / `herb-0` / `tres-12`），`#` 在 URL 里是 fragment 分隔符，根本传不过去。
 - **默认视图**：无 hash 或非法时回退 **`v-home`**（不是 v-chars）。
-- **新增视图**：加一个 `<div class="view" id="v-xxx">`（内部只放一个 `h1`），在 `VIEWS` 数组里登记，topnav 加链接即可。
-- **移动端**：`@media (max-width:640px)` 下 topnav 允许横向滚动（隐藏 `.tn-update`）、`.navbar{top:45px}`、`.tabs` 保持单行横向滚动（历史教训：窄屏换行成两行 = 109px 常驻高度）。
+- **新增视图**：加一个 `<div class="view" id="v-xxx">`（内部只放一个 `h1`），在 `VIEWS` 数组里登记（脚本与外链都读它），topnav 加链接即可。
+- **展开态与地址栏的一致性（2026-10-05 加）**：筛选/切降噪都是**整表重排**（卡片会被卸载重建），所以 ① `openKeyFromHash()` 在挂载时按地址栏 target 还原 `.open`；② `syncTargetToResults(libId, keys)` 在重排后若 target 已不在结果集里就撤掉 target（**只撤 target，视图不动**）。两者都只处理「target 属于本库」的情况 —— 启动时各库都会先重排一次，那会儿 hash 可能指向**别的**库（深链冷启动）。
+- **移动端**：`@media (max-width:640px)` 下 **topnav 换行显示**（`.topnav .wrap{height:auto;flex-wrap:wrap}` + `.tn-links{flex:1 1 0;flex-wrap:wrap}`，十个入口分两行全部落在视口内；状态位 `.tn-update` 隐藏，日期与作者主页下沉到页脚），`.topnav a` 同时降字号内边距；`@media (max-width:400px)` 再降一档。因为顶栏变高：`.chapter` 不再 sticky、`.view{scroll-margin-top:88px}`。`.navbar{top:45px}`、`.tabs` 仍是单行横向滚动。
 - **⚠ 锚点注释会撞车**：`/* ===== 韩立境界时间轴 ===== */` 在 `<style>`（`.timeline-sec` 注释）与 `<script>`（`const TL` 前）各出现一次——脚本插入若用该注释定位 JS 数据，会误命中 CSS 区导致 `BEASTS is not defined`。定位 JS 数据应匹配 `];\n\n/* ===== 韩立境界时间轴 ===== */\nconst TL = [` 整段。历史修复：`_backup/fix_beast_data_pos.py`。
 
 ## 4. 数据模型（`const DATA`）
@@ -98,12 +108,13 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 
 | 键 | 篇章 | 条数 |
 |---|---|---|
-| `qixuanmen` | 七玄门 | 16 |
-| `huangfeng` | 黄枫谷 | 29 |
-| `luanxing` | 乱星海 | 32 |
-| `dajin` | 大晋 | 55 |
-| `lingjie` | 灵界 | 39 |
-| `xianjie` | 仙界 | 50 |
+| `qixuanmen` | 七玄门 | 17 |
+| `huangfeng` | 黄枫谷 | 35 |
+| `luanxing` | 乱星海 | 37 |
+| `dajin` | 大晋 | 74 |
+| `lingjie` | 灵界 | 41 |
+| `xianjie` | 仙界 | 59 |
+| （合计） | 全书 | **263** |
 
 每人字段（部分可选）：
 
@@ -118,16 +129,17 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 | `rel` | 与韩立的关系 | 如"仇敌/挚友/道侣" |
 | `camp` | 势力阵营 | 如"七玄门/黄枫谷" |
 | `race` | 种族 | 如"人族/妖族/傀儡" |
-| `ev` | 本篇修为演进 | **2026-09-16 已全量补齐 221/221**（v16），如"炼气→筑基→结丹后期（天灵根）"；凡人角色写"凡人"或"凡人（无灵根）" |
+| `ev` | 本篇修为演进 | **已全量补齐 263/263**（v16 首次补齐；v47 新增的 12 条同步补齐），如"炼气→筑基→结丹后期（天灵根）"；凡人角色写"凡人"或"凡人（无灵根）" |
 
 **新增/修改人物**：直接在 `DATA` 对应数组追加/编辑对象即可；跨篇角色在每篇各自收录（可各自配不同图片，如韩立每篇不同形象）。
 **批量补 ev 参考**：`/tmp/add_ev.py`（173 条映射表 + 字符串级精确插入逻辑，含"数花括号深度找记录闭合"的方法，可复用）。
 
-### 条目标识（`data-key`）与四库统一
+### 条目标识（`data-key`）与七库统一
 
-- 四库记录在渲染时都带 **`data-key`**，是深链与互引网络的主键：人物 `"<篇章id>-<序号>"`（如 `qixuanmen-0`）、灵兽 `beast-0`、灵草 `herb-0`、法宝 `tres-12`。**分隔符是 `-`，不能用 `#`**（`#` 会把 URL 截断，深链传不到）。
-- 四库在 `LIBS` 里各占一项（`id/label/prefix/…`），搜索面板、互引 chip、`gotoEntry` 都靠它统一分发到对应视图与渲染函数。
-- 人物图谱另有 **核心圈降噪**：`CORE_MIN = 5`（被引 ≥ 5 才入圈）。依据是实测分布——互引网络里 381 条有 208 条被引为 0、仅 38 条 ≥ 5，长尾极端；默认只显示核心圈，顶栏分段选择器可一键回全部。
+- 七库记录在渲染时都带 **`data-key`**，是深链与互引网络的主键：人物 `"<篇章id>-<序号>"`（如 `qixuanmen-0`）、灵兽 `beast-0`、灵草 `herb-0`、法宝 `tres-12`、功法 `gongfa-5`、阵法 `zhenfa-3`、符箓 `fu-7`。**分隔符是 `-`，不能用 `#`**（`#` 会把 URL 截断，深链传不到）。
+- **key 必须用「原数组下标」**（`cfg.prefix + i` 里的 `i` 是全量数据下标，不是筛选后的下标）：`INDEX` / `ENTRY_BY_KEY` / `REFS` 都按这个 key 建表，筛选后若按下标重排，互引 chip 与 `gotoEntry` 会整体指错条目（2026-10-05 修过一次，见 §10 v48⑤/v49③）。
+- 七库在 `LIBS` 里各占一项（`{id, name, view, color}`；各库的 `prefix`/分类/文案在 `BEAST_LIB` 等配置里），搜索面板、互引 chip、`gotoEntry` 都靠它统一分发到对应视图与渲染函数。
+- 人物图谱另有 **核心圈降噪**：`CORE_MIN = 5`（被引 ≥ 5 才入圈，当前 263 条里 81 条达标）。依据是实测分布——全库 545 条里 166 条被引为 0，长尾极端；**默认显示全部**（2026-09-22 起），顶栏分段选择器可一键切核心圈。
 
 ### 灵兽灵虫数据（`BEASTS` / `BEAST_CATS` / `BEAST_RAIL`）
 
@@ -160,44 +172,50 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 | `TREASURE_CATS` | 6 类 + 全部 | `xuanbao`玄天之宝·至宝 / `benming`本命法宝 / `tongji`神通秘术 / `gongfa`功法秘典 / `fulu`符箓·阵法 / `qita`其他法宝 |
 | `TREASURE_RAIL` | 法宝品阶 5 格 | 法器→灵器→法宝→仙器→玄天之宝（近似境界对照） |
 
-- **⚠ 配图未完成**：v-treasures 数据中原含 `img` 字段引用（如 `xuantianhulu.jpg`、`balinchi.jpg`），因用户 2026-09-16 叫停图片工作，**61 个指向不存在文件的 img 字段已被移除**（见 §10 待补清单），渲染自动回退首字占位。后续恢复图片时：下载文件到 assets/ → 数据补 `img:"文件名"` → manifest 登记 → 自检。
+- **⚠ 配图未完成**：v-treasures 数据中原含 `img` 字段引用（如 `xuantianhulu.jpg`、`balinchi.jpg`），因用户 2026-09-16 叫停图片工作，**61 个指向不存在文件的 img 字段已被移除**（见 §10 待补清单），渲染自动回退首字占位。后续恢复图片时：下载文件到 assets/ → 数据补 `img:"文件名"` → 跑 `dev/tools/verify.mjs`（它会断言"页面引用的图都能找到且能解码"，**不再需要手工登记 manifest**，见 §6）。
 
 ## 5. 关键函数与交互
 
-文件末尾初始化：`renderTabs(); renderMain(); applyFilter();` + 视图切换 IIFE + 各视图渲染函数。
+文件末尾初始化：`renderTimeline(); renderBars(); renderLegend();` → `renderCharSkeleton(); renderTabs();` → 建 `charPager` → `applyCharsFilter()` → `initCardLib(×5)` → 视图切换 IIFE（末尾 `applyHash()`）。人物卡片与各库列表都走**瀑布分批渲染**，顺序依赖见本节末尾「启动顺序」。
 
 | 函数 | 作用 |
 |---|---|
 | `renderTimeline()` | 渲染韩立境界时间轴（`TL` 数据，14 节点；`#lore-nodes` 填节点数） |
-| `renderTabs()` | 生成篇章 tab + 核心圈「核心圈 N / 全部 221」分段选择器（`.seg`） |
-| `renderMain()` | 遍历 `DATA` 生成卡片 DOM（含图片/占位/标签/修为 ev/展开区/互引区） |
+| `renderTabs()` | 生成篇章 tab + 核心圈「核心圈 81 / 全部 263」分段选择器（`.seg`）。计数走 `coreCount()` **纯数据计算**，不再依赖卡片先渲染 |
+| `makePager(o)` | **瀑布分批渲染引擎**：`render(items)` 重置并挂首批（`firstN=10`）、由 IntersectionObserver（`rootMargin:800px`）按 `stepN=12` 续传、加载完隐藏哨兵 `.batch-sentinel`；`ensureAll()` 立即补全；`ensureKey(key)` 补齐到某张卡（深链/互引定位用）。环境不支持 IntersectionObserver 时直接补全 |
+| `renderCharSkeleton()` | 一次成型人物篇章骨架（`<section class="chapter">` + 空 `.grid`），卡片随后分批挂入 |
+| `charCardHTML(x)` / `bindCharCard(el)` | 人物卡片模板 + **就地绑定**（裂图兜底、多形象轮播）。分批挂载下不能"整表渲染完再统一绑事件" |
+| `mountCharCards(batch)` | 一批卡片按篇章分片插入各篇 `.grid`；地址栏 target 指向的那张带上 `.open` |
 | `renderBars()` | 各篇人数柱状图 |
 | `renderLegend()` | 图例 |
 | `toggleCard(el)` | 点击卡片展开/收起生平（默认收起不剧透）；同时把 URL 同步成深链（可复制分享） |
-| `applyFilter()` | 人物卡三条件过滤：篇章 tab + 搜索关键词 + 核心圈降噪（`coreOk`）；无可见卡的篇章区块整块隐藏 |
+| `charFiltered()` / `applyCharsFilter()` | 人物筛选**下沉到数据层**（篇章 tab + 关键词（名称/称号）+ 核心圈降噪），按结果整表重排：篇章区块按数据预判显隐 → `charPager.render(list)` → `syncTargetToResults()`。`applyFilter()` 只是兼容别名 |
 | `isCore(key)` / `coreCount()` / `CORE_MIN` | 核心圈判定与计数（被引 ≥ 5） |
-| `haystack(o)` | 三库**统一的命中范围**：名称/称号/等级/结局/演进/生平/关系/出处/种族 —— 与全库搜索面板同一套字段。改搜索命中范围就改这一处 |
-| `initCardLib(cfg)` + `BEAST_LIB` / `HERB_LIB` | 灵兽、灵草**共用的一套实现**（配置驱动：库 id、数据、分类、文案、字段差异全在配置里）。实例按库 id 存进 `LIB_UI`，`gotoEntry` 用它复位筛选。改一库行为就是改这一处 |
-| `renderTreasureRail()` / `renderTreasureTabs()` / `renderTreasures(list)` / `applyTreasureFilter()` | 法宝视图（**不并入上面的工厂**：它按筛选结果整表重渲染、卡片结构也不同） |
+| `haystack(o)` | 六库（灵兽/灵草/功法/阵法/符箓 + 法宝）**统一的命中范围**：名称/称号/等级/结局/演进/生平/关系/出处/种族 —— 与全库搜索面板同一套字段。改搜索命中范围就改这一处（人物卡搜索比对 `n`/`t`，见上） |
+| `initCardLib(cfg)` + `BEAST_LIB` / `HERB_LIB` / `GONGFA_LIB` / `ZHENFA_LIB` / `FU_LIB` | **五库共用的一套实现**（配置驱动：库 id、数据、分类、文案、字段差异全在配置里；`cats.length <= 1` 的单分类库不渲染分类 tab）。实例按库 id 存进 `LIB_UI`（对外只有 `reset` / `ensureKey`），`gotoEntry` 用它复位筛选。改一库行为就是改这一处 |
+| `renderTreasureRail()` / `renderTreasureTabs()` / `treasureCardHTML(t,i)` / `bindTreasureCard(el)` / `treasurePager` / `applyTreasureFilter()` | 法宝视图（**不并入上面的工厂**：卡片结构与展示计数不同）。同样走 `makePager` 分批挂载 |
+| `renderPlot()` / `plotStepHTML(s)` | 情节梳理渲染：`PLOT_VOLS` → 卷 → 地点篇 → 步骤，`[注记]` 高亮成金色斜体；**首次点开该 tab 才渲染** |
+| `openKeyFromHash()` / `syncTargetToResults(libId, keys)` | 地址栏 target 与展开态的一致性（挂载还原 `.open` / 重排后撤掉失效 target），见 §3 |
 | `switchView(id)` | 切视图（同步 topnav 高亮；非法 id 回退 v-home） |
 | `parseHash()` / `setHash(view,target,replace)` | 读写地址（深链的真相源） |
 | `applyHash()` | `hashchange` + `popstate` 的统一入口：切视图 + 有 target 则展开定位 |
 | `gotoEntry(key, keepHash)` | 跨库定位：切库/清筛选（**并退出核心圈降噪**）/展开目标卡/滚到 sticky 顶栏之下（双 rAF 延后，等视图切换的重排完成） |
 | `INDEX` / `ENTRY_BY_KEY` / `REFS` / `REF_SCORE` / `LIBS` | 跨库索引与互引网络：一次正则扫过全部文本（长名优先匹配，`baseName()` 合并同名，如韩立 6 篇合成一个被引数） |
 | `refCount(key)` / `refsBlock(key)` / `refBadge(key)` | 互引展示：「相关条目」/「被引用于」 chip（各取前 8 + `+N`）与「被引 N」徽记 |
-| `spotOpen/spotRender/spotMove/spotClose` | 全站搜索面板（`⌘K` / `Ctrl+K` / `/` 唤起；390 条、跨库分组、关键词高亮、方向键+Enter 定位） |
+| `spotOpen/spotRender/spotMove/spotClose` | 全站搜索面板（`⌘K` / `Ctrl+K` / `/` 唤起；545 条、跨库分组、关键词高亮、方向键+Enter 定位） |
 | `back-top` 逻辑 | 滚过 700px 后 `.show` → 点击回顶（尊重 `prefers-reduced-motion`）；圆环 `strokeDashoffset = C × (1 − 已滚比例)`（`C = 2πr`，r 取 `<circle>` 的 21），监听 `scroll` / `resize` + `hashchange`（切视图后文档总高会变、滚动位置不变，**不会触发 scroll**，所以必须补一次） |
 
-搜索框匹配卡片 `data-name` / `data-aka`（别名）。
+搜索框匹配名称与称号（数据层比对 `c.n` / `c.t`；三库统一走 `haystack(o)`）。
 
-**启动顺序**（文件末尾 IIFE，顺序有依赖，别乱动）：互引索引构建（`INDEX`→`ENTRY_BY_KEY`→`REFS`→`REF_SCORE`）→ 搜索面板接线 → 首页统计（读 DATA/BEASTS/HERBS/TREASURES 长度填 `#home-st-chars` 等）→ 各视图渲染 → `renderMain()` **然后** `renderTabs()`（「核心圈 N」计数依赖本轮渲染出的被引数，**顺序颠倒会把计数算成 0**）→ `applyHash()`。
+**启动顺序**（文件末尾 IIFE，顺序有依赖，别乱动）：互引索引构建（`INDEX`→`ENTRY_BY_KEY`→`REFS`→`REF_SCORE`）→ 搜索面板接线 → 首页统计（读 DATA/BEASTS/HERBS/TREASURES/GONGFA/ZHENFA/FU 长度填 `#home-st-*`）→ 各视图渲染 → `renderCharSkeleton()` 建骨架 **然后** `renderTabs()`（`coreCount()` 已是纯数据计算，**不再要求卡片先渲染** —— v22 那条顺序约束已随本次重构解除）→ 建 `charPager` 并 `applyCharsFilter()` → `initCardLib(×5)` → `applyHash()`。
+⚠️ 各库在建 pager 前都会先 `apply*()` 一次，此时 hash 可能指向**别的库**（深链冷启动）⇒ `syncTargetToResults` 必须按 lib 判归属，不能"target 不在我的结果集里就删"。
 
 ## 6. 图片体系（重要红线）
 
 - **图片文件**：`public/assets/<拼音名>[_<篇章>].<ext>`，跨篇同角色可不同文件（如 `hanli_qixuanmen.webp` / `hanli_xianjie.webp`）。
   **扩展名不固定**：`.webp` 或 `.jpg` 都可能，**以文件实际存在为准，不要凭名字猜**（见下方「体积规范」）。
 - **⚠️ 引用分两种，统计时必须都算**：① 页面里的字面量 `assets/xxx.ext`；② **数据里的 `img:"xxx.ext"` 字段**（渲染时才拼成路径，如丹药/灵草/法宝的 `img`）。
-  只查字面量会漏掉大量图（`img` 字段引用有 **359** 处，渲染时才拼成路径）。当前真实引用 **360** 张、目录共 374 张（另 14 张为实名备用图）。曾因此误删了 5 张被数据引用的丹药图（`dan_blue/gold/green/purple/red.jpg`）。
+  只查字面量会漏掉大量图（`img` / `imgs` 字段在渲染时才拼成路径）。当前真实引用 **481** 张、目录共 496 张（另 15 张为实名备用图）。曾因此误删了 5 张被数据引用的丹药图（`dan_blue/gold/green/purple/red.jpg`）。
   正解：直接断言“**页面实际引用的图无缺图 + 全部能解码**”（已写进 `dev/tools/verify.mjs`，见 §8.3），不要再用拼正则统计字面量。
 - **图片体积规范（2026-09-17 定）**：卡片实际只显示 180–360px，发布图统一 **长边 ≤ 800px / 渐进式 / 去元数据**（90.4MB → 20.0MB，-78%）。
   新增或替换图片时按同一标准压一遍：resize LANCZOS → 存 JPEG q76 与 WebP 各一份取小者，**仅在输出更小时才替换原文件**。
@@ -208,7 +226,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - **引用方式（发布链路硬规则）**：图片路径只能出现在 **`<img src="assets/…">`** 或 **CSS `url()`** 中。JS 常量数组、`data-src` 等一律发布后裂图。
 - **图片引用清单已移除**（2026-09-17）。原 `.asset-manifest` 是一个 `display:none` 的 CSS 规则，用 302 条 `url()` 做“引用登记”——它既不加载也不校验，还得人工同步，且**已经与真实引用脱节（写 302、实际 360）**，因此连元素一起删除（省 13.3KB / 4.2%）。
   改为**真实断言**（`dev/tools/verify.mjs`）：① 页面实际引用的图（DOM 里的 `img[src]`）在 assets 里必须都找得到；② 每一张都必须能解码加载。新增图片不再需要任何手工登记。
-  ③ 反向的“目录里有、页面没用”只打印提示、不判失败：当前有 14 张这样的实名备用图（bingfeng / dayan / dongxuaner / jintong / linghu / lingyuling / nangongwan / tihun / wangchan / xiangzhili / yinyue / yuanyao / yunlulaomo / ziling）。
+  ③ 反向的“目录里有、页面没用”只打印提示、不判失败：当前有 15 张这样的实名备用图（0 / bingfeng / dayan / dongxuaner / hanli / jintong / linghu / lingyuling / tihun / wangchan / xiangzhili / yinyue / yuanyao / yunlulaomo / ziling；原列表里的 nangongwan 已挂上卡片）。
   ⚠️ 其中多数**不在归档原图备份里**（那批是 143a8c9 时的 302 张），所以不要为了“干净”去删它们 —— 删了就丢唯一副本。
 - **无图角色**：不硬凑图，卡片显示姓氏首字占位（渲染逻辑：`c.img ? '<img …>' : '<div class="ph">首字</div>'`）。
 - **准确性声明**：页面已含多处声明（v-home 收录说明、hero 副标题、v-chars 卡片区上方橙色警示框、页脚）——图片是网络检索素材（动画截图/官方概念图/百科插画/同人立绘），受动画进度限制（播至人界篇·慕兰之战），灵界/仙界多数角色未在动画登场，**可能与官方形象存在偏差甚至错配**。此声明是用户明确要求，勿删除。
@@ -220,22 +238,22 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - 色板：深色底 + 金色（`--gold: #d4af6a` 系）+ oklch 派生，详见 `<style>` 顶部 CSS 变量。
 - `cultivation-chart.js`（境界阶梯图的渲染逻辑）：**用户项目自带，不改**；图表用 `data-cultivation` 属性 + IntersectionObserver 延迟初始化，视图隐藏时切回会自动重播，**无需适配**。
 - `cultivation.css`：**允许追加**（2026-09-18 改，原写「用户项目自带，不可修改」）。它是全站**唯一的外链样式表**、职责就是图表，把概览图表样式塞进 `index.html` 内联会把同一类东西劈成两处（图表样式一半在外链表、一半在内联），属于约束反噬；用户拍板「约束如果弄巧成拙就修改」。
-  ✅ **追加规矩：只在文件末尾新增 `/* ===== 概览图表 ===== */` 段；不重排、不删改上方任何 `.cv-*` 规则**（那是用户原样的境界阶梯样式），并保持该文件的压缩单行风格。
+  ✅ **追加规矩：只在文件末尾新增 `/* ===== 概览图表 ===== */` 段；不重排、不删改上方任何 `.cv-*` 规则**（那是用户原样的境界阶梯样式），并保持该文件的压缩单行风格。末尾现已追加三段：概览图表尺寸 → **分批渲染哨兵** `.batch-sentinel`（`grid-column:1/-1`，2px 占位）→ **剧情速览「情节梳理」样式** `.lore-tabs` / `.lore-tab` / `.plot-*`（含 ≤640px 单列降档）。
 - **ECharts 5.6.0 按需构建包**（`javascripts/echarts.min.js`，**527KB**；官方全量包 1006KB，本站只用到 graph + sunburst 两种图，故按需打包，入口与重建命令见 `dev/tools/echarts-entry.js`，许可头写在产物开头、`NOTICE` 有「第三方组件」段 —— 换版本或加图型必须同步改这两处）：零 CDN、零第三方请求，满足"静态资源无第三方请求"硬约束。配套 `javascripts/overview-charts.js`（IIFE 包裹，约 6.6KB）画两张图：
   - **首页旭日图** `#chart-sunburst`：中心"全书人物"→ 六篇章 → 各篇前 6 大势力 + 其他。数据直接复用主页面运行时的 `CHAPTERS` / `DATA[chapId]`，按 `camp` 字段统计（INDEX 条目不含 camp，必须遍历 DATA）。
-  - **人物图谱力导向图** `#chart-graph`：基础名级被引 ≥ 3 的 34 个核心角色，节点大小 = `REF_SCORE`，颜色 = 首次登场篇章，连线 = `REFS[].out` 互引。分批生长动画（按篇章每 450ms 一批 setOption merge），`roam: 'move'` 只拖拽平移（禁滚轮缩放，避免和页面滚动冲突）。节点 click 通过改 `location.hash = 'v-chars/<key>'` 跳人物卡（`gotoEntry` 在主 IIFE 内外部访问不到，走 hash 路由）。
+  - **人物图谱力导向图** `#chart-graph`：基础名级被引 ≥ `MIN_REF`（= 3）的核心角色（**随互引扩写增长，v49 时为 98 人**；`#graph-core-n` 显示这个数，`verify.mjs` 断言它与实际节点数一致），节点大小 = `REF_SCORE`，颜色 = 首次登场篇章，连线 = `REFS[].out` 互引。分批生长动画（按篇章每 450ms 一批 setOption merge），`roam: 'move'` 只拖拽平移（禁滚轮缩放，避免和页面滚动冲突）。节点 click 通过改 `location.hash = 'v-chars/<key>'` 跳人物卡（`gotoEntry` 在主 IIFE 内外部访问不到，走 hash 路由）。
   - **初始化时机**：脚本在 `</body>` 前，但必须等 `window load` 后再 `sync()`，否则 echarts.init 时 canvas 尺寸为 0 只画出空圆环；`setTimeout(…, 300)` 再补一次 `resize()`。
   - **折叠**：图谱区包在 `<details class="graph-fold" open>` 里，默认展开；toggle 事件里 `setTimeout(resize, 60)` 修正收起后展开的 canvas 尺寸。
   - **配色只有一个来源**：篇章名与色值都取自 `CHAPTERS`（其 `color` 形如 `var(--c1)`）→ 运行时用 `getComputedStyle` 解析成具体色值（canvas 读不了 CSS 变量）。**不要在 JS 里再手抄一份 hex**：2026-09-18 之前那份就是这么来的，与页面 `--cN` 只有 c1 对得上（c2–c6 全错）。
   - **样式归属**：`.graph-fold` 一族与 `#chart-sunburst` / `#chart-graph` 的尺寸（含 ≤760px 降档）都在 `cultivation.css` 末尾的「概览图表」段。**画布高度不要再写回内联 `style`**。
 - 字体：**纯系统字体栈**（`--font-serif` 优先 Songti SC / STSong，`--font-sans` 优先 PingFang SC / Microsoft YaHei，逐级回退）。2026-09-17 已移除 `miaoda.feishu.cn` 的 Noto 字体 CDN（省 11.35MB）：**静态资源 0 第三方请求**（唯一例外见下条「访问统计」），离线/`file://` 打开外观完全一致，**不要再引入外部字体**。
-- **访问统计（不蒜子）**：首页 hero 统计行末的「次浏览」= `page_pv`，是全页唯一的外部请求。由 `public/index.html` 里一小段内联代码在**真实域名下**才发起（`file://` 与 `localhost/127.0.0.1` **不发起** ⇒ 本地预览零外部请求、也不会把调试流量写进线上计数）；本地想看效果加 `?stats=1`。
-  · **口径**：每次载入都**直接上报一次并显示接口返回的累计值** —— 不写本地缓存、不做去重窗口（v28 那套「1 分钟内只计一次」已按用户要求移除，见 v33；**不要再加回来**）。刷新即 +1，这是不蒜子的 PV 语义，用户已接受。
-  · **失败降级**：`#stat-views` 默认 `display:none`，取到值才显示 ⇒ 服务挂掉时首页不留空洞。
-  · ⚠️ **自己发 JSONP**（`busuanzi.ibruce.info/busuanzi?jsonpCallback=__fwPv`）而**不是**引它那支 1.9KB 的 `busuanzi.pure.mini.js`：少一个请求，且能显式声明 `referrerPolicy='no-referrer-when-downgrade'` —— 默认的 `strict-origin-when-cross-origin` **只发 origin**，服务端拿不到路径，页面计数会退化成站点计数。
-  ⚠️ **实测口径（2026-09-17）**：接口 `https://busuanzi.ibruce.info/busuanzi?jsonpCallback=cb` **只认 Referer**（不带 Referer 直接返回 `Bad Request`）；site 键 = Referer 的 host、page 键 = **host + 路径**（**查询串不参与**，fragment 不发）。
-  ⚠️ **`site_uv` 不可信，所以只展示 PV、不展示「访客数」**：同 IP 同 UA 连打 3 次，`site_uv` 5→6→7 逐次递增（根本没去重）。
-  ⚠️ `127.0.0.1` 是**全服共享桶**（实测 site_pv 已 1,079 万+、page_pv 37 万+），本地预览看到的大数字与本页无关，别当真。
+- **访问统计（busuanzi.cc）**：首页 hero 统计行末的「次浏览」是全页唯一的外部请求。由 `public/index.html` 里一小段内联代码在**真实域名下**才发起（`file://` 与 `localhost/127.0.0.1` **不发起** ⇒ 本地预览零外部请求、也不会把调试流量写进线上计数）；本地想看效果加 `?stats=1`。
+  · **取值必须是 `site_pv`（2026-10-05 起）**：`POST https://cdn.busuanzi.cc/api.php`（JSON `{url, referrer}`），显示 `BASE_PV(1400) + busuanzi_site_pv`。**不要换回 `page_pv`** —— 它是按「完整 URL 字符串」分桶的：尾斜杠、`?from=wechat`、深链 hash 都会各成一个独立小桶从 1 重新累计（实测同一页面 127 / 1 / 1 / 8），展示出来就是「一千四百零几」的假小数字；`site_pv` 实测跨所有 URL 变体统一累加。`verify.mjs` 有一条断言专守这条口径。
+  · **口径**：每次载入都**直接上报一次并显示接口返回的累计值** —— 不写本地缓存、不做去重窗口（v28 那套「1 分钟内只计一次」已按用户要求移除，见 v33；**不要再加回来**）。
+  · **失败降级**：`#stat-views` 默认 `display:none`，取到值才显示；请求失败或 6 秒无响应显示「— 统计暂不可用」。
+  · **迁移史（2026-10-03，v46）**：原「不蒜子」官方 `busuanzi.ibruce.info` 持续 502/超时且无人维护（旧接口是 JSONP + 只认 Referer），已迁到 `busuanzi.cc` 的 POST JSON 接口；原服务累计的 ≈1400 无法随迁，用 `BASE_PV` 叠加显示。
+  · ⚠️ **`site_uv` 不可信，所以只展示 PV、不展示「访客数」**：同 IP 同 UA 连打 3 次，`site_uv` 5→6→7 逐次递增（根本没去重）。
+  · ⚠️ `127.0.0.1` 是**全服共享桶**，本地预览看到的大数字与本页无关（且本地默认不发起）。
 - 无任何构建工具，原生 JS，`file://` 可直接打开（图片为相对路径，**转发时需连同 assets/ 一起**）。
 - 首页样式类：`.home-section` / `.home-why`（`<details>` 折叠） / `.home-cards` / `.home-card` / `.home-note` / `.home-quest`（问道自述） / `.src-list`（数据来源）（`/* ===== 首页 ===== */` 段）。
 - 全局复用类：`.page-head`（紧凑页头，内含唯一的 `h1` + `.stats` + `.ph-lead` 一句话引导；≤640px 收窄内边距） / `.seg`+`.seg-btn`（分段选择器） / `.lib-search`（三库共用搜索框，胶囊，与分类 tab 同一套形态与 10/12px 外边距） / `.ref-chips`+`.ref-chip`（互引 chip） / `.spot*`（搜索面板一整套） / `.back-top` / `.img-note`（`<details>` 免责声明）。
@@ -265,7 +283,8 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
    node dev/tools/verify.mjs                                   # 默认验 ./public/index.html（file://）
    node dev/tools/verify.mjs --url http://localhost:8899/index.html   # 也可指定 URL
    ```
-   **零依赖**：Node ≥ 22 内置 `WebSocket`/`fetch` + 本机 Chrome，自己拉起 headless Chrome 走 CDP，**不装 puppeteer/playwright**。当前 35 条断言：七视图容器、四库卡片数（221/40/64/65）、**图片引用无缺图 + 全部能解码**、互引网络规模、**每个视图有且仅有一个 h1**、**开源入口齐全（顶栏图标 / hero / 首页卡片 / 页脚同指一仓）**、**反馈入口统一指向 GitHub Issues**、核心圈默认生效且可切回全部、桌面 1440×900 与移动 390×844 双视口的横向溢出与"竖条文本"、篇章筛选、**三库分类筛选（含 tab 计数一致性）与三库搜索**、搜索定位、互引 chip 跳转、返回顶部与进度环、深链冷启动、点卡片同步 URL、浏览器返回后视图与地址一致、**静态资源无第三方请求**、**统计位默认隐藏 + 本地不发起上报 + 取到值后显示累计次数（千位分隔）+ 统计位可见时双视口无溢出**、**两张概览图表渲染与配色来源 + 悬浮详情 + 图谱节点点击跳转 + 折叠展开后 canvas 尺寸恢复**、0 控制台报错。
+   **零依赖**：Node ≥ 22 内置 `WebSocket`/`fetch` + 本机 Chrome，自己拉起 headless Chrome 走 CDP，**不装 puppeteer/playwright**。当前 **42 条断言**：十视图容器、**分批渲染首屏只挂首批**、七库卡片数（263/40/64/65/40/39/34）、**图片引用无缺图 + 全部能解码**、互引网络规模、**每个视图有且仅有一个 h1**、**开源入口齐全（顶栏图标 / hero / 首页卡片 / 页脚同指一仓）**、**反馈入口统一指向 GitHub Issues**、默认全部且可一键切核心圈、桌面 1440×900 与移动 390×844 双视口的横向溢出与"竖条文本"、篇章筛选、**三库分类筛选（含 tab 计数一致性）与三库搜索**、搜索定位、互引 chip 跳转、返回顶部与进度环、深链冷启动、**深链落到首批之外的卡（按需补齐渲染）**、**筛选后地址栏与展开态一致**、点卡片同步 URL、浏览器返回后视图与地址一致、**静态资源无第三方请求**、**统计位默认隐藏 + 本地不发起上报 + 取到值后显示累计次数（千位分隔）+ 统计位可见时双视口无溢出 + 取值字段是 site_pv**、**两张概览图表渲染与配色来源 + 悬浮详情 + 图谱节点点击跳转 + 折叠展开后 canvas 尺寸恢复**、0 控制台报错。
+  ⚠️ **分批渲染后，"扫 DOM"型断言必须先补齐**：DOM 只是数据的子集（首屏每库 10 条）。脚本注入的 `window.__loadAll(id)` / `window.__loadAllLibs()` 负责补齐（chars / tres 走 `ensureAll()`，三库借 `LIB_UI[id].ensureKey(该库最后一个 key)`）。**忘了补齐会写成假绿** —— 图片完整性那条就从 481 张掉到 70 张覆盖（v49 修）。同理，切降噪/切分类 tab 都会重排，**每次计数前**都要补。
    - 断言失败先看输出里打印的**实际值**再动代码（有 3 条断言曾是自己写错：阈值拍脑袋、期望值写反、把 `<link rel=canonical>` 当资源请求）。
    - ⚠️ **视口用 `Emulation.setDeviceMetricsOverride` 设置**：VS Code 内置浏览器**无视** `setViewportSize()`（请求 1440 实得 729），别拿它做响应式验收，也别用 iframe 顶替（Promises 会永不 resolve）。
    - 快速 JS 语法检查：提取内联 `<script>` 块逐个 `node --check`。
@@ -278,6 +297,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 
 - 用户提供分析资料库：`~/Downloads/fanren-xiuxian-zhuan-analysis-master/`（人物谱系 73 人/故事梗概/社会结构/小说概述资料库/时间关系图/README，声称基于原著 20 卷 532,528 行逐段验证、结局带原文行号）。曾据此：新增 17 位谱系角色、丰富 17 处核心角色生平、纠错"王婵→王蝉"（全站已统一）。
 - 关键剧情设定（已在页面"剧情速览"呈现）：双韩立因果闭环——A 韩立=轮回殿主（时间道祖→败古或今→散尽时间法则铸掌天瓶→穿越远古→改修轮回→创轮回殿→妻甘如霜=南宫婉前世→联手 B 击败古或今→陨落）；B 韩立=本线主角（捡瓶→大罗→放弃道祖→掌天瓶返回过去救元瑶/帮厉飞雨结仙缘/踢瓶给少年自己→因果闭环→隐居黑土仙域）；掌天瓶=唯一逆转时空之物。
+- **剧情速览 · 情节梳理（全书十一卷）是第三方内容**：整理自微信公众号「书生去哪了」的原创文章《凡人修仙传》情节梳理（全）（2026-05-27 发布，https://mp.weixin.qq.com/s/jbp5FD4rk07W4aeNd9wFXQ ）。页面该栏上下各有一处署名 + 原文链接，`README` / `NOTICE` 有对应声明 —— **改这条内容前先看 NOTICE 的口径**，权利人若提出异议应改为仅保留摘要 + 跳转原文。
 - 首页"为什么做这个网站"文案来源：`../fanren-xiuxian.md`（境界差距感悟 + 映照现实 + 统一资料集定位 + 页面包含 + 问道自述）——2026-09-17 已把该页文字**整体并入首页正文**，两边互为镜像，改一处要同步另一处。
 
 ## 10. 已知限制与迭代历史摘要
@@ -286,7 +306,9 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - 部分冷门角色无可靠图片（页面保留首字占位），后续有官方设定图可继续补；曲魂/极阴祖师等已按用户反馈迭代修正。
 - **法宝/灵草配图待补（61 个文件名）**：2026-09-16 用户叫停图片工作后，已移除 61 个指向不存在文件的 img 引用（数据文字完整）。待补清单（拼音文件名）：`balinchi biyanjiu chuwudai dayanrenxingkuilei diandaowuxingzhen dulongdan ganyingling guiluofan hanyuanren haoyuandan heifengqi hongxiandunguangzhen hualingubao huanglinjia huazhou hunyuanbo jiangyundan jinfuzimuren jingangzhao juguiikuilei langshoukuilei langshouyuruyi lingshouhuan liudaolunhuipan luohunsha lvhuangjian miechendan minghunzhu molongren mosuiduan qiankunta qianlanbingyan qingmingzhen qingxudan qiyanshan renhuyaokuilei sheweikuilei shiling taiyangjingshi tanyaofan tianluyin tianshizhu wanyaofan wuxinghuan wuyulingcha xiusuidan xuanhuangjing xuantianhulu xuantianzhanlingjian xuantiefeitiandun xuelingshui xueningsowuxingdan xueqidan xuhuangding yingyuehuan yuanmingdeng yuanyingjikuilei zhangtianyin zhenhaizhong zhuquehuan ziyinwan`（.jpg，对应 TREASURES/HERBS 中的法宝丹药）。恢复图片流程见 §4 TREASURES 小节。
 - 图片可能错配（已有声明）；用户曾要求逐张核对，历史轮次修过多处错图（陈巧倩↔董萱儿、风希、尸魈、曲魂、极阴祖师等）。
-- 卡片区 221 张卡较长（约 2 万 px）——已用「核心圈」默认降噪（被引 ≥ 5，约 38 条）+ 篇章 tab + 全站搜索缓解；「全部 221」随时可切。
+- 人物卡区 263 张卡很长（**全量渲染约 2 万 px / 21,903 个 DOM 节点**）——已用**瀑布分批渲染**（首屏 10 条、滚动续传；实测首屏 DOM 降到 3,812 节点，本机加载 185ms → 91ms）+ 篇章 tab + 全站搜索缓解；默认显示全部，也可一键切「核心圈 81」。
+  ⚠️ **分批渲染的代价（知情取舍，别当缺陷报）**：浏览器 Ctrl+F / 打印只覆盖**已挂载**的卡（首屏 10 条/库）。深链与互引定位靠 `ensureKey` 按需补齐，"点进去一片空白"的局面已经消除，但"Ctrl+F 找不到"是设计取舍 —— 站内搜索面板（545 条全量索引）才是检索入口。
+- **情节梳理是第三方内容**：整理自微信公众号文章（见 §9），若权利人提出异议需改为摘要 + 跳转原文。
 - 未做（按需）：展开卡改为侧边抽屉（现在原位摊开、把下方内容顶下去）、3–4 张带第三方水印/游戏 UI 的法宝图待换（如 `liudaolunhuipan.webp` 带 NGA 水印与「无法转赠」框）。
 - ❌ **已否决：人物总览页**（把韩立 6 张卡合成一条人生线）—— 2026-09-17 做过可用原型（六段人生线 + 全书境界总演进 + 关联条目 254 条，数据取自真实记录），用户判断「没用」明确否决。**不要再提这条建议**，也不要再拿它当"未完成项"。
 
@@ -486,3 +508,21 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   ⑨ **修复（同日）**：`stamp.mjs` 改为 `indexOf` + `slice` 拼接（不再用 `replace` 回调），并在临时目录里用真实脚本 + 真实 git 复现验证：注入后 `首次发布：2026-09-14 · 最后更新：2026-09-20`、`dateModified`、`.stamp-note`、sitemap `<lastmod>` 全部正确。
   ⚠️ **教训**：`verify.mjs` 那 3 条元信息断言读的是**源文件**，抓不到"CI 产物被写坏"，这次是靠线上抽查发现的 —— 而且抽查必须用 `curl` + PowerShell，**别用 Node 读**：本机 Node 侧的文本观测（含 `git show` 输出、`replace`）会被同一问题污染，会把好文件读成坏的。
   ⑩ **移动端导航看不全（同日，用户反馈"移动端有些信息似乎没显示"）**：窄屏顶栏原本是单行 + 横向滚动，末两项「灵草丹药 / 法器法宝」被裁在视口外（用户附的截图只看到 5 项）。**第一次改错了方向**：让状态位在窄屏显示日期，反而更挤（入口只剩 3 项），已回滚。最终方案：`≤640px` 让顶栏导航**换行显示**（`.topnav .wrap{height:auto;flex-wrap:wrap}` + `.tn-links{flex:1 1 0;flex-wrap:wrap}`），实测 390px 下顶栏 73px、7 个入口分两行全部落在视口内、搜索按钮与第 1 行同行；顶栏变高后 `.chapter` 不再 sticky、`.view{scroll-margin-top:88px}`。状态位在窄屏仍让位（`display:none`），日期与作者主页由页脚承担（页脚新增「作者主页」入口）。超窄屏（`≤400px`，含 VS Code 内置浏览器的窄窗口）再降一档字号与内边距。实测量化：**390px → 两行、顶栏 66px；291px → 三行、顶栏 94px**（收档前 106px），两种宽度都无横向溢出、7 个入口全部落在视口内。
+
+- **v39–v42：卡片与数据的一轮迭代（2026-09-21 ~ 09-24，当时漏记，本次按提交补记）**——① **默认展示全部人物**（不再默认开核心圈降噪，`1651329`）；② **同角色多形象轮播**（风希妖/人形、文思月少女/成年，`bb2f008`，卡片内 `.carousel` + 圆点，`.plot-*` 之外的既有交互）；③ 配图优先动画官方截图 + 一批错图/水印修正（`1651329` / `ca71d17` / `2cf9df9`）；④ README 恢复页面速览截图、补 Star History、把"221"改写成"二百余"（`c6d09a8` / `bb849e9` / `1efca0a`）；⑤ 涅槃始祖设定修正：非真灵凤凰，实为梵圣真魔功/涅槃圣体（`cd30aae`）。档案：`dev/_backup/index-v39.html` ~ `index-v42-before-split-arts.html`。
+
+- **v43：功法 / 阵法 / 符箓 拆成三个独立视图（2026-10-02，`9a1a984` + `998a455` + `367a494`）**——`9a1a984` 先加「功法·阵法·符箓」独立视图（五库全收），`998a455` 再拆成 **v-gongfa / v-zhenfa / v-fu**、导航扩到**十大入口**，`367a494` 同步 README 分类描述。数据是 `const ARTS`（113 条）按 `cat` 切出的 `GONGFA` 40 / `ZHENFA` 39 / `FU` 34，索引与搜索面板一并纳入（`LIBS` 从 4 项变 7 项、`INDEX` 达 545 条）。
+  ⚠️ 三库都是**单分类**：不渲染分类 tab，`LIB_UI.reset()` 里 `#tabs` 的取用必须带空值保护（`const te = q(cfg.tabsId); if(te) …`）—— 少这个 guard，整页初始化就会抛错。
+
+- **v44：三库 111 条全部配图（2026-10-02，`91b67aa` → `eff676a` → `fc7a38c`）**——16 张官方动画图 → 再补 9 张 → 一次配齐、占位清零。资源总数随之涨到 496 张。
+
+- **v45：首页 hero 换官方主视觉竖版立绘（风起天南）（2026-10-02，`8faed41`）**。
+
+- **v46：访问统计迁到 busuanzi.cc（2026-10-03，`93ceb29`，`05b80cd` 调基数）**——原「不蒜子」官方 `busuanzi.ibruce.info` 持续 502/超时且无人维护 ⇒ 改 `POST cdn.busuanzi.cc/api.php`；旧接口累计的 ≈1400 无法随迁，用 `BASE_PV` 叠加显示。口径见 §7。
+
+- **v47：慕兰之战人物与剧情节点补全（2026-10-04，`0cae7ef`）**——人物 251 → **263**（六个篇章的条数：七玄门 17 / 黄枫谷 35 / 乱星海 37 / 大晋 74 / 灵界 41 / 仙界 59）。
+
+- **v48：剧情速览新增「情节梳理 · 全书十一卷」（2026-10-05，PR #1 @jackey0118）**——① 视图内加 `.lore-tabs` 页内 tab（境界时间线 / 情节梳理）；② 新增 `PLOT_VOLS`（11 卷 / 55 地点篇 / 333 步）+ `renderPlot()` + `plotStepHTML()`，**首次点开才渲染**；③ 样式追加在 `cultivation.css` 末尾；④ 内容整理自微信公众号「书生去哪了」，页面上下两处署名 + 原文链接，README / NOTICE 同步声明（见 §9）。
+  ⑤ **合并时修正了 PR 的 key 错位**：`libFiltered()` 原用「筛选后的下标」生成卡片 key（`cfg.prefix + i`），而卡片 key 是全库索引、互引 chip 与深链 `gotoEntry` 的主键 —— 一旦筛选，key 整体错位、互引与跳转都会指向错误条目。已改为保留原数组下标（详见 v49 ③）。
+
+- **v49：瀑布分批渲染 + 验收/文档全面对齐（2026-10-05，本次）**——① `makePager` 分批引擎接管人物卡与七库列表（`firstN=10` / `stepN=12` / `rootMargin=800px`，`ensureAll` / `ensureKey` 对外）；筛选从"扫 DOM 切 display"下沉到**数据层整表重排**；核心圈计数改 `coreCount()` 纯数据计算（`renderTabs` 不再依赖卡片先渲染）；② 修**展开态与地址栏失同步**：新增 `openKeyFromHash()` / `syncTargetToResults()`（开卡后被输入框筛掉时，地址栏不再停在 `#v-chars/<key>`）；③ 修 PR 带进来的 **key 错位**（`libFiltered()` 改用原数组下标，见 v48 ⑤）；④ **访问统计改取 `site_pv`** —— `page_pv` 按完整 URL 分桶（尾斜杠/查询串/分享参数/深链各成一个小桶），显示出来是「一千四百零几」的假小数字；⑤ `verify.mjs` 适配分批渲染（注入 `__loadAll` 补齐）并新增 4 条断言（首屏只挂首批 / 深链落到首批之外的卡 / 筛选后地址栏与展开态一致 / 取值必须是 site_pv），**42/42 全绿**（合并前基线 33/38，且脚本会在"找 南宫婉 卡片"处直接崩）；⑥ 文档同步：§1~§9 所有数字与结构按代码重写，补记 v39–v48。

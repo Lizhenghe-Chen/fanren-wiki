@@ -148,6 +148,16 @@ const HELPERS = `
   };
   /* 某个容器里当前可见（未被 display:none 过滤掉）的卡片数 */
   window.__vis = sel => [...document.querySelectorAll(sel)].filter(c => c.style.display !== 'none').length;
+  /* 分批渲染（瀑布）：DOM 里只有首批卡片，断言前要按库加载全量。
+     chars / tres 的 pager 是脚本顶层变量；三库的 pager 藏在工厂闭包里，
+     只能借 LIB_UI 暴露的 ensureKey 走到该库最后一个 key（等价于加载全量）。 */
+  window.__loadAll = id => {
+    if (id === 'chars' || id === 'tres') { (id === 'chars' ? charPager : treasurePager).ensureAll(); return; }
+    const data = { beasts: BEASTS, herbs: HERBS, gongfa: GONGFA, zhenfa: ZHENFA, fu: FU }[id];
+    const pfx = { beasts: 'beast-', herbs: 'herb-', gongfa: 'gongfa-', zhenfa: 'zhenfa-', fu: 'fu-' }[id];
+    LIB_UI[id].ensureKey(pfx + (data.length - 1));
+  };
+  window.__loadAllLibs = () => ['chars', 'tres', 'beasts', 'herbs', 'gongfa', 'zhenfa', 'fu'].forEach(window.__loadAll);
   /* 轮询等待：条件达成或超时（默认 6s）返回是否达成 */
   window.__until = async (fn, ms = 6000) => {
     const t0 = Date.now();
@@ -159,7 +169,7 @@ const HELPERS = `
   };
 `
 
-const VIEWS = ['v-home', 'v-chars', 'v-lore', 'v-realms', 'v-beasts', 'v-herbs', 'v-treasures']
+const VIEWS = ['v-home', 'v-chars', 'v-lore', 'v-realms', 'v-beasts', 'v-herbs', 'v-treasures', 'v-gongfa', 'v-zhenfa', 'v-fu']
 
 /* ---------- 主流程 ---------- */
 const { proc, profile, send, evaluate, viewport, goto, pageErrors } = await launch()
@@ -173,16 +183,30 @@ try {
   await goto(TARGET)
   await evaluate(HELPERS)
 
-  check('七个视图容器齐全',
-    await evaluate(`document.querySelectorAll('.view').length`) === 7,
+  check('十个视图容器齐全',
+    await evaluate(`document.querySelectorAll('.view').length`) === 10,
     `实际 ${await evaluate(`document.querySelectorAll('.view').length`)} 个`)
 
+  /* 分批渲染是设计（先挂首批、滚动续传），先测「没一次性铺全」，再加载全量测结构 ——
+     两条合起来才说明分批既省了首屏、又没有丢条目。 */
+  const firstPaint = JSON.parse(await evaluate(`JSON.stringify({
+    chars: document.querySelectorAll('#characters .card').length,
+    beasts: document.querySelectorAll('#beasts .card').length,
+    total: CHAR_TOTAL })`))
+  check('分批渲染：首屏只挂首批卡片（不是一次性铺全）',
+    firstPaint.chars > 0 && firstPaint.chars < firstPaint.total && firstPaint.beasts > 0,
+    JSON.stringify(firstPaint))
+
+  await evaluate(`window.__loadAllLibs()`)
   const counts = await evaluate(`JSON.stringify([
     document.querySelectorAll('#characters .card').length,
     document.querySelectorAll('#beasts .card').length,
     document.querySelectorAll('#herbs .card').length,
-    document.querySelectorAll('#treasureGrid .treasure-card').length])`)
-  check('四库卡片数量正确（251/40/64/65）', counts === '[251,40,64,65]', `实际 ${counts}`)
+    document.querySelectorAll('#treasureGrid .treasure-card').length,
+    document.querySelectorAll('#gongfaGrid .card').length,
+    document.querySelectorAll('#zhenfaGrid .card').length,
+    document.querySelectorAll('#fuGrid .card').length])`)
+  check('七库卡片数量正确（263/40/64/65/40/39/34）', counts === '[263,40,64,65,40,39,34]', `实际 ${counts}`)
 
   /* 图片完整性：DOM 实际引用的图必须都能在 assets 里找到、且都能解码。
      这是从页面迁出的 .asset-manifest（300 行 display:none）留下的真空 —— 那份清单既不加载
@@ -212,7 +236,7 @@ try {
   check('被引数最高者 > 100（韩立应是全网中心）', refs.max > 100, `最高被引 ${refs.max}`)
 
   const h1s = await evaluate(`JSON.stringify(${JSON.stringify(VIEWS)}.map(id => document.querySelectorAll('#' + id + ' h1').length))`)
-  check('七个视图各有且仅有一个 h1', h1s === '[1,1,1,1,1,1,1]', h1s)
+  check('十个视图各有且仅有一个 h1', h1s === '[1,1,1,1,1,1,1,1,1,1]', h1s)
 
   /* 开源入口：顶栏图标 / hero 按钮 / 首页卡片 / 页脚四处必须指向同一个仓库，且图标是真实
      渲染出来的（防 SVG 路径写空、或断点把它藏了）。顶栏图标在 ≤1100px 会让位给 7 个视图
@@ -250,17 +274,20 @@ try {
 
   /* 核心圈：默认只显示被引 ≥ 5 的条目（被引分布是长尾，208/381 条为 0） */
   const core = JSON.parse(await evaluate(`(() => {
-    const visible = () => [...document.querySelectorAll('#characters .card')].filter(c => c.style.display !== 'none').length;
+    /* 分批渲染：每次计数前都要补齐 —— 切降噪也会整表重排、只挂首批 */
+    const visible = () => { window.__loadAll('chars'); return [...document.querySelectorAll('#characters .card')].filter(c => c.style.display !== 'none').length; };
     const seg = n => [...document.querySelectorAll('.seg-btn')].find(b => b.dataset.core === n);
     const on = visible();
     seg('0').click();
     const all = visible();
     seg('1').click();
-    return JSON.stringify({ on, all, backOn: visible(),
+    const backOn = visible();
+    seg('0').click();   /* 复位到默认「全部」：降噪状态别漏给后面的断言 */
+    return JSON.stringify({ on, all, backOn,
       labels: [...document.querySelectorAll('.seg-btn')].map(b => b.textContent.trim()) });
   })()`))
-  check('默认显示全部 251 条，可一键切到核心圈（被引 ≥ 5 的 74 条）',
-    core.on === 251 && core.all === 251 && core.backOn > 20 && core.backOn < 100,
+  check('默认显示全部 263 条，可一键切到核心圈（被引 ≥ 5 的 81 条）',
+    core.on === 263 && core.all === 263 && core.backOn === 81,
     JSON.stringify(core))
 
   /* ========== 2. 无横向溢出（桌面 + 移动） ========== */
@@ -274,7 +301,7 @@ try {
       const o = await evaluate(`window.__overflow()`)
       if (o > 0) bad.push(`${v} +${o}px`)
     }
-    check(`${label} 七个视图均无横向溢出`, bad.length === 0, bad.join('，'))
+    check(`${label} 十个视图均无横向溢出`, bad.length === 0, bad.join('，'))
 
     const strips = await evaluate(`JSON.stringify(window.__stripText())`)
     check(`${label} 无被压成竖条的文本`, strips === '[]', strips)
@@ -298,8 +325,8 @@ try {
       colorMatch: kids.length === 6 && kids.every((c, i) => c.itemStyle.color === css(i + 1))
     };
   })())`))
-  check('旭日图：画布已渲染，六篇章齐全，人数合计 251，配色取自页面 --cN',
-    sun.inited && sun.canvas === 1 && sun.arcs.length === 6 && sun.people === 251 && sun.colorMatch,
+  check('旭日图：画布已渲染，六篇章齐全，人数合计 263，配色取自页面 --cN',
+    sun.inited && sun.canvas === 1 && sun.arcs.length === 6 && sun.people === 263 && sun.colorMatch,
     JSON.stringify(sun))
 
   await evaluate(`location.hash = '#v-chars'`)
@@ -313,6 +340,8 @@ try {
      等待时长与图谱规模相关：人物生平扩写后互引变密、核心节点数从 34 增至 49，1500ms 不够（实测
      扫描点仍会漂移导致点空，hash 停在 #v-chars），故提到 4000ms。 */
   await sleep(4000)
+  /* 分批渲染（叠加降噪）后 DOM 只是数据的子集：断言「每个节点都能跳到卡片」前先补齐人物卡 */
+  await evaluate(`window.__loadAll('chars')`)
   const graph = JSON.parse(await evaluate(`JSON.stringify((() => {
     const el = document.getElementById('chart-graph');
     const inst = echarts.getInstanceByDom(el);
@@ -418,6 +447,7 @@ try {
     [...document.querySelectorAll('.seg-btn')].find(b => b.dataset.core === '0').click();
     const tabs = [...document.querySelectorAll('#tabs .tab')];
     tabs.find(t => t.dataset.ch === 'huangfeng').click();
+    window.__loadAll('chars');   /* 分批渲染：筛选后只有首批在 DOM 里，先补齐再数 */
     return JSON.stringify({
       chapters: [...document.querySelectorAll('.chapter')].filter(s => getComputedStyle(s).display !== 'none').map(s => s.dataset.chapter),
       cards: [...document.querySelectorAll('#characters .card')].filter(c => c.style.display !== 'none').length });
@@ -435,9 +465,11 @@ try {
       const rows = [];
       for (const b of btn) {
         b.click();
+        window.__loadAll(name === 'beast' ? 'beasts' : 'herbs');   /* 分批渲染：先补齐再数 */
         rows.push([b.dataset.cat, Number((b.querySelector('.cnt') || {}).textContent), window.__vis(cards)]);
       }
       btn[0].click();
+      window.__loadAll(name === 'beast' ? 'beasts' : 'herbs');
       out[name] = { rows, all: window.__vis(cards) };
     }
     return JSON.stringify(out);
@@ -458,9 +490,11 @@ try {
     const rows = [];
     for (const t of tabs) {
       t.click();
+      window.__loadAll('tres');   /* 分批渲染：先补齐再数 */
       rows.push([t.dataset.cat, shown(), cards()]);
     }
     tabs.find(t => t.dataset.cat === 'all').click();
+    window.__loadAll('tres');
     return JSON.stringify({ rows, all: [shown(), cards()] });
   })()`))
   const tresBad = tresFilter.rows.filter(([cat, shown, cards]) => shown !== cards || (cat === 'all' && shown !== 65)).map(r => r.join('/'))
@@ -517,6 +551,7 @@ try {
   const jump = JSON.parse(await evaluate(`(async () => {
     location.hash = '#v-chars';
     await window.__sleep(300);
+    window.__loadAll('chars');
     const card = [...document.querySelectorAll('#characters .card')].find(c => c.dataset.name === '韩立');
     card.classList.add('open');
     const chip = card.querySelector('.ref-chip');
@@ -577,11 +612,55 @@ try {
       && deep.top !== null && deep.top > 30 && deep.top < 160,
     JSON.stringify(deep))
 
+  /* 深链落到「首批之外」的卡：分批渲染下必须按需补齐渲染，否则点进去是一片空白 */
+  await goto('about:blank')
+  await goto(`${TARGET}#v-chars/lingjie-0`)   /* 全书第 164 条，远在首批之外、又不是末位 */
+  await sleep(1200)
+  await evaluate(HELPERS)   /* 重新加载过页面，页面内小工具要重注入 */
+  const lazyDeep = JSON.parse(await evaluate(`JSON.stringify({
+    hash: location.hash,
+    mounted: !!document.querySelector('[data-key="lingjie-0"]'),
+    open: !!document.querySelector('[data-key="lingjie-0"].open'),
+    cards: document.querySelectorAll('#characters .card').length })`))
+  check('深链落到首批之外的卡：按需补齐渲染并展开（分批渲染的前提）',
+    lazyDeep.hash === '#v-chars/lingjie-0' && lazyDeep.mounted && lazyDeep.open
+      && lazyDeep.cards > 10 && lazyDeep.cards < 263,
+    JSON.stringify(lazyDeep))
+
+  /* 筛选会整表重排：地址栏与展开态必须一起收敛。目标还在结果里 ⇒ 保持展开、hash 不动；
+     被筛掉 ⇒ 撤掉 target（视图不变）。否则地址栏会一直指向一张不存在（或已收起）的卡。 */
+  const syncFilter = JSON.parse(await evaluate(`(async () => {
+    location.hash = '#v-chars';
+    await window.__sleep(400);
+    [...document.querySelectorAll('#characters .card.open')].forEach(c => c.classList.remove('open'));
+    const card = document.querySelector('#characters .card');
+    const key = card.dataset.key, name = card.dataset.name;
+    location.hash = '#v-chars/' + key;
+    await window.__sleep(600);
+    const inp = document.getElementById('searchInput');
+    const type = v => { inp.value = v; inp.dispatchEvent(new Event('input', { bubbles: true })); };
+    type(name.slice(0, 1));                 /* 仍命中目标 ⇒ 展开态与 hash 都该保住 */
+    await window.__sleep(500);
+    window.__loadAll('chars');
+    const kept = { hash: location.hash, open: document.querySelectorAll('#characters .card.open').length };
+    type('不存在的词zzz');                   /* 目标被筛掉 ⇒ 撤掉 target */
+    await window.__sleep(500);
+    const dropped = { hash: location.hash, view: document.querySelector('.view.active').id, open: document.querySelectorAll('#characters .card.open').length };
+    type('');
+    await window.__sleep(400);
+    return JSON.stringify({ key, name, kept, dropped });
+  })()`))
+  check('筛选后地址栏与展开态一致（仍在结果里则保持，被筛掉则撤 target）',
+    syncFilter.kept.hash === '#v-chars/' + syncFilter.key && syncFilter.kept.open === 1
+      && syncFilter.dropped.hash === '#v-chars' && syncFilter.dropped.view === 'v-chars' && syncFilter.dropped.open === 0,
+    JSON.stringify(syncFilter))
+
   /* 点开卡片要把 URL 同步成深链，便于复制分享 */
   await evaluate(HELPERS)
   const share = JSON.parse(await evaluate(`(async () => {
     location.hash = '#v-chars';
     await window.__sleep(250);
+    window.__loadAll('chars');
     const card = [...document.querySelectorAll('#characters .card')].find(c => c.dataset.name === '南宫婉');
     card.click();
     const opened = location.hash;
@@ -690,6 +769,13 @@ try {
   check('站点地图 lastmod 与页面「最后更新」同源',
     !!sitemapDate && sitemapDate === metaDates.页脚,
     `sitemap ${sitemapDate} / 页面 ${metaDates.页脚}`)
+
+  /* 统计口径：必须取 site_pv（跨所有 URL 变体统一累计）。page_pv 是按「完整 URL 字符串」
+     分桶的 —— 尾斜杠 / 查询串 / 分享参数 / 深链各成一个小桶从 1 重算，显示出来就是
+     「一千四百零几」的假小数字（实测同一页面 127 / 1 / 1 / 8）。 */
+  check('访问统计取 site_pv（不是按 URL 分桶的 page_pv）',
+    /var pv = Number\(o && o\.busuanzi_site_pv\)/.test(siteHtml) && !/o\.busuanzi_page_pv/.test(siteHtml),
+    `实际取值：${(/Number\(o && o\.(\w+)\)/.exec(siteHtml) || [])[1] || '未找到取值行'}`)
 
   /* ========== 4. 控制台 ========== */
   check('控制台与页面均无报错', pageErrors.length === 0, pageErrors.slice(0, 3).join(' | '))
