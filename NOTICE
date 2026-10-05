@@ -11,8 +11,8 @@ Apache-2.0 适用于本仓库的原创部分：
 · 页面代码：public/index.html 内联的 HTML / CSS / JavaScript、
   public/cultivation.css、public/javascripts/cultivation-chart.js、
   public/javascripts/overview-charts.js（两份图表脚本均为本项目原创）
-· 原创整理内容：人物 / 灵兽灵虫 / 灵草丹药 / 法器法宝条目的采集与编排、
-  境界与发展脉络梳理、页面设计与文案
+· 原创整理内容：人物 / 灵兽灵虫 / 灵草丹药 / 法器法宝 / 功法 / 阵法 / 符箓
+  条目的采集与编排、境界与发展脉络梳理、页面设计与文案
 
 可自由使用、修改、分发，含商业用途。条件见 LICENSE，要点：
 保留版权与许可声明、保留本 NOTICE、修改过的文件注明改动。
@@ -28,6 +28,18 @@ ECharts 由 The Apache Software Foundation 开发，同样以 Apache License 2.0
 授权。其版权与许可声明保留在该文件头部，项目主页：
   https://echarts.apache.org/
 重建方式见 dev/tools/echarts-entry.js。
+
+────────────────────────────────────────────────────────────
+第三方内容（页面内的文字）
+────────────────────────────────────────────────────────────
+「剧情速览 → 情节梳理 · 全书十一卷」整理自微信公众号「书生去哪了」的原创文章
+《凡人修仙传》情节梳理（全）（2026-05-27 发布）：
+  https://mp.weixin.qq.com/s/jbp5FD4rk07W4aeNd9wFXQ
+
+该部分的著作权归原作者所有，本项目仅作学习交流展示，不主张任何权利，
+也不通过 Apache-2.0 授予你任何相关权利。页面该栏上下各有一处署名与原文链接，
+转载或引用请保留署名并附原文链接。权利人如不希望作品被展示，请到
+https://github.com/Lizhenghe-Chen/fanren-wiki/issues 提交，我们会尽快删除。
 
 ────────────────────────────────────────────────────────────
 不在授权范围内

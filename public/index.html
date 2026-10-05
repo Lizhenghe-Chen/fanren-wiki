@@ -12,10 +12,12 @@
   角色图片为网络检索素材，版权归各自权利人所有，不在上述许可范围内，如有异议请联系删除。
   源码仓库：https://github.com/Lizhenghe-Chen/fanren-wiki
   访问统计：首页 hero 的「次浏览」来自「busuanzi.cc」(cdn.busuanzi.cc/api.php)，是全页唯一的外部请求，
-  原「不蒜子」官方自 2026-09 下旬起持续故障且无人维护，已迁移；原累计 page_pv≈1400 由代码叠加显示。
+  取接口的 site_pv（全站累计）而非 page_pv —— page_pv 按「完整 URL 字符串」分桶，尾斜杠 / 查询串 /
+  分享参数 / 深链 hash 都会各成一个小桶从 1 重新累计，展示出来就是「一千四百零几」的假小数字。
+  原「不蒜子」官方自 2026-09 下旬起持续故障且无人维护，已迁移；迁移前累计的 ≈1400 由代码叠加显示。
   不写 cookie、不采集个人标识；每次载入直接取回累计值并显示，且只在真实域名下发起
   （file:// 与本地预览不发起）。
-  首次发布：2026-09-14 · 最后更新：2026-09-19
+  首次发布：2026-09-14 · 最后更新：2026-10-05
 -->
 <link rel="canonical" href="https://bunnychen.top/fanren-wiki/">
 <meta name="author" content="Lizhenghe Chen">
@@ -31,7 +33,7 @@
   "copyrightHolder": { "@type": "Person", "name": "Lizhenghe Chen", "url": "https://bunnychen.top/about/" },
   "copyrightYear": 2026,
   "datePublished": "2026-09-14",
-  "dateModified": "2026-09-19",
+  "dateModified": "2026-10-05",
   "license": "https://www.apache.org/licenses/LICENSE-2.0",
   "isBasedOn": { "@type": "Book", "name": "凡人修仙传", "author": { "@type": "Person", "name": "忘语" } },
   "description": "个人整理的《凡人修仙传》全篇资料图谱：六个篇章二百余位人物、灵兽灵虫、灵草丹药、法器法宝，含境界演进与命运结局。"
@@ -372,7 +374,7 @@ h1 .accent{
 @media (max-width:860px){.home-cards{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.home-cards{grid-template-columns:1fr}}
 @media (max-width:640px){
-  /* 导航改为换行显示（见下方同名媒体查询）：不再横向滑动，7 个入口一次看全 */
+  /* 导航改为换行显示（见下方同名媒体查询）：不再横向滑动，十个入口一次看全 */
   .topnav a{padding:5px 9px;font-size:12.5px}
 }
 .src-list{list-style:none;margin:0;padding:0;display:grid;gap:8px;min-width:0}
@@ -396,7 +398,7 @@ h1 .accent{
 .view.active{display:block}
 @media (max-width:640px){
   .tn-brand{display:none}
-  /* 顶栏导航换行：7 个入口一次看全（原先靠横向滑动，末两项总被忽略） */
+  /* 顶栏导航换行：十个入口一次看全（原先靠横向滑动，末两项总被忽略） */
   .topnav .wrap{height:auto;flex-wrap:wrap;padding-top:5px;padding-bottom:5px;row-gap:2px;overflow:visible}
   .tn-links{flex:1 1 0;flex-wrap:wrap;overflow:visible}
   .topnav a{padding:5px 10px;font-size:12px}
@@ -404,7 +406,7 @@ h1 .accent{
   .chapter{position:static}
   .view{scroll-margin-top:88px}
 }
-/* 超窄屏（≤400px，含 VS Code 内置浏览器这类窄窗口）：字号与内边距再降一档，7 个入口压到两行 */
+/* 超窄屏（≤400px，含 VS Code 内置浏览器这类窄窗口）：字号与内边距再降一档，十个入口压到两行 */
 @media (max-width:400px){
   .topnav a{padding:4px 8px;font-size:11.5px}
   .tn-links{gap:2px}
@@ -742,7 +744,7 @@ footer .note{margin-top:6px}
     <a class="tn-github" href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener" aria-label="GitHub 源码仓库" title="GitHub 源码仓库 · Apache License 2.0">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
     </a>
-    <span class="tn-update">持续更新中 · <a class="tn-author" href="https://lizhenghe-chen.github.io/" target="_blank" rel="noopener">作者主页</a> · 更新 2026-10-02</span>
+    <span class="tn-update">持续更新中 · <a class="tn-author" href="https://lizhenghe-chen.github.io/" target="_blank" rel="noopener">作者主页</a> · 更新 2026-10-05</span>
   </div>
 </nav>
 
@@ -771,7 +773,7 @@ footer .note{margin-top:6px}
         <div class="stat"><b id="home-st-gongfa">0</b><span>功法</span></div>
         <div class="stat"><b id="home-st-zhenfa">0</b><span>阵法</span></div>
         <div class="stat"><b id="home-st-fu">0</b><span>符箓</span></div>
-        <div class="stat" id="stat-views" style="display:none" title="累计浏览次数（数据来源：busuanzi.cc）"><b id="stat-views-num">0</b><span>次浏览</span></div>
+        <div class="stat" id="stat-views" style="display:none" title="全站累计浏览次数（数据来源：busuanzi.cc 的 site_pv）"><b id="stat-views-num">0</b><span>次浏览</span></div>
       </div>
     </div>
     <div class="hero-cover">
@@ -1356,17 +1358,21 @@ footer .note{margin-top:6px}
     <div class="serif" style="color:var(--ink2);font-weight:700">《凡人修仙传》百科 · 全篇资料图谱</div>
     <div class="note">内容依据原著及公开资料整理。配图为网络检索素材，部分角色动画未登场，<b>仅供回忆辅助，不保证与官方形象一致</b>，有偏差以文字资料为准。</div>
     <div class="note">疏漏错讹请到 <a href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">GitHub Issues</a> 提交，也可<a href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">查看已提交的问题</a>。</div>
-    <div class="note"><span style="color:var(--gold)">最后更新：2026-09-19</span> · <span class="stamp-note">提交说明由部署流水线写入</span></div>
+    <div class="note"><span style="color:var(--gold)">最后更新：2026-10-05</span> · <span class="stamp-note">Merge PR #1 新增故事线（本地解决冲突）</span></div>
     <div class="note">© BunnyChen.top · 依 <a href="https://www.apache.org/licenses/LICENSE-2.0" style="color:var(--gold);text-decoration:none">Apache License 2.0</a> 授权（含商业用途，保留版权与署名即可）· 源码 <a href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">GitHub</a> · <a href="https://lizhenghe-chen.github.io/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">作者主页</a></div>
   </div>
 </footer>
 
 <script>
-/* ===== 访问统计（busuanzi.cc page_pv + 原计数叠加）=====
+/* ===== 访问统计（busuanzi.cc site_pv + 原计数叠加）=====
    展示位置：首页 hero 统计行；数据源：cdn.busuanzi.cc/api.php（全页唯一外部请求，不写 cookie）。
    每次载入都 POST 上报一次并显示接口返回的累计值：不写本地缓存、不做去重窗口。
+   ⚠️ 取值必须用 site_pv 而不是 page_pv：page_pv 是按「完整 URL 字符串」分桶的，尾斜杠、查询串、
+   分享参数、深链 hash 都会各成一个独立小桶从 1 重新累计（实测同一页面 127 / 1 / 1 / 8），
+   展示出来就是「一千四百零几」的假小数字；site_pv 实测跨所有 URL 变体统一累加，才是全站浏览次数。
+   上报时 URL 仍统一去掉 hash（深链访问归入主路径）。
    切换说明：原「不蒜子」官方（busuanzi.ibruce.info）自 2026-09 下旬起持续 502/超时且无人维护，
-   故迁移至 busuanzi.cc；原服务累计的 page_pv（≈1400）无法随迁，用下方 BASE_PV 常量叠加显示。
+   故迁移至 busuanzi.cc；原服务累计的 ≈1400 无法随迁，用下方 BASE_PV 常量叠加显示。
    只在真实域名下发起：file:// 与本地预览不上报（本地想看加 ?stats=1）。
    宕机兜底：请求失败或 6 秒无响应时，统计位显示「— 统计暂不可用」，不再静默隐藏。 */
 (function () {
@@ -1378,7 +1384,7 @@ footer .note{margin-top:6px}
     !/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
   if (!isReal && !/[?&]stats=1\b/.test(location.search)) return;
 
-  var BASE_PV = 1400; /* 原不蒜子累计 page_pv，切换后叠加显示 */
+  var BASE_PV = 1400; /* 原「不蒜子」服务累计的阅读量（≈1400），迁移后叠加显示 */
   var failTimer = null;
   function showFail() {
     if (failTimer) { clearTimeout(failTimer); failTimer = null; }
@@ -1390,18 +1396,19 @@ footer .note{margin-top:6px}
 
   function onData(o) {
     if (failTimer) { clearTimeout(failTimer); failTimer = null; }
-    var pv = Number(o && o.busuanzi_page_pv);
+    var pv = Number(o && o.busuanzi_site_pv);
     if (!isFinite(pv)) { showFail(); return; }
     num.textContent = (BASE_PV + pv).toLocaleString('zh-CN');
     if (suffix) suffix.textContent = '次浏览';
-    box.title = '累计浏览次数（数据来源：busuanzi.cc）';
+    box.title = '全站累计浏览次数（数据来源：busuanzi.cc 的 site_pv）';
     box.style.display = '';
   }
 
+  var page = location.origin + location.pathname; /* 去掉 #hash：深链访问统一归入主路径计数 */
   fetch('https://cdn.busuanzi.cc/api.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: location.href, referrer: document.referrer })
+    body: JSON.stringify({ url: page, referrer: document.referrer })
   }).then(function (r) { return r.json(); }).then(onData).catch(showFail);
   failTimer = setTimeout(showFail, 6000); /* 兜底超时：请求挂起时不至于一直空白 */
 })();
@@ -2242,7 +2249,7 @@ function escapeAttr(s){return esc(s).replace(/\"/g,"&quot;").replace(/'/g,"&#39;
 /* ===== 全库索引与引用网 =====
    搜索面板与卡片互引共用同一份索引，加载期各扫一次。
    引用不来自新增数据，而是“某条目的名称出现在别人正文里”这个事实 ——
-   390 条正文 × 390 个名称，用一条交替正则一次扫完（比逐个 includes 快一个量级）。 */
+   545 条正文 × 545 个名称，用一条交替正则一次扫完（比逐个 includes 快一个量级）。 */
 const LIBS = [
   {id:"chars",  name:"人物图谱", view:"v-chars",     color:"var(--c1)"},
   {id:"beasts", name:"灵兽灵虫", view:"v-beasts",    color:"var(--c2)"},
@@ -2352,8 +2359,8 @@ function refBadge(key){
 }
 
 /* ===== 核心圈：用“被引数”当重要度阈值 =====
-   被引分布是长尾（381 条里 208 条为 0，≥ 5 的只有 38 条），所以默认只显示核心圈，
-   否则 221 张卡平铺，第一屏之后就全是路人。搜索时自动忽略这条过滤。 */
+   被引分布是长尾：263 条人物里被引 ≥ 5 的只有 81 条。默认显示全部（2026-09-22 起），
+   可一键切核心圈降噪；否则 263 张卡平铺，第一屏之后就全是路人。搜索时自动忽略这条过滤。 */
 const CORE_MIN = 5;
 let coreOnly = false;
 const isCore = key => refCount(key) >= CORE_MIN;
@@ -2533,11 +2540,13 @@ function bindCharCard(el){
 function mountCharCards(batch){
   const wrap = document.createElement("div");
   const frags = {};
+  const openKey = openKeyFromHash();
   batch.forEach(x => {
     const f = frags[x.ch.id] || (frags[x.ch.id] = document.createDocumentFragment());
     wrap.innerHTML = charCardHTML(x);
     const el = wrap.firstElementChild;
     bindCharCard(el);
+    if(x.key === openKey) el.classList.add("open");
     f.appendChild(el);
   });
   for(const id in frags){
@@ -2570,6 +2579,7 @@ function applyCharsFilter(){
   });
   document.getElementById("emptyTip").classList.toggle("show", list.length === 0);
   charPager.render(list);
+  syncTargetToResults("chars", list.map(x => x.key));
 }
 
 /* ===== 交互：tab + 搜索 ===== */
@@ -2693,8 +2703,11 @@ function initCardLib(cfg){
     reset(){ q(cfg.listId).innerHTML = ""; },
     mount(batch, p){
       const grid = q(cfg.listId);
+      const openKey = openKeyFromHash();
       batch.forEach(it => {
-        grid.insertBefore(cardEl(it.c, it.i), p.sentinel);
+        const el = cardEl(it.c, it.i);
+        if(el.dataset.key === openKey) el.classList.add("open");
+        grid.insertBefore(el, p.sentinel);
       });
     },
   });
@@ -2703,6 +2716,7 @@ function initCardLib(cfg){
     const empty = q(cfg.emptyId);
     if(empty) empty.classList.toggle("show", list.length === 0);
     pager.render(list);
+    syncTargetToResults(cfg.id, list.map(it => cfg.prefix + it.i));
   }
 
   rail(); tabs(); apply();
@@ -2868,10 +2882,12 @@ const treasurePager = makePager({
   mount(batch, p){
     const grid = document.getElementById("treasureGrid");
     const wrap = document.createElement("div");
+    const openKey = openKeyFromHash();
     batch.forEach(it => {
       wrap.innerHTML = treasureCardHTML(it.t, it.i);
       const el = wrap.firstElementChild;
       bindTreasureCard(el);
+      if(el.dataset.key === openKey) el.classList.add("open");
       grid.insertBefore(el, p.sentinel);
     });
   },
@@ -2888,8 +2904,13 @@ function applyTreasureFilter(){
   if(shown)shown.textContent=list.length;
   const grid=document.getElementById("treasureGrid");
   if(!grid) return;
-  if(!list.length){grid.innerHTML='<div class="empty-tip show" style="grid-column:1/-1;padding:50px 0">未找到匹配的法器法宝，换个关键词试试。</div>';return;}
+  if(!list.length){
+    syncTargetToResults("tres", []);
+    grid.innerHTML='<div class="empty-tip show" style="grid-column:1/-1;padding:50px 0">未找到匹配的法器法宝，换个关键词试试。</div>';
+    return;
+  }
   treasurePager.render(list);
+  syncTargetToResults("tres", list.map(it=>"tres-"+it.i));
 }
 
 /* ===== 路由：视图切换 + 条目深链 =====
@@ -2912,6 +2933,17 @@ function setHash(view, target, replace){
   if(location.hash === h) return;
   /* file:// 直开时个别浏览器会对 replaceState 抛 SecurityError，忽略即可（视图仍会切换） */
   try { history[replace ? "replaceState" : "pushState"](null, "", h); } catch(err){}
+}
+/* 地址栏的 target 就是展开态的唯一真相源：分批挂载时据此还原 .open（否则筛选整表重排会把卡收起，
+   而 URL 仍指向它）；反过来，target 已不在结果集里就必须撤掉，别让地址栏指向一张不存在的卡。
+   只处理「目标属于本库」的情况 —— 启动时各库都会先重排一次，此时 hash 可能指向别的库（深链）。 */
+function openKeyFromHash(){ return parseHash().target; }
+function syncTargetToResults(libId, keys){
+  const { view, target } = parseHash();
+  if(!target) return;
+  const entry = ENTRY_BY_KEY[target];
+  if(!entry || entry.lib !== libId) return;
+  if(keys.indexOf(target) < 0) setHash(view, "", true);
 }
 
 /* ===== 视图切换（hash 路由） + v-treasures 启动 ===== */
