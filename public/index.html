@@ -3853,7 +3853,7 @@ var JOURNEY=[
   {n:"妙音门 · 双峰岛",s:3},
   {n:"皇明岛",s:3},
   {n:"鬼雾",s:3},
-  {n:"阴冥之地",s:3},
+  {n:"阴冥之地",s:3,warp:1},
   {n:"落云宗 · 云梦山",s:4,portal:"传送回天南"},
   {n:"阗天城",s:4},
   {n:"苍坤真人遗迹",s:4},
@@ -3890,16 +3890,16 @@ var JOURNEY=[
   {n:"三境七地 · 天元境",s:6},
   {n:"七妖之地 · 九仙山",s:6},
   {n:"魔界 · 魔源海",s:6},
-  {n:"天渊城",s:6},
-  {n:"魔界 · 魔源海",s:6},
-  {n:"小修罗界 · 凤族",s:6},
-  {n:"无涯海 · 元合岛",s:6},
+  {n:"天渊城",s:6,warp:1},
+  {n:"魔界 · 魔源海",s:6,warp:1},
+  {n:"小修罗界 · 凤族",s:6,warp:1},
+  {n:"无涯海 · 元合岛",s:6,warp:1},
   {n:"血天大陆 · 天鼎宫",s:6},
   {n:"小灵天",s:6},
   {n:"天渊城",s:6},
   {n:"鸣煞之地",s:6},
   {n:"魔界 · 魔源海",s:6},
-  {n:"真龙之岛",s:6},
+  {n:"真龙之岛",s:6,warp:1},
   {n:"昆吾山",s:7,portal:"返回人界"},
   {n:"星宫 · 重临",s:7},
   {n:"五里沟 · 青牛镇",s:7},
@@ -4146,20 +4146,85 @@ function sameSea(a,b){
 /* 弧线：a→b 之间按 lateral 偏移画一条鼓起的曲线（k 段） */
 function arcPts(a,b,bow,k){
   var wl=Math.hypot(b.x-a.x,b.y-a.y)||1, out=[];
-  for(var i=1;i<=k;i++){
+  /* i 从 0 起：i=0 即起点本身（bulge=0）。路径首段若是弧线，
+   * 少了这个点就会「第一站从半途开始」，首个到站帧与站点差出上百单位 */
+  for(var i=0;i<=k;i++){
     var t=i/k, bulge=Math.sin(Math.PI*t)*bow;
     out.push({x:a.x+(b.x-a.x)*t+(b.y-a.y)/wl*bulge, y:a.y+(b.y-a.y)*t-(b.x-a.x)/wl*bulge});
   }
   return out;
 }
-var STAGE_PATHS={}, STAGE_LOCS={}, STAGE_WARPS={};
+/* 节奏：路径按等弧长重采样，再按「步行/传送」各自的世界速度累计时间，
+ * 于是每个点都对应一个时刻 —— 远距离阶段不会再一闪而过，近距离也不拖沓 */
+var WALK_STEP=14, WARP_STEP=26;      // 重采样间距（世界单位）
+var WALK_UPS=170;                    // 步行游历速度（世界单位 / 秒）
+var WARP_SEC=1.7;                    // 每次传送的固定耗时（秒）：看「几下」而不是看「多远」
+var WALK_BUDGET=24;                  // 单阶段步行时间上限（秒）：路太长整体加速，而不把传送也压成闪影
+var STAGE_DWELL=.8;                  // 每个到达点的停留（秒）
+var STAGE_DUR_MIN=8, STAGE_DUR_MAX=95;
+function resample(poly,step){
+  if(!poly||!poly.length) return [];
+  var out=[{x:poly[0].x,y:poly[0].y}], carry=0, i;
+  for(i=1;i<poly.length;i++){
+    var a=poly[i-1], b=poly[i], d=Math.hypot(b.x-a.x,b.y-a.y);
+    if(d<1e-9) continue;
+    var u=carry;                       /* carry：上一段末尾余下的间距，跨段累积保证间距均匀 */
+    while(u<d){
+      if(u>0){ var f=u/d; out.push({x:a.x+(b.x-a.x)*f, y:a.y+(b.y-a.y)*f}); }
+      u+=step;
+    }
+    carry=u-d;
+  }
+  /* 末点（=本段终点的站点坐标）必须保留：到站帧就靠它，不能被「间距太小」优化掉 */
+  var last=poly[poly.length-1], lo=out[out.length-1];
+  if(Math.hypot(last.x-lo.x,last.y-lo.y)>1e-6) out.push({x:last.x,y:last.y});
+  return out;
+}
+/* Catmull-Rom 单跨：p1→p2（含两端），切向取相邻站点：路线平滑且严格经过站点 */
+function catmullSpan(pts,k,seg){
+  var p0=pts[Math.max(0,k-1)],p1=pts[k],p2=pts[k+1],p3=pts[Math.min(pts.length-1,k+2)], out=[];
+  for(var j=0;j<seg;j++){
+    var t=j/seg,t2=t*t,t3=t2*t;
+    out.push({
+      x:.5*((2*p1.x)+(-p0.x+p2.x)*t+(2*p0.x-5*p1.x+4*p2.x-p3.x)*t2+(-p0.x+3*p1.x-3*p2.x+p3.x)*t3),
+      y:.5*((2*p1.y)+(-p0.y+p2.y)*t+(2*p0.y-5*p1.y+4*p2.y-p3.y)*t2+(-p0.y+3*p1.y-3*p2.y+p3.y)*t3)
+    });
+  }
+  out.push({x:p2.x,y:p2.y});
+  return out;
+}
+var STAGE_PATHS={}, STAGE_LOCS={}, STAGE_WARPS={}, STAGE_TIME={}, STAGE_TAG={}, STAGE_DUR={}, STAGE_NPOS={}, STAGE_HOPS={}, STAGE_SEGS={};
 STAGES.slice(1).forEach(function(st){
   var steps=JOURNEY.filter(function(j){return j.s===st.id;});
   var names=steps.map(function(j){return j.n;});
   var pts=names.map(function(n){ return WPT[n]; });
   STAGE_LOCS[st.id]=names.map(function(n){ return LOC[n]; });
-  // 按相邻距离拆分：实线游历段 + 直线传送段
-  var full=[], warps=[];
+  /* 按相邻距离拆分：实线游历段 + 传送段（弧线，可含换乘的岛间渡海弧） */
+  var full=[], chunks=[], warps=[], tags=[];
+  var nodeChunk=[];    /* 每一站归属的段（nodeChunk[k] = 进入第 k 站的那一段） */
+  function append(seg,kind,ups,from,to){
+    if(!seg.length) return;
+    var i0=full.length,k,p,q;
+    for(k=0;k<seg.length;k++){
+      p=seg[k];
+      if(full.length){
+        q=full[full.length-1];
+        if(Math.hypot(p.x-q.x,p.y-q.y)<.6) continue;   /* 接缝去重 */
+      }
+      full.push(p);
+    }
+    if(full.length-i0<2){                       /* 单点段：仍要占一个点位，便于到站触发 */
+      if(full.length===i0) full.push({x:seg[seg.length-1].x,y:seg[seg.length-1].y});
+    }
+    var len=0;
+    for(k=i0+1;k<full.length;k++) len+=Math.hypot(full[k].x-full[k-1].x,full[k].y-full[k-1].y);
+    chunks.push({i0:i0,i1:full.length-1,kind:kind,ups:ups,len:len,from:from,to:to});
+    if(kind==="warp"){
+      var le=full[full.length-1];
+      warps.push({start:i0,end:full.length,to:{x:le.x,y:le.y}});
+      tags.push({from:from,to:to,d:Math.round(len)});
+    }
+  }
   var i=0;
   while(i<pts.length){
     var j=i+1;
@@ -4169,35 +4234,110 @@ STAGES.slice(1).forEach(function(st){
       if(dd>SEA_DIST&&sameSea(pts[j-1],pts[j])) break;   /* 岛间渡海：另画弧线 */
       j++;
     }
-    var sm=catmull(pts.slice(i,j),30);
-    if(full.length>0) sm=sm.slice(1);
-    full=full.concat(sm);
+    /* 步行段按「相邻两站」逐跨生成：每跨的末点就是该站坐标，
+     * 「哪一站对应路径上的哪一帧」于是由构造保证，不再靠最近点搜索去猜 ——
+     * 重访同一地点（阗天城 / 晋京 / 天渊城…）时，搜索会挑中后一次到访，整张时间表随之错位 */
+    for(var nk=i;nk<j-1;nk++){
+      var sp=resample(catmullSpan(pts,nk,30),WALK_STEP);
+      if(full.length>0&&sp.length>1) sp=sp.slice(1);
+      append(sp,"walk",WALK_UPS, names[nk], names[nk+1]);
+      nodeChunk[nk+1]=chunks.length-1;
+    }
     if(j<pts.length){
-      var a=pts[j-1],b=pts[j],w0=full.length, wl=Math.hypot(b.x-a.x,b.y-a.y)||1;
-      if(steps[j].warp||(wl>WARP_DIST&&!sameSea(a,b))){
-        full=full.concat(arcPts(a,b,wl*.14,10));
-        warps.push({start:w0,end:full.length});
-      }else{
-        full=full.concat(arcPts(a,b,Math.min(64,wl*.18),16));
-      }
+      var a=pts[j-1],b=pts[j], wl=Math.hypot(b.x-a.x,b.y-a.y)||1;
+      /* 传送判定：数据里标注的（跨界/跨界面的关键行程）或距离超阈值的跨海跨陆段 */
+      var isWarp=steps[j].warp||(wl>WARP_DIST&&!sameSea(a,b));
+      var arc=arcPts(a,b,isWarp?wl*.14:Math.min(64,wl*.18),isWarp?10:16);
+      if(full.length) arc=arc.slice(1);
+      append(resample(arc,isWarp?WARP_STEP:WALK_STEP), isWarp?"warp":"sea", WALK_UPS, names[j-1], names[j]);
+      nodeChunk[j]=chunks.length-1;                          /* 弧线段的终点就是这一站 */
     }
     i=j;
   }
-  STAGE_PATHS[st.id]=full;
-  STAGE_WARPS[st.id]=warps;
-});
-/* 各节点在阶段路径上的下标：到站触发与「从此处播放」共用 */
-var STAGE_NPOS={};
-STAGES.slice(1).forEach(function(st){
-  var pts=STAGE_PATHS[st.id], prev=0;
-  STAGE_NPOS[st.id]=STAGE_LOCS[st.id].map(function(l){
-    var best=prev,bd=1e18;
-    for(var k=prev;k<pts.length;k++){
-      var d=Math.hypot(pts[k].x-l.wx,pts[k].y-l.wy);
-      if(d<bd){ bd=d; best=k; if(d<1e-6) break; }
+  /* 到达点在路径上的下标：到站触发、停留与「从此处播放」共用。
+   * 首站是路径起点，其余各站就是「进入它的那一段」的末点 —— 精确，无需搜索。 */
+  var npos=[], q;
+  for(q=0;q<names.length;q++){
+    var ch0=q>0?chunks[nodeChunk[q]]:null;
+    npos.push(ch0?ch0.i1:0);
+    if(q>0&&npos[q]<=npos[q-1]) npos[q]=Math.min(full.length-1,npos[q-1]+1);   /* 保险：严格递增 */
+  }
+  /* 路程时间：步行段按世界速度累计并整体受 WALK_BUDGET 约束；
+   * 传送段每次固定 WARP_SEC —— 传送的观感取决于「几次」而不是「多远」，
+   * 否则跨大陆的传送会把整段路程拉长，再被总时长钳制压成一闪而过。 */
+  var walkRaw=0, c, k;
+  for(c=0;c<chunks.length;c++) if(chunks[c].kind!=="warp") walkRaw+=chunks[c].len/chunks[c].ups;
+  var walkScale=walkRaw>WALK_BUDGET?WALK_BUDGET/walkRaw:1;
+  for(c=0;c<chunks.length;c++){
+    var ck=chunks[c];
+    ck.sec=ck.kind==="warp"?WARP_SEC:(ck.len>0?ck.len/ck.ups*walkScale:0);
+  }
+  var times=[], acc=0, walkLen=0, warpLen=0;
+  for(c=0;c<chunks.length;c++){
+    var ch=chunks[c];
+    if(ch.kind==="warp") warpLen+=ch.len; else walkLen+=ch.len;
+    var part=0, dl=0;
+    for(k=ch.i0;k<=ch.i1;k++){
+      if(k>ch.i0){
+        dl=Math.hypot(full[k].x-full[k-1].x,full[k].y-full[k-1].y);
+        if(ch.len>0) acc+=dl/ch.len*ch.sec;
+      }
+      times[k]=acc;
     }
-    prev=best; return best;
+  }
+  var travel=times.length?times[times.length-1]:0;
+  /* 每个到达点复制一份点位当「停留帧」：到站时原地停顿，而不是把下一段路拖成慢动作 */
+  var at={}, before=[], dup=0, path=[], tms=[], extra=0;
+  npos.forEach(function(v){ at[v]=1; });
+  /* before[k] 必须在下标推进过程中累计：原先先跑一遍 `before[k]=dup`（那时 dup 还是 0），
+   * 于是下面两处 v+before[v] 全是恒等映射，停留帧一插就把后续下标整体推后 —— 到站时刻、
+   * 传送段范围、光点淡出全部错位（越到后半段偏得越多，观感就是「一路疾驰」）。 */
+  for(k=0;k<full.length;k++){
+    before[k]=dup;
+    times[k]+=extra;
+    path.push({x:full[k].x,y:full[k].y}); tms.push(times[k]);
+    if(at[k]&&k<full.length-1){
+      path.push({x:full[k].x,y:full[k].y}); tms.push(times[k]+STAGE_DWELL);
+      extra+=STAGE_DWELL; dup++;
+    }
+  }
+  npos=npos.map(function(v){ return v+before[v]; });
+  /* 同一批停留帧也要作用在传送段上：end 取「目的地那一帧的后一位」，
+   * 于是停留时不再算作传送中（光点恢复常态），而轨迹分段仍严丝合缝 */
+  warps.forEach(function(w){
+    var e=Math.min(w.end,full.length)-1;   /* 传送段末点（即目的地） */
+    w.start=w.start+before[w.start];
+    w.end=e+before[e]+1;
   });
+  /* 段的起止下标同样要换算到「插入停留帧之后」的坐标系：
+   * 不换算的话，站点下标（已换算）与段范围（未换算）在对数上会越差越远，
+   * 段性质判定、传送段的起止都会漂移 */
+  chunks.forEach(function(c){
+    var e1=Math.min(c.i1,full.length-1);
+    c.i0=c.i0+before[c.i0];
+    c.i1=e1+before[e1]+(at[e1]&&e1<full.length-1?1:0);
+  });
+  /* 总时长 = 路程 + 每站停留（终点也留一段，好在那儿读一眼） */
+  var raw=travel+names.length*STAGE_DWELL;
+  var dur=clamp(raw,STAGE_DUR_MIN,STAGE_DUR_MAX), kk=dur/raw;
+  if(kk!==1) for(k=0;k<tms.length;k++) tms[k]*=kk;
+  /* 相邻站点的段性质与纯路程耗时（不含停留）：定位「一跳而过」的节点 */
+  var hopList=[];
+  for(k=1;k<names.length;k++){
+    var a0=npos[k-1], b0=npos[k], ci, arr=null;
+    for(ci=0;ci<chunks.length;ci++) if(b0>=chunks[ci].i0&&b0<=chunks[ci].i1) arr=chunks[ci];   /* 抵达这一站所走的段 */
+    hopList.push({from:names[k-1], to:names[k], kind:(arr&&arr.kind==="warp"?"warp":"walk"),
+      d:Math.round(Math.hypot(pts[k].x-pts[k-1].x,pts[k].y-pts[k-1].y)),
+      sec:+Math.max(0,tms[b0]-tms[a0]-STAGE_DWELL*kk).toFixed(2)});
+  }
+  STAGE_HOPS[st.id]=hopList;
+  STAGE_SEGS[st.id]=chunks.map(function(c){ return [c.kind,c.i0,c.i1,(c.from||"").split(" · ")[0],(c.to||"").split(" · ")[0],Math.round(c.len),+c.sec.toFixed(2)]; });
+  STAGE_NPOS[st.id]=npos;
+  STAGE_PATHS[st.id]=path;
+  STAGE_WARPS[st.id]=warps;
+  STAGE_TIME[st.id]=tms;
+  STAGE_TAG[st.id]=tags;
+  STAGE_DUR[st.id]=dur;
 });
 /* 阶段内可见地点：本阶段首发地点 + 路线所经（含重访）的地点 */
 var STAGE_SETS={};
@@ -4222,10 +4362,13 @@ function camTarget(x,y,z){ cam.tx=x; cam.ty=y; cam.tz=z; }
 /* 帧率无关的指数阻尼（critically damped），lambda 越大跟得越快 */
 function dampTo(cur,target,lambda,dt){ return cur+(target-cur)*(1-Math.exp(-lambda*dt)); }
 function camSmooth(dt){
+  /* 传送中加快阻尼：镜头要在一两个身位内跟上，否则光点会被甩出画面；
+   * 暂停时进一步加速收敛，让镜头几百毫秒内停稳（否则按了暂停还会缓慢漂移几像素） */
+  var kr=(heroWarp?2.6:1)*((MODE==="play"&&!playing)?4:1);
   /* 目标层：快速阻尼，吃掉跟踪点/前瞻切线的跳变 */
-  cam.lx=dampTo(cam.lx,cam.tx,9,dt);
-  cam.ly=dampTo(cam.ly,cam.ty,9,dt);
-  cam.lz=dampTo(cam.lz,cam.tz,7,dt);
+  cam.lx=dampTo(cam.lx,cam.tx,9*kr,dt);
+  cam.ly=dampTo(cam.ly,cam.ty,9*kr,dt);
+  cam.lz=dampTo(cam.lz,cam.tz,7*kr,dt);
   /* 相机层：跟随平滑目标，丝滑无抖动 */
   cam.x=dampTo(cam.x,cam.lx,5.5,dt);
   cam.y=dampTo(cam.y,cam.ly,5.5,dt);
@@ -5326,6 +5469,9 @@ function drawStagePath(s,alpha,upto){
 /* ---------------- 绘制：韩立主体 ---------------- */
 function drawHero(x,y,t){
   ctx.save();
+  /* 传送途中本体随进度淡出再淡入（两端实、中间只剩拖尾与虚线弧）：
+   * 一眼能看出是「穿越」而不是「跳跃」 */
+  ctx.globalAlpha=heroWarp?1-.86*Math.sin(Math.PI*heroWarpP):1;
   ctx.translate(x,y);
   var pulse=1+.1*Math.sin(t*3.4);
   ctx.drawImage(glowSprite("#ffd76e"),-58,-58,116,116);
@@ -5416,7 +5562,8 @@ var MODE="cover";
 var playing=true, speed=1;
 var stageIdx=1, t=0, state="idle";
 var hero={x:WORLD.W/2,y:2800};
-var arrived={}, arriveIdx=0, warpFired={};
+var arrived={}, arriveIdx=0, warpFired={}, warpEndFired={};
+var heroIdx=0, heroWarp=0, heroWarpP=0, warpTag=null;   /* 传送中：光点淡出并挂「传送」提示 */
 var tweens=[];
 /* 阶段飞行时长见 STAGE_DUR（flyUpdate 内） */
 
@@ -5474,9 +5621,9 @@ function beginStage(s,startNode){
   clearTimeout(nextStageTimer); pendingNext=false;
   var pts=STAGE_PATHS[s];
   var p0=startNode>0?STAGE_NPOS[s][startNode]:0;
-  var t0=p0>0?(p0+.5)/pts.length:0;
-  stageIdx=s; t=0; state="transit"; arriveIdx=startNode>0?startNode:0; arrived={}; warpFired={};
-  (STAGE_WARPS[s]||[]).forEach(function(w,i){ if(w.start<p0) warpFired[i]=1; });
+  var t0=p0>0?STAGE_TIME[s][p0]/STAGE_DUR[s]:0;
+  stageIdx=s; t=0; state="transit"; arriveIdx=startNode>0?startNode:0; arrived={}; warpFired={}; warpEndFired={};
+  (STAGE_WARPS[s]||[]).forEach(function(w,i){ if(w.start<p0) warpFired[i]=1; if(w.end<=p0) warpEndFired[i]=1; });
   hero={x:pts[p0].x,y:pts[p0].y};
   var box=stageBox(s);
   var cx=(box.x0+box.x1)/2, cy=(box.y0+box.y1)/2;
@@ -5513,30 +5660,39 @@ function updateTweens(dt){
   if(tw.t>=tw.d){ tweens.shift(); if(tw.fn) tw.fn(); }
 }
 
-/* ---------------- 飞行更新（按阶段时长 + 相机呼吸） ---------------- */
-var STAGE_DUR={};
-STAGES.slice(1).forEach(function(st){ STAGE_DUR[st.id]=clamp(7+STAGE_LOCS[st.id].length*.7,9,20); });
+/* ---------------- 飞行更新（按阶段时间表 + 相机呼吸） ---------------- */
 var stageZoom=.5;
 function flyUpdate(dt){
   if(state!=="fly") return;
   t+=dt*speed/STAGE_DUR[stageIdx];
-  if(t>=1){
-    t=1;
-    if(stageIdx<NSTAGE) scheduleNext();
-    else finale();
-    return;
-  }
-  var pts=STAGE_PATHS[stageIdx];
-  var idx=Math.min(pts.length-1,Math.floor(t*pts.length));
-  hero=pts[idx];
+  if(t>1) t=1;
+  var pts=STAGE_PATHS[stageIdx], tm=STAGE_TIME[stageIdx];
+  var el=t*STAGE_DUR[stageIdx];
+  /* 时间 → 位置：在累计时间表上二分，段内线性插值 */
+  var lo=0, hi=tm.length-1;
+  while(hi-lo>1){ var mid=(lo+hi)>>1; if(tm[mid]<=el) lo=mid; else hi=mid; }
+  var span=tm[hi]-tm[lo], f=span>1e-6?clamp((el-tm[lo])/span,0,1):0;
+  var idx=lo;
+  hero={x:pts[lo].x+(pts[hi].x-pts[lo].x)*f, y:pts[lo].y+(pts[hi].y-pts[lo].y)*f};
+  heroIdx=lo;
+  heroWarp=0; heroWarpP=0;
+  var wl0=STAGE_WARPS[stageIdx]||[], curW=null;
+  for(var q=0;q<wl0.length;q++) if(idx>=wl0[q].start&&idx<wl0[q].end){ heroWarp=1; curW=wl0[q]; }
   var zz=stageZoom*(1+.08*Math.sin(Math.PI*t));
-  /* 相机前瞻：宽窗口切线（±6）更稳定，沿切线超前 46 单位，镜头走在光点之前 */
-  var p2=pts[Math.min(pts.length-1,idx+6)], p1=pts[Math.max(0,idx-6)];
-  var dx=p2.x-p1.x, dy=p2.y-p1.y, dl=Math.hypot(dx,dy)||1;
-  camTarget(hero.x+dx/dl*46, hero.y+dy/dl*46, zz);
+  if(heroWarp&&curW){
+    /* 传送中：镜头不再追着一个高速点跑（那才是「一跳而过」的来源），
+     * 而是直接朝目的地推进并稍微拉远 —— 读起来是「换了个地方」而不是「快进」 */
+    heroWarpP=clamp((idx-curW.start)/Math.max(1,curW.end-curW.start),0,1);
+    camTarget(curW.to.x,curW.to.y,zz*(1-.34*Math.sin(Math.PI*heroWarpP)));
+  }else{
+    /* 相机前瞻：宽窗口切线（±6）更稳定，沿切线超前 46 单位，镜头走在光点之前 */
+    var p2=pts[Math.min(pts.length-1,idx+6)], p1=pts[Math.max(0,idx-6)];
+    var dx=p2.x-p1.x, dy=p2.y-p1.y, dl=Math.hypot(dx,dy)||1;
+    camTarget(hero.x+dx/dl*46, hero.y+dy/dl*46, zz);
+  }
   /* 移除常飞时的高频抖动，仅保留平稳巡游（portal/到达事件另行 shake） */
-  spawnTrail(hero.x,hero.y,Math.random()<.5?1:2);
-  /* 进入传送段：在 warp 起点触发一次穿越光效（跨大陆/跨海） */
+  spawnTrail(hero.x,hero.y,heroWarp?4:(Math.random()<.5?1:2));
+  /* 传送段两端各来一次：起点「穿走」、终点「抵达」，中途不再叠特效 */
   var wlist=STAGE_WARPS[stageIdx]||[];
   for(var wi=0;wi<wlist.length;wi++){
     var wb=wlist[wi];
@@ -5544,17 +5700,28 @@ function flyUpdate(dt){
       warpFired[wi]=1;
       var wp=pts[wb.start];
       spawnWarp(wp.x,wp.y); flash(.4); shake(.3);
+      var tag=(STAGE_TAG[stageIdx]||[])[wi];
+      if(tag) warpTag={txt:"传 送 · "+(tag.to||"").split(" · ")[0], until:now+WARP_SEC+.8};
+    }
+    if(!warpEndFired[wi] && idx>=wb.end){
+      warpEndFired[wi]=1;
+      spawnWarp(wb.to.x,wb.to.y); flash(.22);
     }
   }
-  var seg=STAGE_LOCS[stageIdx];
-  var pos=Math.floor(t*pts.length);
-  while(arriveIdx<seg.length && pos>=STAGE_NPOS[stageIdx][arriveIdx]){
+  /* 到站判定直接比时间（与位置同一张时间表），末站也不会漏 */
+  var seg=STAGE_LOCS[stageIdx], npos=STAGE_NPOS[stageIdx];
+  while(arriveIdx<seg.length && el>=tm[npos[arriveIdx]]-1e-6){
     var loc=seg[arriveIdx];
     if(!arrived[arriveIdx]){
       arrived[arriveIdx]=1;
       onArrive(loc,arriveIdx);
     }
     arriveIdx++;
+  }
+  /* 阶段收尾放在到站事件之后：末站同样要触发到达（含 portal 提示） */
+  if(t>=1){
+    if(stageIdx<NSTAGE) scheduleNext();
+    else finale();
   }
 }
 function onArrive(loc){
@@ -5882,9 +6049,7 @@ function render(){
   }else{
     for(var s=1;s<stageIdx;s++) drawStagePath(s,.32);
     if(state==="fly"){
-      var pts=STAGE_PATHS[stageIdx];
-      var upto=Math.floor(t*pts.length);
-      drawStagePath(stageIdx,.8,upto);
+      drawStagePath(stageIdx,.8,heroIdx+1);
     }
   }
   if(MODE==="play"){
@@ -5907,6 +6072,14 @@ function render(){
     drawHero(lastP.x,lastP.y,now);
   }
   ctx.restore();
+  if(MODE==="play"&&state==="fly"&&warpTag&&now<warpTag.until){
+    var wsp=toScreen(hero.x,hero.y);
+    ctx.save();
+    ctx.globalAlpha=clamp((warpTag.until-now)/.6,0,1);
+    ctx.font="700 15px "+SANS; ctx.textAlign="center"; ctx.textBaseline="alphabetic";
+    haloText(warpTag.txt,wsp.x,wsp.y-40,"rgba(150,226,206,.95)","rgba(4,9,16,.9)",4);
+    ctx.restore();
+  }
   drawCompass();
   drawFlash();
   drawVignette();
@@ -6127,6 +6300,46 @@ function init(){
     return [d[0],d[1],d[2]];
   };
   window.__fanrenMap.pathInfo=function(s){ return {len:STAGE_PATHS[s].length, warps:STAGE_WARPS[s].length}; };
+  /* 当前一帧的光点状态：下标 / 是否在传送段 / 传送提示文字 */
+  window.__fanrenMap.pace=function(){ return {idx:heroIdx, warp:heroWarp, tag:warpTag?warpTag.txt:null, dur:STAGE_DUR[stageIdx], t:t, x:hero.x, y:hero.y}; };
+  /* 阶段节奏自检：路径世界长度、各段速度（世界单位/秒）、以及最长的「步行」跳点 */
+  window.__fanrenMap.stageInfo=function(){
+    var out=[];
+    STAGES.slice(1).forEach(function(st){
+      var pts=STAGE_PATHS[st.id], len=0, wlen=0, i, wr=STAGE_WARPS[st.id];
+      function inWarp(k){ for(var q=0;q<wr.length;q++) if(k>=wr[q].start&&k<wr[q].end) return true; return false; }
+      for(i=1;i<pts.length;i++){
+        var d=Math.hypot(pts[i].x-pts[i-1].x,pts[i].y-pts[i-1].y);
+        len+=d; if(inWarp(i)) wlen+=d;
+      }
+      var js=JOURNEY.filter(function(j){return j.s===st.id;}), hops=[];
+      for(i=1;i<js.length;i++){
+        var a=WPT[js[i-1].n], b=WPT[js[i].n], d=Math.hypot(b.x-a.x,b.y-a.y);
+        if(!(js[i].warp||d>WARP_DIST)) hops.push({from:js[i-1].n,to:js[i].n,d:Math.round(d)});
+      }
+      hops.sort(function(x,y){return y.d-x.d;});
+      out.push({stage:st.id, locs:js.length, pts:pts.length, warps:STAGE_WARPS[st.id].length,
+        len:Math.round(len), walk:Math.round(len-wlen), warpLen:Math.round(wlen),
+        dur:+STAGE_DUR[st.id].toFixed(1), ups:Math.round(len/STAGE_DUR[st.id]),
+        farHops:hops.slice(0,3)});
+    });
+    return out;
+  };
+  /* 相邻站点之间的路程耗时（秒，不含停留）与段性质：定位「一跳而过」的节点 */
+  window.__fanrenMap.hops=function(s){ return STAGE_HOPS[s]||[]; };
+  /* 路径几何自检：站点下标 / 时间表 / 传送段范围 */
+  window.__fanrenMap.geom=function(s){
+    var js=JOURNEY.filter(function(j){return j.s===s;});
+    var pts=STAGE_PATHS[s], dev=STAGE_NPOS[s].map(function(np,i){
+      var l=LOC[js[i].n];
+      return l?+Math.hypot(pts[np].x-l.wx,pts[np].y-l.wy).toFixed(1):null;
+    });
+    return {names:js.map(function(j){return j.n;}), npos:STAGE_NPOS[s], tms:STAGE_TIME[s].map(function(v){return +v.toFixed(2);}),
+      warps:STAGE_WARPS[s].map(function(w){return [w.start,w.end];}), dur:STAGE_DUR[s], npts:STAGE_PATHS[s].length,
+      /* 到站帧与站点坐标的偏差：应接近 0，偏大说明到站触发与光点位置脱节 */
+      arrivalDev:dev, arrivalDevMax:Math.max.apply(null,dev.map(function(v){return v||0;})),
+      segs:STAGE_SEGS[s]};
+  };
   /* 指定数据坐标是否落在陆地/岛上（用于图面自检） */
   window.__fanrenMap.landAt=function(dx,dy){
     var w=toWorld({x:dx,y:dy,re:"人界"});
