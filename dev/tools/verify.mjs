@@ -169,7 +169,7 @@ const HELPERS = `
   };
 `
 
-const VIEWS = ['v-home', 'v-chars', 'v-lore', 'v-realms', 'v-beasts', 'v-herbs', 'v-treasures', 'v-gongfa', 'v-zhenfa', 'v-fu']
+const VIEWS = ['v-home', 'v-chars', 'v-lore', 'v-map', 'v-realms', 'v-beasts', 'v-herbs', 'v-treasures', 'v-gongfa', 'v-zhenfa', 'v-fu']
 
 /* ---------- 主流程 ---------- */
 const { proc, profile, send, evaluate, viewport, goto, pageErrors } = await launch()
@@ -183,8 +183,8 @@ try {
   await goto(TARGET)
   await evaluate(HELPERS)
 
-  check('十个视图容器齐全',
-    await evaluate(`document.querySelectorAll('.view').length`) === 10,
+  check('十一个视图容器齐全',
+    await evaluate(`document.querySelectorAll('.view').length`) === 11,
     `实际 ${await evaluate(`document.querySelectorAll('.view').length`)} 个`)
 
   /* 分批渲染是设计（先挂首批、滚动续传），先测「没一次性铺全」，再加载全量测结构 ——
@@ -206,7 +206,32 @@ try {
     document.querySelectorAll('#gongfaGrid .card').length,
     document.querySelectorAll('#zhenfaGrid .card').length,
     document.querySelectorAll('#fuGrid .card').length])`)
-  check('七库卡片数量正确（263/40/64/65/40/39/34）', counts === '[263,40,64,65,40,39,34]', `实际 ${counts}`)
+  check('七库卡片数量正确（263/42/65/71/53/44/34）', counts === '[263,42,65,71,53,44,34]', `实际 ${counts}`)
+  /* 功法库不能只收韩立一人的功法：下列具名功法分别属于其他角色，缺失即说明只做单人巡检 */
+  const otherChars = ['千浪决（千浪诀）', '真阳诀', '血灵大法', '六极真魔功', '断肢化劫大法', '阴阳轮回诀',
+    '大搜神分念大法', '忘情诀', '冥河天尸诀', '逆情断天大法', '天煞真魔功', '九劫灭真大法', '五鬼锁神大法']
+  const missingArts = JSON.parse(await evaluate(
+    `JSON.stringify(${JSON.stringify(otherChars)}.filter(n => !GONGFA.some(a => a.n === n)))`))
+  check(`功法库收录其他角色的具名功法（${otherChars.length} 门）`, missingArts.length === 0, `缺 ${JSON.stringify(missingArts)}`)
+  /* 同一偏差在阵法/灵兽两库同样存在：人物卡里点名的阵法与灵兽也要有独立条目 */
+  const otherArrs = ['万木大阵', '绝灵大阵', '光阴天璇大阵', '风火天绝阵', '三千道神大阵']
+  const otherBeasts = ['乌凤', '四瞳灵狐']
+  const missArr = JSON.parse(await evaluate(
+    `JSON.stringify(${JSON.stringify(otherArrs)}.filter(n => !ZHENFA.some(a => a.n === n)))`))
+  const missBeast = JSON.parse(await evaluate(
+    `JSON.stringify(${JSON.stringify(otherBeasts)}.filter(n => !BEASTS.some(a => a.n === n)))`))
+  check('阵法库收录其他角色的具名大阵、灵兽库收录被点名的灵兽',
+    missArr.length === 0 && missBeast.length === 0,
+    `缺阵 ${JSON.stringify(missArr)}，缺兽 ${JSON.stringify(missBeast)}`)
+  /* 法器/天材同样按「人物卡点名」抽查：这些是被别处条目引用却缺条目的典型 */
+  const otherTres = ['三焰扇', '五子同心魔', '血魔珠', '御风车', '千重峰', '太玄八卦图']
+  const missTres = JSON.parse(await evaluate(
+    `JSON.stringify(${JSON.stringify(otherTres)}.filter(n => !TREASURES.some(a => a.n === n)))`))
+  const missHerb = JSON.parse(await evaluate(
+    `JSON.stringify(['天桑神树'].filter(n => !HERBS.some(a => a.n === n)))`))
+  check('法器库收录被点名的法宝、灵草库收录被点名的天材',
+    missTres.length === 0 && missHerb.length === 0,
+    `缺宝 ${JSON.stringify(missTres)}，缺材 ${JSON.stringify(missHerb)}`)
 
   /* 图片完整性：DOM 实际引用的图必须都能在 assets 里找到、且都能解码。
      这是从页面迁出的 .asset-manifest（300 行 display:none）留下的真空 —— 那份清单既不加载
@@ -236,7 +261,7 @@ try {
   check('被引数最高者 > 100（韩立应是全网中心）', refs.max > 100, `最高被引 ${refs.max}`)
 
   const h1s = await evaluate(`JSON.stringify(${JSON.stringify(VIEWS)}.map(id => document.querySelectorAll('#' + id + ' h1').length))`)
-  check('十个视图各有且仅有一个 h1', h1s === '[1,1,1,1,1,1,1,1,1,1]', h1s)
+  check('十一个视图各有且仅有一个 h1', h1s === '[1,1,1,1,1,1,1,1,1,1,1]', h1s)
 
   /* 开源入口：顶栏图标 / hero 按钮 / 首页卡片 / 页脚四处必须指向同一个仓库，且图标是真实
      渲染出来的（防 SVG 路径写空、或断点把它藏了）。顶栏图标在 ≤1100px 会让位给 7 个视图
@@ -272,7 +297,8 @@ try {
   check('反馈入口统一指向 GitHub Issues（页面无主站评论区旧链接）',
     fb.legacy.length === 0 && fb.issues >= 3, `旧链接 ${JSON.stringify(fb.legacy)}，Issues 入口 ${fb.issues} 个`)
 
-  /* 核心圈：默认只显示被引 ≥ 5 的条目（被引分布是长尾，208/381 条为 0） */
+  /* 核心圈：默认显示全部，可一键切到「被引 ≥ 5」的核心圈。核心圈条数随互引网络增长，
+     以页面自身的 coreCount() 为准，不写死数字（否则数据一更新断言就假失败）。 */
   const core = JSON.parse(await evaluate(`(() => {
     /* 分批渲染：每次计数前都要补齐 —— 切降噪也会整表重排、只挂首批 */
     const visible = () => { window.__loadAll('chars'); return [...document.querySelectorAll('#characters .card')].filter(c => c.style.display !== 'none').length; };
@@ -286,8 +312,9 @@ try {
     return JSON.stringify({ on, all, backOn,
       labels: [...document.querySelectorAll('.seg-btn')].map(b => b.textContent.trim()) });
   })()`))
-  check('默认显示全部 263 条，可一键切到核心圈（被引 ≥ 5 的 81 条）',
-    core.on === 263 && core.all === 263 && core.backOn === 81,
+  const coreSize = await evaluate(`coreCount()`)
+  check(`默认显示全部 263 条，可一键切到核心圈（被引 ≥ 5 的 ${coreSize} 条）`,
+    core.on === 263 && core.all === 263 && core.backOn === coreSize,
     JSON.stringify(core))
 
   /* ========== 2. 无横向溢出（桌面 + 移动） ========== */
@@ -301,7 +328,7 @@ try {
       const o = await evaluate(`window.__overflow()`)
       if (o > 0) bad.push(`${v} +${o}px`)
     }
-    check(`${label} 十个视图均无横向溢出`, bad.length === 0, bad.join('，'))
+    check(`${label} 十一个视图均无横向溢出`, bad.length === 0, bad.join('，'))
 
     const strips = await evaluate(`JSON.stringify(window.__stripText())`)
     check(`${label} 无被压成竖条的文本`, strips === '[]', strips)
@@ -472,14 +499,16 @@ try {
       window.__loadAll(name === 'beast' ? 'beasts' : 'herbs');
       out[name] = { rows, all: window.__vis(cards) };
     }
+    /* 期望值取页面自身的数组长度，避免数据增补后断言假失败 */
+    out.expect = { beast: BEASTS.length, herb: HERBS.length };
     return JSON.stringify(out);
   })()`))
   const tabBad = []
-  for (const [name, lib] of Object.entries(tabFilter)) {
-    for (const [cat, label, visible] of lib.rows) if (label !== visible) tabBad.push(`${name}/${cat} 标 ${label} 实 ${visible}`)
+  for (const name of ['beast', 'herb']) {
+    for (const [cat, label, visible] of tabFilter[name].rows) if (label !== visible) tabBad.push(`${name}/${cat} 标 ${label} 实 ${visible}`)
   }
   check('灵兽灵草分类筛选：tab 计数与实际可见卡数一致，全部时回到总数',
-    tabBad.length === 0 && tabFilter.beast.all === 40 && tabFilter.herb.all === 64,
+    tabBad.length === 0 && tabFilter.beast.all === tabFilter.expect.beast && tabFilter.herb.all === tabFilter.expect.herb,
     tabBad.join('，') || JSON.stringify(tabFilter))
 
   /* 法宝：筛选是重渲染（不是 display 切换），所以比 展示计数 / 实际卡片 / 分类是否变窄 */
@@ -495,12 +524,12 @@ try {
     }
     tabs.find(t => t.dataset.cat === 'all').click();
     window.__loadAll('tres');
-    return JSON.stringify({ rows, all: [shown(), cards()] });
+    return JSON.stringify({ rows, all: [shown(), cards()], expect: TREASURES.length });
   })()`))
-  const tresBad = tresFilter.rows.filter(([cat, shown, cards]) => shown !== cards || (cat === 'all' && shown !== 65)).map(r => r.join('/'))
-  const narrowed = tresFilter.rows.some(([cat, shown]) => cat !== 'all' && shown < 65)
+  const tresBad = tresFilter.rows.filter(([cat, shown, cards]) => shown !== cards || (cat === 'all' && shown !== tresFilter.expect)).map(r => r.join('/'))
+  const narrowed = tresFilter.rows.some(([cat, shown]) => cat !== 'all' && shown < tresFilter.expect)
   check('法宝分类筛选：展示计数与卡片数一致，且分类确实收窄',
-    tresBad.length === 0 && tresFilter.all[0] === 65 && tresFilter.all[1] === 65 && narrowed,
+    tresBad.length === 0 && tresFilter.all[0] === tresFilter.expect && tresFilter.all[1] === tresFilter.expect && narrowed,
     `异常 ${tresBad.join('，')}；全部=${tresFilter.all.join('/')}；有收窄=${narrowed}`)
 
   /* 三库搜索：既要能按名称命中，也要能命中介于正文的字段（三库命中范围已统一），无结果时给空状态 */
