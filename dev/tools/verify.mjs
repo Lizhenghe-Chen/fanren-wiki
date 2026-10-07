@@ -280,7 +280,7 @@ try {
       cardIcon: box(card && card.querySelector('.repo-mark svg')),
       /* 只查语义标记（点名许可 + 声明第三方不在范围内），不钉具体措辞：
          文案会改，钉原话会让断言变成改文案的阻力 —— 这条踩过一次 */
-      cardText: !!body && body.textContent.includes('Apache') && body.textContent.includes('第三方'),
+      cardText: !!body && body.textContent.includes('CC BY-NC-SA') && body.textContent.includes('第三方'),
       footer: [...document.querySelectorAll('footer a')].some(a => hit(a))
     });
   })()`))
