@@ -370,6 +370,9 @@ h1 .accent{
 .home-card:hover{background:rgba(212,175,106,.08);transform:translateY(-2px);border-color:rgba(212,175,106,.42)}
 .home-card b{display:block;color:var(--gold);font-size:16px;font-family:var(--font-serif);margin-bottom:8px;letter-spacing:.05em}
 .home-card span{color:var(--ink3);font-size:12.5px;line-height:1.75}
+.home-card.feature{grid-column:1/-1;display:flex;align-items:center;justify-content:space-between;gap:12px;background:linear-gradient(90deg,rgba(212,175,106,.10),rgba(212,175,106,.02))}
+.home-card.feature span{flex:1}
+@media (max-width:560px){.home-card.feature{flex-direction:column;align-items:flex-start}}
 .home-note{background:rgba(255,255,255,.02);border-left:3px solid var(--gold);padding:12px 16px;border-radius:0 10px 10px 0;color:var(--ink3);font-size:13px;line-height:1.85}
 @media (max-width:860px){.home-cards{grid-template-columns:1fr 1fr}}
 @media (max-width:560px){.home-cards{grid-template-columns:1fr}}
@@ -717,6 +720,303 @@ footer .note{margin-top:6px}
   .spot-row .rt{display:none}
 }
 
+/* ===== 修仙界全图入口横幅 ===== */
+.lore-map-entry{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  margin:6px auto 20px;padding:15px 22px;text-decoration:none;
+  background:linear-gradient(90deg,rgba(212,175,106,.13),rgba(212,175,106,.03));
+  border:1px solid rgba(212,175,106,.38);border-radius:12px;transition:all .22s}
+.lore-map-entry:hover{background:linear-gradient(90deg,rgba(212,175,106,.22),rgba(212,175,106,.07));border-color:rgba(212,175,106,.6)}
+.lore-map-entry .lme-copy{display:flex;flex-direction:column;gap:4px;min-width:0}
+.lore-map-entry .lme-copy b{font-family:var(--font-serif);letter-spacing:.08em;font-size:16px;color:var(--gold)}
+.lore-map-entry .lme-copy span{color:var(--ink3);font-size:12.5px;line-height:1.6}
+.lore-map-entry .lme-cta{flex:none;border:1px solid rgba(212,175,106,.5);border-radius:999px;padding:8px 18px;
+  font-size:13px;letter-spacing:.08em;color:var(--gold);transition:all .2s}
+.lore-map-entry:hover .lme-cta{background:rgba(212,175,106,.18);box-shadow:0 0 14px rgba(212,175,106,.22)}
+@media (max-width:640px){
+  .lore-map-entry{padding:13px 16px}
+  .lore-map-entry .lme-copy b{font-size:15px}
+  .lore-map-entry .lme-cta{width:100%;text-align:center}
+}
+
+
+/* 地图色阶 / 字体令牌：此前这些变量未定义，致使标题衬线与金色文字静默回落成继承值 */
+#v-map{--gold-b:#f0d08c;--gold-dim:#b8985c;--dim:#b4ad9b;--faint:#8f8873;--ink4:#8593a6;
+  --serif:var(--font-serif);--sans:var(--font-sans);--ring:#f0d08c}
+#v-map :is(button,input,[role=button]):focus-visible{outline:2px solid var(--ring);outline-offset:2px}
+/* ===== 顶栏 ===== */
+#v-map #top{position:absolute;top:0;left:0;right:0;display:flex;align-items:center;gap:14px;
+  padding:14px 22px;pointer-events:auto;
+  background:linear-gradient(180deg,rgba(4,6,12,.85),rgba(4,6,12,0));}
+#v-map #top .logo{display:flex;align-items:center;gap:10px}
+#v-map #top .logo .mark{width:30px;height:30px;flex:none}
+#v-map #top .logo b,#v-map #top .logo h1{font-family:var(--serif);font-size:17px;color:var(--gold-b);letter-spacing:.18em;font-weight:600;margin:0}
+#v-map #top .logo small{display:block;font-size:10px;color:var(--faint);letter-spacing:.34em;margin-top:1px}
+#v-map #top .spacer{flex:1}
+#v-map #stages{display:flex;gap:6px}
+#v-map #stages .st{position:relative;width:10px;height:10px;padding:0;border-radius:50%;border:1px solid var(--line);background:transparent;cursor:pointer;transition:all .25s;pointer-events:auto}
+#v-map #stages .st::after{content:"";position:absolute;inset:-9px -3px}
+#v-map #stages .st.on{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px rgba(212,175,106,.8)}
+#v-map #stages .st.done{background:rgba(212,175,106,.35);border-color:var(--gold-dim)}
+#v-map .btn{pointer-events:auto;background:rgba(212,175,106,.08);border:1px solid var(--line);color:var(--gold-b);
+  border-radius:999px;padding:6px 14px;font-size:12px;letter-spacing:.12em;cursor:pointer;transition:all .2s;font-family:var(--sans)}
+#v-map .btn:hover{background:rgba(212,175,106,.2);box-shadow:0 0 14px rgba(212,175,106,.35)}
+#v-map #speed{font-size:11px;color:var(--faint)}
+
+/* ===== 进度条 ===== */
+#v-map #progress{position:absolute;top:58px;left:22px;right:22px;height:14px;display:flex;gap:0;pointer-events:auto}
+#v-map #progress .seg{flex:1;height:100%;display:flex;align-items:center;cursor:pointer;position:relative;padding:0;border:0;background:none;color:inherit;font:inherit}
+#v-map #progress .seg::before{content:"";position:absolute;inset:-9px 0}
+#v-map #progress .track{flex:1;height:2px;background:rgba(212,175,106,.16);border-radius:2px;overflow:hidden}
+#v-map #progress .seg.active .track{background:rgba(212,175,106,.32)}
+#v-map #progress .fill{height:100%;width:0%;background:linear-gradient(90deg,rgba(212,175,106,.5),var(--gold-b));box-shadow:0 0 8px rgba(212,175,106,.7)}
+#v-map #progress .seg .dot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:5px;height:5px;border-radius:50%;background:rgba(212,175,106,.4)}
+#v-map #progress .seg.active .dot{background:var(--gold-b);box-shadow:0 0 8px var(--gold)}
+#v-map #progress .seg:hover .track{background:rgba(212,175,106,.45)}
+
+/* ===== 电影字幕 ===== */
+#v-map #subtitle{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity .6s;
+  background:linear-gradient(90deg,transparent,rgba(4,6,12,.8) 16%,rgba(4,6,12,.8) 84%,transparent);
+  padding:16px 40px;width:min(760px,90vw)}
+#v-map #subtitle.show{opacity:1}
+#v-map #subtitle .t1{font-family:var(--serif);font-size:25px;color:var(--gold-b);letter-spacing:.28em}
+#v-map #subtitle .t2{font-size:14px;color:var(--faint);letter-spacing:.16em;margin-top:7px;line-height:1.6}
+
+/* ===== 地点名浮现 ===== */
+#v-map #placename{position:absolute;left:50%;top:20%;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity .5s;pointer-events:none}
+#v-map #placename.show{opacity:1}
+#v-map #placename .pn{font-family:var(--serif);font-size:42px;color:#fff;letter-spacing:.24em;text-shadow:0 0 34px rgba(240,201,106,.85),0 2px 8px rgba(0,0,0,.9)}
+#v-map #placename .pr{font-size:14px;color:var(--gold-dim);letter-spacing:.38em;margin-top:9px}
+#v-map #placename .pd{font-size:14px;color:var(--dim);line-height:1.7;margin-top:11px;max-width:560px;letter-spacing:.04em}
+
+/* ===== 开场封面 ===== */
+#v-map #cover{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(ellipse at 50% 42%,rgba(212,175,106,.10),rgba(4,6,12,.55) 55%,rgba(4,6,12,.94));
+  opacity:0;transition:opacity 1.4s;pointer-events:none;cursor:pointer}
+#v-map #cover.on{opacity:1;pointer-events:auto}
+#v-map #cover .cv-kicker{font-size:13px;letter-spacing:.6em;color:var(--gold-dim);margin-bottom:18px}
+#v-map #cover .cv-title{font-family:var(--serif);font-size:clamp(40px,7.2vw,76px);letter-spacing:.22em;font-weight:700;
+  background:linear-gradient(180deg,#f8e9bd 0%,#e4bd6f 45%,#a8833f 75%,#d4af6a 100%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  filter:drop-shadow(0 2px 10px rgba(0,0,0,.9)) drop-shadow(0 0 30px rgba(240,201,106,.28))}
+#v-map #cover .cv-sub{font-size:14.5px;letter-spacing:.5em;color:var(--dim);margin-top:20px}
+#v-map #cover .cv-cta{margin-top:46px;padding:12px 38px;border:1px solid rgba(212,175,106,.5);border-radius:999px;
+  font-size:13.5px;letter-spacing:.34em;color:var(--gold-b);opacity:.92;
+  background:linear-gradient(180deg,rgba(212,175,106,.14),rgba(212,175,106,.04));
+  animation:cvpulse 2.2s ease-in-out infinite;box-shadow:0 0 22px rgba(212,175,106,.16),inset 0 0 12px rgba(212,175,106,.07)}
+@keyframes cvpulse{0%,100%{opacity:.4}50%{opacity:1}}
+#v-map #cover .cv-meta{margin-top:16px;font-size:12px;color:var(--faint);letter-spacing:.2em}
+
+/* ===== 终幕 ===== */
+#v-map #finale{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  background:radial-gradient(ellipse at 50% 50%,rgba(212,175,106,.08),rgba(4,6,12,.35) 60%,rgba(4,6,12,.92));
+  opacity:0;visibility:hidden;transition:opacity 1.2s;pointer-events:none}
+#v-map #finale.on{opacity:1;visibility:visible;pointer-events:auto}
+#v-map #finale .f-title{font-family:var(--serif);font-size:clamp(32px,5vw,56px);color:var(--gold-b);letter-spacing:.26em;text-shadow:0 0 44px rgba(240,201,106,.55)}
+#v-map #finale .f-sub{font-size:13.5px;color:var(--dim);letter-spacing:.4em;margin-top:16px}
+#v-map #finale .f-stats{margin-top:14px;font-size:12px;color:var(--faint);letter-spacing:.22em}
+#v-map #finale .f-btns{margin-top:38px;display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+#v-map #finale .btn{padding:11px 26px;font-size:13.5px}
+
+/* ===== 探索模式 UI ===== */
+#v-map #explore{position:absolute;top:64px;left:0;right:0;display:none;align-items:center;gap:8px;padding:8px 22px;flex-wrap:wrap;pointer-events:auto}
+#v-map #explore.on{display:flex}
+#v-map #explore .pill{border:1px solid var(--line);background:rgba(212,175,106,.06);color:var(--gold-b);border-radius:999px;
+  padding:7px 16px;font-size:13.5px;letter-spacing:.1em;cursor:pointer;transition:all .2s}
+#v-map #explore .pill:hover, #v-map #explore .pill.on{background:rgba(212,175,106,.22);border-color:var(--gold);box-shadow:0 0 12px rgba(212,175,106,.3)}
+#v-map #explore .legend-tip{margin-left:auto;font-size:12.5px;color:var(--faint);letter-spacing:.14em;display:flex;gap:10px;flex-wrap:wrap;pointer-events:none}
+#v-map #explore .legend-tip i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:1px}
+
+/* ===== 详情面板 ===== */
+#v-map #detail{position:absolute;top:70px;right:20px;width:340px;max-width:88vw;max-height:76vh;overflow:auto;pointer-events:auto;
+  background:rgba(6,10,18,.9);border:1px solid var(--line);border-radius:14px;padding:22px;backdrop-filter:blur(6px);
+  opacity:0;visibility:hidden;transform:translateY(10px);transition:all .35s}
+#v-map #detail.show{opacity:1;visibility:visible;transform:none}
+#v-map #detail .d-close{position:absolute;top:10px;right:14px;width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  border:none;background:none;color:var(--faint);cursor:pointer;border-radius:8px;transition:all .2s}
+#v-map #detail .d-close:hover{color:var(--gold-b);background:rgba(212,175,106,.12)}
+#v-map #detail .d-close svg{width:14px;height:14px}
+#v-map #detail .d-realm{display:inline-block;border:1px solid var(--line);border-radius:999px;padding:3px 13px;font-size:12px;color:var(--gold-b);letter-spacing:.18em;margin-bottom:10px}
+#v-map #detail .d-name{font-family:var(--serif);font-size:27px;color:var(--gold-b);letter-spacing:.06em;
+  background:linear-gradient(180deg,#f6e6b8,#d4af6a);-webkit-background-clip:text;background-clip:text;color:transparent}
+#v-map #detail .d-sub{color:var(--dim);font-size:13.5px;margin-top:4px}
+#v-map #detail .d-label{font-size:12.5px;color:var(--gold-dim);letter-spacing:.3em;margin:15px 0 5px}
+#v-map #detail .d-text{color:var(--dim);font-size:13.5px;line-height:1.85}
+#v-map #detail .d-src{color:var(--faint);font-size:11px;line-height:1.8;margin-top:12px;border-top:1px dashed rgba(212,175,106,.2);padding-top:9px}
+#v-map #detail .d-stage{display:inline-block;background:rgba(212,175,106,.12);color:var(--gold-b);font-size:11.5px;padding:3px 11px;border-radius:999px;letter-spacing:.12em;margin-top:11px}
+#v-map #detail .d-locate{margin-top:12px;padding:8px 18px;border:1px solid rgba(212,175,106,.42);border-radius:999px;
+  background:rgba(212,175,106,.1);color:var(--gold-b);font-size:12.5px;letter-spacing:.16em;cursor:pointer;transition:all .2s}
+#v-map #detail .d-play{display:none;margin:12px 0 0 8px;padding:8px 18px;border:1px solid var(--gold);border-radius:999px;
+  background:rgba(212,175,106,.22);color:var(--gold-b);font-size:12.5px;letter-spacing:.16em;cursor:pointer;transition:all .2s}
+#v-map #detail .d-play.on{display:inline-block}
+#v-map #detail .d-play:hover{background:rgba(212,175,106,.36);box-shadow:0 0 14px rgba(212,175,106,.3)}
+#v-map #detail .d-locate:hover{background:rgba(212,175,106,.26);box-shadow:0 0 14px rgba(212,175,106,.25)}
+
+/* ===== 探索内帮助 ===== */
+#v-map #help{position:absolute;left:50%;bottom:48px;transform:translateX(-50%);font-size:12px;color:var(--faint);letter-spacing:.2em;
+  opacity:0;transition:opacity .8s;pointer-events:none;white-space:nowrap}
+#v-map #help.on{opacity:.95}
+/* ===== 准确性声明：常驻左下，任何模式（含探索）都不隐藏 ===== */
+#v-map #mapNote{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);z-index:11;pointer-events:none;
+  font-size:11.5px;color:var(--dim);letter-spacing:.08em;white-space:nowrap;
+  background:rgba(3,6,12,.72);border:1px solid rgba(212,175,106,.2);border-radius:999px;padding:5px 15px}
+#v-map #mapNote b{color:var(--gold-dim);font-weight:400}
+/* ===== 悬停提示 ===== */
+#v-map #tip{position:fixed;z-index:14;pointer-events:none;opacity:0;transition:opacity .16s;max-width:280px;
+  background:rgba(8,12,22,.95);border:1px solid rgba(212,175,106,.34);border-radius:10px;padding:10px 14px;
+  box-shadow:0 8px 26px rgba(0,0,0,.55),0 0 18px rgba(212,175,106,.12)}
+#v-map #tip.on{opacity:1}
+#v-map #tip .t-name{font-family:var(--serif);font-size:16px;color:#f2dfae;letter-spacing:.08em}
+#v-map #tip .t-sub{font-size:11.5px;color:var(--gold-dim);letter-spacing:.18em;margin-top:3px}
+#v-map #tip .t-desc{font-size:12.5px;color:var(--dim);line-height:1.6;margin-top:5px}
+
+/* ===== 旅程索引面板 ===== */
+#v-map #index{position:absolute;top:70px;right:20px;width:330px;max-width:88vw;max-height:76vh;overflow:auto;pointer-events:auto;
+  background:rgba(6,10,18,.92);border:1px solid var(--line);border-radius:14px;padding:16px 18px;backdrop-filter:blur(6px);
+  opacity:0;visibility:hidden;transform:translateX(14px);transition:all .32s;z-index:12}
+#v-map #index.show{opacity:1;visibility:visible;transform:none}
+#v-map #index .ix-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+#v-map #index .ix-title{font-family:var(--serif);font-size:16px;color:var(--gold-b);letter-spacing:.2em}
+#v-map #index .ix-close{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border:none;background:none;
+  color:var(--faint);cursor:pointer;border-radius:8px}
+#v-map #index .ix-close:hover{color:var(--gold-b);background:rgba(212,175,106,.12)}
+#v-map #index .ix-search{width:100%;box-sizing:border-box;background:rgba(255,255,255,.05);border:1px solid var(--line);color:var(--ink);
+  border-radius:9px;padding:9px 12px;font-size:13.5px;margin-bottom:10px}
+#v-map #index .ix-search:focus{border-color:rgba(212,175,106,.6)}
+#v-map #index .ix-st{font-size:12.5px;color:var(--gold-b);letter-spacing:.18em;margin:12px 0 4px;display:flex;align-items:center;gap:7px}
+#v-map #index .ix-st::before{content:"";width:4px;height:4px;border-radius:50%;background:var(--gold)}
+#v-map #index .ix-item{display:flex;align-items:center;gap:8px;width:100%;text-align:left;background:none;border:none;color:var(--dim);
+  font-size:13px;padding:6px 8px;border-radius:8px;cursor:pointer;transition:all .15s}
+#v-map #index .ix-item:hover, #v-map #index .ix-item.on{background:rgba(212,175,106,.12);color:var(--gold-b)}
+#v-map #index .ix-dot{width:6px;height:6px;border-radius:50%;flex:none}
+#v-map #index .ix-foot{width:7px;height:7px;border-radius:50%;flex:none;background:var(--gold-b);box-shadow:0 0 6px rgba(212,175,106,.8);animation:ixpulse 2s ease-in-out infinite}
+@keyframes ixpulse{0%,100%{opacity:.55}50%{opacity:1}}
+#v-map #index .ix-empty{color:var(--faint);font-size:12.5px;text-align:center;padding:14px 0}
+
+@media(max-width:760px){#v-map #top{padding:10px 12px;gap:8px}#v-map #top .logo b,#v-map #top .logo h1{font-size:15px}#v-map #top .logo small{display:none}#v-map #stages{display:none}#v-map #top .btn{min-width:44px;min-height:44px;padding:5px 10px;font-size:12px}#v-map #progress{top:56px;left:12px;right:12px}#v-map #explore{padding:6px 12px}#v-map #explore .pill{min-height:40px}#v-map #subtitle{width:94vw;padding:12px 18px;bottom:52px}#v-map #subtitle .t1{font-size:19px}#v-map #subtitle .t2{font-size:12.5px}#v-map #placename{top:15%;width:90vw}#v-map #placename .pn{font-size:30px}#v-map #placename .pr{font-size:12px}#v-map #placename .pd{font-size:13px}#v-map #detail{top:auto;bottom:14px;right:12px;left:12px;width:auto;max-height:46vh}#v-map #detail .d-close{min-width:44px;min-height:44px}#v-map #index{top:auto;bottom:14px;right:12px;left:12px;width:auto;max-height:52vh}#v-map #mapNote{font-size:10.5px;letter-spacing:.02em;padding:4px 12px;bottom:10px;max-width:92vw;overflow:hidden;text-overflow:ellipsis}#v-map #detail.show~#mapNote,#v-map #index.show~#mapNote{display:none}#v-map #index .ix-search{font-size:16px}#v-map #finale .btn{min-height:44px}#v-map #help{display:none}
+}
+@media(max-width:420px){#v-map #subtitle .t1{font-size:16.5px;letter-spacing:.18em}#v-map #subtitle .t2{font-size:11.5px}#v-map #placename .pn{font-size:26px;letter-spacing:.16em}#v-map #placename .pd{font-size:12px;max-width:86vw}#v-map #explore .pill{font-size:12.5px;padding:6px 12px}#v-map #explore .legend-tip{display:none}#v-map #index .ix-search{font-size:16px}
+}
+
+/* ===== 主页内嵌容器（覆盖独立页 fixed 定位） ===== */
+#v-map .map-stage{position:relative;width:100%;height:calc(100vh - 0px);min-height:520px;overflow:hidden;background:#04060c}
+#v-map canvas#cv{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
+#v-map #ui{position:absolute;inset:0;pointer-events:none;z-index:10}
+#v-map #top{top:50px;z-index:30}
+#v-map #progress{top:108px;z-index:22}
+#v-map #explore{top:134px;z-index:20}
+#v-map #detail,#v-map #index{top:180px;pointer-events:none;z-index:25}
+#v-map #detail.show,#v-map #index.show{pointer-events:auto}
+/* ===== 舆图原图：以原图（画地图的小七）作底，标注为绝对定位 DOM，独立于三界巡游的相机 ===== */
+#v-map #btnTn{background:rgba(212,175,106,.16);border-color:rgba(212,175,106,.5)}
+#v-map #tnPanel{position:absolute;inset:0;z-index:130;display:none;flex-direction:column;
+  pointer-events:auto;background:rgba(5,8,14,.97);padding:48px 16px 12px}
+#v-map #tnPanel.show{display:flex}
+#v-map #tnHead{flex:none;display:flex;align-items:center;gap:12px;padding-bottom:10px}
+#v-map #tnHead .tnt{font-family:var(--font-serif);font-size:18px;color:var(--gold);letter-spacing:.18em}
+#v-map #tnHead .tns{font-size:11.5px;color:var(--ink3);letter-spacing:.1em}
+#v-map #tnHead .sp{flex:1}
+#v-map #tnTabs{flex:none;display:flex;flex-wrap:wrap;gap:7px;padding:0 0 10px}
+#v-map #tnTabs button{padding:5px 13px;border:1px solid var(--line);border-radius:999px;
+  background:rgba(255,255,255,.03);color:var(--ink2);font-size:12.5px;letter-spacing:.06em;cursor:pointer;
+  transition:.18s}
+#v-map #tnTabs button:hover{color:var(--gold);border-color:rgba(212,175,106,.5)}
+#v-map #tnTabs button.on{background:var(--gold);border-color:var(--gold);color:#14161d;font-weight:700}
+#v-map #tnStage{flex:1;min-height:0;position:relative;overflow:hidden;background:#0a0d13;
+  border:1px solid var(--line);border-radius:9px;cursor:grab}
+#v-map #tnStage.drag{cursor:grabbing}
+#v-map #tnWrap{position:absolute;left:0;top:0;transform-origin:0 0;--inv:1}
+#v-map #tnWrap img{display:block;width:100%;height:100%;-webkit-user-drag:none;user-select:none}
+#v-map #tnOv{position:absolute;inset:0}
+#v-map .tn-pin{position:absolute;width:13px;height:13px;transform:translate(-50%,-50%) scale(var(--inv));
+  cursor:default;pointer-events:auto}
+#v-map .tn-pin i{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 1.5px rgba(4,7,12,.75),0 0 8px rgba(0,0,0,.7)}
+#v-map .tn-pin.k-power i{background:#f0c96a;width:16px;height:16px;inset:-1.5px}
+#v-map .tn-pin.k-state i{background:#d8b45c}
+#v-map .tn-pin.k-terrain i{background:#9bb083;border-radius:2px}
+#v-map .tn-pin.k-water i{background:#7fb3d9;border-radius:2px;transform:rotate(45deg)}
+#v-map .tn-pin.has-loc{cursor:pointer}
+#v-map .tn-pin.has-loc i{outline:1px dashed rgba(240,201,106,.85);outline-offset:2.5px}
+#v-map .tn-pin:hover i,#v-map .tn-pin.on i{box-shadow:0 0 0 2px #fff,0 0 14px rgba(240,201,106,.9)}
+#v-map #tnZoom{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:5px;z-index:5}
+#v-map #tnZoom button{width:30px;height:30px;padding:0;border:1px solid var(--line);border-radius:7px;
+  background:rgba(14,18,26,.85);color:var(--gold);font-size:15px;line-height:1;cursor:pointer}
+#v-map #tnZoom button:hover{background:rgba(212,175,106,.2)}
+#v-map #tnHint{position:absolute;left:10px;bottom:12px;z-index:5;font-size:11px;color:var(--ink3);
+  letter-spacing:.04em;text-shadow:0 1px 4px #000}
+#v-map #tnTip{position:absolute;z-index:6;pointer-events:none;opacity:0;transition:opacity .14s;
+  max-width:260px;padding:9px 11px;border:1px solid var(--line);border-radius:8px;
+  background:rgba(8,11,18,.95);backdrop-filter:blur(8px);transform:translate(-50%,-115%)}
+#v-map #tnTip.on{opacity:1}
+#v-map #tnTip .n{font-family:var(--font-serif);font-size:15px;color:var(--gold2,#e8c97a);letter-spacing:.08em}
+#v-map #tnTip .r{font-size:11px;color:#8fa6bd;margin-top:3px;letter-spacing:.06em}
+#v-map #tnTip .go{font-size:11px;color:#c9a45c;margin-top:5px}
+#v-map #tnFoot{flex:none;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding-top:9px;
+  font-size:11.5px;color:var(--ink3)}
+#v-map #tnLegend{display:flex;align-items:center;gap:14px}
+#v-map #tnFoot i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:0}
+#v-map #tnFoot .note{margin-left:auto;line-height:1.6;max-width:640px}
+#v-map #tnFoot .note b{color:var(--gold);font-weight:500}
+@media(max-width:760px){
+  #v-map #tnPanel{padding:44px 8px 8px}
+  #v-map #tnHead .tns{display:none}
+  #v-map #tnFoot .note{max-width:none;margin-left:0}
+  #v-map #tnTabs button{min-height:40px}
+  #v-map #tnZoom button{width:40px;height:40px}
+}
+/* ===== 地图图例：三界色标 + 地点类型符号 + 线型，与图面符号严格对应 ===== */
+#v-map #mapLegend{position:absolute;left:12px;bottom:12px;z-index:26;pointer-events:auto;
+  width:196px;border:1px solid var(--line);border-radius:10px;background:rgba(10,14,22,.82);
+  backdrop-filter:blur(10px);font-size:11.5px;color:var(--ink3);overflow:hidden}
+#v-map #mapLegend .lg-head{display:flex;align-items:center;justify-content:space-between;gap:8px;
+  padding:7px 10px;cursor:pointer;color:var(--gold);letter-spacing:.1em;font-size:12px;
+  border-bottom:1px solid var(--line)}
+#v-map #mapLegend .lg-head:focus-visible{outline-offset:-2px}
+#v-map #mapLegend .lg-head svg{width:12px;height:12px;transition:transform .2s ease}
+#v-map #mapLegend.fold .lg-body{display:none}
+#v-map #mapLegend.fold .lg-head svg{transform:rotate(-90deg)}
+#v-map #mapLegend .lg-body{padding:8px 10px 10px}
+#v-map #mapLegend .lg-sec{margin:0 0 5px;color:var(--ink4);letter-spacing:.14em;font-size:10px}
+#v-map #mapLegend .lg-row{display:flex;align-items:center;gap:8px;padding:2.5px 0;line-height:1.35}
+#v-map #mapLegend .lg-row svg{width:15px;height:15px;flex:none}
+#v-map #mapLegend .lg-row i{width:15px;height:9px;flex:none;border-radius:2px;display:block}
+#v-map #mapLegend .lg-row b{font-weight:500;color:var(--ink2);letter-spacing:.02em}
+#v-map #mapLegend .lg-row span{margin-left:auto;color:var(--ink4);font-size:10.5px}
+#v-map #mapLegend .lg-sep{height:1px;background:var(--line);margin:8px 0 7px}
+#v-map #mapLegend .lg-note{margin-top:7px;font-size:10px;line-height:1.55;color:var(--ink4)}
+@media(max-width:760px){#v-map #mapLegend{display:none}}
+#v-map #cover .cv-title{font-size:clamp(38px,6.4vw,68px)}
+@media(max-width:760px){
+  #v-map #top{top:52px}
+  #v-map #progress{top:104px}
+  #v-map #explore{top:108px}
+  #v-map #detail,#v-map #index{top:auto}
+}
+/* 地图视图沉浸：顶栏悬浮透明、地图延伸到屏幕顶部，不形成方形边框 */
+body.v-map-on .topnav{position:fixed;top:0;left:0;right:0;z-index:200;
+  background:linear-gradient(180deg,rgba(4,6,12,.8),rgba(4,6,12,0));border-bottom:none;box-shadow:none}
+body.v-map-on #v-map .map-stage{height:100vh;min-height:0}
+/* ===== 探索模式缩放控件（与舆图原图的 #tnZoom 同形） ===== */
+#v-map #mapZoom{position:absolute;right:20px;bottom:18px;z-index:26;display:none;flex-direction:column;gap:6px;pointer-events:auto}
+#v-map #mapZoom.on{display:flex}
+#v-map #mapZoom button{width:40px;height:40px;padding:0;border:1px solid var(--line);border-radius:10px;
+  background:rgba(10,14,22,.82);backdrop-filter:blur(8px);color:var(--gold-b);font-size:18px;line-height:1;cursor:pointer;
+  transition:background .2s,transform .12s}
+#v-map #mapZoom button:hover{background:rgba(212,175,106,.2)}
+#v-map #mapZoom button:active,#v-map .btn:active,#v-map #explore .pill:active{transform:scale(.95)}
+@media(max-width:760px){#v-map #mapZoom{display:none!important}}
+/* ===== 探索时顶部工具条自动隐藏 ===== */
+#v-map #top,#v-map #progress,#v-map #explore{transition:opacity .38s ease,transform .38s ease}
+#v-map #toolsTab{position:absolute;top:58px;left:12px;z-index:34;width:40px;height:40px;border-radius:10px;
+  border:1px solid var(--line);background:rgba(16,20,30,.72);color:var(--gold);backdrop-filter:blur(8px);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;transform:translateY(-8px);
+  pointer-events:none;transition:opacity .35s ease,transform .35s ease}
+#v-map #toolsTab svg{width:21px;height:21px}
+#v-map.tools-hidden #top,#v-map.tools-hidden #progress,#v-map.tools-hidden #explore{opacity:0;visibility:hidden;transform:translateY(-14px);pointer-events:none;
+  transition:opacity .38s ease,transform .38s ease,visibility 0s .38s}
+#v-map.tools-hidden #toolsTab{opacity:1;transform:translateY(0);pointer-events:auto}
+@media(max-width:760px){#v-map #toolsTab{top:58px;width:44px;height:44px}}
+body.v-map-on .navbar{display:none!important}
+
 </style>
 </head>
 <body>
@@ -729,6 +1029,7 @@ footer .note{margin-top:6px}
       <a href="#v-home" data-view="v-home" class="active">首页</a>
       <a href="#v-chars" data-view="v-chars">人物图谱</a>
       <a href="#v-lore" data-view="v-lore">剧情速览</a>
+      <a href="#v-map" data-view="v-map">修仙界全图</a>
       <a href="#v-realms" data-view="v-realms">境界体系</a>
       <a href="#v-beasts" data-view="v-beasts">灵兽灵虫</a>
       <a href="#v-herbs" data-view="v-herbs">灵草丹药</a>
@@ -759,7 +1060,8 @@ footer .note{margin-top:6px}
       </div>
       <p class="hero-sub">六卷篇章二百余位人物，另有灵兽灵虫、灵草丹药、法器法宝、功法阵法符箓四库，含境界演进与命运结局。人物按原著篇章收录，跨篇重复出现即重复收录；点开卡片看生平与结局。</p>
       <div class="project-links">
-        <a class="project-link primary" href="#v-chars">进入人物图谱</a>
+        <a class="project-link primary" href="#v-map">修仙界全图 · 三界巡游</a>
+        <a class="project-link" href="#v-chars">进入人物图谱</a>
         <a class="project-link" href="#v-lore">剧情速览</a>
         <a class="project-link" href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener">勘误与反馈</a>
         <a class="project-link" href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener"><svg width="15" height="15" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>GitHub 源码</a>
@@ -807,6 +1109,10 @@ footer .note{margin-top:6px}
 <section class="wrap home-section">
   <div class="sec-title">收录内容</div>
   <div class="home-cards">
+    <a class="home-card feature" href="#v-map">
+            <b>修仙界全图</b>
+      <span>手绘三界舆图 · 韩立巡游动画：人界→灵界→仙界 10 段旅程，点击探索 152 处地点。</span>
+    </a>
     <a class="home-card" href="#v-chars">
             <b>人物图谱</b>
       <span>六卷篇章二百余条：按篇浏览、检索筛选，跨篇重复收录。</span>
@@ -961,6 +1267,12 @@ footer .note{margin-top:6px}
   </div>
 </header>
 
+<!-- ===== 修仙界全图入口横幅 ===== -->
+<a class="wrap lore-map-entry" href="#v-map">
+  <span class="lme-copy"><b>修仙界全图 · 韩立三界巡游</b><span>可交互手绘三界舆图：跟随主角巡游人界 → 灵界 → 仙界，点击光点探索每一处地点的剧情与人物</span></span>
+  <span class="lme-cta">进入地图 →</span>
+</a>
+
 <!-- ===== 剧情速览页内切换 ===== -->
 <div class="lore-tabs wrap" role="tablist" aria-label="剧情速览内容切换">
   <button class="lore-tab active" type="button" data-lore-tab="timeline" role="tab" aria-selected="true">境界时间线</button>
@@ -1029,6 +1341,110 @@ footer .note{margin-top:6px}
   </section>
 </div>
 
+</div>
+<!-- ===== 修仙界全图（三界巡游） ===== -->
+<div class="view" id="v-map">
+  <div class="map-stage">
+<canvas id="cv" role="img" aria-label="修仙界全图：人界、灵界、仙界三界舆图与韩立旅程路线。可用 + / − 缩放、方向键平移、/ 搜索地点"></canvas>
+<div id="ui">
+  <!-- 顶栏 -->
+  <div id="top">
+    <div class="logo">
+      <svg class="mark" viewBox="0 0 32 32" aria-hidden="true"><circle cx="16" cy="16" r="13" fill="none" stroke="#d4af6a" stroke-width="1.4"/><circle cx="16" cy="16" r="9.5" fill="none" stroke="#d4af6a" stroke-width=".6" opacity=".6"/><path d="M16 6 L18.6 13.4 L26 16 L18.6 18.6 L16 26 L13.4 18.6 L6 16 L13.4 13.4 Z" fill="#d4af6a"/></svg>
+      <div><h1>修仙界全图</h1><small>韩立修仙之旅 · 三界巡游</small></div>
+    </div>
+    <div class="spacer"></div>
+    <div id="stages"></div>
+    <button class="btn" id="btnIndex" title="旅程索引 / 地点搜索（/）" aria-controls="index" aria-expanded="false">索引</button>
+    <button class="btn" id="btnPlay" title="播放 / 暂停（空格）">⏸</button>
+    <button class="btn" id="btnSpeed" title="播放速度">1×</button>
+    <button class="btn" id="btnExplore" title="跳过动画，直接探索地图">探索</button>
+    <button class="btn" id="btnTn" title="查看同人舆图原图（作者：画地图的小七）">舆图原图</button>
+  </div>
+  <!-- 进度条 -->
+  <div id="progress"></div>
+  <!-- 探索顶栏 -->
+  <div id="explore"></div>
+  <!-- 舆图原图：作者原图作底 + 绝对定位标注层；不参与三界巡游的相机与剧情 -->
+  <div id="tnPanel">
+    <div id="tnHead">
+      <span class="tnt" id="tnTitle">天南舆图</span>
+      <span class="tns" id="tnSub">TIANNAN · 天南四势力 · 二十余国</span>
+      <span class="sp"></span>
+      <button class="btn" id="btnTnClose">返回巡游</button>
+    </div>
+    <div id="tnTabs"></div>
+    <div id="tnStage">
+      <div id="tnWrap">
+        <img id="tnImg" alt="同人舆图原图，作者：画地图的小七">
+        <div id="tnOv"></div>
+      </div>
+      <div id="tnZoom">
+        <button type="button" data-tn="in" title="放大">+</button>
+        <button type="button" data-tn="out" title="缩小">−</button>
+        <button type="button" data-tn="fit" title="复位">⤢</button>
+      </div>
+      <div id="tnHint"></div>
+      <div id="tnTip"><div class="n"></div><div class="r"></div><div class="go"></div></div>
+    </div>
+    <div id="tnFoot">
+      <div id="tnLegend">
+        <span><i style="background:#f0c96a"></i>势力</span>
+        <span><i style="background:#d8b45c"></i>国家</span>
+        <span><i style="background:#9bb083;border-radius:2px"></i>地形</span>
+        <span><i style="background:#7fb3d9;border-radius:2px"></i>水域</span>
+      </div>
+      <span class="note" id="tnNote"></span>
+    </div>
+  </div>
+  <!-- 图例：三界色标 / 地点类型符号 / 线型；符号与画布绘制共用同一套形状定义 -->
+  <div id="mapLegend">
+    <div class="lg-head" role="button" tabindex="0" aria-expanded="true" aria-controls="lgBody"><span>图 例</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+    <div class="lg-body" id="lgBody"></div>
+  </div>
+  <!-- 工具条收起后的呼出按钮 -->
+  <button id="toolsTab" title="显示导航工具" aria-label="显示导航工具">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+  </button>
+  <!-- 探索模式缩放控件 -->
+  <div id="mapZoom" role="group" aria-label="地图缩放">
+    <button type="button" data-z="in" title="放大（+）" aria-label="放大">+</button>
+    <button type="button" data-z="out" title="缩小（−）" aria-label="缩小">−</button>
+    <button type="button" data-z="fit" title="复位全图（0）" aria-label="复位全图">⤢</button>
+  </div>
+  <!-- 地点名 -->
+  <div id="placename"><div class="pn"></div><div class="pr"></div><div class="pd"></div></div>
+  <!-- 字幕 -->
+  <div id="subtitle"><div class="t1"></div><div class="t2"></div></div>
+  <!-- 详情 -->
+  <div id="detail" role="region" aria-label="地点详情"><button class="d-close" title="关闭（Esc）" aria-label="关闭详情"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 1.5 L12.5 12.5 M12.5 1.5 L1.5 12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></button><div class="d-realm"></div><div class="d-name"></div><div class="d-sub"></div><div class="d-stage"></div><div class="d-label">剧情要览</div><div class="d-text"></div><div class="d-label">相关人物</div><div class="d-text" id="dChars"></div><button class="d-locate">定位此地点</button><button class="d-play">从此处播放</button><div class="d-src"></div></div>
+  <!-- 旅程索引 -->
+  <div id="index" role="dialog" aria-label="旅程索引">
+    <div class="ix-head"><div class="ix-title">旅程索引</div><button class="ix-close" title="关闭（Esc）" aria-label="关闭索引"><svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1.5 1.5 L12.5 12.5 M12.5 1.5 L1.5 12.5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none"/></svg></button></div>
+    <input class="ix-search" id="ixSearch" type="search" aria-label="搜索地点" autocomplete="off" placeholder="搜索地点，如：虚天殿 / 天渊城 / 南宫婉">
+    <div id="ixList"></div>
+  </div>
+  <!-- 开场 -->
+  <div id="cover" class="on">
+    <div class="cv-kicker">忘语 · 凡人修仙传</div>
+    <div class="cv-title">修仙界全图</div>
+    <div class="cv-sub">韩立修仙之旅 · 人界 · 灵界 · 仙界</div>
+    <div class="cv-cta">点 击 屏 幕 开 始 巡 游</div>
+    <div class="cv-meta">地图依据《凡人必备手册·地理篇》与原著情节编排 · 同人考据示意性重构，非官方、不保证准确 · 同人舆图原图（画地图的小七）见顶栏「舆图原图」</div>
+  </div>
+  <!-- 终幕 -->
+  <div id="finale">
+    <div class="f-title">凡 人 修 仙 传</div>
+    <div class="f-sub">一介凡人 · 逆天而行 · 终成大罗</div>
+    <div class="f-btns"><button class="btn" id="btnReplay">再看一遍</button><button class="btn" id="btnExplore2">进入探索地图</button></div>
+  </div>
+  <!-- 帮助 -->
+  <div id="help">点击光点查看详情 · 滚轮 / +− 缩放 · 方向键平移 · 0 复位 · / 搜索 · Esc 关闭面板</div>
+  <div id="mapNote">本图为同人考据示意图 · <b>非官方</b>，不保证地名方位准确</div>
+  <!-- 悬停提示 -->
+  <div id="tip"><div class="t-name"></div><div class="t-sub"></div><div class="t-desc"></div></div>
+</div>
+  </div>
 </div>
 <div class="view" id="v-realms">
 <!-- ===== 紧凑页头（原无标题，补上 h1） ===== -->
@@ -1357,6 +1773,7 @@ footer .note{margin-top:6px}
   <div class="wrap">
     <div class="serif" style="color:var(--ink2);font-weight:700">《凡人修仙传》百科 · 全篇资料图谱</div>
     <div class="note">内容依据原著及公开资料整理。配图为网络检索素材，部分角色动画未登场，<b>仅供回忆辅助，不保证与官方形象一致</b>，有偏差以文字资料为准。</div>
+    <div class="note">地图为依原著文本的示意性重构，坐标为同人考据相对坐标，<b>非官方设定，不保证地名位置与方位准确</b>；同人舆图原图版权归原作者，引用仅作学习交流。</div>
     <div class="note">疏漏错讹请到 <a href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">GitHub Issues</a> 提交，也可<a href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">查看已提交的问题</a>。</div>
     <div class="note"><span style="color:var(--gold)">最后更新：2026-10-05</span> · <span class="stamp-note">Merge PR #1 新增故事线（本地解决冲突）</span></div>
     <div class="note">© BunnyChen.top · 依 <a href="https://www.apache.org/licenses/LICENSE-2.0" style="color:var(--gold);text-decoration:none">Apache License 2.0</a> 授权（含商业用途，保留版权与署名即可）· 源码 <a href="https://github.com/Lizhenghe-Chen/fanren-wiki" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">GitHub</a> · <a href="https://lizhenghe-chen.github.io/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">作者主页</a></div>
@@ -2097,10 +2514,10 @@ const TL = [
   {realm:"合体", age:"1565岁"},
   {realm:"大乘", age:"2468岁"},
   {realm:"真仙", age:"飞升仙界", hot:true},
-  {realm:"金仙 · 太乙", age:"仙界重修"},
-  {realm:"大罗", age:"斩三尸"},
-  {realm:"时间道祖", age:"决战古或今"},
-  {realm:"自降大罗巅峰", age:"归隐黑土仙域"}
+  {realm:"金仙 · 太乙", age:"重回仙界"},
+  {realm:"大罗", age:"光阴天璇大阵"},
+  {realm:"时间道祖", age:"联手斩古或今"},
+  {realm:"大罗巅峰", age:"瓶碎 · 归隐黑土仙域"}
 ];
 function renderTimeline(){
   const el = document.getElementById("timeline");
@@ -2186,7 +2603,7 @@ const PLOT_VOLS = [
     ["灵族之行", ["初见灵王", "约定交易 [三清雷霄符]"]],
     ["小修罗界", ["初入探索", "初斗修罗一族", "击杀巨龟 [玄武真血]", "围攻修罗蛛巢穴", "斩杀奕姓老者", "修罗蛛母的交易", "寒潭空鱼族圣物 [山海珠]", "收服空鱼族"]],
     ["返回人族", ["敖啸之陨", "定居无涯海元合岛"]],
-    ["血魄之约", ["途遇飞灵族大乘 [极元晶]", "相助青元子渡劫", "赫连商盟拍卖会 [金阙玉书内页-五藏锻元功]", "传送血天大陆", "闯九鼎宫", "救出冰魄仙子"]],
+    ["血魄之约", ["途遇飞灵族大乘 [极元晶]", "相助青元子渡劫", "赫连商盟拍卖会 [金阙玉书内页-五藏锻元功]", "传送血天大陆", "闯天鼎宫", "救出冰魄仙子"]],
     ["寻找灵天", ["赫连商盟碧影之约 [元罡罩]", "对战阴司鬼王", "海域寻坐标", "进入小灵天", "终见南宫婉", "压服小灵天各异族", "带着小灵界百余人族离开"]],
     ["真仙降世", ["血天大陆惊变", "真仙马良凶威", "雷鸣大陆角蚩族多座大城被血祭", "角蚩供奉的三大上古真灵战败", "风元大陆赫连商盟明尊的联手之邀", "返回天渊城"]],
     ["斩杀真仙", ["风元大陆鸣煞之地", "灵界各族强者齐聚", "布置两仪灭尘大阵", "再见六翼", "真仙马良到来", "斩杀上古真灵阳鹿", "围攻真仙马良", "群强陨落", "大阵献祭", "斩杀真仙马良"]],
@@ -2916,12 +3333,21 @@ function applyTreasureFilter(){
 /* ===== 路由：视图切换 + 条目深链 =====
    深链形如 #v-chars/qixuanmen-0、#v-treasures/tres-12，可直接分享到某个人在某一篇的那张卡。
    用 - 而不是 # 当分隔符，否则 URL 会被当成新锚点截断。 */
-const VIEWS = ["v-home","v-chars","v-lore","v-realms","v-beasts","v-herbs","v-treasures","v-gongfa","v-zhenfa","v-fu"];
+const VIEWS = ["v-home","v-chars","v-lore","v-map","v-realms","v-beasts","v-herbs","v-treasures","v-gongfa","v-zhenfa","v-fu"];
 
 function switchView(id){
   if(VIEWS.indexOf(id) < 0) id = "v-home";
   document.querySelectorAll(".view").forEach(function(v){ v.classList.toggle("active", v.id === id); });
   document.querySelectorAll(".topnav a").forEach(function(a){ a.classList.toggle("active", a.getAttribute("data-view") === id); });
+  /* 地图视图：隐藏人物章节栏，懒启动/重排全屏动画，沉浸化（顶栏悬浮、地图全屏） */
+  var navEl = document.querySelector(".navbar");
+  if(navEl) navEl.style.display = id === "v-map" ? "none" : "";
+  document.body.classList.toggle("v-map-on", id === "v-map");
+  document.body.style.overflow = id === "v-map" ? "hidden" : "";
+  if(id === "v-map" && window.__fanrenMap){
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ window.__fanrenMap.boot(); }); });
+  }
+  if(id !== "v-map") window.scrollTo(0,0);
 }
 function parseHash(){
   const raw = (location.hash || "").replace(/^#/, "");
@@ -3202,5 +3628,2519 @@ function syncTargetToResults(libId, keys){
 <script src="javascripts/cultivation-chart.js"></script>
 <script src="javascripts/echarts.min.js"></script>
 <script src="javascripts/overview-charts.js"></script>
+<script>
+/* ===== 修仙界全图（三界巡游）：独立 IIFE，懒启动 ===== */
+(function(){
+  var __booted=false;
+
+"use strict";
+/* ============================================================
+ * 凡人修仙传 · 修仙界全图 —— 韩立巡游动画
+ * Canvas 2D 手绘三界舆图 + 镜头跟随韩立旅程
+ * 数据来源：起点《凡人必备手册》第二版·地理篇 / 原著 / 动画百科（示意性重构）
+ * ============================================================ */
+var cv=document.getElementById('cv'), ctx=cv.getContext('2d');
+var W=0,H=0,DPR=1;
+
+/* ---------------- 数据（旧逻辑坐标，运行时映射到世界坐标） ---------------- */
+var LOCS=[
+  /* ================= 人界 · 越国/天南（参考"画地图的小七"天南舆图、越国舆图） ================= */
+  {n:"五里沟 · 青牛镇",r:"越国 · 镜州",re:"人界",f:"凡俗",x:150,y:640,s:1,imp:2,d:"韩立出生地。五里沟为韩家祖居之地，青牛镇是家乡小镇，少年时在此耕读度日。",c:"韩立 · 韩家"},
+  {n:"彩霞山 · 七玄门",r:"越国 · 镜州",re:"人界",f:"七玄门",x:185,y:600,s:1,imp:3,d:"七玄门总堂所在。韩立入门为记名弟子，偶得掌天瓶与《长春功》，识破墨大夫夺舍阴谋后反杀之，携升仙令下山。",c:"韩立 · 墨大夫 · 厉飞雨 · 张铁"},
+  {n:"燕翎堡",r:"越国 · 燕家",re:"人界",f:"天南正道",x:205,y:668,s:2,imp:1,d:"燕家堡所在，夺宝大会举办之地，韩立受师门任务参与。",c:"燕如嫣 · 燕家"},
+  {n:"嘉元城",r:"越国 · 岚州",re:"人界",f:"天南正道",x:245,y:636,s:2,imp:2,d:"岚州第一城。韩立下山后在此协助墨家，获知升仙令消息，向太南小会而去。",c:"墨彩环 · 墨府"},
+  {n:"太南山 · 太南小会",r:"越国 · 岚州",re:"人界",f:"天南正道",x:270,y:660,s:2,imp:2,d:"太南小会是越国附近修士交换资源的大集会，韩立在此初窥修仙界格局。",c:"韩立"},
+  {n:"灵石矿",r:"越国",re:"人界",f:"天南正道",x:270,y:580,s:2,imp:1,d:"越国七派轮值的灵石矿脉，韩立曾驻守于此。",c:"韩立"},
+  {n:"越京",r:"越国",re:"人界",f:"天南正道",x:295,y:598,s:2,imp:2,d:"越国京城。越京皇宫之变中黑煞教主现身，虚天残图线索现世。",c:"秦家 · 黑煞教主"},
+  {n:"黄枫谷",r:"越国 · 建州",re:"人界",f:"天南正道",x:330,y:615,s:2,imp:3,d:"韩立拜入的第一修仙大派，师从李化元。炼气筑基；魔道入侵时随七派撤离，修复古传送阵后远走乱星海。",c:"韩立 · 李化元 · 令狐老祖 · 南宫婉"},
+  {n:"血色禁地",r:"越国 · 建州北部",re:"人界",f:"天南正道",x:322,y:582,s:2,imp:2,d:"被风属性古禁封闭的荒山，十年一开。韩立于此试炼寻药，与掩月宗南宫婉初遇。",c:"韩立 · 南宫婉"},
+  /* 越国周边（万岭山脉/桦叶城/金鼓原/神兵门/万妙观/化羽门，依越国舆图） */
+  {n:"万岭山脉",r:"越国 · 北境",re:"人界",f:"秘境·遗迹",x:332,y:553,s:2,imp:1,d:"越国北境山脉，延绵千里，多凶兽灵药，是越京北面的天然屏障。",c:"—"},
+  {n:"桦叶城",r:"元武国 · 西境",re:"人界",f:"天南正道",x:250,y:558,s:2,imp:1,d:"元武国西境大城，桦叶为记，是越国北上、东出的商路交汇。",c:"—"},
+  {n:"金鼓原",r:"越国 · 东境",re:"人界",f:"天南正道",x:310,y:650,s:2,imp:1,d:"越国东境平原，正魔大战的古战场之一，传闻金鼓齐鸣之地。",c:"—"},
+  {n:"神兵门",r:"越国 · 北境",re:"人界",f:"天南正道",x:372,y:562,s:2,imp:1,d:"越国北境以炼器闻名的门派，七派之外的旁支。",c:"—"},
+  {n:"万妙观",r:"越国 · 东北",re:"人界",f:"天南正道",x:385,y:582,s:2,imp:1,d:"越国东北道观，主祭祀与符箓，受元武、越国两地供奉。",c:"—"},
+  {n:"化羽门",r:"元武国 · 东境",re:"人界",f:"天南正道",x:358,y:575,s:2,imp:1,d:"元武国东境门派，地处边境，常与天罗国修士往来。",c:"—"},
+  /* 天南大陆外围（依天南舆图） */
+  {n:"七灵岛",r:"天南 · 北海",re:"人界",f:"散修·海外",x:185,y:545,s:4,imp:2,d:"天南北海三岛（灵鳌岛、灵霞岛、灵兽岛）的合称，灵兽修士聚居之地，灵兽山的海外祖庭。",c:"灵兽山祖师"},
+  {n:"落云宗 · 云梦山",r:"天南 · 溪国西北",re:"人界",f:"天南正道",x:185,y:560,s:4,imp:3,d:"溪国西北灵气圣脉，天道盟首宗。韩立化名厉飞雨入门，收服雪云狐，云梦山结婴。",c:"韩立 · 银月 · 南宫婉 · 柳玉"},
+  {n:"天道盟 · 落云溪",r:"天南 · 北境",re:"人界",f:"天南正道",x:245,y:556,s:4,imp:1,d:"天道盟聚议之地，溪流穿云，落云宗等北境宗门的盟坛。",c:"—"},
+  {n:"花溪阁",r:"天南 · 北境",re:"人界",f:"天南正道",x:305,y:548,s:4,imp:1,d:"天道盟中以丹道、花阵闻名的女修宗门，地处云雾山脉东麓。",c:"—"},
+  {n:"元武国",r:"天南 · 北境",re:"人界",f:"天南正道",x:272,y:550,s:2,imp:1,d:"越国北面大国，地处天道盟南缘，是魔道入侵时七派撤离的必经之地。",c:"—"},
+  {n:"天罗国",r:"天南 · 东境",re:"人界",f:"天南正道",x:400,y:605,s:2,imp:1,d:"越国东面的国家，地处魔道势力范围边缘，正魔两道势力交错。",c:"—"},
+  {n:"极西之地",r:"天南 · 西部",re:"人界",f:"散修·海外",x:96,y:704,s:4,imp:1,d:"天南西部隔大沙漠之地，韩立在此与千竹教大衍神君相遇。",c:"大衍神君"},
+  {n:"飓风沙漠",r:"天南 · 西境",re:"人界",f:"凡俗",x:112,y:638,s:4,imp:1,d:"天南西境的大沙漠，终年飓风，是入极西之地的必经险途。",c:"—"},
+  {n:"千竹教",r:"天南 · 极西",re:"人界",f:"散修·海外",x:118,y:680,s:4,imp:1,d:"极西之地的隐世教派，大衍神君所立，以机关傀儡之术闻名。",c:"大衍神君"},
+  {n:"阗天城",r:"九国盟",re:"人界",f:"天南正道",x:335,y:688,s:4,imp:2,d:"九国盟总坛所在，上元灭光阵护城。天南交易大会举办地。",c:"南陇侯 · 天晶上人"},
+  {n:"坠魔谷 · 万岭山脉",r:"天南 · 中部",re:"人界",f:"秘境·遗迹",x:295,y:580,s:4,imp:3,d:"天南第一险地，上古战场遗骸，位于越国西北。韩立与南陇侯、紫灵入谷寻宝，古魔脱困，韩立被困灵缈园残骸后脱身。",c:"南陇侯 · 紫灵 · 大衍神君"},
+  {n:"黄土荒地",r:"天南 · 东南",re:"人界",f:"慕兰·突兀族",x:455,y:742,s:4,imp:1,d:"天南东南的黄土荒瘠之地，邻接慕兰草原，黄沙部游牧于此。",c:"—"},
+  {n:"苍坤真人遗迹",r:"天南 · 东南",re:"人界",f:"秘境·遗迹",x:495,y:762,s:4,imp:1,d:"上古修士苍坤真人的遗府，位于黄土荒地南缘，藏有古修传承。",c:"—"},
+  {n:"慕兰草原",r:"九国盟 · 南邻",re:"人界",f:"慕兰·突兀族",x:475,y:725,s:4,imp:2,d:"慕兰族与突兀族世代聚居的草原。慕兰大战中韩立大破慕兰圣禽，名震天南。",c:"紫灵 · 慕兰大上师"},
+  /* ================= 人界 · 乱星海（依乱星海舆图） ================= */
+  {n:"魁星岛 · 青云山",r:"乱星海 · 内星海西南",re:"人界",f:"乱星海·星宫",x:1090,y:830,s:3,imp:3,d:"内星海西南大岛，青云山天柱、天宵、天门三峰并立。韩立经古传送阵初至乱星海，小寰岛洞府潜修。",c:"曲魂 · 文樯 · 文思月"},
+  {n:"天星城",r:"乱星海 · 内星海中心",re:"人界",f:"乱星海·星宫",x:1270,y:720,s:3,imp:3,d:"星宫建造的巨无霸城市，乱星海修仙中心，天星双圣坐镇。韩立租住洞府结丹，开青竹小轩炼器，参与外海猎妖。",c:"星宫双圣 · 凌玉灵"},
+  {n:"虚天殿",r:"乱星海 · 内星海",re:"人界",f:"秘境·遗迹",x:1240,y:650,s:3,imp:3,d:"上古修士所建的秘境宝殿，三百年一开。韩立连闯五关，与正魔诸修拉出虚天鼎，得补天丹机缘。",c:"元瑶 · 紫灵 · 玄骨上人"},
+  {n:"万法门",r:"乱星海 · 内星海北",re:"人界",f:"散修·海外",x:1230,y:660,s:3,imp:1,d:"内星海北部的法门驻地，外十二星岛之一，门中修士多修阵法。",c:"—"},
+  {n:"极阴岛",r:"乱星海 · 内星海西北",re:"人界",f:"散修·海外",x:1205,y:690,s:3,imp:1,d:"极阴老祖的道场，位于内星海西北，阴气汇聚。",c:"极阴老祖"},
+  {n:"皇明岛",r:"乱星海 · 内星海",re:"人界",f:"散修·海外",x:1235,y:805,s:3,imp:1,d:"内星海中型岛屿，附近有古传送阵。元瑶洞府所在，韩立曾为其施展还魂术护法。",c:"元瑶 · 梅凝"},
+  {n:"碧灵岛",r:"乱星海 · 外星海北",re:"人界",f:"阴司·海妖",x:1270,y:615,s:3,imp:1,d:"外星海北部大岛，灵气充沛，毗邻妖修出没的海域。",c:"—"},
+  {n:"银壑岛",r:"乱星海 · 外星海北",re:"人界",f:"阴司·海妖",x:1220,y:600,s:3,imp:1,d:"外星海北部群岛之一，岛上多金属矿脉，与盘龙岛相望。",c:"—"},
+  {n:"盘龙岛",r:"乱星海 · 外星海西北",re:"人界",f:"阴司·海妖",x:1175,y:612,s:3,imp:1,d:"外星海西北岛屿，山势如龙盘绕，是出入内星海的北面要冲。",c:"—"},
+  {n:"鬼雾",r:"乱星海 · 内星海西",re:"人界",f:"阴司·海妖",x:1145,y:780,s:3,imp:1,d:"内星海西部终年不散的黑雾带，传闻是上古大能斗法的遗迹。",c:"—"},
+  {n:"六道极圣",r:"乱星海 · 内星海南",re:"人界",f:"乱星海·星宫",x:1285,y:820,s:3,imp:2,d:"逆星盟盟主六道极圣的道场圣地，内星海南面的一方巨擘。",c:"六道极圣"},
+  {n:"妙音门 · 双峰岛",r:"乱星海 · 外星海",re:"人界",f:"乱星海·星宫",x:1315,y:785,s:3,imp:2,d:"妙音门在外星海的驻地。交换会上韩立结识文思月，与门主紫灵相交，得梵圣真片线索。",c:"紫灵 · 文思月"},
+  {n:"外海 · 万丈海",r:"乱星海 · 外星海",re:"人界",f:"阴司·海妖",x:1360,y:852,s:3,imp:2,d:"外星海妖族的天下。韩立在此猎妖取丹、寻药炼宝，深入裂风兽巢穴，炼成风雷翅。",c:"风希 · 裂风兽"},
+  {n:"阴冥之地",r:"乱星海 · 西缘",re:"人界",f:"阴司·海妖",x:1010,y:700,s:3,imp:1,d:"乱星海西缘与阴司界交界的空间，阴风鬼物出没。韩立、紫灵、梅凝曾被卷入此地。",c:"紫灵 · 梅凝"},
+  {n:"星宫 · 重临",r:"乱星海 · 内星海",re:"人界",f:"乱星海·星宫",x:1284,y:708,s:5,imp:2,d:"韩立元婴后期重临乱星海，助星宫平叛、灭杀万天明，受任客卿长老。",c:"凌玉灵 · 六道极圣"},
+  {n:"天沙大陆",r:"乱星海 · 东南外海",re:"人界",f:"凡俗",x:1390,y:878,s:3,imp:1,d:"外星海之外东南方的大陆，地处乱星海边陲，是海外修士传说中的陆地。",c:"—"},
+  {n:"五龙海 · 空间节点",r:"乱星海 · 南缘雾海",re:"人界",f:"秘境·遗迹",x:1150,y:852,s:5,imp:2,d:"人界连接灵界的空间节点所在，位于乱星海南缘雾海。韩立化神后探查此节点，与冰凤联手穿越进入灵界。",c:"韩立 · 冰凤"},
+  /* ================= 人界 · 大晋（依辽州舆图、南疆舆图、大晋舆图） ================= */
+  {n:"小极宫 · 北溟冰岛",r:"大晋 · 北境冰海",re:"人界",f:"大晋正道",x:610,y:628,s:5,imp:3,d:"大晋北境冰海之中的宫殿，小极宫所在，与北溟冰岛相连。韩立随寒骊上人入虚灵殿玄玉洞，得五种寒焰与万年玄玉，于冰海炼化突破化神。",c:"寒骊上人 · 冰魄仙子 · 冰凤"},
+  {n:"霜郡",r:"大晋 · 北境",re:"人界",f:"大晋正道",x:655,y:620,s:5,imp:1,d:"大晋北方冰雪之郡，盛产寒属性灵药。",c:"—"},
+  {n:"天圣宫",r:"大晋 · 辽州北境",re:"人界",f:"大晋正道",x:730,y:655,s:5,imp:2,d:"辽州北境的道家圣地，紧邻雪岭山脉，是大晋北方修真重地。",c:"天圣宫诸修"},
+  {n:"雪岭山脉",r:"大晋 · 辽州",re:"人界",f:"秘境·遗迹",x:690,y:690,s:5,imp:3,d:"辽州腹地的大山脉，冰海南下、风雪千里，是大晋北境的核心秘境之一。",c:"—"},
+  {n:"关宁府",r:"大晋 · 辽州",re:"人界",f:"大晋正道",x:615,y:698,s:5,imp:2,d:"辽州西境大府，雪岭山脉西麓，府城扼守西进要道。",c:"—"},
+  {n:"五原府",r:"大晋 · 辽州",re:"人界",f:"大晋正道",x:645,y:722,s:5,imp:1,d:"辽州大府，雪岭山脉南麓，五原汇聚之地。",c:"—"},
+  {n:"秦宁府",r:"大晋 · 辽州",re:"人界",f:"大晋正道",x:680,y:728,s:5,imp:1,d:"辽州东南大府，与中原相邻，是辽州南下的门户。",c:"—"},
+  {n:"江陵府",r:"大晋 · 辽州",re:"人界",f:"大晋正道",x:600,y:745,s:5,imp:1,d:"辽州府城。韩立重伤后沿江被救至此，参加参王大会，又探冯家秘窟得《明王诀》。",c:"冯家 · 孔赵董三世家"},
+  {n:"金罗宗",r:"大晋 · 辽州东境",re:"人界",f:"大晋正道",x:855,y:685,s:5,imp:1,d:"辽州东境大宗，与黑阳宗相邻，是大晋东北的修真门派。",c:"—"},
+  {n:"黑阳宗",r:"大晋 · 辽州东境",re:"人界",f:"大晋正道",x:830,y:708,s:5,imp:1,d:"辽州东境门派，宗中修士多修阴阳之术。",c:"—"},
+  {n:"三皇观",r:"大晋 · 中原",re:"人界",f:"大晋正道",x:640,y:715,s:5,imp:1,d:"韩立化神前在大晋潜修炼器术的落脚道观。",c:"韩立"},
+  {n:"晋京",r:"大晋 · 金江郡",re:"人界",f:"大晋正道",x:665,y:758,s:5,imp:2,d:"大晋京城。晋京交易会上韩立购置天机屋，辗转地下交易会换取五行玉等炼器材料。",c:"—"},
+  {n:"太一门 · 真极山",r:"大晋 · 南疆西境",re:"人界",f:"大晋正道",x:615,y:800,s:5,imp:2,d:"大晋正道十门之首太一门的山门，地处南疆西境，毗邻西部沙漠。",c:"白化神 · 太一门"},
+  {n:"西部沙漠",r:"大晋 · 南疆西境",re:"人界",f:"凡俗",x:545,y:800,s:5,imp:1,d:"大晋南疆以西的大沙漠，人迹罕至，是化外散修的藏身之地。",c:"—"},
+  {n:"天魔宗",r:"大晋 · 南疆",re:"人界",f:"大晋魔道",x:700,y:855,s:5,imp:1,d:"大晋魔道十宗之首，雾月山脉南麓，与南疆昆吾山相望。",c:"天魔宗诸魔"},
+  {n:"阴罗宗",r:"大晋 · 南疆北境",re:"人界",f:"大晋魔道",x:775,y:695,s:5,imp:2,d:"大晋南疆北境的魔修门派，放养山脉南麓，是昆吾山镇魔之地的近邻。",c:"阴罗宗诸魔"},
+  {n:"万妖谷",r:"大晋 · 南疆东境",re:"人界",f:"阴司·海妖",x:830,y:810,s:5,imp:2,d:"大晋南疆东境的妖族聚居之地，老猴等妖修坐镇，是大晋东南部的一方妖土。",c:"万妖谷老猴"},
+  {n:"昆吾山",r:"大晋 · 南疆",re:"人界",f:"秘境·遗迹",x:770,y:880,s:5,imp:3,d:"上古灵山，被昆吾三老封印。韩立智斗众修、昆吾殿夺宝、镇魔塔斗魔，重封真魔之气；银月在此回归灵界。",c:"韩立 · 银月 · 阴罗宗"},
+  {n:"阴阳窟",r:"大晋 · 南疆东南",re:"人界",f:"秘境·遗迹",x:835,y:858,s:5,imp:1,d:"大晋七大绝地之一，阴气汇聚。韩立深入探索，得阴芝马、遇银翅夜叉。",c:"韩立"},
+  {n:"华云州 · 临江府",r:"大晋 · 东部沿海",re:"人界",f:"大晋正道",x:775,y:790,s:5,imp:1,d:"大晋东部沿海大州，港口坊市众多。临江府众修齐聚屠蛟。",c:"韩立"},
+  {n:"天符门 · 白绣山",r:"大晋 · 华云州",re:"人界",f:"大晋正道",x:745,y:812,s:5,imp:1,d:"向之礼所创符箓宗门，韩立此行求得化灵符。",c:"向之礼"},
+  {n:"苦竹岛",r:"大晋 · 东海外海",re:"人界",f:"散修·海外",x:825,y:845,s:5,imp:1,d:"苦竹老人修炼之地，以万木大阵威震海外，韩立来此寻乌凤之翎。",c:"苦竹老人"},
+  /* ================= 灵界 · 血天大陆（北境横长条，依血天大陆舆图） ================= */
+  {n:"血天大陆 · 天鼎宫",r:"灵界 · 血天大陆",re:"灵界",f:"灵界诸族",x:700,y:300,s:6,imp:3,d:"血天大陆中央的天鼎宫，藏上古天鼎真人传承，冰魄仙子被困其中数万年。韩立以大乘之身闯宫救出冰魄，直面真仙马良血祭血天大陆的绝境。",c:"冰魄仙子 · 真仙马良 · 血骨门"},
+  {n:"马良陵",r:"灵界 · 血天大陆西境",re:"灵界",f:"灵界诸族",x:460,y:300,s:6,imp:1,d:"血天大陆西境的古陵，传闻与上古真仙马良的旧事有关。",c:"—"},
+  {n:"青云山脉",r:"灵界 · 血天大陆西境",re:"灵界",f:"灵界诸族",x:485,y:294,s:6,imp:1,d:"血天大陆西境的山脉，林木青翠，是西入雾海的分界。",c:"—"},
+  {n:"上古祭坛",r:"灵界 · 血天大陆",re:"灵界",f:"秘境·遗迹",x:725,y:292,s:6,imp:2,d:"血天大陆中央的上古祭坛，毗邻天鼎宫，是上古血祭仪式的遗址。",c:"—"},
+  {n:"天马城",r:"灵界 · 血天大陆东境",re:"灵界",f:"灵界诸族",x:790,y:300,s:6,imp:1,d:"血天大陆东境大城，天马一族的故地。",c:"—"},
+  {n:"天谷",r:"灵界 · 血天大陆东境",re:"灵界",f:"灵界诸族",x:830,y:305,s:6,imp:1,d:"血天大陆东境的谷地，海天谷的外脉。",c:"—"},
+  {n:"飞龙山",r:"灵界 · 血天大陆东境",re:"灵界",f:"灵界诸族",x:880,y:308,s:6,imp:1,d:"血天大陆东境的山脉，山势如龙，是东境的灵气祖脉。",c:"—"},
+  {n:"赤蛟城",r:"灵界 · 血天大陆东境",re:"灵界",f:"灵界诸族",x:935,y:312,s:6,imp:1,d:"血天大陆东境大城，赤蛟族的聚居之地。",c:"—"},
+  {n:"万灵山",r:"灵界 · 血天大陆东境",re:"灵界",f:"灵界诸族",x:990,y:317,s:6,imp:1,d:"血天大陆最东境的灵山，毗邻血界。",c:"—"},
+  {n:"万幽山",r:"灵界 · 血天大陆",re:"灵界",f:"灵界诸族",x:590,y:316,s:6,imp:1,d:"血天大陆的山脉，幽林密布，是天鼎宫西面的屏障。",c:"—"},
+  {n:"火云岛 · 火碧珊群岛",r:"灵界 · 血天大陆南海",re:"灵界",f:"灵界诸族",x:700,y:352,s:6,imp:2,d:"血天大陆南面的火碧珊群岛主岛，火云岛居中，珊瑚如火，是南北往来的海路中继。",c:"—"},
+  /* ================= 灵界 · 雷鸣大陆（西境，依雷鸣大陆舆图） ================= */
+  {n:"广寒界",r:"灵界 · 雷鸣大陆北海",re:"灵界",f:"灵界诸族",x:470,y:298,s:6,imp:2,d:"与灵界相连的上古秘境，悬浮于雷鸣大陆北海，韩立在此修炼突破炼虚。",c:"韩立"},
+  {n:"雪吼族",r:"灵界 · 雷鸣大陆北境",re:"灵界",f:"雷鸣·天云族",x:360,y:308,s:6,imp:1,d:"雷鸣大陆最北境的族群，居于雪山，以咆哮震敌闻名。",c:"—"},
+  {n:"爆烈族",r:"灵界 · 雷鸣大陆西北",re:"灵界",f:"雷鸣·天云族",x:310,y:325,s:6,imp:1,d:"雷鸣大陆西北的族群，性烈如火，善爆裂之术。",c:"—"},
+  {n:"千幻族",r:"灵界 · 雷鸣大陆东北",re:"灵界",f:"雷鸣·天云族",x:445,y:322,s:6,imp:1,d:"雷鸣大陆东北的族群，善幻术变化，是天云十三族的一支。",c:"—"},
+  {n:"盖灵城",r:"灵界 · 雷鸣大陆东北",re:"灵界",f:"雷鸣·天云族",x:478,y:340,s:6,imp:2,d:"雷鸣大陆东北大城，毗邻紫薇海，是雷鸣大陆东北的修真重城。",c:"—"},
+  {n:"角蚩族",r:"灵界 · 雷鸣大陆中部",re:"灵界",f:"雷鸣·角蚩族",x:420,y:348,s:6,imp:2,d:"雷鸣大陆中部的大族，角蚩族盘踞腹地神山，是雷鸣大陆的一方强族。",c:"—"},
+  {n:"爆鸣族",r:"灵界 · 雷鸣大陆西境",re:"灵界",f:"雷鸣·天云族",x:315,y:378,s:6,imp:1,d:"雷鸣大陆西境的族群，居西川之地，善爆鸣音波之术。",c:"—"},
+  {n:"西川之地",r:"灵界 · 雷鸣大陆西境",re:"灵界",f:"凡俗",x:295,y:392,s:6,imp:1,d:"雷鸣大陆西部的山川之地，爆鸣族的聚居区。",c:"—"},
+  {n:"墨绿族",r:"灵界 · 雷鸣大陆",re:"灵界",f:"雷鸣·天云族",x:408,y:385,s:6,imp:1,d:"雷鸣大陆中部的族群，善木毒、墨绿之术。",c:"—"},
+  {n:"海王族",r:"灵界 · 雷鸣大陆东海外",re:"灵界",f:"雷鸣·天云族",x:530,y:380,s:6,imp:1,d:"雷鸣大陆东海外、紫薇海以东的海族，海王族盘踞海外。",c:"—"},
+  {n:"万古族",r:"灵界 · 雷鸣大陆南部",re:"灵界",f:"雷鸣·天云族",x:355,y:400,s:6,imp:1,d:"雷鸣大陆南部天云十三族的一支，居于万古之地。",c:"—"},
+  {n:"天云十三族",r:"灵界 · 雷鸣大陆西南",re:"灵界",f:"雷鸣·天云族",x:318,y:408,s:6,imp:1,d:"雷鸣大陆西南、南部的族群联盟，十三族共守，是雷鸣大陆南部的主体。",c:"—"},
+  {n:"金甲城",r:"灵界 · 雷鸣大陆南境",re:"灵界",f:"雷鸣·天云族",x:420,y:415,s:6,imp:1,d:"天云十三族中金甲族的主城，金甲加身，毗邻甲石城。",c:"—"},
+  {n:"雷鸣大陆 · 云城",r:"灵界 · 雷鸣大陆",re:"灵界",f:"雷鸣·天云族",x:398,y:418,s:6,imp:2,d:"雷鸣大陆腹地的云城，天云十三族共守的核心城市，韩立在雷鸣大陆闯荡的落脚之地。",c:"冰凤 · 敖啸"},
+  {n:"甲石城",r:"灵界 · 雷鸣大陆南境",re:"灵界",f:"雷鸣·天云族",x:438,y:406,s:6,imp:1,d:"金甲族的重城，甲石林立，是雷鸣大陆南部的坚城。",c:"—"},
+  {n:"横水城",r:"灵界 · 雷鸣大陆东南",re:"灵界",f:"雷鸣·天云族",x:468,y:402,s:6,imp:1,d:"雷鸣大陆东南沿海的水城，是通往魔金山脉与紫薇海的要冲。",c:"—"},
+  {n:"八云山",r:"灵界 · 雷鸣大陆南境",re:"灵界",f:"雷鸣·天云族",x:420,y:432,s:6,imp:1,d:"金甲族的灵山，八峰并立，云雾缭绕。",c:"—"},
+  {n:"天空之岛",r:"灵界 · 雷鸣大陆西南海",re:"灵界",f:"雷鸣·天云族",x:340,y:436,s:6,imp:1,d:"雷鸣大陆西南海外的浮空岛屿，毗邻圣城。",c:"—"},
+  {n:"魔金山脉",r:"灵界 · 雷鸣大陆东南",re:"灵界",f:"雷鸣·天云族",x:472,y:432,s:6,imp:2,d:"雷鸣大陆东南的奇地，藏有魔金山铜矿脉，韩立曾来此寻宝。",c:"韩立"},
+  {n:"珠光城",r:"灵界 · 雷鸣大陆东南海",re:"灵界",f:"雷鸣·天云族",x:505,y:448,s:6,imp:1,d:"雷鸣大陆东南沿海大城，珠光璀璨，是通往紫薇海的港口。",c:"—"},
+  {n:"圣城",r:"灵界 · 雷鸣大陆南境",re:"灵界",f:"雷鸣·天云族",x:418,y:445,s:6,imp:2,d:"雷鸣大陆南部的圣城，天云十三族朝圣之地，毗邻天空之岛。",c:"—"},
+  {n:"多手族",r:"灵界 · 雷鸣大陆南端",re:"灵界",f:"雷鸣·夜叉族",x:355,y:455,s:6,imp:1,d:"雷鸣大陆最南端夜叉族的一支，多手多臂，居于夜叉半岛西侧。",c:"—"},
+  {n:"青蛙城",r:"灵界 · 雷鸣大陆南端",re:"灵界",f:"雷鸣·夜叉族",x:445,y:470,s:6,imp:1,d:"夜叉族的据点，在夜叉半岛东侧，毗邻伏蛟城。",c:"—"},
+  {n:"夜叉族",r:"灵界 · 雷鸣大陆最南端",re:"灵界",f:"雷鸣·夜叉族",x:400,y:478,s:6,imp:2,d:"雷鸣大陆最南端半岛的族群，夜叉族盘踞，多手、青蛙、伏蛟诸部林立。",c:"—"},
+  {n:"伏蛟城",r:"灵界 · 雷鸣大陆最南端",re:"灵界",f:"雷鸣·夜叉族",x:495,y:468,s:6,imp:1,d:"夜叉族的主城，伏蛟之地，毗邻通往风元大陆的传送阵。",c:"—"},
+  /* ================= 灵界 · 风元大陆（东境，依风元大陆舆图、三境七地舆图） ================= */
+  {n:"无涯海 · 元合岛",r:"灵界 · 风元大陆北海",re:"灵界",f:"灵界诸族",x:910,y:298,s:6,imp:3,d:"无涯海之中的元合岛与圣岛。韩立大乘后在无涯海建青元宫，与南宫婉相守。",c:"韩立 · 南宫婉"},
+  {n:"七妖之地 · 九仙山",r:"灵界 · 风元大陆北境",re:"灵界",f:"风元·妖族",x:978,y:326,s:6,imp:2,d:"风元大陆北境妖族圣地，九仙山居中，七妖妖王盘踞，是天鹏等妖族的圣境。",c:"天鹏王 · 银月"},
+  {n:"小修罗界 · 凤族",r:"灵界 · 风元大陆东北",re:"灵界",f:"凤族·灵族",x:1135,y:330,s:6,imp:2,d:"风元大陆东北的凤族、灵族之地，祖灵山、凤天要塞拱卫小修罗界，是凤族的圣境。",c:"凤族 · 灵族"},
+  {n:"祖灵山",r:"灵界 · 风元大陆东北",re:"灵界",f:"凤族·灵族",x:1105,y:342,s:6,imp:1,d:"凤族与灵族的灵山，凤族祖庭所在。",c:"—"},
+  {n:"凤天要塞",r:"灵界 · 风元大陆东北",re:"灵界",f:"凤族·灵族",x:1135,y:362,s:6,imp:1,d:"凤族的要塞，扼守小修罗界南口，是风元大陆东北的屏障。",c:"—"},
+  {n:"天渊城",r:"灵界 · 风元大陆",re:"灵界",f:"灵界诸族",x:1010,y:360,s:6,imp:3,d:"人妖两族共守的灵界门户，地处风元大陆核心。韩立在此重入化神、巡查浮黎沼泽，后历经天渊城大战。",c:"天渊卫 · 青冥卫"},
+  {n:"三境七地 · 玄武境",r:"灵界 · 风元大陆",re:"灵界",f:"灵界诸族",x:920,y:352,s:6,imp:2,d:"风元大陆人族三境之一，玄武境居西北，是天狐之地南缘的人族聚居区。",c:"人族各族"},
+  {n:"三境七地 · 天元境",r:"灵界 · 风元大陆",re:"灵界",f:"灵界诸族",x:1010,y:375,s:6,imp:2,d:"风元大陆人族三境之一，天元境居中，天元城为核心，是人族修真的腹地。",c:"人族各族"},
+  {n:"三境七地 · 天灵境",r:"灵界 · 风元大陆西境",re:"灵界",f:"灵界诸族",x:900,y:392,s:6,imp:2,d:"风元大陆人族三境之一，天灵境居西，毗邻蛮荒世界。",c:"人族各族"},
+  {n:"司南四方坛",r:"灵界 · 风元大陆东北",re:"灵界",f:"秘境·遗迹",x:1080,y:320,s:6,imp:2,d:"风元大陆东北的上古祭坛，司南四方坛为辨别四方、镇压地气的遗迹。",c:"—"},
+  {n:"万妙城",r:"灵界 · 风元大陆",re:"灵界",f:"灵界诸族",x:1055,y:390,s:6,imp:1,d:"风元大陆天元境东境的大城，万妙之地，是七妖南缘的修真城。",c:"—"},
+  {n:"甲豚族",r:"灵界 · 风元大陆西海外",re:"灵界",f:"风元·海族",x:820,y:380,s:6,imp:1,d:"风元大陆西海外的族群，豚形海兽，甲豚族世代居于此，是西面海上的一支海族。",c:"—"},
+  {n:"蛮荒世界",r:"灵界 · 风元大陆中南",re:"灵界",f:"蛮荒·古族",x:1030,y:422,s:6,imp:2,d:"风元大陆中南部的蛮荒世界，上古古族、凶兽盘踞，是灵界的化外之地。",c:"蛮荒古族"},
+  {n:"细衣族",r:"灵界 · 风元大陆西南",re:"灵界",f:"风元·妖族",x:890,y:420,s:6,imp:1,d:"风元大陆西南的族群，鸣煞之地为其据点，善细纱、隐遁之术。",c:"—"},
+  {n:"鸣煞之地",r:"灵界 · 风元大陆西南",re:"灵界",f:"秘境·遗迹",x:845,y:420,s:6,imp:1,d:"细衣族的领地，鸣煞之地终年煞气不散，是西南险地。",c:"—"},
+  {n:"赤魔海 · 天雾城",r:"灵界 · 风元大陆西南",re:"灵界",f:"风元·妖族",x:835,y:428,s:6,imp:1,d:"风元大陆西南的赤魔海，天雾城、雾海为其海上门户，毗邻飞灵族。",c:"—"},
+  {n:"飞灵族",r:"灵界 · 风元大陆西南",re:"灵界",f:"风元·妖族",x:885,y:438,s:6,imp:2,d:"风元大陆西南的族群，天玄城、白宝城、落日岛为其据点，是西南海上的大族。",c:"飞灵族"},
+  {n:"天玄城",r:"灵界 · 风元大陆西南",re:"灵界",f:"风元·妖族",x:865,y:448,s:6,imp:1,d:"飞灵族的主城，天玄城为西南海上的重城。",c:"—"},
+  {n:"白宝城",r:"灵界 · 风元大陆西南",re:"灵界",f:"风元·妖族",x:825,y:455,s:6,imp:1,d:"飞灵族的城池，白宝汇聚，是赤魔海东岸的商城。",c:"—"},
+  {n:"落日岛",r:"灵界 · 风元大陆西南",re:"灵界",f:"风元·妖族",x:868,y:468,s:6,imp:1,d:"飞灵族的岛屿，落日之岛，是西南外海的试炼之地。",c:"—"},
+  {n:"天忌族",r:"灵界 · 风元大陆南境",re:"灵界",f:"风元·妖族",x:990,y:448,s:6,imp:1,d:"风元大陆南境的族群，天忌族居于蛮荒世界南缘，为蛮荒古族之一。",c:"—"},
+  {n:"蜉蝣族",r:"灵界 · 风元大陆东南",re:"灵界",f:"风元·妖族",x:1130,y:430,s:6,imp:1,d:"风元大陆东南的族群，蜉蝣族沿海而居，是蛮荒世界东面的一支古族。",c:"—"},
+  {n:"真龙之岛",r:"灵界 · 风元大陆东南海",re:"灵界",f:"灵界诸族",x:1150,y:438,s:6,imp:1,d:"风元大陆东南外海的真龙一族圣地，真龙之岛，韩立曾得真龙之血机缘。",c:"真龙一族"},
+  {n:"青罗沙漠",r:"灵界 · 风元大陆西境",re:"灵界",f:"灵界诸族",x:255,y:395,s:6,imp:2,d:"韩立飞升灵界后的落点。被天东商号所救，重修炼体，历兽潮与落日之墓试炼。",c:"天东商号"},
+  /* ================= 灵界 · 魔界 / 小灵天 ================= */
+  {n:"魔界 · 魔源海",r:"灵界 · 魔族疆域",re:"灵界",f:"魔族",x:1250,y:408,s:6,imp:2,d:"魔族发源地之一，魔源海横贯魔界。韩立深入魔界历练，与魔尊交手，炼成五色寒焰。",c:"魔尊 · 骨皇"},
+  {n:"小灵天",r:"灵界 · 相邻界面",re:"灵界",f:"灵界诸族",x:190,y:430,s:6,imp:2,d:"与灵界相邻的小界面。南宫婉飞升时意外落于此，韩立寻访多年，终在小灵天重逢。",c:"南宫婉"},
+  /* ================= 仙界（相对布局为同人考据，原著无官方地图） ================= */
+  {n:"北寒仙域 · 飞升台",r:"仙界 · 北寒仙域",re:"仙界",f:"北寒仙域",x:150,y:100,s:8,imp:3,d:"韩立飞升仙界的落点，接引人为石矶殿大长老弟子高升。后因暴露时间法则晶粒遭陶羽追杀，又被方磐等人伏击，元婴被隔元法链封印，失忆后跌入北寒仙域直属下界灵寰界。",c:"高升 · 陶羽 · 方磐"},
+  {n:"明远城 · 余府",r:"仙界 · 灵寰界",re:"仙界",f:"灵寰界",x:135,y:160,s:8,imp:2,d:"灵寰界城池。失忆的韩立化名「柳石」，救下被血刀会燕承追捕的柳乐儿，并在余府结识白石真人。",c:"柳乐儿 · 白石真人 · 燕承"},
+  {n:"黄澜古漠",r:"仙界 · 灵寰界",re:"仙界",f:"灵寰界",x:163,y:150,s:8,imp:1,d:"灵寰界境内的古漠，失忆的韩立途经此地，与陆崖相遇。",c:"陆崖"},
+  {n:"冷焰宗",r:"仙界 · 灵寰界",re:"仙界",f:"灵寰界",x:198,y:168,s:8,imp:2,d:"灵寰界灵焰山脉的宗门。韩立在此偷学《小北斗星元功》，并以掌天瓶培育云鹤草，与古韵月相识。",c:"古韵月"},
+  {n:"境元观",r:"仙界 · 灵寰界",re:"仙界",f:"灵寰界",x:226,y:152,s:8,imp:1,d:"灵寰界宗门，门中有聚星台、九宫峰。韩立在灵寰界的又一处落脚点。",c:"—"},
+  {n:"天鬼宗",r:"仙界 · 灵寰界",re:"仙界",f:"灵寰界",x:240,y:167,s:8,imp:2,d:"灵寰界酆阴山脉幽鬼峰所在的宗门，门人有齐煊。韩立在灵寰界的最后一站，其后修成玄仙，破碎虚空偷渡回仙界。",c:"齐煊"},
+  {n:"乌蒙岛",r:"仙界 · 北寒仙域",re:"仙界",f:"北寒仙域",x:235,y:104,s:9,imp:3,d:"北寒仙域的海岛，韩立偷渡回仙界的落点。他以「祖神」之名行事，卷入无常盟、红月岛主与红月城的纷争；后重返此岛，借时间道丹悟出时间法则。",c:"无常盟 · 红月岛主"},
+  {n:"黑风城",r:"仙界 · 北寒仙域",re:"仙界",f:"北寒仙域",x:268,y:92,s:9,imp:2,d:"北寒仙域城池，韩立在此参加炼丹比试，并得道丹。",c:"—"},
+  {n:"冥寒仙府",r:"仙界 · 北寒仙域（方位存疑）",re:"仙界",f:"秘境·遗迹",x:272,y:106,s:9,imp:2,d:"金仙渠灵的秘境仙府，韩立应呼言道人之邀入内，在秘境中修炼千年，进阶金仙中期并击杀公输久，出府后与蛟三别离。原著梳理未明确其方位，本站暂置于北寒仙域东缘。",c:"渠灵 · 呼言道人 · 公输久 · 蛟三"},
+  {n:"烛龙道 · 太玄殿",r:"仙界 · 荒澜大陆",re:"仙界",f:"荒澜大陆",x:385,y:94,s:9,imp:2,d:"荒澜大陆的道统，韩立在太玄殿修炼《真言化轮经》，并在荒澜大陆击杀追杀者方磐。",c:"方磐"},
+  {n:"圣傀门",r:"仙界 · 荒澜大陆",re:"仙界",f:"荒澜大陆",x:458,y:104,s:9,imp:2,d:"荒澜大陆的宗门。韩立在此击杀重銮，得金仙傀儡与元合五极山；蟹道人融合金仙傀儡，韩立亦进至真仙后期。",c:"重銮 · 蟹道人"},
+  {n:"真言门遗迹",r:"仙界 · 黑土仙域",re:"仙界",f:"黑土仙域",x:622,y:92,s:9,imp:2,d:"穿透荒澜大陆后抵达的黑土仙域一带，真言门遗迹所在（分卷简介称其近黑山仙域，本站按相邻处理）。韩立在此遇石穿空，并经传送阵入灰界。",c:"石穿空"},
+  {n:"灰界 · 九幽域",r:"仙界 · 灰界",re:"仙界",f:"灰界·幽冥",x:505,y:157,s:9,imp:2,d:"韩立自真言门遗迹传送而入的灰界，有九幽域、洗煞池，天狐族道祖曾被封印于此。其后他与石穿空再传送至魔域。",c:"天狐族道祖 · 石穿空"},
+  {n:"积鳞空境",r:"仙界 · 魔域",re:"仙界",f:"仙界魔域·蛮荒",x:748,y:158,s:9,imp:2,d:"魔域内的空间，紫灵被流放于此。韩立在此击杀大皇子石斩空，蟹道人进阶傀儡道祖，随后他被传送至金源仙域。",c:"紫灵 · 石斩空 · 蟹道人"},
+  {n:"金源仙域 · 青狐一族",r:"仙界 · 金源仙域",re:"仙界",f:"金源仙域",x:905,y:92,s:9,imp:2,d:"被传送至金源仙域后，韩立在青狐一族处落脚，修为至太乙中期，并遭奇摩子追杀。",c:"青狐一族 · 奇摩子"},
+  {n:"太岁府",r:"仙界 · 金源仙域",re:"仙界",f:"秘境·遗迹",x:952,y:108,s:10,imp:2,d:"金源仙域现世的太岁府。韩立趁乱洗劫宝物；其后瓶灵带他穿越到真言门繁盛时期。",c:"—"},
+  {n:"真言门（繁盛时期）",r:"仙界 · 黑土仙域（过去）",re:"仙界",f:"黑土仙域",x:672,y:106,s:10,imp:3,d:"瓶灵带韩立穿越到真言门繁盛之时，他拜弥罗老祖为师，得光阴天璇大阵；阵内时间远快于外界，韩立借此进阶大罗。",c:"弥罗老祖 · 瓶灵"},
+  {n:"蛮荒大陆 · 荒泽骨山",r:"仙界 · 蛮荒大陆",re:"仙界",f:"仙界魔域·蛮荒",x:890,y:160,s:10,imp:2,d:"韩立再入蛮荒大陆（元荒、荒泽骨山一带），遇小白，其后凭光阴天璇大阵修炼进阶大罗。",c:"小白"},
+  {n:"九元观 · 九元城",r:"仙界 · 金源仙域",re:"仙界",f:"金源仙域",x:992,y:94,s:10,imp:3,d:"金源大仙域的九元观，九元道祖李元究坐镇。韩立为救金童赶至，金童被噬金仙曲鳞、鬼灵子所迫斩出恶尸；李元究在观前将韩立拦下，终放行。",c:"李元究 · 金童 · 曲鳞"},
+  {n:"阎罗之府",r:"仙界 · 幽冥鬼域",re:"仙界",f:"灰界·幽冥",x:1072,y:160,s:10,imp:2,d:"幽冥鬼域的阎罗之府，韩立在此继承弥罗衣钵，遇骨皇，轮回殿主（另一个韩立）亦在此现身。其后他斩出善尸、自我尸，救下南宫婉。",c:"骨皇 · 轮回殿主 · 南宫婉"},
+  {n:"黑土仙域 · 归隐地",r:"仙界 · 黑土仙域",re:"仙界",f:"黑土仙域",x:702,y:97,s:10,imp:3,d:"大决战后韩立与南宫婉、紫灵、蟹道人隐居于黑土仙域（据人物介绍）。具体地点原著梳理未明，此处仅作示意。",c:"南宫婉 · 紫灵 · 蟹道人"},
+  {n:"中土仙域 · 天庭",r:"仙界 · 中土仙域",re:"仙界",f:"仙域·天庭",x:1210,y:98,s:10,imp:3,d:"仙界中枢所在。轮回殿与天庭开战，古或今进阶混沌道祖，韩立因而进阶时间道祖，与轮回殿主、魔主联手斩杀古或今（本站梳理未能确认此战的具体地点，此处仅标天庭方位）。",c:"古或今 · 轮回殿主 · 魔主"}
+];
+var JOURNEY=[
+  {n:"五里沟 · 青牛镇",s:1},
+  {n:"彩霞山 · 七玄门",s:1},
+  {n:"嘉元城",s:2},
+  {n:"太南山 · 太南小会",s:2},
+  {n:"黄枫谷",s:2},
+  {n:"血色禁地",s:2},
+  {n:"燕翎堡",s:2},
+  {n:"灵石矿",s:2},
+  {n:"越京",s:2},
+  {n:"魁星岛 · 青云山",s:3,portal:"古传送阵"},
+  {n:"天星城",s:3},
+  {n:"虚天殿",s:3},
+  {n:"外海 · 万丈海",s:3},
+  {n:"妙音门 · 双峰岛",s:3},
+  {n:"皇明岛",s:3},
+  {n:"鬼雾",s:3},
+  {n:"阴冥之地",s:3},
+  {n:"落云宗 · 云梦山",s:4,portal:"传送回天南"},
+  {n:"阗天城",s:4},
+  {n:"苍坤真人遗迹",s:4},
+  {n:"阗天城",s:4},
+  {n:"慕兰草原",s:4},
+  {n:"坠魔谷 · 万岭山脉",s:4},
+  {n:"落云宗 · 云梦山",s:4},
+  {n:"慕兰草原",s:5},
+  {n:"江陵府",s:5},
+  {n:"三皇观",s:5},
+  {n:"晋京",s:5},
+  {n:"天符门 · 白绣山",s:5},
+  {n:"苦竹岛",s:5},
+  {n:"阴阳窟",s:5},
+  {n:"昆吾山",s:5},
+  {n:"霜郡",s:5},
+  {n:"小极宫 · 北溟冰岛",s:5},
+  {n:"虚天殿",s:5},
+  {n:"天星城",s:5},
+  {n:"极阴岛",s:5},
+  {n:"落云宗 · 云梦山",s:5},
+  {n:"星宫 · 重临",s:5},
+  {n:"晋京",s:5},
+  {n:"阴罗宗",s:5},
+  {n:"坠魔谷 · 万岭山脉",s:5},
+  {n:"五龙海 · 空间节点",s:5},
+  {n:"青罗沙漠",s:6,portal:"飞升灵界"},
+  {n:"天渊城",s:6},
+  {n:"火云岛 · 火碧珊群岛",s:6},
+  {n:"雷鸣大陆 · 云城",s:6},
+  {n:"魔金山脉",s:6},
+  {n:"广寒界",s:6},
+  {n:"天渊城",s:6},
+  {n:"三境七地 · 天元境",s:6},
+  {n:"七妖之地 · 九仙山",s:6},
+  {n:"魔界 · 魔源海",s:6},
+  {n:"天渊城",s:6},
+  {n:"魔界 · 魔源海",s:6},
+  {n:"小修罗界 · 凤族",s:6},
+  {n:"无涯海 · 元合岛",s:6},
+  {n:"血天大陆 · 天鼎宫",s:6},
+  {n:"小灵天",s:6},
+  {n:"天渊城",s:6},
+  {n:"鸣煞之地",s:6},
+  {n:"魔界 · 魔源海",s:6},
+  {n:"真龙之岛",s:6},
+  {n:"昆吾山",s:7,portal:"返回人界"},
+  {n:"星宫 · 重临",s:7},
+  {n:"五里沟 · 青牛镇",s:7},
+  {n:"坠魔谷 · 万岭山脉",s:7},
+  {n:"北寒仙域 · 飞升台",s:8,portal:"飞升仙界"},
+  {n:"明远城 · 余府",s:8},
+  {n:"黄澜古漠",s:8},
+  {n:"冷焰宗",s:8},
+  {n:"境元观",s:8},
+  {n:"天鬼宗",s:8},
+  {n:"乌蒙岛",s:9,portal:"偷渡回仙界"},
+  {n:"黑风城",s:9},
+  {n:"烛龙道 · 太玄殿",s:9},
+  {n:"圣傀门",s:9},
+  {n:"乌蒙岛",s:9},
+  {n:"冥寒仙府",s:9,warp:1},
+  {n:"真言门遗迹",s:9},
+  {n:"灰界 · 九幽域",s:9,portal:"传送入灰界",warp:1},
+  {n:"积鳞空境",s:9,warp:1},
+  {n:"金源仙域 · 青狐一族",s:9,warp:1},
+  {n:"金源仙域 · 青狐一族",s:10},
+  {n:"太岁府",s:10},
+  {n:"真言门（繁盛时期）",s:10,warp:1},
+  {n:"蛮荒大陆 · 荒泽骨山",s:10},
+  {n:"九元观 · 九元城",s:10},
+  {n:"阎罗之府",s:10},
+  {n:"黑土仙域 · 归隐地",s:10}
+];
+var STAGES=[
+  {id:0,name:"全部",sub:"三界八荒"},
+  {id:1,name:"七玄门",realm:"炼气",vol:"第一卷",tip:"五里沟 → 彩霞山·七玄门：少年入门，偶得掌天瓶，反杀墨大夫，携升仙令下山"},
+  {id:2,name:"越国修仙",realm:"炼气→筑基",vol:"第二·三卷",tip:"嘉元城 → 太南山 → 黄枫谷 → 血色禁地 → 燕翎堡 → 灵石矿 → 越京：筑基、夺宝，正魔大战后修复古传送阵出海"},
+  {id:3,name:"乱星海",realm:"筑基→结丹",vol:"第四卷",tip:"魁星岛 → 天星城 → 虚天殿 → 外海 → 皇明岛 → 鬼雾 → 阴冥之地：天星城结丹，拉出虚天鼎，外海猎妖，被困阴冥之地"},
+  {id:4,name:"重返天南",realm:"元婴",vol:"第五卷 · 第六卷初",tip:"落云宗 → 阗天城 → 苍坤遗宝 → 慕兰草原 → 坠魔谷：云梦山结婴，慕兰大战扬名，古魔脱困，返落云宗"},
+  {id:5,name:"大晋 · 纵横",realm:"元婴→化神",vol:"第六·七卷",tip:"慕兰 → 江陵府 → 晋京 → 昆吾山 → 小极宫 → 重临乱星海 → 落云宗 → 星宫 → 大晋 → 坠魔谷 → 五龙海：昆吾山魔劫、北冥岛妖乱，星宫平叛，坠魔谷闭关突破化神"},
+  {id:6,name:"灵界",realm:"化神→大乘",vol:"第八–十一卷",tip:"青罗沙漠 → 天渊城 → 雷鸣大陆 → 广寒界 → 九仙山 → 魔界 → 小修罗界 → 血天大陆 → 小灵天 → 鸣煞之地：魔界之战、终见南宫婉，斩杀真仙马良"},
+  {id:7,name:"重返人界",realm:"大乘",vol:"第十一卷末",tip:"昆吾山 → 星宫 → 韩家祠 → 坠魔谷：掌灭昆吾山、点醒后辈韩鸣、收取北极元晶，八千年后渡劫飞升"},
+  {id:8,name:"灵寰界",realm:"真仙→玄仙",vol:"仙界篇 第一卷",tip:"北寒飞升台 → 灵寰界：遭陶羽追杀、方磐伏击，元婴被封、失忆跌入灵寰界，历冷焰宗、境元观、天鬼宗，修成玄仙后偷渡回仙界"},
+  {id:9,name:"重回仙界",realm:"真仙→太乙",vol:"仙界篇 第二·三卷",tip:"乌蒙岛 → 黑风城 → 荒澜大陆 → 冥寒仙府 → 黑土仙域 → 灰界 → 魔域 → 金源仙域：躲避天庭通缉，一路辗转传送，进阶太乙"},
+  {id:10,name:"大罗之争",realm:"太乙→大罗",vol:"仙界篇 第四·五卷",tip:"金源 → 太岁府 → 真言门繁盛时期 → 蛮荒 → 九元观 → 幽冥：光阴天璇大阵修成大罗，联手斩古或今，瓶碎跌至大罗巅峰，隐居黑土仙域"}
+];
+var NSTAGE=STAGES.length-1;
+var REGIONS=[
+  {name:"北寒仙域",en:"Beihan Xianyu",re:"仙界",x:205,y:98,rx:100,ry:30},
+  {name:"荒澜大陆",en:"Huanglan Dalu",re:"仙界",x:425,y:98,rx:100,ry:30},
+  {name:"黑土仙域",en:"Heitu Xianyu",re:"仙界",x:650,y:98,rx:100,ry:30},
+  {name:"金源仙域",en:"Jinyuan Xianyu",re:"仙界",x:935,y:98,rx:115,ry:30},
+  {name:"中土仙域 · 天庭",en:"Zhongtu Xianyu",re:"仙界",x:1210,y:98,rx:120,ry:30},
+  {name:"灵寰界",en:"Linghuan Jie",re:"仙界",x:185,y:160,rx:82,ry:22},
+  {name:"灰界",en:"Hui Jie",re:"仙界",x:520,y:160,rx:62,ry:22},
+  {name:"魔域",en:"Moyu",re:"仙界",x:715,y:160,rx:72,ry:22},
+  {name:"蛮荒大陆",en:"Manhuang Dalu",re:"仙界",x:905,y:160,rx:72,ry:22},
+  {name:"幽冥鬼域",en:"Youming Guiyu",re:"仙界",x:1085,y:160,rx:68,ry:22},
+  /* 灵界（按灵界总览：血天在北、雷鸣在西、风元在东、魔界东南、小灵天西南） */
+  {name:"小灵天",en:"Xiaolingtian",re:"灵界",x:190,y:430,rx:88,ry:38},
+  {name:"雷鸣大陆",en:"Leiming Dalu",re:"灵界",x:400,y:385,rx:140,ry:93},
+  {name:"血天大陆",en:"Xuetian Dalu",re:"灵界",x:700,y:300,rx:330,ry:30},
+  {name:"风元大陆",en:"Fengyuan Dalu",re:"灵界",x:1010,y:385,rx:195,ry:95},
+  {name:"魔界",en:"Mo Jie",re:"灵界",x:1250,y:408,rx:82,ry:48},
+  /* 人界 */
+  {name:"无边海",en:"Wubian Hai",re:"人界",x:215,y:497,rx:150,ry:22},
+  {name:"越国 · 天南",en:"Yue · Tiannan",re:"人界",x:262,y:622,rx:160,ry:90},
+  {name:"极西之地",en:"Jixi Zhidi",re:"人界",x:96,y:704,rx:62,ry:38},
+  {name:"九国盟 · 慕兰",en:"Jiuguo · Mulan",re:"人界",x:430,y:720,rx:118,ry:42},
+  {name:"大晋",en:"Da Jin",re:"人界",x:700,y:768,rx:205,ry:120},
+  {name:"乱星海",en:"Luanxing Hai",re:"人界",x:1240,y:726,rx:205,ry:148}
+];
+var REALMS={"人界":{c:"#7fb3d9"},"灵界":{c:"#4ec9a0"},"仙界":{c:"#d4af6a"}};
+
+/* ---------------- 大陆内部子区域（国家/地域分区，依据《凡人必备手册·地理篇》与资源站考证） ----------------
+ * 子区域以父大陆椭圆为界：核心区 r 0~cr，外圈按角度区间分国家/地域。
+ * a0/a1 为角度区间（弧度，0=右、PI/2=上、PI=左、-PI/2=下），r0/r1 为径向区间。
+ * 颜色取势力色 f，块间预留角度缝隙作自然边界。
+ */
+var SUBS=[
+  /* === 人界·天南大陆（依《天南舆图》实测方位：越国居中，天南四势力环列 —— 天道盟北、正道盟西、九国盟南、魔道东） === */
+  {reg:"越国 · 天南",name:"越国",f:"天南正道",core:1,cr:.32},
+  {reg:"越国 · 天南",name:"天道盟 · 北境",f:"天南正道",a0:.97,a1:2.40,r0:.35,r1:.96},
+  {reg:"越国 · 天南",name:"正道盟 · 西陲",f:"天南正道",a0:2.40,a1:3.80,r0:.35,r1:.96},
+  {reg:"越国 · 天南",name:"九国盟 · 南疆",f:"天南正道",a0:3.80,a1:5.51,r0:.35,r1:.96},
+  {reg:"越国 · 天南",name:"魔道 · 东域",f:"天南魔道",a0:-.78,a1:.97,r0:.35,r1:.96},
+  /* 飓风沙漠压在正道盟西缘（舆图实测约 161°，处于外圈） */
+  {reg:"越国 · 天南",name:"飓风沙漠",f:"凡俗",a0:2.68,a1:3.03,r0:.64,r1:.95},
+  /* === 人界·大晋（依原著：一百零八州 · 三十六郡，正道十宗 / 魔道十宗，北溟小极宫、万妖谷） === */
+  {reg:"大晋",name:"中州 · 三十六郡",f:"大晋正道",core:1,cr:.40},
+  {reg:"大晋",name:"辽州 · 雪岭山脉",f:"大晋正道",a0:.30,a1:1.05,r0:.43,r1:.95},
+  {reg:"大晋",name:"北溟 · 小极宫",f:"大晋正道",a0:1.15,a1:1.85,r0:.43,r1:.95},
+  {reg:"大晋",name:"华云 · 天符门（西）",f:"大晋正道",a0:1.95,a1:2.60,r0:.43,r1:.95},
+  {reg:"大晋",name:"西部荒漠",f:"凡俗",a0:2.70,a1:3.10,r0:.43,r1:.95},
+  {reg:"大晋",name:"南疆 · 昆吾山",f:"秘境·遗迹",a0:-3.14,a1:-2.45,r0:.43,r1:.95},
+  {reg:"大晋",name:"魔道十宗（南）",f:"大晋魔道",a0:-2.35,a1:-1.40,r0:.43,r1:.95},
+  {reg:"大晋",name:"万妖谷（东南）",f:"阴司·海妖",a0:-1.30,a1:-.45,r0:.43,r1:.95},
+  {reg:"大晋",name:"大晋东海",f:"散修·海外",a0:-.35,a1:.20,r0:.43,r1:.95},
+  /* 乱星海为群岛：不设领土分区，按岛着色（见 archIslands） */
+  /* === 人界·九国盟·慕兰 === */
+  {reg:"九国盟 · 慕兰",name:"阗天城",f:"天南正道",core:1,cr:.38},
+  {reg:"九国盟 · 慕兰",name:"慕兰族（南）",f:"慕兰·突兀族",a0:-3.14,a1:-.6,r0:.32,r1:.95},
+  {reg:"九国盟 · 慕兰",name:"突兀族（北）",f:"慕兰·突兀族",a0:-.5,a1:1.5,r0:.32,r1:.95},
+  /* === 人界·极西之地/无边海 === */
+  {reg:"极西之地",name:"千竹教 · 强风沙漠",f:"散修·海外",core:1,cr:.92},
+  {reg:"无边海",name:"无尽海域",f:"散修·海外",core:1,cr:.92},
+  /* === 灵界·风元大陆（依风元舆图、三境七地舆图） === */
+  {reg:"风元大陆",name:"三境七地 · 天渊城",f:"灵界诸族",core:1,cr:.34},
+  {reg:"风元大陆",name:"凤族 · 灵族（东北）",f:"凤族·灵族",a0:-.15,a1:.15,r0:.37,r1:.95},
+  {reg:"风元大陆",name:"七妖之地（北）",f:"风元·妖族",a0:.2,a1:1.4,r0:.37,r1:.95},
+  {reg:"风元大陆",name:"甲豚族（西）",f:"风元·海族",a0:1.7,a1:2.45,r0:.37,r1:.95},
+  {reg:"风元大陆",name:"飞灵族（西南）",f:"风元·妖族",a0:2.5,a1:3.1,r0:.37,r1:.95},
+  {reg:"风元大陆",name:"细衣族（西南外）",f:"风元·妖族",a0:-3.14,a1:-2.3,r0:.37,r1:.95},
+  {reg:"风元大陆",name:"蛮荒世界（南）",f:"蛮荒·古族",a0:-2.2,a1:-1.0,r0:.37,r1:.95},
+  {reg:"风元大陆",name:"蜉蝣族（东南）",f:"风元·妖族",a0:-.9,a1:-.2,r0:.37,r1:.95},
+  /* === 灵界·雷鸣大陆（依雷鸣舆图） === */
+  {reg:"雷鸣大陆",name:"角蚩族腹地",f:"雷鸣·角蚩族",core:1,cr:.30},
+  {reg:"雷鸣大陆",name:"千幻族（东北）",f:"雷鸣·天云族",a0:.35,a1:1.2,r0:.35,r1:.95},
+  {reg:"雷鸣大陆",name:"雪吼族（北）",f:"雷鸣·天云族",a0:1.3,a1:2.1,r0:.35,r1:.95},
+  {reg:"雷鸣大陆",name:"爆烈族（西北）",f:"雷鸣·天云族",a0:2.15,a1:2.85,r0:.35,r1:.95},
+  {reg:"雷鸣大陆",name:"爆鸣族（西）",f:"雷鸣·天云族",a0:2.85,a1:3.14,r0:.35,r1:.95},
+  {reg:"雷鸣大陆",name:"海王族（东）",f:"雷鸣·天云族",a0:-.3,a1:.3,r0:.62,r1:.98},
+  {reg:"雷鸣大陆",name:"天云十三族（西南）",f:"雷鸣·天云族",a0:-3.14,a1:-2.2,r0:.35,r1:.95},
+  {reg:"雷鸣大陆",name:"金甲族（南）",f:"雷鸣·天云族",a0:-1.4,a1:-.3,r0:.5,r1:.75},
+  {reg:"雷鸣大陆",name:"夜叉族（东南）",f:"雷鸣·夜叉族",a0:-2.2,a1:-1.5,r0:.5,r1:.75},
+  /* === 灵界·血天大陆（依血天舆图） === */
+  {reg:"血天大陆",name:"天鼎宫",f:"灵界诸族",core:1,cr:.30},
+  {reg:"血天大陆",name:"万渊海（西）",f:"风元·海族",a0:1.6,a1:3.1,r0:.3,r1:.62},
+  {reg:"血天大陆",name:"上古祭坛（中）",f:"秘境·遗迹",a0:.6,a1:1.5,r0:.3,r1:.62},
+  {reg:"血天大陆",name:"天马城（东）",f:"灵界诸族",a0:-.3,a1:.5,r0:.3,r1:.62},
+  {reg:"血天大陆",name:"飞龙山（东偏）",f:"灵界诸族",a0:-.9,a1:-.4,r0:.3,r1:.62},
+  {reg:"血天大陆",name:"赤蛟城（东南）",f:"灵界诸族",a0:-1.6,a1:-1.0,r0:.3,r1:.62},
+  /* === 灵界·魔界/小灵天 === */
+  {reg:"魔界",name:"始魔之地",f:"魔族",core:1,cr:.42},
+  {reg:"魔界",name:"圣祖蛮荒",f:"魔族",a0:-3.14,a1:3.14,r0:.45,r1:.95},
+  {reg:"小灵天",name:"小灵天",f:"灵界诸族",core:1,cr:.92},
+  /* === 仙界 === */
+  {reg:"中土仙域 · 天庭",name:"天庭 · 天宫",f:"仙域·天庭",core:1,cr:.42},
+  {reg:"中土仙域 · 天庭",name:"中土州郡",f:"仙域·天庭",a0:-3.14,a1:3.14,r0:.44,r1:.94},
+  {reg:"北寒仙域",name:"北寒仙域",f:"北寒仙域",core:1,cr:.92},
+  {reg:"荒澜大陆",name:"荒澜大陆",f:"荒澜大陆",core:1,cr:.92},
+  {reg:"黑土仙域",name:"黑土仙域",f:"黑土仙域",core:1,cr:.92},
+  {reg:"金源仙域",name:"金源仙域",f:"金源仙域",core:1,cr:.92},
+  {reg:"灵寰界",name:"灵寰界",f:"灵寰界",core:1,cr:.92},
+  {reg:"灰界",name:"灰界",f:"灰界·幽冥",core:1,cr:.92},
+  {reg:"魔域",name:"魔域",f:"仙界魔域·蛮荒",core:1,cr:.92},
+  {reg:"蛮荒大陆",name:"蛮荒大陆",f:"仙界魔域·蛮荒",core:1,cr:.92},
+  {reg:"幽冥鬼域",name:"幽冥鬼域",f:"灰界·幽冥",core:1,cr:.92}
+];
+/* ---------------- 州国点位（第二级细节） ----------------
+ * 依《天南舆图》实测方位，u/v 为相对父区域椭圆的单位坐标（u 向东、v 向北，|r|<=1 落在椭圆内），
+ * 世界坐标 = 父区域中心 + (u*wrx, -v*wry)。放大到区域级比例尺后显示，避免全景时标注过密。
+ */
+var NATIONS=[
+  {reg:"越国 · 天南",n:"花雨国",u:-.45,v:.65,f:"天南正道"},
+  {reg:"越国 · 天南",n:"剡云国",u:-.31,v:.44,f:"天南正道"},
+  {reg:"越国 · 天南",n:"溪国",  u:-.04,v:.60,f:"天南正道"},
+  {reg:"越国 · 天南",n:"东裕国",u:-.03,v:.18,f:"天南正道"},
+  {reg:"越国 · 天南",n:"元武国",u:.09, v:.13,f:"天南正道"},
+  {reg:"越国 · 天南",n:"天虞国",u:.52, v:.50,f:"天南魔道"},
+  {reg:"越国 · 天南",n:"天罗国",u:.72, v:.01,f:"天南魔道"},
+  {reg:"越国 · 天南",n:"车骑国",u:.33, v:-.22,f:"天南魔道"},
+  {reg:"越国 · 天南",n:"幽谷国",u:.16, v:-.41,f:"天南正道"},
+  {reg:"越国 · 天南",n:"香国",  u:.06, v:-.14,f:"天南正道"},
+  {reg:"越国 · 天南",n:"风都国",u:-.26,v:-.08,f:"天南正道"},
+  {reg:"越国 · 天南",n:"望水国",u:-.54,v:-.27,f:"天南正道"},
+  {reg:"越国 · 天南",n:"北凉国",u:-.30,v:-.43,f:"天南正道"},
+  {reg:"越国 · 天南",n:"丰原国",u:-.22,v:-.55,f:"天南正道"},
+  {reg:"越国 · 天南",n:"飓风沙漠",u:-.74,v:.25,f:"凡俗"}
+];
+/* SUBS 分区名（含去括号）→ 同名的 LOCS 点不再重复标标签，由分区标签承担 */
+var SUB_LABEL_MAP={};
+SUBS.forEach(function(s){
+  SUB_LABEL_MAP[s.name]=1;
+  var b=s.name.replace(/（[^）]*）/g,"");
+  if(b) SUB_LABEL_MAP[b]=1;
+});
+
+var F={
+  "凡俗":{c:"#98a2b3"},"七玄门":{c:"#d4af6a"},"天南正道":{c:"#7fb3d9"},
+  "慕兰·突兀族":{c:"#c98f5a"},"天南魔道":{c:"#c77a6a"},"大晋正道":{c:"#a68bc9"},"大晋魔道":{c:"#c77a6a"},"散修·海外":{c:"#8fb0c8"},
+  "乱星海·星宫":{c:"#5b8fc9"},"秘境·遗迹":{c:"#c9b37a"},"阴司·海妖":{c:"#4f9dae"},
+  "灵界诸族":{c:"#4ec9a0"},"魔族":{c:"#e07b54"},"仙域·天庭":{c:"#f0c96a"},"仙界魔域·蛮荒":{c:"#b06ab3"},
+  "北寒仙域":{c:"#8ec5e8"},"灵寰界":{c:"#9fc08a"},"荒澜大陆":{c:"#5fb3b3"},"黑土仙域":{c:"#c9a36a"},"金源仙域":{c:"#e6c75a"},"灰界·幽冥":{c:"#8f98c0"},
+  "雷鸣·天云族":{c:"#4fb5a0"},"雷鸣·角蚩族":{c:"#a593c7"},"雷鸣·夜叉族":{c:"#7a9cc7"},
+  "风元·妖族":{c:"#5ec9a0"},"凤族·灵族":{c:"#e09a5a"},"风元·海族":{c:"#5aadc0"},"蛮荒·古族":{c:"#6a9e72"}
+};
+
+/* ---------------- 世界坐标映射（三界纵向：仙界上、灵界中、人界下） ---------------- */
+var WORLD={W:3000,H:3450};
+var PAD=700;  /* 世界画布外延：让深空/星云/色带向四周无限延续，消除矩形边界感 */
+var BND={
+  人界:{x:[96,1360],y:[495,880],tx:[140,2860],ty:[2200,3400]},
+  灵界:{x:[135,1300],y:[290,485],tx:[260,2640],ty:[1060,2040]},
+  仙界:{x:[100,1340],y:[65,190],tx:[520,2540],ty:[40,630]}
+};
+function mapN(v,a,b,c,d){ return c+(v-a)/(b-a)*(d-c); }
+function toWorld(p){
+  var b=BND[p.re];
+  return {x:mapN(p.x,b.x[0],b.x[1],b.tx[0],b.tx[1]), y:mapN(p.y,b.y[0],b.y[1],b.ty[0],b.ty[1])};
+}
+var WPT={}, LOC={};  // WPT: name -> world point；LOC: name -> loc
+LOCS.forEach(function(l){ var w=toWorld(l); WPT[l.n]={x:w.x,y:w.y}; l.wx=w.x; l.wy=w.y; LOC[l.n]=l; });
+REGIONS.forEach(function(r){ var w=toWorld({x:r.x,y:r.y,re:r.re}); r.wx=w.x; r.wy=w.y;
+  var b=BND[r.re]; r.wrx=r.rx*(b.tx[1]-b.tx[0])/(b.x[1]-b.x[0]); r.wry=r.ry*(b.ty[1]-b.ty[0])/(b.y[1]-b.y[0]); });
+
+/* ---------------- 工具 ---------------- */
+function clamp(v,a,b){ return v<a?a:(v>b?b:v); }
+function rand(a,b){ return a+Math.random()*(b-a); }
+function hex2rgba(hex,a){ var n=parseInt(hex.slice(1),16); return "rgba("+((n>>16)&255)+","+((n>>8)&255)+","+(n&255)+","+a+")"; }
+/* 向白混合：保留势力色相、提高明度，使字注在深色底图上清晰可读 */
+function lighten(hex,t){
+  var n=parseInt(hex.slice(1),16), r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  return "rgb("+Math.round(r+(255-r)*t)+","+Math.round(g+(255-g)*t)+","+Math.round(b+(255-b)*t)+")";
+}
+function lightenA(hex,t,a){
+  var n=parseInt(hex.slice(1),16), r=(n>>16)&255, g=(n>>8)&255, b=n&255;
+  return "rgba("+Math.round(r+(255-r)*t)+","+Math.round(g+(255-g)*t)+","+Math.round(b+(255-b)*t)+","+a+")";
+}
+/* Catmull-Rom 样条采样 */
+function catmull(pts,seg){
+  var out=[];
+  for(var i=0;i<pts.length-1;i++){
+    var p0=pts[Math.max(0,i-1)],p1=pts[i],p2=pts[i+1],p3=pts[Math.min(pts.length-1,i+2)];
+    for(var j=0;j<seg;j++){
+      var t=j/seg,t2=t*t,t3=t2*t;
+      out.push({
+        x:.5*((2*p1.x)+(-p0.x+p2.x)*t+(2*p0.x-5*p1.x+4*p2.x-p3.x)*t2+(-p0.x+3*p1.x-3*p2.x+p3.x)*t3),
+        y:.5*((2*p1.y)+(-p0.y+p2.y)*t+(2*p0.y-5*p1.y+4*p2.y-p3.y)*t2+(-p0.y+3*p1.y-3*p2.y+p3.y)*t3)
+      });
+    }
+  }
+  out.push({x:pts[pts.length-1].x,y:pts[pts.length-1].y});
+  return out;
+}
+/* ---------------- 阶段路径（预计算） ---------------- */
+var WARP_DIST=620;  // 世界距离阈值：超过则视为跨大陆/跨海「传送」
+var SEA_DIST=130;   // 群岛内相邻站点的渡海阈值：超过则画弧形航线而非直线
+/* 乱星海群岛范围（世界坐标），用于判断两点是否同处一片海域 */
+var ARCH_BOX=(function(){
+  var a=toWorld({x:995,y:548,re:"人界"}), b=toWorld({x:1450,y:890,re:"人界"});
+  return {x0:a.x,y0:a.y,x1:b.x,y1:b.y};
+})();
+function sameSea(a,b){
+  var inA=a.x>ARCH_BOX.x0&&a.x<ARCH_BOX.x1&&a.y>ARCH_BOX.y0&&a.y<ARCH_BOX.y1,
+      inB=b.x>ARCH_BOX.x0&&b.x<ARCH_BOX.x1&&b.y>ARCH_BOX.y0&&b.y<ARCH_BOX.y1;
+  return inA&&inB;
+}
+/* 弧线：a→b 之间按 lateral 偏移画一条鼓起的曲线（k 段） */
+function arcPts(a,b,bow,k){
+  var wl=Math.hypot(b.x-a.x,b.y-a.y)||1, out=[];
+  for(var i=1;i<=k;i++){
+    var t=i/k, bulge=Math.sin(Math.PI*t)*bow;
+    out.push({x:a.x+(b.x-a.x)*t+(b.y-a.y)/wl*bulge, y:a.y+(b.y-a.y)*t-(b.x-a.x)/wl*bulge});
+  }
+  return out;
+}
+var STAGE_PATHS={}, STAGE_LOCS={}, STAGE_WARPS={};
+STAGES.slice(1).forEach(function(st){
+  var steps=JOURNEY.filter(function(j){return j.s===st.id;});
+  var names=steps.map(function(j){return j.n;});
+  var pts=names.map(function(n){ return WPT[n]; });
+  STAGE_LOCS[st.id]=names.map(function(n){ return LOC[n]; });
+  // 按相邻距离拆分：实线游历段 + 直线传送段
+  var full=[], warps=[];
+  var i=0;
+  while(i<pts.length){
+    var j=i+1;
+    while(j<pts.length){
+      var dd=Math.hypot(pts[j].x-pts[j-1].x,pts[j].y-pts[j-1].y);
+      if(dd>WARP_DIST||steps[j].warp) break;
+      if(dd>SEA_DIST&&sameSea(pts[j-1],pts[j])) break;   /* 岛间渡海：另画弧线 */
+      j++;
+    }
+    var sm=catmull(pts.slice(i,j),30);
+    if(full.length>0) sm=sm.slice(1);
+    full=full.concat(sm);
+    if(j<pts.length){
+      var a=pts[j-1],b=pts[j],w0=full.length, wl=Math.hypot(b.x-a.x,b.y-a.y)||1;
+      if(steps[j].warp||(wl>WARP_DIST&&!sameSea(a,b))){
+        full=full.concat(arcPts(a,b,wl*.14,10));
+        warps.push({start:w0,end:full.length});
+      }else{
+        full=full.concat(arcPts(a,b,Math.min(64,wl*.18),16));
+      }
+    }
+    i=j;
+  }
+  STAGE_PATHS[st.id]=full;
+  STAGE_WARPS[st.id]=warps;
+});
+/* 各节点在阶段路径上的下标：到站触发与「从此处播放」共用 */
+var STAGE_NPOS={};
+STAGES.slice(1).forEach(function(st){
+  var pts=STAGE_PATHS[st.id], prev=0;
+  STAGE_NPOS[st.id]=STAGE_LOCS[st.id].map(function(l){
+    var best=prev,bd=1e18;
+    for(var k=prev;k<pts.length;k++){
+      var d=Math.hypot(pts[k].x-l.wx,pts[k].y-l.wy);
+      if(d<bd){ bd=d; best=k; if(d<1e-6) break; }
+    }
+    prev=best; return best;
+  });
+});
+/* 阶段内可见地点：本阶段首发地点 + 路线所经（含重访）的地点 */
+var STAGE_SETS={};
+STAGES.slice(1).forEach(function(st){
+  var m={}; JOURNEY.forEach(function(j){ if(j.s===st.id) m[j.n]=1; });
+  STAGE_SETS[st.id]=m;
+});
+function inStage(l,st){ return l.s===st || !!(STAGE_SETS[st]&&STAGE_SETS[st][l.n]); }
+/* 全旅程路径（终幕用） */
+var ALL_PATH=[];
+for(var ap=1;ap<=NSTAGE;ap++){
+  var spp=STAGE_PATHS[ap];
+  if(ALL_PATH.length>0) spp=spp.slice(1);
+  ALL_PATH=ALL_PATH.concat(spp);
+}
+
+/* ---------------- 相机（前瞻跟随 + 平滑） ---------------- */
+var cam={x:WORLD.W/2,y:WORLD.H/2,zoom:.28,tx:WORLD.W/2,ty:WORLD.H/2,tz:.28,
+  lx:WORLD.W/2,ly:WORLD.H/2,lz:.28,
+  flash:0,shake:0,sfx:0,heroShake:0};
+function camTarget(x,y,z){ cam.tx=x; cam.ty=y; cam.tz=z; }
+/* 帧率无关的指数阻尼（critically damped），lambda 越大跟得越快 */
+function dampTo(cur,target,lambda,dt){ return cur+(target-cur)*(1-Math.exp(-lambda*dt)); }
+function camSmooth(dt){
+  /* 目标层：快速阻尼，吃掉跟踪点/前瞻切线的跳变 */
+  cam.lx=dampTo(cam.lx,cam.tx,9,dt);
+  cam.ly=dampTo(cam.ly,cam.ty,9,dt);
+  cam.lz=dampTo(cam.lz,cam.tz,7,dt);
+  /* 相机层：跟随平滑目标，丝滑无抖动 */
+  cam.x=dampTo(cam.x,cam.lx,5.5,dt);
+  cam.y=dampTo(cam.y,cam.ly,5.5,dt);
+  cam.zoom=dampTo(cam.zoom,cam.lz,5,dt);
+  if(cam.flash>0) cam.flash=Math.max(0,cam.flash-dt*1.6);
+  if(cam.shake>0) cam.shake=Math.max(0,cam.shake-dt*2.4);
+  if(cam.sfx>0) cam.sfx=Math.max(0,cam.sfx-dt*1.4);
+  if(cam.heroShake>0) cam.heroShake=Math.max(0,cam.heroShake-dt*3);
+}
+/* 全屏闪光与震屏对光敏 / 前庭敏感用户有风险，遵循系统「减少动态效果」 */
+var REDUCE_MOTION=window.matchMedia("(prefers-reduced-motion: reduce)");
+function flash(alpha){ if(!REDUCE_MOTION.matches) cam.flash=Math.max(cam.flash,alpha); }
+function shake(a){ if(!REDUCE_MOTION.matches) cam.shake=Math.max(cam.shake,a); }
+
+var ZOOM_MIN=.22, ZOOM_MAX=2.8, ZOOM_STEP=1.3, PAN_STEP=140;
+/* 以屏幕点 (mx,my) 为锚瞬时缩放（滚轮 / 双指），保持锚点下的世界坐标不动 */
+function zoomAt(mx,my,nz){
+  nz=clamp(nz,ZOOM_MIN,ZOOM_MAX);
+  var wx=(mx-W/2)/cam.zoom+cam.x, wy=(my-H/2)/cam.zoom+cam.y;
+  cam.zoom=cam.lz=cam.tz=nz;
+  cam.x=cam.lx=cam.tx=wx-(mx-W/2)/nz;
+  cam.y=cam.ly=cam.ty=wy-(my-H/2)/nz;
+}
+/* 控件 / 键盘：只改相机目标，交给 camSmooth 缓动 */
+function zoomBy(f){ camTarget(cam.tx,cam.ty,clamp(cam.tz*f,ZOOM_MIN,ZOOM_MAX)); }
+function panBy(dx,dy){ camTarget(cam.tx+dx/cam.tz,cam.ty+dy/cam.tz,cam.tz); }
+
+/* ---------------- 光晕 sprite 缓存（替代每帧 createRadialGradient） ---------------- */
+var GLOWS={};
+function glowSprite(c){
+  if(GLOWS[c]) return GLOWS[c];
+  var s=document.createElement('canvas'); s.width=128; s.height=128;
+  var g=s.getContext('2d');
+  var rg=g.createRadialGradient(64,64,0,64,64,64);
+  rg.addColorStop(0,hex2rgba(c,.9)); rg.addColorStop(.35,hex2rgba(c,.38)); rg.addColorStop(1,hex2rgba(c,0));
+  g.fillStyle=rg; g.fillRect(0,0,128,128);
+  GLOWS[c]=s; return s;
+}
+/* ============================================================
+ * 离屏预渲染：海域底图层 / 大陆标准图式层
+ * 静态内容只画一次，每帧 drawImage，大幅提升细节与性能
+ * ============================================================ */
+var offBg=null, offLand=null;
+/* ============================================================
+ * 舆图原图查看层：直接展示作者原图（画地图的小七），不重绘、不拉伸、不叠加到主图上；
+ * 标注为绝对定位 DOM，坐标即原图像素坐标（经 Vision OCR + 人工核校）。
+ * 自成一体，不触碰三界巡游的相机 / 剧情 / LOCS；带虚线环的标注可跳回巡游图看百科剧情。
+ * ============================================================ */
+function bindTiannan(){
+  var PINS_TN=[
+    {n:"天道盟",x:631,y:184,k:"power",d:"天南四盟之一，以落云宗为首，握天南北境诸宗。"},
+    {n:"正道盟",x:432,y:376,k:"power",d:"以太真门为首的宗门联盟，与天道盟并称正道。"},
+    {n:"魔道",x:1007,y:342,k:"power",d:"御灵宗为首的魔道势力，正魔大战后吞并越国七派故地。"},
+    {n:"九国盟",x:627,y:533,k:"power",d:"化意门为首的九国联盟，辖天南中南部诸国。"},
+    {n:"无边海",x:708,y:34,k:"water",d:"天南北境的茫茫大洋，越国之北的天然屏障。"},
+    {n:"慕兰草原",x:649,y:740,k:"terrain",loc:"慕兰草原",d:"慕兰族世居的草原，人魔大战的主战场。"},
+    {n:"飓风沙漠",x:178,y:288,k:"terrain",loc:"飓风沙漠",d:"天南西境的大沙漠，终年飓风，入极西之地的必经险途。"},
+    {n:"极西之地",x:83,y:353,k:"terrain",loc:"极西之地",d:"大陆最西，千竹教所在，与天南隔着飓风沙漠。"},
+    {n:"梦山脉",x:580,y:155,k:"terrain",loc:"万岭山脉",d:"天南北境山脉，落云宗云梦山即在此脉。"},
+    {n:"花雨国",x:376,y:136,k:"state",d:"天南北境小国。"},
+    {n:"剡云国",x:470,y:214,k:"state",d:"天南北境小国，与越国往来密切。"},
+    {n:"溪国",x:654,y:152,k:"state",d:"天南北境之国，落云宗云梦山在溪国西北。"},
+    {n:"东裕国",x:665,y:314,k:"state",d:"天南中部之国，正处乱局中心。"},
+    {n:"天虞国",x:1035,y:194,k:"state",d:"天南东部之国，处魔道势力范围边缘。"},
+    {n:"元武国",x:743,y:334,k:"state",loc:"元武国",d:"天南中部大国，韩立曾入其境灭付家。"},
+    {n:"天罗国",x:1177,y:380,k:"state",loc:"天罗国",d:"天南东境之国，正魔两道势力交错。"},
+    {n:"香国",x:723,y:437,k:"state",d:"天南中部小国。"},
+    {n:"车骑国",x:910,y:468,k:"state",d:"天南东南之国。"},
+    {n:"风都国",x:505,y:416,k:"state",d:"天南中西之国。"},
+    {n:"望水国",x:315,y:488,k:"state",d:"天南西南之国。"},
+    {n:"北凉国",x:478,y:548,k:"state",loc:"北凉国",d:"越国七派被魔道吞并后迁至此地。"},
+    {n:"丰原国",x:530,y:596,k:"state",d:"天南南部之国。"},
+    {n:"幽谷国",x:789,y:542,k:"state",d:"天南东南之国。"}
+  ];
+  var MAPS=[
+    {id:"tiannan",  t:"天南舆图",    s:"TIANNAN · 天南四势力 · 二十余国",
+     art:"《天南舆图》", src:"assets/tiannan-map.png", w:1365, h:768, pins:PINS_TN},
+    {id:"dajin",    t:"大晋舆图",    s:"DA JIN · 大晋帝国 · 州府与宗派",
+     art:"《大晋帝国图》", src:"assets/map-dajin.jpg", w:2000, h:956, pins:[]},
+    {id:"luangxing",t:"乱星海舆图",  s:"LUANXING HAI · 内星海与外海群岛",
+     art:"《乱星海图》", src:"assets/map-luangxinghai.jpg", w:2000, h:956, pins:[]},
+    {id:"fengyuan", t:"风元大陆舆图",s:"FENGYUAN · 灵界 · 人族三境与妖族",
+     art:"《风元大陆图》", src:"assets/map-fengyuan.jpg", w:1080, h:1238, pins:[]}
+  ];
+  var panel=document.getElementById('tnPanel'), wrap=document.getElementById('tnWrap'),
+      stage=document.getElementById('tnStage'), ov=document.getElementById('tnOv'),
+      tip=document.getElementById('tnTip'), btn=document.getElementById('btnTn'),
+      img=document.getElementById('tnImg'), tabs=document.getElementById('tnTabs'),
+      elTitle=document.getElementById('tnTitle'), elSub=document.getElementById('tnSub'),
+      hint=document.getElementById('tnHint'), lg=document.getElementById('tnLegend'),
+      note=document.getElementById('tnNote');
+  if(!panel||!btn||!wrap||!stage) return;
+  var z=1, tx=0, ty=0, drag=null, wasPlaying=false, cur=MAPS[0], builtFor=null, applied=false;
+
+  function apply(){
+    wrap.style.transform='translate('+tx+'px,'+ty+'px) scale('+z+')';
+    wrap.style.setProperty('--inv',(1/z).toFixed(4));
+  }
+  function fit(){
+    var w=stage.clientWidth, h=stage.clientHeight;
+    if(!w||!h) return;
+    var base=Math.min(w/cur.w,h/cur.h);
+    wrap.style.width=(cur.w*base)+'px'; wrap.style.height=(cur.h*base)+'px';
+    z=1; tx=(w-cur.w*base)/2; ty=(h-cur.h*base)/2;
+    apply();
+  }
+  function zoomAt(mx,my,f){
+    var nz=Math.min(6,Math.max(.6,z*f));
+    tx=mx-(mx-tx)*(nz/z); ty=my-(my-ty)*(nz/z);
+    z=nz; apply();
+  }
+  /* 标注一律用原图自身的像素坐标，换图时整层重建 —— 只有落在原图上的注记才对得上 */
+  function buildPins(){
+    if(builtFor===cur.id) return;
+    builtFor=cur.id;
+    ov.innerHTML='';
+    cur.pins.forEach(function(p){
+      var d=document.createElement('div');
+      d.className='tn-pin k-'+p.k+(p.loc?' has-loc':'');
+      d.style.left=(p.x/cur.w*100)+'%';
+      d.style.top=(p.y/cur.h*100)+'%';
+      d.appendChild(document.createElement('i'));
+      d.addEventListener('mouseenter',function(){ showTip(p,d); });
+      d.addEventListener('mouseleave',function(){ tip.classList.remove('on'); });
+      if(p.loc) d.addEventListener('click',function(){
+        var l=LOC[p.loc];
+        if(l){ close(); locateLoc(l); }
+      });
+      ov.appendChild(d);
+    });
+  }
+  function showTip(p,node){
+    tip.querySelector('.n').textContent=p.n;
+    tip.querySelector('.r').textContent=p.d||'';
+    tip.querySelector('.go').textContent=p.loc?'点击查看百科剧情 ›':'';
+    var sr=stage.getBoundingClientRect(), nr=node.getBoundingClientRect();
+    tip.style.left=(nr.left-sr.left+nr.width/2)+'px';
+    tip.style.top=(nr.top-sr.top)+'px';
+    tip.classList.add('on');
+  }
+  function setMap(m){
+    cur=m;
+    elTitle.textContent=m.t; elSub.textContent=m.s;
+    img.src=m.src; img.alt=m.art.slice(1,-1)+'，作者：画地图的小七';
+    note.innerHTML='<b>底图：画地图的小七 '+m.art+' 原图</b>　·　第三方同人作品，非官方；坐标为同人考据相对坐标，原著无官方地图，仅供爱好者项目使用，不保证准确';
+    hint.textContent='滚轮缩放 · 拖拽平移 · 双击复位'+(m.pins.length?' · 虚线标注可点击跳转百科':'');
+    lg.style.display=m.pins.length?'':'none';
+    builtFor=null; tip.classList.remove('on');
+    [].forEach.call(tabs.children,function(b){ b.classList.toggle('on',b.getAttribute('data-m')===m.id); });
+    buildPins();
+    fit();
+  }
+  MAPS.forEach(function(m){
+    var b=document.createElement('button');
+    b.type='button'; b.setAttribute('data-m',m.id); b.textContent=m.t.replace('舆图','');
+    b.addEventListener('click',setMap.bind(null,m));
+    tabs.appendChild(b);
+  });
+  function open(){
+    panel.classList.add('show');
+    if(!applied){ applied=true; setMap(cur); }
+    else { buildPins(); fit(); }
+    if(MODE==="play"&&playing){ wasPlaying=true; playing=false; updatePlayBtn(); }
+  }
+  function close(){
+    panel.classList.remove('show');
+    tip.classList.remove('on');
+    if(wasPlaying){ wasPlaying=false; playing=true; updatePlayBtn(); }
+  }
+  btn.addEventListener('click',open);
+  document.getElementById('btnTnClose').addEventListener('click',close);
+  document.getElementById('tnZoom').addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('button'):null;
+    if(!b) return;
+    var a=b.getAttribute('data-tn'), cx=stage.clientWidth/2, cy=stage.clientHeight/2;
+    if(a==='in') zoomAt(cx,cy,1.4);
+    else if(a==='out') zoomAt(cx,cy,1/1.4);
+    else fit();
+  });
+  stage.addEventListener('wheel',function(e){
+    if(!panel.classList.contains('show')) return;
+    e.preventDefault();
+    var r=stage.getBoundingClientRect();
+    zoomAt(e.clientX-r.left, e.clientY-r.top, Math.exp(-e.deltaY*.0015));
+  },{passive:false});
+  stage.addEventListener('mousedown',function(e){
+    if(e.button!==0) return;
+    var r=stage.getBoundingClientRect();
+    drag={sx:e.clientX-r.left,sy:e.clientY-r.top,cx:tx,cy:ty};
+    stage.classList.add('drag');
+  });
+  stage.addEventListener('dblclick',fit);
+  window.addEventListener('mousemove',function(e){
+    if(!drag) return;
+    var r=stage.getBoundingClientRect();
+    tx=drag.cx+(e.clientX-r.left-drag.sx);
+    ty=drag.cy+(e.clientY-r.top-drag.sy);
+    apply();
+  });
+  window.addEventListener('mouseup',function(){ drag=null; stage.classList.remove('drag'); });
+  window.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&panel.classList.contains('show')){
+      e.preventDefault(); e.stopImmediatePropagation(); close();
+    }
+  });
+  var rt=null;
+  window.addEventListener('resize',function(){
+    if(!panel.classList.contains('show')) return;
+    clearTimeout(rt); rt=setTimeout(fit,150);
+  });
+}
+
+/* ---------------- 图例（与画布共用同一套符号与配色，保证图文一致） ---------------- */
+function svgEl(tag,attrs){
+  var e=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  for(var k in attrs) e.setAttribute(k,attrs[k]);
+  return e;
+}
+function legendGlyph(type,color){
+  var svg=svgEl('svg',{viewBox:'0 0 24 24'});
+  var d, fill=color, stroke='none', sw='0', cx=12, cy=12;
+  if(type==="tribe") d='M12 3.5 L21.5 20.5 L2.5 20.5 Z';
+  else if(type==="sea") d='M12 2.5 L21.5 12 L12 21.5 L2.5 12 Z';
+  else if(type==="ruin"){ d='M5.5 5.5 H18.5 V18.5 H5.5 Z'; fill='none'; stroke=color; sw='2.6'; }
+  else if(type==="sect"){
+    var pts=[];
+    for(var i=0;i<8;i++){
+      var a=-Math.PI/2+i*Math.PI/4, rr=(i%2)?4.2:10.6;
+      pts.push((cx+Math.cos(a)*rr).toFixed(1)+' '+(cy+Math.sin(a)*rr).toFixed(1));
+    }
+    d='M'+pts.join(' L')+' Z';
+  }
+  else if(type==="town") d='M12 5 a7 7 0 1 0 0.01 0 Z';
+  else d='M12 3.5 a8.5 8.5 0 1 0 0.01 0 Z';
+  svg.appendChild(svgEl('path',{d:d,fill:fill,stroke:stroke,'stroke-width':sw,'stroke-linejoin':'round'}));
+  return svg;
+}
+function legendLine(color,dashed){
+  var svg=svgEl('svg',{viewBox:'0 0 24 24'});
+  var a={d:'M2 12 L22 12',stroke:color,'stroke-width':'2.6','stroke-linecap':'round'};
+  if(dashed) a['stroke-dasharray']='4 3';
+  svg.appendChild(svgEl('path',a));
+  return svg;
+}
+function legendRow(label,node,note){
+  var r=document.createElement('div'); r.className='lg-row';
+  r.appendChild(node);
+  var b=document.createElement('b'); b.textContent=label; r.appendChild(b);
+  var sp=document.createElement('span'); sp.textContent=note||''; r.appendChild(sp);
+  return r;
+}
+function buildLegend(){
+  var body=document.getElementById('lgBody');
+  if(!body) return;
+  body.innerHTML='';
+  function sec(t){ var d=document.createElement('div'); d.className='lg-sec'; d.textContent=t; body.appendChild(d); }
+  function sep(){ var d=document.createElement('div'); d.className='lg-sep'; body.appendChild(d); }
+  sec('三 界');
+  ['人界','灵界','仙界'].forEach(function(k){
+    var i=document.createElement('i');
+    i.style.background='linear-gradient(90deg,'+hex2rgba(REALMS[k].c,.85)+','+hex2rgba(REALMS[k].c,.16)+')';
+    body.appendChild(legendRow(k,i,String(REGIONS.filter(function(r){return r.re===k;}).length)));
+  });
+  sep(); sec('地点类型');
+  var counts={};
+  LOCS.forEach(function(l){ var k=FTYPE[l.f]||'power'; counts[k]=(counts[k]||0)+1; });
+  TYPEDEF.forEach(function(t){
+    body.appendChild(legendRow(t.n,legendGlyph(t.k,lighten(TYPEDEF_COLOR[t.k]||'#cfe0f5',.25)),String(counts[t.k]||0)));
+  });
+  sep(); sec('线 型');
+  body.appendChild(legendRow('韩立足迹',legendLine('#f0c96a',false),''));
+  body.appendChild(legendRow('传送 · 飞升',legendLine('#8fe0c8',true),''));
+  var note=document.createElement('div'); note.className='lg-note';
+  note.textContent='色块为势力范围与地域分区，海面留白处注海域名；重叠时按等级自动隐去低等级注记。本图为依原著文本的示意性重构，地名、方位与距离均为同人考据，非官方设定，不保证准确；「画地图的小七」所绘同人舆图原图亦属第三方作品，见顶栏「舆图原图」。';
+  body.appendChild(note);
+  var head=document.querySelector('#mapLegend .lg-head');
+  if(head && !head._bound){
+    head._bound=1;
+    var toggleLegend=function(){
+      var folded=document.getElementById('mapLegend').classList.toggle('fold');
+      head.setAttribute('aria-expanded',!folded);
+    };
+    head.addEventListener('click',toggleLegend);
+    head.addEventListener('keydown',function(e){
+      if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleLegend(); }
+    });
+  }
+}
+/* 地形示意：等高环（分层设色）、河流（逐段渐宽的曲线）、山脉（沿随机游走脊线排列的山形符号） */
+function drawRelief(g,r,coast,seed,LW){
+  if(isArch(r)||r.name==="无边海") return;   /* 海域与群岛不画山地河流 */
+  var big=r.wry>=55;
+  var k, i, c=REALMS[r.re].c;
+  /* 等高环：由海岸向内缩放的两圈，微弱提亮，体现中部高、沿海低 */
+  if(big) [[.80,.022,.075],[.56,.026,.09]].forEach(function(h){
+    g.save(); g.translate(r.wx,r.wy); g.scale(h[0],h[0]); g.translate(-r.wx,-r.wy);
+    g.fillStyle="rgba(255,255,255,"+h[1]+")"; g.strokeStyle="rgba(226,210,176,"+h[2]+")"; g.lineWidth=1*LW/h[0]; g.lineJoin="round";
+    var n=coast.length, a, b;
+    g.beginPath(); g.moveTo((coast[n-1].x+coast[0].x)/2,(coast[n-1].y+coast[0].y)/2);
+    for(i=0;i<n;i++){ a=coast[i]; b=coast[(i+1)%n]; g.quadraticCurveTo(a.x,a.y,(a.x+b.x)/2,(a.y+b.y)/2); }
+    g.closePath(); g.fill(); g.stroke(); g.restore();
+  });
+  /* 山脊：随机游走节点 → Catmull-Rom 平滑 → 沿线等距布山 */
+  var nRidge=clamp(Math.round(r.wrx/55),2,6), ridges=[], peaks=[];
+  for(k=0;k<nRidge;k++){
+    var a0=rnd1(seed+k*4.7)*6.283185, d0=.16+rnd1(seed+k*6.1)*.5;
+    var x=r.wx+Math.cos(a0)*r.wrx*d0, y=r.wy+Math.sin(a0)*r.wry*d0*1.18;
+    var th=rnd1(seed+k*8.3)*6.283185, step=Math.max(14,r.wrx*.075), nodes=[];
+    for(i=0;i<12;i++){
+      if(!inPoly(coast,x,y)) break;
+      nodes.push({x:x,y:y});
+      th+=(rnd1(seed+k*13.1+i*2.9)-.5)*.85;
+      x+=Math.cos(th)*step; y+=Math.sin(th)*step*.75;
+    }
+    if(nodes.length<3) continue;
+    ridges.push(nodes);
+    var sm=catmull(nodes,6), acc=0, gap=11+rnd1(seed+k)*3;
+    for(i=1;i<sm.length;i++){
+      acc+=Math.hypot(sm[i].x-sm[i-1].x,sm[i].y-sm[i-1].y);
+      if(acc>=gap){
+        acc=0; gap=9+rnd1(seed+k*3+i)*7;
+        var hh=(4.5+rnd1(seed+k*5.3+i*1.7)*5.5)*clamp(r.wrx/220,.8,1.25);
+        peaks.push({x:sm[i].x+(rnd1(seed+i*2.2+k)-.5)*5, y:sm[i].y+(rnd1(seed+i*3.3+k)-.5)*4, h:hh});
+      }
+    }
+  }
+  /* 河流：自山脊起点蜿蜒入海，下游渐宽 */
+  var nRiv=r.wrx>130?2:1;
+  for(k=0;k<nRiv;k++){
+    var src=ridges.length?ridges[k%ridges.length][0]:{x:r.wx,y:r.wy};
+    var am=rnd1(seed+k*9.7+4)*6.283185;
+    var mx=r.wx+Math.cos(am)*r.wrx*1.12, my=r.wy+Math.sin(am)*r.wry*1.18*1.12;
+    var dx=mx-src.x, dy=my-src.y, L=Math.hypot(dx,dy)||1, nx=-dy/L, ny=dx/L, ctl=[];
+    for(i=0;i<=8;i++){
+      var t=i/8, off=(rnd1(seed+k*17+i*3.3)-.5)*L*.22*Math.sin(Math.PI*t)+Math.sin(t*9+seed%7)*L*.035;
+      ctl.push({x:src.x+dx*t+nx*off, y:src.y+dy*t+ny*off});
+    }
+    var rv=catmull(ctl,8);
+    g.save(); g.lineCap="round"; g.lineJoin="round"; g.strokeStyle="rgba(126,190,232,.42)";
+    for(i=1;i<rv.length;i++){
+      g.lineWidth=(.5+1.5*i/rv.length)*LW;
+      g.beginPath(); g.moveTo(rv[i-1].x,rv[i-1].y); g.lineTo(rv[i].x,rv[i].y); g.stroke();
+    }
+    g.restore();
+  }
+  /* 山形符号：自北向南绘制（后者遮前者）；左亮右暗的晕渲 + 轮廓线 */
+  peaks.sort(function(a,b){ return a.y-b.y; });
+  g.save(); g.lineJoin="round"; g.lineCap="round";
+  peaks.forEach(function(m){
+    var w=m.h*1.05;
+    g.fillStyle="rgba(190,210,235,.10)"; g.beginPath(); g.moveTo(m.x-w,m.y); g.lineTo(m.x,m.y-m.h); g.lineTo(m.x+.12*w,m.y); g.closePath(); g.fill();
+    g.fillStyle="rgba(3,7,12,.42)"; g.beginPath(); g.moveTo(m.x+.12*w,m.y); g.lineTo(m.x,m.y-m.h); g.lineTo(m.x+w,m.y); g.closePath(); g.fill();
+    g.strokeStyle="rgba(214,226,244,.30)"; g.lineWidth=.9*LW;
+    g.beginPath(); g.moveTo(m.x-w,m.y); g.lineTo(m.x,m.y-m.h); g.lineTo(m.x+w,m.y); g.stroke();
+  });
+  g.restore();
+}
+function buildOffscreen(){
+  var i,k;
+  /* —— 背景层：海色底图 + 经纬网（世界 + 外延 PAD，放大/拖动均无缝衔接） —— */
+  var bw=WORLD.W+PAD*2, bh=WORLD.H+PAD*2;
+  offBg=document.createElement('canvas'); offBg.width=bw; offBg.height=bh;
+  var g=offBg.getContext('2d');
+  var bgG=g.createLinearGradient(0,0,0,bh);
+  bgG.addColorStop(0,"#0a1626"); bgG.addColorStop(.45,"#08131f"); bgG.addColorStop(1,"#060e18");
+  g.fillStyle=bgG; g.fillRect(0,0,bw,bh);
+  g.save(); g.translate(PAD,PAD);
+  /* 经纬网：只在格网交点画十字标记（250 / 500），不再用贯穿全图的直线 */
+  function graticule(step,color,w,len){
+    g.strokeStyle=color; g.lineWidth=w; g.beginPath();
+    for(var x=Math.ceil(-PAD/step)*step;x<=WORLD.W+PAD;x+=step){
+      for(var y=Math.ceil(-PAD/step)*step;y<=WORLD.H+PAD;y+=step){
+        g.moveTo(x-len,y); g.lineTo(x+len,y); g.moveTo(x,y-len); g.lineTo(x,y+len);
+      }
+    }
+    g.stroke();
+  }
+  graticule(250,"rgba(126,196,240,.05)",1,3);
+  graticule(500,"rgba(126,196,240,.17)",1,11);
+  /* 三界海域色带：以极淡的纬度分区区分三界 */
+  var realms=[[40,1040,"#d4af6a"],[1060,2030,"#4ec9a0"],[2070,3410,"#7fb3d9"]];
+  realms.forEach(function(r){
+    var gr=g.createLinearGradient(0,r[0],0,r[1]);
+    gr.addColorStop(0,hex2rgba(r[2],.020)); gr.addColorStop(.5,hex2rgba(r[2],.045)); gr.addColorStop(1,hex2rgba(r[2],.020));
+    g.fillStyle=gr; g.fillRect(-PAD,r[0],bw,r[1]-r[0]);
+  });
+  /* 界面壁障静态渐变带（动态虚线另行绘制） */
+  [[1035,"126,209,255"],[2045,"212,175,106"]].forEach(function(w){
+    var band=w[0], cc=w[1];
+    var wg=g.createLinearGradient(0,band-56,0,band+56);
+    wg.addColorStop(0,"rgba(0,0,0,0)"); wg.addColorStop(.5,"rgba("+cc+",.08)"); wg.addColorStop(1,"rgba(0,0,0,0)");
+    g.fillStyle=wg; g.fillRect(-PAD,band-56,bw,112);
+  });
+  g.restore();
+  /* —— 大陆层（世界 + 外延）：浅海等深线 → 陆面平涂 → 地形晕渲 → 分区界线 → 海岸线 —— */
+  var lw=WORLD.W+PAD+80, lh=WORLD.H+PAD+80;
+  offLand=document.createElement('canvas'); offLand.width=lw; offLand.height=lh;
+  var lg=offLand.getContext('2d');
+  lg.save(); lg.translate(PAD,PAD);
+  /* 中点二次曲线闭合平滑：折线顶点作控制点，放大后海岸/国界仍圆润 */
+  function tracePath(g,p){
+    var n=p.length, i, a, b;
+    g.beginPath(); g.moveTo((p[n-1].x+p[0].x)/2,(p[n-1].y+p[0].y)/2);
+    for(i=0;i<n;i++){ a=p[i]; b=p[(i+1)%n]; g.quadraticCurveTo(a.x,a.y,(a.x+b.x)/2,(a.y+b.y)/2); }
+    g.closePath();
+  }
+  function scaleAbout(g,x,y,s,fn){ g.save(); g.translate(x,y); g.scale(s,s); g.translate(-x,-y); fn(); g.restore(); }
+  var LW=WORLD.W/3000;   /* 线宽基准：随世界尺度换算，缩放时线宽同步 */
+  /* 浅海等深线：海岸外三重渐次外扩、渐淡的海域环，海图式由浅入深 */
+  REGIONS.forEach(function(r){
+    var pts=buildLand(r);
+    [[1.20,.020,1.0],[1.11,.036,2.4],[1.04,.058,4.2],[1.0,.05,9]].forEach(function(h){
+      scaleAbout(lg,r.wx,r.wy,h[0],function(){
+        lg.strokeStyle="rgba(122,186,232,"+h[1]+")"; lg.lineWidth=h[2]*LW; lg.lineJoin="round";
+        tracePath(lg,pts); lg.stroke();
+      });
+    });
+  });
+  REGIONS.forEach(function(r){
+    var pts=buildLand(r);
+    var c=REALMS[r.re].c;
+    var seed=hashStr(r.name);
+    if(isArch(r)){
+      /* 群岛：逐岛着色（近岛同色、远岛渐淡），无领土分区、无河流山脉 */
+      archIslands().forEach(function(it){
+        var fc=(F[it.f]&&F[it.f].c)||c;
+        var dMain=Math.hypot(it.cx-r.wx,it.cy-r.wy)/r.wrx;
+        var al=it.main?.26:(dMain<.6?.20:.13);
+        lg.save();
+        tracePath(lg,it.pts); lg.clip();
+        lg.fillStyle="#1a2632"; lg.fillRect(it.cx-it.ra*1.4,it.cy-it.ra*1.6,it.ra*2.8,it.ra*3.2);
+        lg.fillStyle=hex2rgba(fc,al); lg.fillRect(it.cx-it.ra*1.4,it.cy-it.ra*1.6,it.ra*2.8,it.ra*3.2);
+        lg.strokeStyle="rgba(3,7,12,.45)"; lg.lineWidth=6*LW; lg.lineJoin="round";
+        tracePath(lg,it.pts); lg.stroke();
+        lg.restore();
+        lg.strokeStyle="rgba(226,210,176,"+(it.main?.62:.5)+")"; lg.lineWidth=(it.main?1.6:1.15)*LW; lg.lineJoin="round";
+        tracePath(lg,it.pts); lg.stroke();
+      });
+      return;
+    }
+    /* 陆面填充只在包围盒内进行（已有 clip 兜底），避免六次全画布填充 */
+    var bx=r.wx-r.wrx*1.3, by=r.wy-r.wry*1.5, bw2=r.wrx*2.6, bh2=r.wry*3.0;
+    lg.save();
+    tracePath(lg,pts); lg.clip();
+    /* 陆面平色：统一底色 + 朝北渐淡的势力色晕染，疆界由海岸线明确而非渐隐 */
+    lg.fillStyle="#1a2632"; lg.fillRect(bx,by,bw2,bh2);
+    var tg=lg.createLinearGradient(0,r.wy-r.wry*1.1,0,r.wy+r.wry*1.1);
+    tg.addColorStop(0,hex2rgba(c,.16)); tg.addColorStop(.55,hex2rgba(c,.06)); tg.addColorStop(1,hex2rgba(c,.015));
+    lg.fillStyle=tg; lg.fillRect(bx,by,bw2,bh2);
+    /* 地形：分层设色等高环 → 蜿蜒河流 → 山脉符号（皆为确定性生成，位于陆缘裁剪内） */
+    drawRelief(lg,r,pts,seed,LW);
+    /* 内部子区域（国家/地域）：势力色平涂 + 实线界线 */
+    SUBS.filter(function(s){return s.reg===r.name;}).forEach(function(sb){
+      var sp=buildSubPoly(r,sb);
+      var fc=(F[sb.f]&&F[sb.f].c)||c;
+      lg.fillStyle=hex2rgba(fc,sb.core?.20:.12); tracePath(lg,sp); lg.fill();
+      lg.strokeStyle=hex2rgba(fc,sb.core?.60:.34);
+      lg.lineWidth=(sb.core?1.5:1.1)*LW; lg.lineJoin="round";
+      tracePath(lg,sp); lg.stroke();
+    });
+    /* 海岸内晕：沿海岸内侧压一层暗影，使陆块自海面抬起 */
+    lg.strokeStyle="rgba(3,7,12,.45)"; lg.lineWidth=7*LW; lg.lineJoin="round";
+    tracePath(lg,pts); lg.stroke();
+    lg.restore();
+    /* 海岸线：清晰实线，图面第一等线（取羊皮纸象牙色，与区域原图同调） */
+    lg.strokeStyle="rgba(226,210,176,.62)"; lg.lineWidth=1.6*LW; lg.lineJoin="round";
+    tracePath(lg,pts); lg.stroke();
+  });
+  /* 近海岛屿：与大陆同色系，让海面不再是空白 */
+  REGIONS.forEach(function(r){
+    if(isArch(r)) return;
+    var c=REALMS[r.re].c;
+    buildIsles(r).forEach(function(ip){
+      lg.save();
+      tracePath(lg,ip); lg.clip();
+      lg.fillStyle="#1a2632"; lg.fillRect(r.wx-r.wrx*2, r.wy-r.wry*2.6, r.wrx*4, r.wry*5.2);
+      lg.fillStyle=hex2rgba(c,.13); lg.fillRect(r.wx-r.wrx*2, r.wy-r.wry*2.6, r.wrx*4, r.wry*5.2);
+      lg.restore();
+      lg.strokeStyle="rgba(226,210,176,.5)"; lg.lineWidth=1.1*LW; lg.lineJoin="round";
+      tracePath(lg,ip); lg.stroke();
+    });
+  });
+  lg.restore();
+}
+
+/* —— 动态壁障（渐变带已并入静态层，动态只画流动虚线 + 标签） —— */
+function wallPath(band,seed){
+  ctx.beginPath();
+  for(var x=-PAD;x<=WORLD.W+PAD;x+=22){
+    var y=band+Math.sin(x*.0043+seed)*15+Math.sin(x*.0121+seed*2)*6+Math.sin(x*.031+seed*3)*2;
+    x===-PAD?ctx.moveTo(x,y):ctx.lineTo(x,y);
+  }
+}
+function drawWalls(t){
+  var walls=[[1035,"rgba(126,209,255,.38)","rgba(255,255,255,.18)","人 界 → 灵 界"],
+             [2045,"rgba(212,175,106,.38)","rgba(255,255,255,.18)","灵 界 → 仙 界"]];
+  for(var i=0;i<walls.length;i++){
+    var w=walls[i], band=w[0], c1=w[1], cw=w[2], lab=w[3];
+    ctx.strokeStyle=c1; ctx.lineWidth=1.8; ctx.setLineDash([16,12]); ctx.lineDashOffset=-(t*26*(i?1:-1));
+    wallPath(band,i*1.9+.6); ctx.stroke();
+    ctx.setLineDash([4,8]); ctx.lineWidth=1; ctx.lineDashOffset=t*40*(i?1:-1);
+    ctx.strokeStyle=cw;
+    wallPath(band,i*1.9+.6); ctx.stroke(); ctx.setLineDash([]);
+    ctx.font="700 27px "+SERIF; ctx.textAlign="center";
+    haloText(lab,WORLD.W/2,band-84,"rgba(240,201,106,.78)","rgba(4,9,16,.85)",5);
+  }
+}
+
+/* 地图标注统一使用描边光晕（halo）：比发光更利于压住底色，是标准地图的字注做法 */
+function haloText(txt,x,y,color,halo,width){
+  ctx.lineJoin="round"; ctx.lineWidth=width; ctx.strokeStyle=halo;
+  ctx.strokeText(txt,x,y);
+  ctx.fillStyle=color; ctx.fillText(txt,x,y);
+}
+/* 海域标注：在海洋留白处补注海域名（参考世界观舆图 BV1xTBsBuE4B 的排布） */
+var OCEANS=[
+  /* 人界海域 */
+  {n:"无边海",re:"人界",x:.13,y:.55},
+  {n:"冰海",re:"人界",x:.62,y:.18},
+  {n:"内星海",re:"人界",x:.926,y:.700},
+  {n:"外星海",re:"人界",x:.996,y:.818},
+  {n:"万丈海",re:"人界",x:.786,y:.649},
+  {n:"天澜草原",re:"人界",x:.38,y:.42},
+  {n:"雾海",re:"人界",x:.834,y:.989},
+  /* 灵界海域 */
+  {n:"万渊海",re:"灵界",x:.30,y:.16},
+  {n:"无涯海",re:"灵界",x:.66,y:.22},
+  {n:"紫薇海",re:"灵界",x:.55,y:.52},
+  {n:"赤魔海",re:"灵界",x:.28,y:.62},
+  {n:"南海",re:"灵界",x:.52,y:.92}
+];
+
+/* ============================================================
+ * 地点符号体系：按据点类型区分符号（圆点=势力、三角=部族、菱形=海岛、
+ * 空心方=秘境、小圆=凡俗城镇、星形=门派），与地图图例一一对应。
+ * ============================================================ */
+var FTYPE={
+  "凡俗":"town","七玄门":"sect",
+  "天南正道":"power","天南魔道":"power","大晋正道":"power","大晋魔道":"power","乱星海·星宫":"power",
+  "灵界诸族":"power","魔族":"power","仙域·天庭":"power",
+  "北寒仙域":"power","灵寰界":"power","荒澜大陆":"power","黑土仙域":"power","金源仙域":"power","灰界·幽冥":"power",
+  "慕兰·突兀族":"tribe","仙界魔域·蛮荒":"tribe","雷鸣·天云族":"tribe","雷鸣·角蚩族":"tribe",
+  "雷鸣·夜叉族":"tribe","风元·妖族":"tribe","凤族·灵族":"tribe","蛮荒·古族":"tribe",
+  "散修·海外":"sea","阴司·海妖":"sea","风元·海族":"sea",
+  "秘境·遗迹":"ruin"
+};
+var TYPEDEF_COLOR={power:"#7fb3d9",sect:"#d4af6a",tribe:"#c98f5a",sea:"#4f9dae",ruin:"#c9b37a",town:"#98a2b3"};
+var TYPEDEF=[
+  {k:"power", n:"宗门 · 势力据点"},
+  {k:"sect",  n:"门派驻地"},
+  {k:"tribe", n:"部族 · 族群"},
+  {k:"sea",   n:"海岛 · 海外坊市"},
+  {k:"ruin",  n:"秘境 · 上古遗迹"},
+  {k:"town",  n:"凡俗城镇"}
+];
+function glyphPath(c,x,y,r,type){
+  c.beginPath();
+  if(type==="tribe"){
+    c.moveTo(x,y-r*1.25); c.lineTo(x+r*1.1,y+r*.9); c.lineTo(x-r*1.1,y+r*.9); c.closePath();
+  }else if(type==="sea"){
+    c.moveTo(x,y-r*1.3); c.lineTo(x+r*1.15,y); c.lineTo(x,y+r*1.3); c.lineTo(x-r*1.15,y); c.closePath();
+  }else if(type==="ruin"){
+    c.rect(x-r,y-r,r*2,r*2);
+  }else if(type==="sect"){
+    for(var i=0;i<8;i++){
+      var a=-Math.PI/2+i*Math.PI/4, rr=(i%2)?r*.44:r*1.4;
+      var px=x+Math.cos(a)*rr, py=y+Math.sin(a)*rr;
+      if(i) c.lineTo(px,py); else c.moveTo(px,py);
+    }
+    c.closePath();
+  }else if(type==="town"){
+    c.arc(x,y,r*.72,0,Math.PI*2);
+  }else{
+    c.arc(x,y,r,0,Math.PI*2);
+  }
+}
+function glyphAt(x,y,r,type,color,alpha){
+  ctx.save();
+  ctx.globalAlpha*=alpha;
+  ctx.fillStyle=color; ctx.strokeStyle=color;
+  ctx.lineWidth=Math.max(.9,r*.36); ctx.lineJoin="round";
+  glyphPath(ctx,x,y,r,type);
+  if(type==="ruin") ctx.stroke(); else ctx.fill();
+  ctx.restore();
+}
+
+/* ============================================================
+ * 图面注记：区域名 / 分区名 / 州国名 / 海域名 / 地点名统一收集后一并排布
+ * 所有文字走同一条避让流水线（屏幕矩形碰撞），按等级依次占位，放不下就隐去，
+ * 从根本上消除互相压字；字注一律带描边光晕（标准地图做法）。
+ * ============================================================ */
+function labelFont(item,z){ return (item.w?item.w+" ":"")+(item.fs/z)+"px "+(item.serif?SERIF:SANS); }
+function labelWidth(item,z){ return item.text.length*item.fs*(item.serif?1.02:.96)+4; }
+
+function collectStaticLabels(list){
+  var z=cam.zoom;
+  /* ① 区域（大陆/海域）名：第一等注记，固定压在大陆上缘 */
+  REGIONS.forEach(function(r){
+    var c=REALMS[r.re].c, fs=clamp(9+20*z,12,30);
+    list.push({prio:10, ax:r.wx, ay:r.wy-r.wry*1.02, gap:5, fs:fs, w:600, serif:true,
+      text:r.name, color:lightenA(c,.48,clamp(.80+.18*z,.70,1)), halo:"rgba(4,9,16,.9)", hw:3.4/z, alpha:1});
+    if(z>.55) list.push({prio:60, fixed:true, ax:r.wx, ay:r.wy-r.wry*1.02+fs*.92/z, fs:fs*.5, w:400,
+      text:r.en, color:"rgba(232,227,214,.5)", halo:"rgba(4,9,16,.82)", hw:2.6/z, alpha:1});
+  });
+  /* ② 分区（势力/国家/地域）名：落在本分区质心 */
+  if(z>=.30){
+    REGIONS.forEach(function(r){
+      var a=clamp((z-.30)/.16,0,.94);
+      SUBS.filter(function(s){return s.reg===r.name;}).forEach(function(sb){
+        var p=subLabelPos(r,sb), fc=(F[sb.f]&&F[sb.f].c)||REALMS[r.re].c;
+        list.push({prio:sb.core?20:30, ax:p.x, ay:p.y, gap:4, fs:sb.core?19:12.5, w:sb.core?700:500, serif:true,
+          text:sb.name, color:lightenA(fc,.38,a), halo:"rgba(4,9,16,.9)", hw:3.2/z, alpha:1});
+      });
+    });
+  }
+  /* ③ 州国点位名：区域比例尺下才出现；与 LOCS 同名的点交给地点标记，不重复 */
+  if(z>=.95){
+    var na=clamp((z-.95)/.18,0,1);
+    REGIONS.forEach(function(r){
+      NATIONS.filter(function(n){return n.reg===r.name&&!LOC[n.n];}).forEach(function(n){
+        var wx=r.wx+n.u*r.wrx, wy=r.wy-n.v*r.wry*1.18;
+        var fc=(F[n.f]&&F[n.f].c)||REALMS[r.re].c;
+        list.push({prio:40, ax:wx, ay:wy, gap:4, fs:12.5, w:500, serif:true,
+          text:n.n, color:lightenA(fc,.40,.95), halo:"rgba(4,9,16,.9)", hw:2.8/z, alpha:na,
+          dot:{x:wx,y:wy,r:1.9/z,color:hex2rgba(fc,.9)}});
+      });
+    });
+  }
+  /* ④ 海域名：斜体压在海面留白处 */
+  if(z>=.26){
+    var oa=clamp(.26+.22*z,.26,.6);
+    OCEANS.forEach(function(o){
+      var b=BND[o.re];
+      var wx=mapN(o.x,0,1,b.tx[0],b.tx[1]), wy=mapN(o.y,0,1,b.ty[0],b.ty[1]);
+      list.push({prio:50, ax:wx, ay:wy, gap:4, fs:clamp(11+12*z,12,22), w:500, serif:true, italic:true,
+        text:o.n, color:lightenA(REALMS[o.re].c,.30,oa), halo:"rgba(4,9,16,.8)", hw:2.6/z, alpha:1});
+    });
+  }
+}
+
+/* 避让排布：按等级依次尝试「下 / 上 / 右 / 左」，与已占位矩形冲突则放弃该条 */
+function placeLabels(cands){
+  var z=cam.zoom, placed=[];
+  cands.sort(function(a,b){ return a.prio-b.prio; });
+  cands.forEach(function(c){
+    var tw=labelWidth(c,z), th=c.fs, half=tw/2;
+    var tries;
+    if(c.fixed){
+      tries=[{cx:c.ax, cy:c.ay}];
+    }else{
+      var g=(c.gap||5)/z, r=c.dot?c.dot.r:0;
+      tries=[
+        {cx:c.ax,        cy:c.ay+r+g+th/2},
+        {cx:c.ax,        cy:c.ay-r-g-th/2},
+        {cx:c.ax+half+g, cy:c.ay},
+        {cx:c.ax-half-g, cy:c.ay}
+      ];
+    }
+    var got=null, gsp=null;
+    for(var ti=0;ti<tries.length;ti++){
+      var t=tries[ti];
+      /* 占位矩形一律用屏幕坐标（与 toScreen 同域），世界/屏幕单位不可混用 */
+      var sp=toScreen(t.cx,t.cy);
+      if(sp.x-half<2||sp.x+half>W-2||sp.y-th/2<2||sp.y+th/2>H-2) continue;
+      var r0={x0:sp.x-half-2, x1:sp.x+half+2, y0:sp.y-th/2-2, y1:sp.y+th/2+2};
+      var hit=false;
+      for(var pi=0;pi<placed.length;pi++){
+        var q=placed[pi];
+        if(r0.x0<q.x1&&r0.x1>q.x0&&r0.y0<q.y1&&r0.y1>q.y0){ hit=true; break; }
+      }
+      if(!hit){ got={cx:t.cx, cy:t.cy, ti:ti}; gsp=sp; break; }
+    }
+    if(!got) return;
+    placed.push({x0:gsp.x-half-2, x1:gsp.x+half+2,
+                 y0:gsp.y-th/2-2, y1:gsp.y+th/2+2, n:c.text});
+    /* 加点符号（州国名） */
+    if(c.dot){
+      ctx.save(); ctx.globalAlpha=c.alpha;
+      ctx.fillStyle=c.dot.color; ctx.beginPath(); ctx.arc(c.dot.x,c.dot.y,c.dot.r,0,Math.PI*2); ctx.fill();
+      ctx.restore();
+    }
+    /* 被挪到侧向的注记，用细引导线连回锚点 */
+    if(got.ti>0){
+      ctx.save(); ctx.globalAlpha=c.alpha*.24; ctx.strokeStyle="#b9c4d4"; ctx.lineWidth=.8/z;
+      ctx.setLineDash([3/z,4/z]); ctx.beginPath();
+      ctx.moveTo(c.ax,c.ay); ctx.lineTo(got.cx,got.cy); ctx.stroke(); ctx.restore();
+    }
+    ctx.save();
+    ctx.globalAlpha=c.alpha;
+    ctx.font=(c.italic?"italic ":"")+labelFont(c,z);
+    ctx.textAlign="center"; ctx.textBaseline="middle";
+    haloText(c.text,got.cx,got.cy,c.color,c.halo,c.hw);
+    ctx.restore();
+  });
+  window.__fanrenMap._placed=placed;
+  return placed;
+}
+
+/* ---------------- 粒子系统 ---------------- */
+var trail=[], warp=[], ripple=[], hoverLoc=null;
+function spawnTrail(x,y,n,color){
+  for(var i=0;i<n;i++) trail.push({x:x+rand(-7,7),y:y+rand(-7,7),life:rand(.4,1.1),max:1.1,sz:rand(1.4,4.2),c:color||"#f0c96a"});
+  if(trail.length>700) trail.splice(0,trail.length-700);
+}
+function spawnWarp(x,y){
+  for(var i=0;i<46;i++) warp.push({x:x,y:y,a:Math.random()*Math.PI*2,r:rand(8,90),vr:rand(1.4,3.4),life:rand(.5,1),max:1,c:i%3===0?"#dff3ff":"#8fe0c8"});
+}
+function spawnRipple(x,y,color){
+  ripple.push({x:x,y:y,r:8,vr:rand(46,90),life:1,max:1,c:color||"#f0c96a"});
+}
+function updateParticles(dt){
+  for(var i=trail.length-1;i>=0;i--){ var p=trail[i]; p.life-=dt*.9; if(p.life<=0) trail.splice(i,1); }
+  for(var i=warp.length-1;i>=0;i--){ var p=warp[i]; p.life-=dt; p.r+=p.vr*dt*28; if(p.life<=0) warp.splice(i,1); }
+  for(var i=ripple.length-1;i>=0;i--){ var p=ripple[i]; p.life-=dt*.55; p.r+=p.vr*dt; if(p.life<=0) ripple.splice(i,1); }
+}
+
+/* ---------------- 大陆轮廓（低频谐波 + 多倍频海岸噪声 + 全图共享形变，缓存） ---------------- */
+function hashStr(s){ var h=2166136261; for(var i=0;i<s.length;i++){ h^=s.charCodeAt(i); h=Math.imul(h,16777619)>>>0; } return h; }
+function rnd1(seed){ var x=Math.sin(seed*127.1+0.1)*43758.5453; return x-Math.floor(x); }
+/* 平滑值噪声（位置的确定性函数）：相邻分区共用同一场，界线位移一致、不裂缝 */
+function vnoise(x,y,s){
+  var xi=Math.floor(x), yi=Math.floor(y), xf=x-xi, yf=y-yi;
+  var u=xf*xf*(3-2*xf), v=yf*yf*(3-2*yf);
+  function h(a,b){ return rnd1(a*57.31+b*113.7+s*3.17); }
+  return h(xi,yi)*(1-u)*(1-v)+h(xi+1,yi)*u*(1-v)+h(xi,yi+1)*(1-u)*v+h(xi+1,yi+1)*u*v;
+}
+/* 界线细部扰动：三个尺度的位移，把 Voronoi 的直边变成蜿蜒的自然国界 */
+function borderJitter(p){
+  return {
+    x: p.x+(vnoise(p.x/74,p.y/74,1)-.5)*17+(vnoise(p.x/27,p.y/27,2)-.5)*8+(vnoise(p.x/11,p.y/11,3)-.5)*2.6,
+    y: p.y+(vnoise(p.x/74,p.y/74,4)-.5)*17+(vnoise(p.x/27,p.y/27,5)-.5)*8+(vnoise(p.x/11,p.y/11,6)-.5)*2.6
+  };
+}
+function densify(poly,step){
+  var out=[];
+  for(var i=0;i<poly.length;i++){
+    var a=poly[i], b=poly[(i+1)%poly.length], n=Math.max(1,Math.ceil(Math.hypot(b.x-a.x,b.y-a.y)/step));
+    for(var k=0;k<n;k++) out.push({x:a.x+(b.x-a.x)*k/n, y:a.y+(b.y-a.y)*k/n});
+  }
+  return out;
+}
+/* 区域内共享的平滑形变场：同一区域的陆缘与分区用同一个场，界线严丝合缝不裂缝；
+ * 相邻分区因形变一致而共用同一条边界，观感同真实行政图。 */
+function regionWarp(r,p){
+  var ph=(hashStr(r.name)%628)/100;
+  return {
+    x: p.x + Math.sin(p.y*.0069+ph)*13 + Math.sin(p.y*.0193+ph*2.1)*5.5 + Math.sin(p.y*.0431+ph*3.7)*2.2,
+    y: p.y + Math.sin(p.x*.0061+ph*1.7)*13 + Math.sin(p.x*.0171+ph*3.3)*5.5 + Math.sin(p.x*.0397+ph*5.1)*2.2
+  };
+}
+var LAND={};
+function buildLand(r){
+  var key=r.name;
+  if(LAND[key]) return LAND[key];
+  if(isArch(r)) return (LAND[key]=archIslands()[0].pts);
+  var seed=hashStr(key), ph=(seed%628)/100, pts=[], N=260, k, ns=seed%97;
+  /* 低频谐波决定海角 / 海湾 / 半岛的整体骨架 */
+  var H=[];
+  for(k=1;k<=6;k++) H.push({k:k,
+    a:(k===1?.030+rnd1(seed+3.1)*.055:.018+rnd1(seed+k*3.7)*.034),
+    p:rnd1(seed+k*11.3)*6.283185});
+  for(var i=0;i<N;i++){
+    var a=i/N*6.283185, s=1;
+    for(k=0;k<H.length;k++) s+=H[k].a*Math.sin(H[k].k*a+H[k].p);
+    /* 多倍频细节：海岸线在不同尺度上都有起伏 */
+    s+=.018*Math.sin(19*a+ph*2.0)+.012*Math.sin(37*a+ph*3.0);
+    /* 沿圆周取噪声（首尾无缝）：海湾、半岛、岬角、锯齿状细部依次叠加 */
+    var cx=Math.cos(a), cy=Math.sin(a);
+    s+=(vnoise(cx*2.1+5,cy*2.1+5,ns)-.5)*.07+(vnoise(cx*5.5+9,cy*5.5+9,ns+1)-.5)*.04
+      +(vnoise(cx*13+3,cy*13+3,ns+2)-.5)*.022+(vnoise(cx*31+7,cy*31+7,ns+3)-.5)*.011;
+    if(s<.66) s=.66;
+    pts.push(regionWarp(r,{x:r.wx+Math.cos(a)*r.wrx*s, y:r.wy+Math.sin(a)*r.wry*s*1.18}));
+  }
+  LAND[key]=pts;
+  return pts;
+}
+
+
+/* ---------------- 乱星海群岛（手绘骨架 + 确定性散布） ----------------
+ * 原著：内星海十二星岛环绕天星城，外星海二十四星岛散布外围，岛间皆为海。
+ * 手绘：中心大岛、各据点所在岛、西侧弧形长岛（妖海）、六道极圣岛群；其余岛屿按
+ * 间距规则随机撒点（先内圈后外圈），并避开海域注记位。尺寸以「数据 x 单位」计。 */
+function isArch(r){ return r.name==="乱星海"; }
+var ARCH_SPECS=[
+  {x:1268,y:722,a:60,b:44,f:"乱星海·星宫",main:1},
+  {x:1090,y:830,a:36,b:22,f:"乱星海·星宫"},
+  {x:1244,y:648,a:18,b:12,f:"秘境·遗迹"},
+  {x:1224,y:664,a:9,b:6,f:"散修·海外"},
+  {x:1205,y:690,a:16,b:10,f:"散修·海外"},
+  {x:1235,y:805,a:24,b:15,f:"散修·海外"},
+  {x:1270,y:615,a:24,b:15,f:"阴司·海妖"},
+  {x:1220,y:600,a:18,b:11,f:"阴司·海妖"},
+  {x:1175,y:612,a:26,b:9,rot:-12,f:"阴司·海妖"},
+  {x:1145,y:780,a:14,b:9,f:"阴司·海妖"},
+  {x:1285,y:820,a:28,b:16,f:"乱星海·星宫"},
+  {x:1315,y:785,a:20,b:13,f:"乱星海·星宫"},
+  {x:1360,y:852,a:26,b:14,f:"阴司·海妖"},
+  {x:1010,y:700,a:22,b:16,f:"阴司·海妖"},
+  {x:1390,y:872,a:30,b:12,f:"凡俗"},
+  {x:1150,y:852,a:20,b:10,f:"秘境·遗迹"},
+  {x:1070,y:728,a:70,b:11,rot:90,bend:.32,f:"阴司·海妖"},
+  {x:1262,y:840,a:6,b:4,f:"乱星海·星宫"}, {x:1310,y:838,a:6,b:4,f:"乱星海·星宫"},
+  {x:1285,y:860,a:5,b:3,f:"乱星海·星宫"}, {x:1334,y:822,a:5,b:3,f:"乱星海·星宫"},
+  {x:1405,y:730,a:16,b:11,f:"散修·海外"}, {x:1418,y:665,a:9,b:6,f:"阴司·海妖"},
+  {x:1392,y:612,a:10,b:7,f:"散修·海外"}, {x:1332,y:582,a:10,b:6,f:"阴司·海妖"},
+  {x:1118,y:640,a:9,b:6,f:"散修·海外"}
+];
+/* 海域注记位（数据坐标 + 半宽/半高，撒点时避让） */
+var ARCH_KEEP=[{x:1268,y:778,hw:34,hh:7},{x:1352,y:738,hw:34,hh:7},{x:1240,y:572,hw:46,hh:7},{x:1150,y:704,hw:30,hh:7}];
+var ARCH=null;
+function isleOutline(cx,cy,a,b,rot,bend,sh){
+  var M=a>30?76:48, pts=[], cr=Math.cos(rot), sr=Math.sin(rot);
+  for(var m=0;m<M;m++){
+    var t=m/M*6.283185;
+    var k=1+.2*Math.sin(3*t+(sh%7))+.12*Math.sin(5*t+(sh%11))+.07*Math.sin(8*t+(sh%13))
+      +(vnoise(Math.cos(t)*2.4+sh%50,Math.sin(t)*2.4,sh%31)-.5)*.3
+      +(a>20?(vnoise(Math.cos(t)*6+sh%40,Math.sin(t)*6+3,sh%29+1)-.5)*.13:0);
+    if(k<.62) k=.62;
+    var lx=Math.cos(t)*a*k, ly=Math.sin(t)*b*k+bend*a*Math.pow(lx/a,2);
+    pts.push({x:cx+lx*cr-ly*sr, y:cy+lx*sr+ly*cr});
+  }
+  return pts;
+}
+function archIslands(){
+  if(ARCH) return ARCH;
+  var b0=BND.人界, US=(b0.tx[1]-b0.tx[0])/(b0.x[1]-b0.x[0]), out=[], n=0;
+  function addW(wx,wy,a,b,rot,bend,f,main){
+    var A=a*US, B=b*US, sh=hashStr("乱星海#"+(n++));
+    out.push({pts:isleOutline(wx,wy,A,B,(rot||0)*Math.PI/180,bend||0,sh), f:f, cx:wx, cy:wy, a:A, b:B, main:!!main, ra:Math.max(A,B)});
+  }
+  function add(x,y,a,b,rot,bend,f,main){ var w=toWorld({x:x,y:y,re:"人界"}); addW(w.x,w.y,a,b,rot,bend,f,main); }
+  ARCH_SPECS.forEach(function(sp){ add(sp.x,sp.y,sp.a,sp.b,sp.rot,sp.bend,sp.f,sp.main); });
+  var seed=hashStr("乱星海#scatter"), main=out[0];
+  var yMax=toWorld({x:0,y:874,re:"人界"}).y, yMin=toWorld({x:0,y:556,re:"人界"}).y, xMin=toWorld({x:1020,y:0,re:"人界"}).x, xMax=toWorld({x:1440,y:0,re:"人界"}).x;
+  function free(w,ra){
+    var gap=ra+5*US, j, v;
+    for(j=0;j<out.length;j++){
+      var q=out[j];
+      if(Math.hypot(w.x-q.cx,w.y-q.cy)>q.ra+gap+q.ra*.1) continue;
+      if(inPoly(q.pts,w.x,w.y)) return false;
+      for(v=0;v<q.pts.length;v++) if(Math.hypot(w.x-q.pts[v].x,w.y-q.pts[v].y)<gap) return false;
+    }
+    for(j=0;j<ARCH_KEEP.length;j++){
+      var kp=toWorld({x:ARCH_KEEP[j].x,y:ARCH_KEEP[j].y,re:"人界"});
+      if(Math.abs(w.x-kp.x)<ARCH_KEEP[j].hw*US+ra && Math.abs(w.y-kp.y)<ARCH_KEEP[j].hh*US*1.45+ra) return false;
+    }
+    return true;
+  }
+  function scatter(ringRx,ringRy,tries,want,fk,amin,aspan,rmin){
+    var got=0;
+    for(var t=0;t<tries&&got<want;t++){
+      var ang=rnd1(seed+t*3.7+fk)*6.283185, rr=rmin+rnd1(seed+t*5.3+fk)*(1-rmin);
+      var cx=main.cx+Math.cos(ang)*ringRx*US*rr, cy=main.cy+Math.sin(ang)*ringRy*US*1.45*rr;
+      var a=amin+rnd1(seed+t*7.9+fk)*aspan, ra=a;
+      if(cy>yMax||cy<yMin||cx<xMin||cx>xMax||!free({x:cx,y:cy},ra*US)) continue;
+      var bw=a*(.55+rnd1(seed+t*9.1+fk)*.3);
+      addW(cx,cy,a,bw,rnd1(seed+t*2.3+fk)*180,0,fk<50?"乱星海·星宫":(rnd1(seed+t*4.1)<.45?"阴司·海妖":"散修·海外"));
+      got++;
+    }
+  }
+  scatter(105,72,200,12,0,5,7,.55);
+  scatter(215,150,500,26,100,3.5,8.5,.5);
+  /* 兜底：任何乱星海据点若不在岛上，就地补一座小岛 */
+  LOCS.forEach(function(l){
+    if(l.r.indexOf("乱星海")!==0) return;
+    for(var j=0;j<out.length;j++) if(inPoly(out[j].pts,l.wx,l.wy)) return;
+    add(l.x,l.y,12,8,0,0,l.f);
+  });
+  ARCH=out;
+  return out;
+}
+
+/* ---------------- 近海岛屿（乱星海为群岛，其余为点缀，确定性生成） ---------------- */
+var ISLES={};
+function isleCount(r){
+  if(r.name==="无边海") return 8;
+  if(r.name==="魔界"||r.name==="小灵天") return 5;
+  return 3;
+}
+function buildIsles(r){
+  var key=r.name;
+  if(ISLES[key]) return ISLES[key];
+  if(isArch(r)) return (ISLES[key]=archIslands().slice(1).map(function(it){ return it.pts; }));
+  var seed=hashStr(key+"#isles"), n=isleCount(r), out=[];
+  for(var i=0;i<n;i++){
+    var a=rnd1(seed+i*3.1)*6.283185;
+    var d=1.04+rnd1(seed+i*5.7)*.62;
+    var cx=r.wx+Math.cos(a)*r.wrx*d, cy=r.wy+Math.sin(a)*r.wry*d*1.18;
+    var base=(8+rnd1(seed+i*7.3)*20)*(r.wrx/344);
+    var sh=hashStr(key+"#"+i), M=44, pts=[];
+    for(var m=0;m<M;m++){
+      var t=m/M*6.283185;
+      var k=1+.26*Math.sin(3*t+(sh%7))+.15*Math.sin(5*t+(sh%11))+.09*Math.sin(8*t+(sh%13))
+        +(vnoise(Math.cos(t)*2.4+sh%50,Math.sin(t)*2.4,sh%31)-.5)*.34;
+      if(k<.6) k=.6;
+      pts.push(regionWarp(r,{x:cx+Math.cos(t)*base*k, y:cy+Math.sin(t)*base*k*.8}));
+    }
+    out.push(pts);
+  }
+  ISLES[key]=out;
+  return out;
+}
+
+/* ---------------- 分区多边形（加权 Voronoi 剖分 → 共享形变 → 陆缘裁剪） ----------------
+ * 以各分区的锚点作 Voronoi 剖分，得到相互咬合、不重叠的领土块；
+ * 剖分在归一化 (u,v) 圆内进行（u 向东、v 向北），再映射回世界坐标。
+ */
+var SUBCELL={};
+function clipHalf(poly,nx,ny,c){           /* 保留 nx*x + ny*y + c <= 0 的一侧 */
+  var out=[];
+  for(var i=0;i<poly.length;i++){
+    var a=poly[i], b=poly[(i+1)%poly.length];
+    var da=nx*a.x+ny*a.y+c, db=nx*b.x+ny*b.y+c;
+    if(da<=0) out.push(a);
+    if((da<0&&db>0)||(da>0&&db<0)){
+      var t=da/(da-db);
+      out.push({x:a.x+(b.x-a.x)*t, y:a.y+(b.y-a.y)*t});
+    }
+  }
+  return out;
+}
+function subAnchor(reg,sb){
+  /* 锚点：核心区取陆心，外围分区取角度区间中值处的径向中点，并做确定性抖动避免共圆规整 */
+  if(sb.core) return {u:0, v:0};
+  var sd=hashStr(reg.name+"|"+sb.name);
+  var am=(sb.a0+sb.a1)/2 + (rnd1(sd)-.5)*(sb.a1-sb.a0)*.34;
+  var rm=(sb.r0+sb.r1)/2 + (rnd1(sd+7)-.5)*.14;
+  return {u:Math.cos(am)*rm, v:Math.sin(am)*rm};
+}
+function subCells(reg){
+  if(SUBCELL[reg.name]) return SUBCELL[reg.name];
+  var subs=SUBS.filter(function(s){return s.reg===reg.name;});
+  var seeds=subs.map(function(sb){
+    var an=subAnchor(reg,sb);
+    return {sb:sb, x:reg.wx+an.u*reg.wrx, y:reg.wy-an.v*reg.wry*1.18};
+  });
+  var R=2.4, M=80, out=[];
+  seeds.forEach(function(s,i){
+    var poly=[];
+    for(var m=0;m<M;m++){
+      var t=m/M*6.283185;
+      poly.push({x:reg.wx+Math.cos(t)*reg.wrx*R, y:reg.wy+Math.sin(t)*reg.wry*R*1.18});
+    }
+    for(var j=0;j<seeds.length&&poly.length>2;j++){
+      if(j===i) continue;
+      var q=seeds[j];
+      poly=clipHalf(poly, 2*(q.x-s.x), 2*(q.y-s.y), (s.x*s.x+s.y*s.y)-(q.x*q.x+q.y*q.y));
+    }
+    if(poly.length<3) return;
+    out.push({sb:s.sb, seed:{x:s.x,y:s.y}, pts:densify(poly,13).map(function(p){ return borderJitter(regionWarp(reg,p)); })});
+  });
+  SUBCELL[reg.name]=out;
+  return out;
+}
+function buildSubPoly(reg,sub){
+  var cells=subCells(reg);
+  for(var i=0;i<cells.length;i++) if(cells[i].sb===sub) return cells[i].pts;
+  return [];
+}
+/* 多边形质心与落点判定（用于把分区名放到本分区内部） */
+function polyCentroid(pts){
+  var a=0,cx=0,cy=0;
+  for(var i=0;i<pts.length;i++){
+    var p=pts[i], q=pts[(i+1)%pts.length], f=p.x*q.y-q.x*p.y;
+    a+=f; cx+=(p.x+q.x)*f; cy+=(p.y+q.y)*f;
+  }
+  if(Math.abs(a)<1e-9) return null;
+  return {x:cx/(3*a), y:cy/(3*a)};
+}
+function inPoly(pts,x,y){
+  var hit=false;
+  for(var i=0,j=pts.length-1;i<pts.length;j=i++){
+    var xi=pts[i].x, yi=pts[i].y, xj=pts[j].x, yj=pts[j].y;
+    if(((yi>y)!==(yj>y)) && (x < (xj-xi)*(y-yi)/(yj-yi)+xi)) hit=!hit;
+  }
+  return hit;
+}
+var SUBLBL={};
+function subLabelPos(reg,sub){
+  var key=reg.name+"|"+sub.name;
+  if(SUBLBL[key]) return SUBLBL[key];
+  var cells=subCells(reg), land=buildLand(reg), p=null;
+  for(var i=0;i<cells.length;i++){
+    if(cells[i].sb!==sub) continue;
+    var c=polyCentroid(cells[i].pts);
+    if(isArch(reg)){ p=c||p; break; }
+    if(c&&inPoly(land,c.x,c.y)&&inPoly(cells[i].pts,c.x,c.y)) p=c;
+    else{
+      /* 质心落到凹口或海岸外时，沿锚点方向回退到本块内部 */
+      var s=cells[i].seed;
+      for(var t=1;t>=0;t-=.1){
+        var q={x:s.x+( (c?c.x:s.x)-s.x)*t, y:s.y+((c?c.y:s.y)-s.y)*t};
+        if(inPoly(land,q.x,q.y)&&inPoly(cells[i].pts,q.x,q.y)){ p=q; break; }
+      }
+      if(!p) p=s;
+    }
+    break;
+  }
+  if(!p) p={x:reg.wx, y:reg.wy};
+  SUBLBL[key]=p;
+  return p;
+}
+
+
+/* ---------------- 绘制：三界带与界面壁障 ---------------- */
+/* ==================== 静态层已并入离屏预渲染（offBg / offLand） ==================== */
+
+/* ---------------- 绘制：地点（星光 + hover 高亮） ---------------- */
+function drawLocations(opt,labelList){
+  opt=opt||{};
+  var showAll=opt.showAll!==false, dim=opt.dim||0;
+  LOCS.forEach(function(l){
+    var alpha=showAll?1:0;
+    if(opt.stage && !inStage(l,opt.stage)) alpha=0;
+    if(opt.stages){ var hit=false; for(var k=0;k<opt.stages.length;k++){ if(inStage(l,opt.stages[k])) hit=true; } if(!hit) alpha=0; }
+    if(alpha<=0.01) return;
+    var fc=F[l.f].c, z=cam.zoom, imp=l.imp;
+    var type=FTYPE[l.f]||"power";
+    /* 符号随缩放略作放大，但仍以屏幕像素为基准，保持图例可读 */
+    var R=(imp===3?6.6:(imp===2?4.5:2.9))*clamp(.85+z*.28,.9,1.5);
+    var vis=imp===3 || (imp===2&&z>.4) || (imp===1&&z>.55);
+    var ho=(MODE==="explore"&&hoverLoc===l);
+    ctx.save();
+    ctx.globalAlpha=alpha*(1-dim);
+    var gr=R*6;
+    ctx.drawImage(glowSprite(fc),l.wx-gr,l.wy-gr,gr*2,gr*2);
+    /* 等高：重要地点外圈加环，作为等级的第一眼区分 */
+    if(imp===3){
+      ctx.strokeStyle=hex2rgba(fc,.9); ctx.lineWidth=1.2;
+      ctx.beginPath(); ctx.arc(l.wx,l.wy,R*2.05*(1+.035*Math.sin(now*2+l.wx*.01)),0,Math.PI*2); ctx.stroke();
+    }else if(imp===2){
+      ctx.strokeStyle=hex2rgba(fc,.42); ctx.lineWidth=.9;
+      ctx.beginPath(); ctx.arc(l.wx,l.wy,R*1.85,0,Math.PI*2); ctx.stroke();
+    }
+    glyphAt(l.wx,l.wy,R,type,hex2rgba(fc,imp===1?.7:.95),1);
+    if(ho){
+      ctx.strokeStyle="rgba(255,255,255,.9)"; ctx.lineWidth=1.1; ctx.setLineDash([4,5]);
+      ctx.lineDashOffset=-now*26;
+      ctx.beginPath(); ctx.arc(l.wx,l.wy,R*3,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+    }
+    ctx.restore();
+    if(labelList && vis && z>.3 && dim<.3 && !SUB_LABEL_MAP[l.n]){
+      labelList.push({
+        prio: imp===3?25:(imp===2?35:45),
+        ax:l.wx, ay:l.wy, gap:R*1.9+2,
+        fs: imp===3?15.5:(imp===2?13.5:12), w: imp===3?600:0, serif:false,
+        text:l.n,
+        color:"rgba(236,240,246,"+(.66+(imp===3?.28:0)+(ho?.5:0))+")",
+        halo:"rgba(4,9,16,.9)", hw:3/z,
+        alpha:alpha*(1-dim), ho:ho
+      });
+    }
+  });
+}
+
+/* ---------------- 绘制：路径 ---------------- */
+function drawPath(pts,opt){
+  opt=opt||{};
+  ctx.save();
+  ctx.globalAlpha=opt.alpha||.5;
+  ctx.strokeStyle=opt.color||"#d4af6a";
+  ctx.lineWidth=opt.width||1.6;
+  ctx.lineJoin="round";
+  if(opt.dash){ ctx.setLineDash(opt.dash); ctx.lineDashOffset=-(now*30); }
+  ctx.beginPath();
+  pts.forEach(function(p,i){ i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y); });
+  ctx.stroke();
+  if(opt.dash) ctx.setLineDash([]);
+  ctx.restore();
+}
+function drawGlowPath(pts,alpha){
+  ctx.save();
+  ctx.globalAlpha=alpha;
+  ctx.strokeStyle="#f0c96a"; ctx.lineWidth=2.4; ctx.lineJoin="round";
+  ctx.shadowColor="rgba(240,201,106,.9)"; ctx.shadowBlur=11;
+  ctx.beginPath();
+  pts.forEach(function(p,i){ i?ctx.lineTo(p.x,p.y):ctx.moveTo(p.x,p.y); });
+  ctx.stroke(); ctx.shadowBlur=0; ctx.restore();
+}
+/* 阶段路径：大陆内游历（发光实线）+ 跨大陆/跨海（传送虚线） */
+function drawStagePath(s,alpha,upto){
+  var full=STAGE_PATHS[s], warps=STAGE_WARPS[s];
+  if(!full||!full.length) return;
+  upto=(upto==null)?full.length:Math.min(upto,full.length);
+  var ranges=[], cur=0;
+  warps.forEach(function(w){
+    if(w.start>cur) ranges.push([cur,Math.min(w.start,upto)]);
+    cur=w.end;
+  });
+  if(cur<upto) ranges.push([cur,upto]);
+  ranges.forEach(function(r){ if(r[1]-r[0]>1) drawGlowPath(full.slice(r[0],r[1]),alpha); });
+  warps.forEach(function(w){
+    var e=Math.min(w.end,upto);
+    if(e-w.start>1) drawPath(full.slice(w.start,e),{color:"rgba(240,201,106,.65)",width:1.3,alpha:.55,dash:[2,7]});
+  });
+}
+
+/* ---------------- 绘制：韩立主体 ---------------- */
+function drawHero(x,y,t){
+  ctx.save();
+  ctx.translate(x,y);
+  var pulse=1+.1*Math.sin(t*3.4);
+  ctx.drawImage(glowSprite("#ffd76e"),-58,-58,116,116);
+  ctx.save(); ctx.rotate(t*.5);
+  ctx.strokeStyle="rgba(255,236,180,.55)"; ctx.lineWidth=1.2;
+  for(var i=0;i<4;i++){ ctx.rotate(Math.PI/4); var L=14+6*pulse; ctx.beginPath(); ctx.moveTo(0,-L); ctx.lineTo(0,-8); ctx.stroke(); }
+  ctx.restore();
+  ctx.fillStyle="#fff8e0"; ctx.beginPath(); ctx.arc(0,0,7.4*pulse,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle="rgba(255,236,180,.9)"; ctx.lineWidth=1.6;
+  ctx.beginPath(); ctx.arc(0,0,12*pulse,0,Math.PI*2); ctx.stroke();
+  ctx.strokeStyle="rgba(240,201,106,.42)"; ctx.lineWidth=1; ctx.setLineDash([6,8]);
+  ctx.lineDashOffset=-t*30;
+  ctx.beginPath(); ctx.arc(0,0,21,0,Math.PI*2); ctx.stroke(); ctx.setLineDash([]);
+  ctx.restore();
+}
+function drawTrail(){
+  trail.forEach(function(p){
+    var a=p.life/p.max;
+    ctx.globalAlpha=a*.72;
+    ctx.fillStyle=p.c;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.sz*a+.5,0,Math.PI*2); ctx.fill();
+  });
+  ctx.globalAlpha=1;
+}
+function drawWarp(){
+  warp.forEach(function(p){
+    var a=p.life/p.max;
+    var x=p.x+Math.cos(p.a)*p.r, y=p.y+Math.sin(p.a)*p.r*.62;
+    ctx.globalAlpha=a;
+    ctx.fillStyle=p.c;
+    ctx.beginPath(); ctx.arc(x,y,2.2*a+.5,0,Math.PI*2); ctx.fill();
+  });
+  ctx.globalAlpha=1;
+}
+function drawRipple(){
+  ripple.forEach(function(p){
+    var a=p.life/p.max;
+    ctx.globalAlpha=a*.5;
+    ctx.strokeStyle=p.c; ctx.lineWidth=1.4;
+    ctx.beginPath(); ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.stroke();
+  });
+  ctx.globalAlpha=1;
+}
+
+/* ---------------- 绘制：罗盘 / 屏幕效果 ---------------- */
+function drawCompass(){
+  var cx=W-52, cy=H-52, r=30, rot=now*.12;
+  ctx.save();
+  ctx.globalAlpha=.8;
+  ctx.translate(cx,cy);
+  ctx.strokeStyle="rgba(212,175,106,.5)"; ctx.lineWidth=1;
+  ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.stroke();
+  ctx.beginPath(); ctx.arc(0,0,r*.66,0,Math.PI*2); ctx.stroke();
+  ctx.save(); ctx.rotate(rot);
+  ctx.strokeStyle="rgba(212,175,106,.28)";
+  for(var i=0;i<4;i++){ ctx.rotate(Math.PI/2); ctx.beginPath(); ctx.moveTo(0,-r*.62); ctx.lineTo(0,r*.62); ctx.stroke(); }
+  ctx.restore();
+  ctx.save(); ctx.rotate(rot*.4);
+  ctx.fillStyle="#d4af6a"; ctx.beginPath(); ctx.moveTo(0,-r*.52); ctx.lineTo(r*.14,0); ctx.lineTo(0,r*.52); ctx.lineTo(-r*.14,0); ctx.closePath(); ctx.fill();
+  ctx.restore();
+  ctx.fillStyle="rgba(212,175,106,.75)"; ctx.font="10px "+SANS; ctx.textAlign="center";
+  ctx.fillText("北",0,-r-8);
+  ctx.restore();
+}
+function drawFlash(){
+  if(cam.flash>0){
+    ctx.fillStyle="rgba(214,238,255,"+(cam.flash*.85)+")";
+    ctx.fillRect(0,0,W,H);
+  }
+  if(cam.shake>0){
+    var a=cam.shake;
+    ctx.strokeStyle="rgba(4,6,12,"+(a*.75)+")";
+    ctx.lineWidth=Math.max(1,a*26);
+    ctx.strokeRect(-a*14,-a*14,W+a*28,H+a*28);
+  }
+}
+function drawVignette(){
+  var g=ctx.createRadialGradient(W/2,H/2,Math.min(W,H)*.36,W/2,H/2,Math.max(W,H)*.75);
+  g.addColorStop(0,"rgba(0,0,0,0)"); g.addColorStop(1,"rgba(0,0,0,.55)");
+  ctx.fillStyle=g; ctx.fillRect(0,0,W,H);
+}
+
+/* ---------------- 状态 ---------------- */
+var SANS='"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif';
+var SERIF='"Songti SC","Noto Serif SC","STSong",serif';
+var now=0;
+var MODE="cover";
+var playing=true, speed=1;
+var stageIdx=1, t=0, state="idle";
+var hero={x:WORLD.W/2,y:2800};
+var arrived={}, arriveIdx=0, warpFired={};
+var tweens=[];
+/* 阶段飞行时长见 STAGE_DUR（flyUpdate 内） */
+
+/* ---------------- DOM 引用 ---------------- */
+var el={cover:document.getElementById('cover'),finale:document.getElementById('finale'),
+  placename:document.getElementById('placename'),pn:document.querySelector('#placename .pn'),
+  pr:document.querySelector('#placename .pr'),pd:document.querySelector('#placename .pd'),
+  subtitle:document.getElementById('subtitle'),t1:document.querySelector('#subtitle .t1'),
+  t2:document.querySelector('#subtitle .t2'),stages:document.getElementById('stages'),
+  progress:document.getElementById('progress'),explore:document.getElementById('explore'),
+  detail:document.getElementById('detail'),help:document.getElementById('help'),
+  index:document.getElementById('index'),ixSearch:document.getElementById('ixSearch'),
+  ixList:document.getElementById('ixList'),
+  btnPlay:document.getElementById('btnPlay'),btnSpeed:document.getElementById('btnSpeed'),
+  btnExplore:document.getElementById('btnExplore')};
+
+/* ---------------- 阶段几何 ---------------- */
+function stageBox(s){
+  var names=JOURNEY.filter(function(j){return j.s===s;}).map(function(j){return j.n;});
+  var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  names.forEach(function(n){ var p=WPT[n]; x0=Math.min(x0,p.x);y0=Math.min(y0,p.y);x1=Math.max(x1,p.x);y1=Math.max(y1,p.y); });
+  return {x0:x0,y0:y0,x1:x1,y1:y1};
+}
+function areaZoom(box){
+  var w=box.x1-box.x0,h=box.y1-box.y0;
+  /* 聚焦后工具条自动隐藏，顶部仅留全局导航；移动竖屏导航为两行 */
+  var navH=(innerWidth<760&&innerHeight>=500)?82:48;
+  var bottomPad=34;
+  var availW=innerWidth-16, availH=innerHeight-navH-bottomPad;
+  var z=Math.min(availW/(w*1.5), availH/(h*1.5));
+  return clamp(z,.3,1.15);
+}
+
+/* ---------------- 字幕 / 地点名 ---------------- */
+var pnTimer=null;
+function showPlacename(loc){
+  clearTimeout(pnTimer);
+  el.pn.textContent=loc.n.split(" · ")[0];
+  el.pr.textContent=(loc.re+" · "+loc.r).replace(" · · "," · ");
+  el.pd.textContent=loc.d;
+  el.placename.classList.add("show");
+  pnTimer=setTimeout(function(){ el.placename.classList.remove("show"); },3200);
+}
+function showSubtitle(st){
+  el.t1.textContent=st.vol+" · "+st.name+" · "+st.realm;
+  el.t2.textContent=st.tip;
+  el.subtitle.classList.add("show");
+}
+function hideSubtitle(){ el.subtitle.classList.remove("show"); }
+
+/* ---------------- 阶段流程 ---------------- */
+var nextStageTimer=0, pendingNext=false;   /* 阶段结束后的接续计时：暂停时不推进 */
+function beginStage(s,startNode){
+  if(s<1||s>NSTAGE) return;
+  clearTimeout(nextStageTimer); pendingNext=false;
+  var pts=STAGE_PATHS[s];
+  var p0=startNode>0?STAGE_NPOS[s][startNode]:0;
+  var t0=p0>0?(p0+.5)/pts.length:0;
+  stageIdx=s; t=0; state="transit"; arriveIdx=startNode>0?startNode:0; arrived={}; warpFired={};
+  (STAGE_WARPS[s]||[]).forEach(function(w,i){ if(w.start<p0) warpFired[i]=1; });
+  hero={x:pts[p0].x,y:pts[p0].y};
+  var box=stageBox(s);
+  var cx=(box.x0+box.x1)/2, cy=(box.y0+box.y1)/2;
+  var z=areaZoom(box);
+  if(s>=6) z=Math.min(z,.55);
+  stageZoom=z;
+  var st=STAGES[s];
+  showSubtitle(st);
+  document.querySelectorAll('#stages .st').forEach(function(d,i){
+    d.classList.toggle('on',i+1===s);
+    d.classList.toggle('done',i+1<s);
+  });
+  var k0=cam.zoom;
+  tweens=[];
+  pushTween(.8,function(){ camTarget(cx,cy,Math.min(k0,.34)); });
+  pushTween(.9,function(){ camTarget(cx,cy,z*.92); });
+  pushTween(.55,function(){ state="fly"; t=t0; });
+}
+function scheduleNext(){
+  state="transit"; pendingNext=true;
+  clearTimeout(nextStageTimer);
+  nextStageTimer=setTimeout(function(){ if(playing) startNext(); },300);
+}
+function startNext(){
+  if(!pendingNext) return;
+  pendingNext=false; clearTimeout(nextStageTimer);
+  beginStage(stageIdx+1);
+}
+function pushTween(d,fn){ tweens.push({d:d,t:0,fn:fn}); }
+function updateTweens(dt){
+  if(!tweens.length||MODE!=="play"||!playing) return;
+  var tw=tweens[0];
+  tw.t+=dt*speed;
+  if(tw.t>=tw.d){ tweens.shift(); if(tw.fn) tw.fn(); }
+}
+
+/* ---------------- 飞行更新（按阶段时长 + 相机呼吸） ---------------- */
+var STAGE_DUR={};
+STAGES.slice(1).forEach(function(st){ STAGE_DUR[st.id]=clamp(7+STAGE_LOCS[st.id].length*.7,9,20); });
+var stageZoom=.5;
+function flyUpdate(dt){
+  if(state!=="fly") return;
+  t+=dt*speed/STAGE_DUR[stageIdx];
+  if(t>=1){
+    t=1;
+    if(stageIdx<NSTAGE) scheduleNext();
+    else finale();
+    return;
+  }
+  var pts=STAGE_PATHS[stageIdx];
+  var idx=Math.min(pts.length-1,Math.floor(t*pts.length));
+  hero=pts[idx];
+  var zz=stageZoom*(1+.08*Math.sin(Math.PI*t));
+  /* 相机前瞻：宽窗口切线（±6）更稳定，沿切线超前 46 单位，镜头走在光点之前 */
+  var p2=pts[Math.min(pts.length-1,idx+6)], p1=pts[Math.max(0,idx-6)];
+  var dx=p2.x-p1.x, dy=p2.y-p1.y, dl=Math.hypot(dx,dy)||1;
+  camTarget(hero.x+dx/dl*46, hero.y+dy/dl*46, zz);
+  /* 移除常飞时的高频抖动，仅保留平稳巡游（portal/到达事件另行 shake） */
+  spawnTrail(hero.x,hero.y,Math.random()<.5?1:2);
+  /* 进入传送段：在 warp 起点触发一次穿越光效（跨大陆/跨海） */
+  var wlist=STAGE_WARPS[stageIdx]||[];
+  for(var wi=0;wi<wlist.length;wi++){
+    var wb=wlist[wi];
+    if(!warpFired[wi] && idx>=wb.start){
+      warpFired[wi]=1;
+      var wp=pts[wb.start];
+      spawnWarp(wp.x,wp.y); flash(.4); shake(.3);
+    }
+  }
+  var seg=STAGE_LOCS[stageIdx];
+  var pos=Math.floor(t*pts.length);
+  while(arriveIdx<seg.length && pos>=STAGE_NPOS[stageIdx][arriveIdx]){
+    var loc=seg[arriveIdx];
+    if(!arrived[arriveIdx]){
+      arrived[arriveIdx]=1;
+      onArrive(loc,arriveIdx);
+    }
+    arriveIdx++;
+  }
+}
+function onArrive(loc){
+  showPlacename(loc);
+  spawnRipple(hero.x,hero.y,F[loc.f]?F[loc.f].c:"#f0c96a");
+  var j=JOURNEY.filter(function(x){return x.n===loc.n&&x.s===stageIdx;})[0];
+  if(j&&j.portal){
+    spawnWarp(hero.x,hero.y);
+    flash(.45); shake(.35);
+    el.pn.textContent=loc.n.split(" · ")[0];
+    el.pr.textContent="「 "+j.portal+" 」";
+    el.pd.textContent="";
+    el.placename.classList.add("show");
+    clearTimeout(pnTimer);
+    pnTimer=setTimeout(function(){ el.placename.classList.remove("show"); },2600);
+  }
+}
+
+/* ---------------- 定位 / 索引 / 搜索 / 触控 ---------------- */
+function locateLoc(loc){
+  if(MODE!=="explore") enterExplore();
+  setExploreStage(loc.s);
+  var z=clamp(Math.max(W/WORLD.W,H/WORLD.H)*1.4,.5,1.5);
+  camTarget(loc.wx,loc.wy,z);
+  cam.lx=cam.tx; cam.ly=cam.ty; cam.lz=cam.tz;
+  cam.x=cam.tx; cam.y=cam.ty; cam.zoom=cam.tz;
+  showDetail(loc);
+  hoverLoc=loc;
+  hideTip();
+}
+function buildIndex(){
+  var q=(el.ixSearch.value||"").trim().toLowerCase();
+  var html="";
+  var inJourney={}; JOURNEY.forEach(function(j){inJourney[j.n]=1;});
+  for(var s=1;s<=NSTAGE;s++){
+    var rows=[];
+    LOCS.forEach(function(l){
+      if(l.s!==s) return;
+      if(q&&(l.n||"").toLowerCase().indexOf(q)<0&&(l.r||"").toLowerCase().indexOf(q)<0&&
+         (l.c||"").toLowerCase().indexOf(q)<0&&(l.d||"").toLowerCase().indexOf(q)<0) return;
+      var foot=inJourney[l.n]?'<i class="ix-foot" title="韩立足迹"></i>':'';
+      rows.push('<button class="ix-item" data-n="'+l.n+'"><i class="ix-dot" style="background:'+F[l.f].c+'"></i><span>'+l.n+'</span>'+foot+'<span style="margin-left:auto;color:var(--faint);font-size:12px">'+l.re+'</span></button>');
+    });
+    if(!rows.length) continue;
+    html+='<div class="ix-st">'+STAGES[s].name+' · '+STAGES[s].realm+'</div>'+rows.join("");
+  }
+  if(!html) html='<div class="ix-empty">未找到匹配地点，换个关键词试试</div>';
+  el.ixList.innerHTML=html;
+  el.ixList.querySelectorAll('.ix-item').forEach(function(b){
+    b.addEventListener('click',function(){ setIndex(false); locateLoc(LOC[b.getAttribute('data-n')]); });
+  });
+}
+function setIndex(on){
+  el.index.classList.toggle("show",on);
+  document.getElementById('btnIndex').setAttribute('aria-expanded',on);
+  if(on){ buildIndex(); setTimeout(function(){ el.ixSearch.focus(); },120); }
+}
+function toggleIndex(){ setIndex(!el.index.classList.contains("show")); }
+/* 主动关闭（按钮 / Esc）时把焦点还给触发按钮，避免键盘用户丢失位置 */
+function closeIndex(){
+  var had=el.index.contains(document.activeElement);
+  setIndex(false);
+  if(had) document.getElementById('btnIndex').focus();
+}
+var touch=null, TOUCH_SLOP=10;  /* 指尖比光标粗：触控命中半径额外放宽 */
+function bindTouch(){
+  cv.addEventListener('touchstart',function(e){
+    if(MODE!=="explore") return;
+    e.preventDefault();
+    var r=cv.getBoundingClientRect();
+    if(e.touches.length===1){
+      var t=e.touches[0];
+      touch={type:"pan",sx:t.clientX-r.left,sy:t.clientY-r.top,cx:cam.x,cy:cam.y,ts:Date.now()};
+    }else if(e.touches.length===2){
+      var t1=e.touches[0],t2=e.touches[1];
+      touch={type:"pinch",d:Math.hypot(t2.clientX-t1.clientX,t2.clientY-t1.clientY),z:cam.zoom,
+        cx:(t1.clientX+t2.clientX)/2-r.left,cy:(t1.clientY+t2.clientY)/2-r.top};
+    }
+  },{passive:false});
+  cv.addEventListener('touchmove',function(e){
+    if(MODE!=="explore"||!touch) return;
+    e.preventDefault();
+    hideTools();
+    var r=cv.getBoundingClientRect();
+    if(touch.type==="pan"&&e.touches.length===1){
+      var t=e.touches[0];
+      var mx=t.clientX-r.left, my=t.clientY-r.top;
+      cam.x=touch.cx-(mx-touch.sx)/cam.zoom; cam.y=touch.cy-(my-touch.sy)/cam.zoom;
+      cam.lx=cam.x; cam.ly=cam.y; cam.tx=cam.x; cam.ty=cam.y;
+    }else if(touch.type==="pinch"&&e.touches.length===2){
+      var t1=e.touches[0],t2=e.touches[1];
+      var d=Math.hypot(t2.clientX-t1.clientX,t2.clientY-t1.clientY);
+      if(touch.d>0){
+        zoomAt(touch.cx,touch.cy,touch.z*d/touch.d);
+      }
+    }
+  },{passive:false});
+  cv.addEventListener('touchend',function(e){
+    if(!touch) return;
+    var was=touch;
+    touch=null;
+    if(was.type==="pan"&&Date.now()-was.ts<350){
+      var t=e.changedTouches[0], r=cv.getBoundingClientRect();
+      var sx=t.clientX-r.left, sy=t.clientY-r.top;
+      var loc=hitTest(sx,sy,TOUCH_SLOP);
+      if(loc) showDetail(loc); else hideDetail();
+    }
+  },{passive:false});
+}
+
+/* ---------------- 终幕 / 探索 ---------------- */
+var finaleIv=0, finaleTimer=0;  /* 终幕涟漪 / 淡入计时器：中途跳去探索或重播时必须清掉，否则终幕会盖到探索图上 */
+function finale(){
+  state="finale";
+  hideSubtitle();
+  var fs=document.querySelector('#finale .f-stats');
+  if(fs) fs.textContent=LOCS.length+" 处地点 · "+REGIONS.length+" 块大陆 · "+NSTAGE+" 段旅程 · 人界 / 灵界 / 仙界 三界纵横";
+  camTarget(WORLD.W/2,WORLD.H/2,Math.min(W/WORLD.W,H/WORLD.H)*1.06);
+  var i=0;
+  clearInterval(finaleIv);
+  finaleIv=setInterval(function(){
+    if(i>=LOCS.length){ clearInterval(finaleIv); return; }
+    var l=LOCS[i++];
+    spawnRipple(l.wx,l.wy,F[l.f]?F[l.f].c:"#f0c96a");
+  },120);
+  clearTimeout(finaleTimer);
+  finaleTimer=setTimeout(function(){ el.finale.classList.add("on"); },2400);
+}
+function replay(){
+  clearTimeout(finaleTimer); clearInterval(finaleIv);
+  el.finale.classList.remove("on");
+  MODE="play"; playing=true; updatePlayBtn();
+  beginStage(1);
+}
+var toolsHideTimer=null;
+function hideTools(){
+  var v=document.getElementById('v-map'); if(v) v.classList.add('tools-hidden');
+  if(toolsHideTimer){ clearTimeout(toolsHideTimer); toolsHideTimer=null; }
+}
+function showTools(autoHideMs){
+  var v=document.getElementById('v-map'); if(v) v.classList.remove('tools-hidden');
+  if(toolsHideTimer) clearTimeout(toolsHideTimer);
+  if(autoHideMs>0) toolsHideTimer=setTimeout(hideTools,autoHideMs);
+}
+function enterExplore(){
+  el.finale.classList.remove("on");
+  el.cover.classList.remove("on");
+  setIndex(false);
+  clearTimeout(finaleTimer); clearInterval(finaleIv);
+  clearTimeout(nextStageTimer); pendingNext=false; tweens=[];
+  MODE="explore"; updatePlayBtn();
+  hideSubtitle(); el.placename.classList.remove("show");
+  hideDetail();
+  hoverLoc=null; hideTip();
+  cv.style.cursor="grab";
+  document.getElementById('explore').classList.add('on');
+  document.getElementById('mapZoom').classList.add('on');
+  el.help.classList.add("on");
+  fitAll();
+  buildExplore();
+  showTools(4800);
+}
+
+/* ---------------- 播放控制 ---------------- */
+function leaveExplore(){
+  document.getElementById('explore').classList.remove('on');
+  document.getElementById('mapZoom').classList.remove('on');
+  el.help.classList.remove("on");
+  hideDetail(); hoverLoc=null; hideTip(); setIndex(false);
+  cv.style.cursor="";
+  showTools(0);
+}
+/* 从探索模式接着播放：给定地点则从该站起，否则从当前所选阶段（或上次播到的阶段）开头 */
+function resumePlay(loc){
+  var s=exploreStage>0?exploreStage:stageIdx, node=0;
+  if(loc){
+    var j=JOURNEY.filter(function(x){return x.n===loc.n&&x.s===exploreStage;})[0]||JOURNEY.filter(function(x){return x.n===loc.n;})[0];
+    if(j){ s=j.s; }
+    var names=STAGE_LOCS[s].map(function(l){return l.n;});
+    node=Math.max(0,names.indexOf(loc.n));
+  }
+  leaveExplore();
+  el.finale.classList.remove("on");
+  MODE="play"; playing=true; updatePlayBtn();
+  beginStage(s,node);
+}
+function togglePlay(){
+  if(MODE==="explore"){ resumePlay(currentLoc); return; }
+  if(MODE!=="play") return;
+  playing=!playing; updatePlayBtn();
+  if(playing&&pendingNext) startNext();
+}
+function updatePlayBtn(){
+  var on=MODE==="play"&&playing;
+  el.btnPlay.textContent=on?"⏸":"▶";
+  el.btnPlay.title=MODE==="explore"?"从当前阶段继续巡游（空格）":(on?"暂停（空格）":"继续播放（空格）");
+}
+function cycleSpeed(){
+  speed=speed===.5?1:(speed===1?2:.5);
+  el.btnSpeed.textContent=speed+"×";
+}
+
+/* ---------------- 进度条 ---------------- */
+function buildProgress(){
+  var html="";
+  for(var s=1;s<=NSTAGE;s++) html+='<button type="button" class="seg" data-s="'+s+'" aria-label="第 '+s+' 阶段：'+STAGES[s].name+'"><div class="track"><div class="fill"></div></div><div class="dot"></div></button>';
+  el.progress.innerHTML=html;
+  el.progress.querySelectorAll('.seg').forEach(function(sg){
+    sg.addEventListener('click',function(){
+      if(MODE==="play"){ playing=true; updatePlayBtn(); beginStage(+sg.getAttribute('data-s')); }
+      else if(MODE==="explore"){ setExploreStage(+sg.getAttribute('data-s')); }
+    });
+  });
+}
+function tickProgress(){
+  var fills=el.progress.querySelectorAll('.fill');
+  fills.forEach(function(f,i){
+    var s=i+1;
+    var pct=s<stageIdx?1:(s===stageIdx?(state==="fly"?t:0):0);
+    f.style.width=Math.round(pct*100)+"%";
+  });
+  if(MODE==='play'){
+    el.progress.querySelectorAll('.seg').forEach(function(sg,i){
+      sg.classList.toggle('active',i+1===stageIdx);
+    });
+  }
+}
+
+/* ---------------- 探索模式 ---------------- */
+var exploreStage=0;
+function buildExplore(){
+  var html='<button class="pill'+(exploreStage===0?' on':'')+'" data-s="0">全部</button>';
+  for(var s=1;s<=NSTAGE;s++) html+='<button class="pill'+(exploreStage===s?' on':'')+'" data-s="'+s+'">'+STAGES[s].name+'</button>';
+  html+='<div class="legend-tip"><span><i style="background:#f0c96a"></i>韩立足迹</span><span><i style="background:#8fe0c8"></i>传送/飞升</span></div>';
+  el.explore.innerHTML=html;
+  el.explore.querySelectorAll('.pill').forEach(function(p){
+    p.addEventListener('click',function(){ setExploreStage(+p.getAttribute('data-s')); });
+  });
+}
+function fitAll(){
+  var bx0=1e9,bx1=-1e9,by0=1e9,by1=-1e9;
+  REGIONS.forEach(function(r){
+    bx0=Math.min(bx0,r.wx-r.wrx); bx1=Math.max(bx1,r.wx+r.wrx);
+    by0=Math.min(by0,r.wy-r.wry*1.02); by1=Math.max(by1,r.wy+r.wry);
+  });
+  var pad=34;
+  bx0-=pad; bx1+=pad; by0-=pad; by1+=pad;
+  var bw=bx1-bx0, bh=by1-by0;
+  /* 顶部为 topnav + 标题 + 阶段条，底部为提示条，只在可用区域内布局 */
+  var topPad=window.innerWidth<760?96:62, bottomPad=30;
+  var availW=W-24, availH=H-topPad-bottomPad;
+  var z=Math.min(availW/bw, availH/bh);
+  var cx=(bx0+bx1)/2, cy=(by0+by1)/2;
+  var screenCenterY=(topPad+H-bottomPad)/2;
+  var camcy=cy-(screenCenterY-H/2)/z;
+  camTarget(cx,camcy,z);
+}
+function setExploreStage(s){
+  exploreStage=s;
+  el.explore.querySelectorAll('.pill').forEach(function(p){
+    p.classList.toggle('on',+p.getAttribute('data-s')===s);
+  });
+  if(s===0){ fitAll(); return; }
+  var box=stageBox(s);
+  var z=areaZoom(box);
+  var cx=(box.x0+box.x1)/2, cy=(box.y0+box.y1)/2;
+  /* 工具条聚焦后自动隐藏，阶段中心在导航下方的可用区居中 */
+  var navH=(innerWidth<760&&innerHeight>=500)?82:48, bottomPad=30;
+  var screenCenterY=(navH+(H-bottomPad))/2;
+  var camcy=cy-(screenCenterY-H/2)/z;
+  camTarget(cx,camcy,z);
+  if(typeof showTools==="function") showTools(3800);
+}
+function toScreen(x,y){ return {x:(x-cam.x)*cam.zoom+W/2, y:(y-cam.y)*cam.zoom+H/2}; }
+function hitTest(sx,sy,slop){
+  var best=null,bd=1e9;
+  LOCS.forEach(function(l){
+    var p=toScreen(l.wx,l.wy);
+    var d=Math.hypot(sx-p.x,sy-p.y);
+    var r=(l.imp===3?18:l.imp===2?13:11)+(slop||0);
+    if(d<r&&d<bd){ bd=d; best=l; }
+  });
+  return best;
+}
+var currentLoc=null;
+function showDetail(loc){
+  currentLoc=loc;
+  var d=el.detail;
+  d.querySelector('.d-realm').textContent=loc.re+" · "+loc.f;
+  d.querySelector('.d-name').textContent=loc.n;
+  d.querySelector('.d-sub').textContent=loc.r;
+  d.querySelector('.d-text').textContent=loc.d;
+  d.querySelector('#dChars').textContent=loc.c;
+  var st=STAGES[loc.s];
+  var jIdx=JOURNEY.findIndex(function(j){return j.n===loc.n;});
+  var seq=jIdx>=0?"旅程第 "+(jIdx+1)+" 站 · ":"";
+  d.querySelector('.d-stage').textContent=seq+"第 "+loc.s+" 阶段 · "+st.vol+" · "+st.realm;
+  d.querySelector('.d-play').classList.toggle('on',JOURNEY.some(function(j){return j.n===loc.n;}));
+  d.querySelector('.d-src').textContent="出处：起点《凡人必备手册·地理篇》 / 原著 / 动画百科（同人考据示意性重构，非官方，不保证坐标与方位准确）";
+  d.classList.add("show");
+}
+function hideDetail(){ currentLoc=null; el.detail.classList.remove("show"); }
+
+/* ---------------- 渲染 ---------------- */
+function render(){
+  ctx.setTransform(DPR,0,0,DPR,0,0);
+  var bg=ctx.createRadialGradient(W/2,H*.32,80,W/2,H*.55,Math.max(W,H)*.9);
+  bg.addColorStop(0,"#0a0f1e"); bg.addColorStop(.5,"#060a14"); bg.addColorStop(1,"#03050a");
+  ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+  ctx.save();
+  ctx.translate(W/2,H/2);
+  ctx.scale(cam.zoom,cam.zoom);
+  ctx.translate(-cam.x,-cam.y);
+  var tk=cam.shake+cam.heroShake;
+  if(tk>0){ ctx.translate(Math.sin(now*37)*tk*7,Math.cos(now*29)*tk*7); }
+  if(offBg) ctx.drawImage(offBg,-PAD,-PAD);
+  drawWalls(now);
+  if(offLand) ctx.drawImage(offLand,-PAD,-PAD);
+  /* 注记统一收集后排布：静态名（区域/分区/州国/海域）先入列，地点名随标记一并入列 */
+  var labels=[];
+  collectStaticLabels(labels);
+  if(MODE==="explore"){
+    drawPath(ALL_PATH,{color:"rgba(143,224,200,.3)",width:1.4,alpha:.75,dash:[3,7]});
+    if(exploreStage>0) drawStagePath(exploreStage,.55);
+  }else{
+    for(var s=1;s<stageIdx;s++) drawStagePath(s,.32);
+    if(state==="fly"){
+      var pts=STAGE_PATHS[stageIdx];
+      var upto=Math.floor(t*pts.length);
+      drawStagePath(stageIdx,.8,upto);
+    }
+  }
+  if(MODE==="play"){
+    drawLocations({stage:stageIdx,dim:0},labels);
+    if(state==="fly"&&stageIdx>1){
+      var pastStages=[];
+      for(var ps=1;ps<stageIdx;ps++) pastStages.push(ps);
+      drawLocations({stages:pastStages,dim:.55});
+    }
+  }else if(MODE==="explore"){
+    drawLocations({stage:exploreStage||0,dim:0},labels);
+  }else if(MODE==="cover"){
+    drawLocations({dim:.3},labels);
+  }
+  placeLabels(labels);
+  drawTrail(); drawWarp(); drawRipple();
+  if(MODE==="play"&&state==="fly") drawHero(hero.x,hero.y,now);
+  if(MODE==="explore"&&exploreStage>0){
+    var lastP=STAGE_PATHS[exploreStage][STAGE_PATHS[exploreStage].length-1];
+    drawHero(lastP.x,lastP.y,now);
+  }
+  ctx.restore();
+  drawCompass();
+  drawFlash();
+  drawVignette();
+}
+
+/* ---------------- 主循环 ---------------- */
+var lastTs=0;
+var viewEl=document.getElementById('v-map');
+function frame(ts){
+  /* 切走地图页 / 标签页隐藏时不再渲染：画布整页重绘每帧开销不小，且时间基准要跟着前移避免回来时跳变 */
+  if(document.hidden||!viewEl.classList.contains('active')){ lastTs=ts; requestAnimationFrame(frame); return; }
+  now=ts/1000;
+  var dt=Math.min(.05,(ts-lastTs)/1000||0.016); lastTs=ts;
+  updateTweens(dt);
+  if(MODE==="play"&&playing) flyUpdate(dt);
+  updateParticles(dt);
+  camSmooth(dt);
+  tickProgress();
+  render();
+  requestAnimationFrame(frame);
+}
+
+/* ---------------- 尺寸 / 事件 / 启动 ---------------- */
+function resize(){
+  DPR=Math.min(2,window.devicePixelRatio||1);
+  W=window.innerWidth; H=window.innerHeight;
+  cv.width=Math.round(W*DPR); cv.height=Math.round(H*DPR);
+  cv.style.width=W+"px"; cv.style.height=H+"px";
+}
+function buildStages(){
+  var html="";
+  for(var s=1;s<=NSTAGE;s++) html+='<button type="button" class="st" data-s="'+s+'" title="'+STAGES[s].name+'" aria-label="第 '+s+' 阶段：'+STAGES[s].name+'"></button>';
+  el.stages.innerHTML=html;
+  el.stages.querySelectorAll('.st').forEach(function(d){
+    d.addEventListener('click',function(){
+      if(MODE==="play"){ playing=true; updatePlayBtn(); beginStage(+d.getAttribute('data-s')); }
+      else if(MODE==="explore"){ setExploreStage(+d.getAttribute('data-s')); }
+    });
+  });
+}
+/* ---------------- 探索交互：缩放 / 拖拽 / 悬停 ---------------- */
+var drag=null;
+function showTip(loc,mx,my){
+  var tip=document.getElementById('tip');
+  tip.querySelector('.t-name').textContent=loc.n;
+  tip.querySelector('.t-sub').textContent=loc.re+" · "+loc.f+" · "+loc.r;
+  var d=loc.d||"";
+  tip.querySelector('.t-desc').textContent=d.length>42?d.slice(0,42)+"…":d;
+  var pad=16, tw=250, th=96;
+  var tx=Math.min(mx+14,W-tw-pad), ty=Math.min(my+14,H-th-pad);
+  tip.style.left=Math.max(pad,tx)+"px"; tip.style.top=Math.max(pad,ty)+"px";
+  tip.classList.add("on");
+}
+function hideTip(){ var t=document.getElementById('tip'); if(t) t.classList.remove("on"); }
+var PAN_KEYS={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,-1],ArrowDown:[0,1]};
+function onMapKey(e){
+  if(!viewEl.classList.contains('active')||e.ctrlKey||e.metaKey||e.altKey) return;
+  if(document.getElementById('tnPanel').classList.contains('show')) return;  /* 舆图原图有自己的键盘处理 */
+  var t=e.target, typing=t&&(t.tagName==="INPUT"||t.tagName==="TEXTAREA"||t.isContentEditable);
+  var onControl=t&&(t.tagName==="BUTTON"||t.tagName==="A"||(t.getAttribute&&t.getAttribute("role")==="button"));
+  if(e.key==="Escape"){
+    if(el.index.classList.contains("show")) closeIndex();
+    else if(currentLoc) hideDetail();
+    else if(MODE==="play") enterExplore();
+    return;
+  }
+  if(typing) return;
+  if(e.code==="Space"){
+    if(onControl) return;  /* 让空格照常激活焦点按钮 */
+    e.preventDefault(); if(MODE==="play"||MODE==="explore") togglePlay();
+  }else if(e.key==="/"){
+    e.preventDefault(); if(!el.index.classList.contains("show")) setIndex(true); else el.ixSearch.focus();
+  }else if(MODE==="explore"){
+    if(e.key==="+"||e.key==="="){ e.preventDefault(); zoomBy(ZOOM_STEP); }
+    else if(e.key==="-"||e.key==="_"){ e.preventDefault(); zoomBy(1/ZOOM_STEP); }
+    else if(e.key==="0"){ e.preventDefault(); fitAll(); }
+    else if(PAN_KEYS[e.key]){ e.preventDefault(); panBy(PAN_KEYS[e.key][0]*PAN_STEP,PAN_KEYS[e.key][1]*PAN_STEP); }
+    else return;
+    showTools(3400);
+  }
+}
+function bindEvents(){
+  el.cover.addEventListener('click',function(){
+    el.cover.classList.remove("on");
+    MODE="play"; playing=true; updatePlayBtn();
+    camTarget(WORLD.W/2,WORLD.H/2,Math.min(W/WORLD.W,H/WORLD.H)*1.06);
+    setTimeout(function(){ beginStage(1); },260);
+  });
+  el.btnPlay.addEventListener('click',togglePlay);
+  el.btnSpeed.addEventListener('click',cycleSpeed);
+  el.btnExplore.addEventListener('click',enterExplore);
+  var toolsTab=document.getElementById('toolsTab');
+  if(toolsTab) toolsTab.addEventListener('click',function(){ showTools(3400); });
+  document.getElementById('btnReplay').addEventListener('click',replay);
+  document.getElementById('btnExplore2').addEventListener('click',enterExplore);
+  document.getElementById('btnIndex').addEventListener('click',toggleIndex);
+
+  document.querySelector('#index .ix-close').addEventListener('click',closeIndex);
+  el.ixSearch.addEventListener('input',buildIndex);
+  el.ixSearch.addEventListener('keydown',function(e){
+    if(e.key==="Enter"){
+      var first=el.ixList.querySelector('.ix-item');
+      if(first) locateLoc(LOC[first.getAttribute('data-n')]);
+    }
+  });
+  document.querySelector('#detail .d-locate').addEventListener('click',function(){
+    if(currentLoc) locateLoc(currentLoc);
+  });
+  document.querySelector('#detail .d-play').addEventListener('click',function(){ if(currentLoc) resumePlay(currentLoc); });
+  document.querySelector('#detail .d-close').addEventListener('click',hideDetail);
+  bindTouch();
+  document.getElementById('mapZoom').addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b) return;
+    var k=b.getAttribute('data-z');
+    if(k==="in") zoomBy(ZOOM_STEP); else if(k==="out") zoomBy(1/ZOOM_STEP); else fitAll();
+    showTools(3400);
+  });
+  window.addEventListener('keydown',onMapKey);
+  cv.addEventListener('wheel',function(e){
+    if(MODE!=="explore") return;
+    e.preventDefault();
+    hideTools();
+    var r=cv.getBoundingClientRect();
+    var mx=e.clientX-r.left, my=e.clientY-r.top;
+    zoomAt(mx,my,cam.zoom*Math.exp(-e.deltaY*.0012));
+  },{passive:false});
+  cv.addEventListener('mousedown',function(e){
+    if(MODE!=="explore") return;
+    var r=cv.getBoundingClientRect();
+    drag={sx:e.clientX-r.left,sy:e.clientY-r.top,cx:cam.x,cy:cam.y,moved:false};
+    cv.style.cursor="grabbing";
+  });
+  window.addEventListener('mousemove',function(e){
+    var r=cv.getBoundingClientRect();
+    var mx=e.clientX-r.left, my=e.clientY-r.top;
+    if(MODE==="explore"){
+      if(drag){
+        var dx=mx-drag.sx, dy=my-drag.sy;
+        if(Math.abs(dx)+Math.abs(dy)>3){ drag.moved=true; hideTools(); }
+        cam.x=drag.cx-dx/cam.zoom; cam.y=drag.cy-dy/cam.zoom;
+        cam.lx=cam.x; cam.ly=cam.y; cam.tx=cam.x; cam.ty=cam.y;
+      }else if(e.clientY<50){
+        showTools(3000);
+      }
+      var l=hitTest(mx,my);
+      hoverLoc=l;
+      cv.style.cursor=l?"pointer":(drag?"grabbing":"grab");
+      if(l) showTip(l,mx,my); else hideTip();
+    }else{
+      if(hoverLoc){ hoverLoc=null; hideTip(); }
+    }
+  });
+  cv.addEventListener('mouseleave',function(){ if(!drag){ hoverLoc=null; hideTip(); } });
+  window.addEventListener('mouseup',function(){
+    if(drag){ drag=null; if(MODE==="explore") cv.style.cursor=hoverLoc?"pointer":"grab"; }
+  });
+  cv.addEventListener('click',function(e){
+    if(MODE!=="explore") return;
+    if(drag&&drag.moved){ drag=null; return; }
+    var r=cv.getBoundingClientRect();
+    var sx=e.clientX-r.left, sy=e.clientY-r.top;
+    var loc=hitTest(sx,sy);
+    if(loc) showDetail(loc); else hideDetail();
+  });
+  window.addEventListener('resize',resize);
+}
+function init(){
+  resize();
+  buildOffscreen();
+  buildLegend();
+  bindTiannan();
+  buildProgress();
+  buildStages();
+  buildExplore();
+  bindEvents();
+  camTarget(WORLD.W/2,WORLD.H/2,Math.min(W/WORLD.W,H/WORLD.H)*1.06);
+  cam.x=WORLD.W/2; cam.y=WORLD.H/2; cam.zoom=cam.tz;
+  requestAnimationFrame(function(ts){ lastTs=ts; requestAnimationFrame(frame); });
+}
+
+  window.__fanrenMap=window.__fanrenMap||{};
+  window.__fanrenMap.state=function(){
+    var rows=[];
+    LOCS.forEach(function(l){var p=toScreen(l.wx,l.wy);if(p.x>-200&&p.x<W+200&&p.y>-200&&p.y<H+200)rows.push({n:l.n,x:Math.round(p.x),y:Math.round(p.y),s:l.s,imp:l.imp});});
+    return {cam:{x:Math.round(cam.x),y:Math.round(cam.y),z:cam.zoom},mode:MODE,stage:stageIdx,rows:rows};
+  };
+  window.__fanrenMap.warps=function(){
+    var o={};
+    STAGES.slice(1).forEach(function(st){ o[st.id]=STAGE_WARPS[st.id].length; });
+    return o;
+  };
+  window.__fanrenMap.setView=function(x,y,z){ camTarget(x,y,z); };
+  window.__fanrenMap.snapView=function(x,y,z){ camTarget(x,y,z); cam.x=cam.tx; cam.y=cam.ty; cam.zoom=cam.tz; cam.lx=cam.x; cam.ly=cam.y; cam.lz=cam.zoom; render(); };
+  window.__fanrenMap.setStage=function(s){ setExploreStage(s); };
+  window.__fanrenMap.openLoc=function(name){
+    for(var i=0;i<LOCS.length;i++){ if(LOCS[i].n===name){ showDetail(LOCS[i]); return true; } }
+    return false;
+  };
+  window.__fanrenMap.regions=function(){
+    return REGIONS.map(function(r){
+      var p=toScreen(r.wx,r.wy-r.wry*1.02);
+      return {n:r.name,x:Math.round(p.x),y:Math.round(p.y),fs:clamp(26*cam.zoom,13,38),z:cam.zoom};
+    });
+  };
+  /* 后台标签页 rAF 被暂停时，手动推进若干毫秒（自检与自动化用） */
+  window.__fanrenMap.step=function(ms){
+    var dt=Math.min(.05,(ms||16)/1000);
+    updateTweens(dt);
+    if(MODE==="play"&&playing) flyUpdate(dt);
+    updateParticles(dt); camSmooth(dt); tickProgress(); render();
+    return {state:state,t:t,stage:stageIdx,cam:[Math.round(cam.x),Math.round(cam.y),+cam.zoom.toFixed(3)]};
+  };
+  /* 后台标签页 rAF 被暂停时，可手动渲染一帧用于自检 */
+  window.__fanrenMap.renderNow=function(){ try{ render(); }catch(e){} return true; };
+  /* 图面自检：屏幕取色 / 阶段路径长度与传送段数 */
+  window.__fanrenMap.pixel=function(sx,sy){
+    var d=cv.getContext('2d').getImageData(Math.round(sx*DPR),Math.round(sy*DPR),1,1).data;
+    return [d[0],d[1],d[2]];
+  };
+  window.__fanrenMap.pathInfo=function(s){ return {len:STAGE_PATHS[s].length, warps:STAGE_WARPS[s].length}; };
+  /* 指定数据坐标是否落在陆地/岛上（用于图面自检） */
+  window.__fanrenMap.landAt=function(dx,dy){
+    var w=toWorld({x:dx,y:dy,re:"人界"});
+    for(var i=0;i<REGIONS.length;i++){
+      var r=REGIONS[i];
+      if(inPoly(buildLand(r),w.x,w.y)||buildIsles(r).some(function(ip){return inPoly(ip,w.x,w.y);})) return true;
+    }
+    return false;
+  };
+  window.__fanrenMap.geoStats=function(){
+    var cells=0,isles=0,landPts=0;
+    REGIONS.forEach(function(r){ cells+=subCells(r).length; isles+=buildIsles(r).length; landPts+=buildLand(r).length; });
+    var onLand=0, off=[];
+    LOCS.forEach(function(l){
+      for(var i=0;i<REGIONS.length;i++){
+        var r=REGIONS[i];
+        if(inPoly(buildLand(r),l.wx,l.wy)||buildIsles(r).some(function(ip){return inPoly(ip,l.wx,l.wy);})){ onLand++; return; }
+      }
+      off.push(l.n);
+    });
+    return {regions:REGIONS.length, subs:SUBS.length, cells:cells, isles:isles, landPts:landPts,
+            nations:NATIONS.length, locs:LOCS.length, locsOnLand:onLand, offLand:off, stages:STAGES.length-1, arch:archIslands().length};
+  };
+  window.__fanrenMap.stageCenter=function(s){var b=stageBox(s);return {x:(b.x0+b.x1)/2,y:(b.y0+b.y1)/2,box:b};};
+  window.__fanrenMap.subPos=function(){
+    var out=[];
+    REGIONS.forEach(function(r){
+      SUBS.filter(function(s){return s.reg===r.name;}).forEach(function(sb){
+        var wp=subLabelPos(r,sb), sp=toScreen(wp.x,wp.y);
+        if(sp.x>-100&&sp.x<W+100&&sp.y>-100&&sp.y<H+100) out.push({name:sb.name,x:Math.round(sp.x),y:Math.round(sp.y)});
+      });
+    });
+    return out;
+  };  window.__fanrenMap.boot=function(){
+    if(__booted){ try{resize();}catch(e){} return; }
+    __booted=true; init();
+  };
+  /* 自检启动：主页路由脚本在本 IIFE 之前同步执行 applyHash()，此处兜底补启动 */
+  if(location.hash.indexOf("v-map")===1 || (document.querySelector(".view.active")||{}).id==="v-map"){
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ window.__fanrenMap.boot(); }); });
+  }
+})();
+</script>
+
 </body>
 </html>
