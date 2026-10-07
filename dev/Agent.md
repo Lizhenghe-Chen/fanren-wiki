@@ -263,7 +263,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 > ⚠️ **许可已改为 Apache-2.0（2026-09-17）**，水印的性质随之改变：它现在是**出处标识**，**不再是「禁止去除」的许可条件** —— Apache-2.0 不允许对下游附加额外限制（原文的“禁止商业使用”“禁止去除署名与水印”已删除）。页脚文案已同步为“欢迎保留”。**不要再把水印写回成强制条款。**
 > 但“不在卡片图上盖章”这条**依然成立** —— 理由不变（图不是你画的），且第三方图片**本来就不在 Apache-2.0 范围内**。
 
-- **全页水印**：`.watermark`（`position:fixed` 全屏平铺）的背景图**已内联为 base64 data URI**，不再引用 `watermark.svg`——`dev/watermark.svg` 仅为 `dev/_backup/index-v*.html` 保留，**勿删**（删了旧备份开出来就没水印）。改水印要改那段 base64，别改回外部文件引用。
+- **全页水印**：`.watermark`（`position:fixed` 全屏平铺）的背景图**已内联为 base64 data URI**，不再引用 `watermark.svg`——`dev/watermark.svg` 仅为 `dev/_backup/index-v*.html` 保留，**勿删**（删了旧备份开出来就没水印）。改水印要改那段 base64，别改回外部文件引用。**瓦片三行 = 首页大标题的两行原文（`《凡人修仙传》` / `百科 · 全篇资料图谱`，与 `#v-home .hero-title h1` 逐字一致，别并成一行）+ 站点网址 `bunnychen.top`**；网址行是「截图转发后还能找回本站」的唯一线索，**不能删**。改名时两处同步：那段 base64 与 `dev/watermark.svg`。
 - **无 `@media print` 例外**：打印/导出 PDF 也带水印（`position:fixed` 在分页媒体里逐页重复），别再加 `display:none` 把它关掉。
 - **不在卡片图片上盖章**：曾经加过 `.card-top::after{content:"bunnychen.top"}` 的右下角标，**已移除且不要再加**——图片本身是网络检索的第三方素材，不是本站作品，在别人的图上盖自己的出处站不住脚（真有争议时也不占理）。图片区保持干净。
 - **元数据**：`<head>` 里三件套——版权注释块（含版本/日期/仓库地址，抄整页的人会把出处一起带走）、`<link rel="canonical">`、JSON-LD（author / datePublished / dateModified / license / isBasedOn）。**改版必须同步**。许可字段当前为 `https://www.apache.org/licenses/LICENSE-2.0`。
