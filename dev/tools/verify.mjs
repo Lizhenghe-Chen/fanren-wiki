@@ -724,12 +724,14 @@ try {
     !backNav.skipped && backNav.jumped !== backNav.before && backNav.got === backNav.want,
     JSON.stringify(backNav))
 
-  /* 只看真正会发起请求的标签：canonical / alternate 这类 href 不是资源请求 */
+  /* 只看真正会发起请求的标签：canonical / alternate 这类 href 不是资源请求。
+     运行时的访问统计 JSONP 会自己插一个 <script>（打有 data-fw-stats）—— 它不是页面写死的
+     第三方资源，而是「全页唯一外部请求」的设计本身，故排除；漏排会让线上验收永久假红。 */
   const thirdParty = await evaluate(`JSON.stringify(
-    [...document.querySelectorAll('link[rel="stylesheet"][href], link[rel="preload"][href], link[rel="icon"][href], script[src], img[src]')]
+    [...document.querySelectorAll('link[rel="stylesheet"][href], link[rel="preload"][href], link[rel="icon"][href], script[src]:not([data-fw-stats]), img[src]')]
       .map(el => el.getAttribute('href') || el.getAttribute('src'))
       .filter(u => /^https?:/i.test(u)))`)
-  check('页面静态资源无第三方请求', thirdParty === '[]', thirdParty)
+  check('页面静态资源无第三方请求（运行时统计 JSONP 除外）', thirdParty === '[]', thirdParty)
 
   /* 访问统计：① 首页统计位默认隐藏（服务不可用时不留空洞）；② 本地/file:// 不发起上报（否则本地预览会污染线上计数）。
      页面每次载入都直接取回累计值、不做本地去重缓存，故无「去重窗口」断言。 */
