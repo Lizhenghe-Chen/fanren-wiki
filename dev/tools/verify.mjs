@@ -738,21 +738,24 @@ try {
     return {
       box: box ? getComputedStyle(box).display : 'MISSING',
       num: num ? num.textContent.trim() : 'MISSING',
-      injected: [...document.querySelectorAll('script[src]')].filter(s => /busuanzi/.test(s.getAttribute('src'))).length,
+      scripts: [...document.querySelectorAll('script[src]')]
+        .map(s => s.getAttribute('src')).filter(u => /busuanzi/.test(u)),
     };
   })())`)
   const visits = JSON.parse(await readVisits())
-  /* 这条分环境：本地/file:// 下应「隐藏且不发起上报」（免得调试流量污染线上计数），
-     真实域名下正好反过来 —— 应显示取到的 PV，且按设计自己发 JSONP（不引不蒜子脚本）。
-     否则拿 --url 验线上时，这里会永远挂一条假失败。 */
+  /* 这条分环境：本地/file:// 下应「隐藏且不发起任何统计请求」（免得调试流量污染线上计数），
+     真实域名下正好反过来 —— 应显示取到的 PV，且请求只打到官方 JSONP 接口
+     （页面自己注入 <script>，不引官方那支 mini.js）。否则拿 --url 验线上时会永远挂一条假失败。 */
   const hostInfo = await evaluate(`location.protocol + location.hostname`)
   const localRun = hostInfo.startsWith('file:') || /^https?:(localhost|127\.0\.0\.1)$/.test(hostInfo)
   if (localRun) {
-    check('首页浏览统计默认隐藏且本地不发起上报', visits.box === 'none' && visits.injected === 0, JSON.stringify(visits))
+    check('首页浏览统计默认隐藏且本地不发起上报', visits.box === 'none' && visits.scripts.length === 0, JSON.stringify(visits))
   } else {
     const pv = Number(String(visits.num).replace(/[^0-9]/g, ''))
-    check('真实域名下：浏览统计显示已取到的 PV，且未引入不蒜子脚本',
-      visits.box !== 'none' && pv > 0 && visits.injected === 0, JSON.stringify(visits))
+    check('真实域名下：浏览统计显示不蒜子官方取回的 PV，且只请求官方 JSONP 接口',
+      visits.box !== 'none' && pv > 0 && visits.scripts.length === 1 &&
+        /^https:\/\/busuanzi\.ibruce\.info\/busuanzi\?jsonpCallback=BusuanziCallback_\d+$/.test(visits.scripts[0]),
+      JSON.stringify(visits))
   }
 
   /* 统计位「显示出来」才是真实访客看到的状态：先断言取到值后的渲染（千位分隔），
@@ -803,8 +806,29 @@ try {
      分桶的 —— 尾斜杠 / 查询串 / 分享参数 / 深链各成一个小桶从 1 重算，显示出来就是
      「一千四百零几」的假小数字（实测同一页面 127 / 1 / 1 / 8）。 */
   check('访问统计取 site_pv（不是按 URL 分桶的 page_pv）',
-    /var pv = Number\(o && o\.busuanzi_site_pv\)/.test(siteHtml) && !/o\.busuanzi_page_pv/.test(siteHtml),
-    `实际取值：${(/Number\(o && o\.(\w+)\)/.exec(siteHtml) || [])[1] || '未找到取值行'}`)
+    /var pv = Number\(o && o\.site_pv\)/.test(siteHtml) && !/o\.page_pv/.test(siteHtml),
+    `实际取值：${(/Number\(o && o\.(\w+(?:\\?\.\w+)?)\)/.exec(siteHtml) || [])[1] || '未找到取值行'}`)
+
+  /* 后端与字段名（2026-10-09 迁回官方）：请求只打官方 JSONP 接口，且读官方那套**扁平**字段
+     （site_pv / page_pv / site_uv）。带 busuanzi_ 前缀的是 busuanzi.cc 的字段名，读错会取到
+     undefined ⇒ 落到「统计暂不可用」。这条守住这次踩过的坑。 */
+  check('访问统计走不蒜子官方 JSONP，且读无前缀字段（非 busuanzi_*）',
+    /jsonpCallback=/.test(siteHtml) && /busuanzi\.ibruce\.info\/busuanzi/.test(siteHtml) &&
+      !/busuanzi_site_pv|busuanzi_page_pv|busuanzi_site_uv/.test(siteHtml),
+    `命中：${(/https:\/\/[\w.]+\/[^\s'"]*jsonpCallback=[^\s'"]*/.exec(siteHtml) || [])[0] || '未找到官方接口'}`)
+
+  /* 显示起点（2026-10-09 迁回官方时用户指定 1888）：显示 = BASE_PV + 官方 site_pv，
+     且 BASE_PV 必须由 TARGET_PV − OFFICIAL_AT_SWITCH 推出（官方桶在 9 月下旬宕机里丢/回滚过数据，
+     迁回时现值低于此前记录，直接显示会让数字「掉下来」）。改起点只该改 TARGET_PV。 */
+  const baseNums = {
+    TARGET: (siteHtml.match(/var TARGET_PV = (\d+)/) || [])[1],
+    SWITCH: (siteHtml.match(/var OFFICIAL_AT_SWITCH = (\d+)/) || [])[1],
+    推式: /var BASE_PV = TARGET_PV - OFFICIAL_AT_SWITCH/.test(siteHtml),
+    相加: /BASE_PV \+ pv/.test(siteHtml),
+  }
+  check('访问统计显示起点自洽（BASE_PV = TARGET_PV − OFFICIAL_AT_SWITCH，且真的相加）',
+    baseNums.推式 && baseNums.相加 && Number(baseNums.TARGET) > Number(baseNums.SWITCH),
+    JSON.stringify(baseNums))
 
   /* ========== 4. 控制台 ========== */
   check('控制台与页面均无报错', pageErrors.length === 0, pageErrors.slice(0, 3).join(' | '))

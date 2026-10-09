@@ -14,12 +14,15 @@
   未获授权或背书。角色图片为网络检索素材（多为该动画截图与官方物料），版权归各自权利人所有，
   不在上述许可范围内，如有异议请联系删除。
   源码仓库：https://github.com/Lizhenghe-Chen/fanren-wiki
-  访问统计：首页 hero 的「次浏览」来自「busuanzi.cc」(cdn.busuanzi.cc/api.php)，是全页唯一的外部请求，
+  访问统计：首页 hero 的「次浏览」来自「不蒜子」官方 (busuanzi.ibruce.info)，是全页唯一的外部请求，
   取接口的 site_pv（全站累计）而非 page_pv —— page_pv 按「完整 URL 字符串」分桶，尾斜杠 / 查询串 /
   分享参数 / 深链 hash 都会各成一个小桶从 1 重新累计，展示出来就是「一千四百零几」的假小数字。
-  原「不蒜子」官方自 2026-09 下旬起持续故障且无人维护，已迁移；迁移前累计的 ≈1400 由代码叠加显示。
-  不写 cookie、不采集个人标识；每次载入直接取回累计值并显示，且只在真实域名下发起
-  （file:// 与本地预览不发起）。
+  迁回官方（2026-10-09）：2026-10-03 曾因官方持续 502 迁到 busuanzi.cc；2026-10-09 该站（cdn 与主站）
+  整站 502 且其上累计的增量取不回，而官方已恢复，故迁回官方取 site_pv。
+  官方桶在 9 月下旬宕机中丢/回滚过数据（迁回时只剩 1223，低于 10-03 记录的 ≈1400），故按用户要求
+  设 BASE_PV 把显示起点对齐到 1888，避免数字从换站期间的 ≈1800+ 掉下来；起点见代码里的 TARGET_PV。
+  本站代码不写 cookie、不采集个人标识（官方接口会下发它自己的 busuanziId cookie，用于其 UV 去重）；
+  每次载入直接取回累计值并显示，且只在真实域名下发起（file:// 与本地预览不发起）。
   首次发布：2026-09-14 · 最后更新：2026-10-05
 -->
 <link rel="canonical" href="https://bunnychen.top/fanren-wiki/">
@@ -1080,7 +1083,7 @@ body.v-map-on .navbar{display:none!important}
         <div class="stat"><b id="home-st-gongfa">0</b><span>功法</span></div>
         <div class="stat"><b id="home-st-zhenfa">0</b><span>阵法</span></div>
         <div class="stat"><b id="home-st-fu">0</b><span>符箓</span></div>
-        <div class="stat" id="stat-views" style="display:none" title="全站累计浏览次数（数据来源：busuanzi.cc 的 site_pv）"><b id="stat-views-num">0</b><span>次浏览</span></div>
+        <div class="stat" id="stat-views" style="display:none" title="全站累计浏览次数（数据来源：不蒜子官方 site_pv）"><b id="stat-views-num">0</b><span>次浏览</span></div>
       </div>
     </div>
     <div class="hero-cover">
@@ -1788,15 +1791,20 @@ body.v-map-on .navbar{display:none!important}
 </footer>
 
 <script>
-/* ===== 访问统计（busuanzi.cc site_pv + 原计数叠加）=====
-   展示位置：首页 hero 统计行；数据源：cdn.busuanzi.cc/api.php（全页唯一外部请求，不写 cookie）。
-   每次载入都 POST 上报一次并显示接口返回的累计值：不写本地缓存、不做去重窗口。
+/* ===== 访问统计（不蒜子官方 site_pv）=====
+   展示位置：首页 hero 统计行；数据源：busuanzi.ibruce.info（全页唯一外部请求）。
+   每次载入都取回一次累计值并显示：不写本地缓存、不做去重窗口。
    ⚠️ 取值必须用 site_pv 而不是 page_pv：page_pv 是按「完整 URL 字符串」分桶的，尾斜杠、查询串、
    分享参数、深链 hash 都会各成一个独立小桶从 1 重新累计（实测同一页面 127 / 1 / 1 / 8），
    展示出来就是「一千四百零几」的假小数字；site_pv 实测跨所有 URL 变体统一累加，才是全站浏览次数。
-   上报时 URL 仍统一去掉 hash（深链访问归入主路径）。
-   切换说明：原「不蒜子」官方（busuanzi.ibruce.info）自 2026-09 下旬起持续 502/超时且无人维护，
-   故迁移至 busuanzi.cc；原服务累计的 ≈1400 无法随迁，用下方 BASE_PV 常量叠加显示。
+   ⚠️ 字段名：官方 JSONP 回的是扁平的 site_pv / page_pv / site_uv（无前缀，与官方自己的
+   client 脚本读法一致）；带 busuanzi_ 前缀那套是 busuanzi.cc 的，迁回时务必一并改掉。
+   ⚠️ 官方接口没有 CORS 头、只认 Referer ⇒ 只能用 <script> 注入 JSONP（fetch 读不到响应）；
+   referrerPolicy 必须显式写 no-referrer-when-downgrade —— 跨域默认策略只送 origin，服务端拿不到路径。
+   迁移史：2026-10-03 因官方持续 502 迁到 busuanzi.cc（其接口是 POST JSON）；2026-10-09 busuanzi.cc
+   整站 502、且它在 10-03 之后累计的增量取不回来，而官方已恢复，故迁回官方。
+   迁回后**保留基数**：官方桶在宕机中丢/回滚过数据（迁回时 1223 < 10-03 记录的 ≈1400，计数不会自己变小），
+   直接显示会让数字从换站期间的 ≈1800+ 掉下来 —— 故按用户要求把显示起点对齐到 1888，见下方 TARGET_PV。
    只在真实域名下发起：file:// 与本地预览不上报（本地想看加 ?stats=1）。
    宕机兜底：请求失败或 6 秒无响应时，统计位显示「— 统计暂不可用」，不再静默隐藏。 */
 (function () {
@@ -1808,32 +1816,45 @@ body.v-map-on .navbar{display:none!important}
     !/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
   if (!isReal && !/[?&]stats=1\b/.test(location.search)) return;
 
-  var BASE_PV = 1400; /* 原「不蒜子」服务累计的阅读量（≈1400），迁移后叠加显示 */
+  /* 显示 = 基数 + 官方桶的累计值，起点对齐到 1888（用户指定）。
+     为什么还要基数：官方桶在 9 月下旬那波长时间 502 里丢/回滚过数据 —— 迁回时只剩 1223，
+     比 2026-10-03 记录在案的 ≈1400 还低（计数不可能自己变小）；换成 busuanzi.cc 那几天
+     新增的 ≈400 更取不回来。直接显示 1223 会让数字从换站期间的 ≈1800+ 掉下来，故按起点对齐。
+     ⚠️ 改起点只改 TARGET_PV；OFFICIAL_AT_SWITCH 是「迁回瞬间官方桶的值」，别随手改（会平移整个数字）。 */
+  var TARGET_PV = 1888; /* 迁回时的显示起点 */
+  var OFFICIAL_AT_SWITCH = 1224; /* 迁回瞬间官方 site_pv：实测 1223（该次探测自身已计入）+ 首次载入的 1 */
+  var BASE_PV = TARGET_PV - OFFICIAL_AT_SWITCH; /* 664，恒正 */
   var failTimer = null;
   function showFail() {
     if (failTimer) { clearTimeout(failTimer); failTimer = null; }
     num.textContent = '—';
     if (suffix) suffix.textContent = '统计暂不可用';
-    box.title = '计数服务（busuanzi.cc）当前不可用，刷新页面重试';
+    box.title = '计数服务（不蒜子官方 busuanzi.ibruce.info）当前不可用，刷新页面重试';
     box.style.display = '';
   }
 
   function onData(o) {
     if (failTimer) { clearTimeout(failTimer); failTimer = null; }
-    var pv = Number(o && o.busuanzi_site_pv);
+    /* ⚠️ 官方 JSONP 的字段是**扁平**的 site_pv / page_pv / site_uv；
+       带 busuanzi_ 前缀的那套是 busuanzi.cc 的（旧实现读的就是它，迁回官方时必须改回来）。 */
+    var pv = Number(o && o.site_pv);
     if (!isFinite(pv)) { showFail(); return; }
     num.textContent = (BASE_PV + pv).toLocaleString('zh-CN');
     if (suffix) suffix.textContent = '次浏览';
-    box.title = '全站累计浏览次数（数据来源：busuanzi.cc 的 site_pv）';
+    box.title = '全站累计浏览次数（数据来源：不蒜子官方 site_pv）';
     box.style.display = '';
   }
 
-  var page = location.origin + location.pathname; /* 去掉 #hash：深链访问统一归入主路径计数 */
-  fetch('https://cdn.busuanzi.cc/api.php', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url: page, referrer: document.referrer })
-  }).then(function (r) { return r.json(); }).then(onData).catch(showFail);
+  /* JSONP：回调名随机，免得多标签页互相覆盖；标签留在 DOM 里（不引官方那支 1.9KB 的
+     busuanzi.pure.mini.js，自己发请求即可），验收脚本也靠它核对请求目标。 */
+  var cb = 'BusuanziCallback_' + Math.floor(1099511627776 * Math.random());
+  window[cb] = function (o) { onData(o); };
+  var s = document.createElement('script');
+  s.async = true;
+  s.referrerPolicy = 'no-referrer-when-downgrade';
+  s.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=' + cb;
+  s.onerror = showFail;
+  document.head.appendChild(s);
   failTimer = setTimeout(showFail, 6000); /* 兜底超时：请求挂起时不至于一直空白 */
 })();
 </script>
