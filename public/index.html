@@ -1845,11 +1845,13 @@ body.v-map-on .navbar{display:none!important}
     box.style.display = '';
   }
 
-  /* JSONP：回调名随机，免得多标签页互相覆盖；标签留在 DOM 里（不引官方那支 1.9KB 的
-     busuanzi.pure.mini.js，自己发请求即可），验收脚本也靠它核对请求目标。 */
+  /* JSONP：回调名随机，免得多标签页互相覆盖；标签留在 DOM 里并打上 data-fw-stats 标记 ——
+     它是运行时注入的统计请求，验收脚本扫「第三方静态资源」时要靠这个标记把它排除掉
+     （它不是 HTML 里写死的资源），同时也靠它核对请求目标。 */
   var cb = 'BusuanziCallback_' + Math.floor(1099511627776 * Math.random());
   window[cb] = function (o) { onData(o); };
   var s = document.createElement('script');
+  s.dataset.fwStats = '1';
   s.async = true;
   s.referrerPolicy = 'no-referrer-when-downgrade';
   s.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=' + cb;
