@@ -8,23 +8,36 @@
   <a href="https://bunnychen.top/fanren-wiki/"><img src="image/README/shots/封面.png" alt="首页" width="840"></a>
 </p>
 
-| 人物图谱 | 剧情速览 |
-| :---: | :---: |
-| <a href="https://bunnychen.top/fanren-wiki/#v-chars"><img src="image/README/shots/02-characters.webp" alt="人物图谱" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-lore"><img src="image/README/shots/03-lore.webp" alt="剧情速览" width="400"></a> |
+| 修仙界全图 · 三界巡游 |
+| :---: |
+| <a href="https://bunnychen.top/fanren-wiki/#v-map"><img src="image/README/shots/11-map.webp" alt="修仙界全图" width="840"></a> |
 
-| 境界体系 | 灵兽灵虫 |
+| 首页 | 人物图谱 |
 | :---: | :---: |
-| <a href="https://bunnychen.top/fanren-wiki/#v-realms"><img src="image/README/shots/04-realms.webp" alt="境界体系" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-beasts"><img src="image/README/shots/05-beasts.webp" alt="灵兽灵虫" width="400"></a> |
+| <a href="https://bunnychen.top/fanren-wiki/#v-home"><img src="image/README/shots/01-home.webp" alt="首页" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-chars"><img src="image/README/shots/02-characters.webp" alt="人物图谱" width="400"></a> |
 
-| 灵草丹药 | 法器法宝 |
+| 剧情速览 | 境界体系 |
 | :---: | :---: |
-| <a href="https://bunnychen.top/fanren-wiki/#v-herbs"><img src="image/README/shots/06-herbs.webp" alt="灵草丹药" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-treasures"><img src="image/README/shots/07-treasures.webp" alt="法器法宝" width="400"></a> |
+| <a href="https://bunnychen.top/fanren-wiki/#v-lore"><img src="image/README/shots/03-lore.webp" alt="剧情速览" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-realms"><img src="image/README/shots/04-realms.webp" alt="境界体系" width="400"></a> |
+
+| 灵兽灵虫 | 灵草丹药 |
+| :---: | :---: |
+| <a href="https://bunnychen.top/fanren-wiki/#v-beasts"><img src="image/README/shots/05-beasts.webp" alt="灵兽灵虫" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-herbs"><img src="image/README/shots/06-herbs.webp" alt="灵草丹药" width="400"></a> |
+
+| 法器法宝 | 功法 |
+| :---: | :---: |
+| <a href="https://bunnychen.top/fanren-wiki/#v-treasures"><img src="image/README/shots/07-treasures.webp" alt="法器法宝" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-gongfa"><img src="image/README/shots/08-gongfa.webp" alt="功法" width="400"></a> |
+
+| 阵法 | 符箓 |
+| :---: | :---: |
+| <a href="https://bunnychen.top/fanren-wiki/#v-zhenfa"><img src="image/README/shots/09-zhenfa.webp" alt="阵法" width="400"></a> | <a href="https://bunnychen.top/fanren-wiki/#v-fu"><img src="image/README/shots/10-fu.webp" alt="符箓" width="400"></a> |
 
 ## 特性
 
-- **十大视图**：首页 / 人物图谱 / 剧情速览 / 境界体系 / 灵兽灵虫 / 灵草丹药 / 法器法宝 / 功法 / 阵法 / 符箓 页内切换，单条记录可深链直达（如 `#v-treasures/tres-12`、`#v-gongfa/gongfa-5`）。
-- **剧情速览分两栏**：`境界时间线`（韩立境界演进 + 故事脉络 + 双韩立因果闭环）与 `情节梳理 · 全书十一卷`（11 卷 / 55 地点篇 / 333 步，带来源署名）。
-- **关系图谱**：ECharts 力导向图，收录被引 ≥ 3 的近百位核心角色（随互引增长），节点可点进对应卡片；人物图谱默认显示全部，可一键切「核心圈 81」降噪。
+- **十一大视图**：首页 / 人物图谱 / 剧情速览 / 修仙界全图 / 境界体系 / 灵兽灵虫 / 灵草丹药 / 法器法宝 / 功法 / 阵法 / 符箓 页内切换，单条记录可深链直达（如 `#v-treasures/tres-12`、`#v-gongfa/gongfa-5`）。
+- **修仙界全图 · 三界巡游**：Canvas 手绘三界舆图，152 处地点 × 21 个区域 × 10 段巡游章节（七玄门 → 大罗之争），跟随韩立足迹自动巡游人界 → 灵界 → 仙界；可播放 / 暂停 / 变速、点击光点查看地点剧情、`/` 搜索地点、一键跳到任一章节；「舆图原图」叠层对照同人舆图（作者：画地图的小七）。
+- **剧情速览分两栏**：`境界时间线`（韩立境界演进 + 故事脉络 + 双韩立因果闭环）与 `情节梳理 · 全书十一卷`（11 卷 / 55 地点篇 / 388 步，带来源署名）。
+- **关系图谱**：ECharts 力导向图，收录被引 ≥ 3 的 105 位核心角色（随互引增长），节点可点进对应卡片；人物图谱默认显示全部 263 条，可一键切「核心圈 87」降噪。
 - **长列表分批渲染**：人物卡片与各库列表先出首批、滚动续传（深链与互引会按需补齐到目标卡），首屏更轻。
 - **全站搜索**：`Ctrl/⌘ + K` 唤起，跨七库命中、关键词高亮、方向键定位。
 - **跨库互引**：七库记录统一编号，卡片互挂「相关条目 / 被引用于」，人物与六库条目互相跳转。
@@ -35,13 +48,14 @@
 
 | 板块     |             条数 | 内容                                                              |
 | -------- | ---------------: | ----------------------------------------------------------------- |
-| 人物图谱 | **二百余** | 六个篇章：七玄门至仙界，从少年修士到大罗道祖                      |
+| 人物图谱 |     **263** | 六个篇章：七玄门至仙界，从少年修士到大罗道祖                      |
 | 灵兽灵虫 |     **42** | 灵虫 / 灵兽 / 妖兽妖修 / 真灵·神兽 / 炼尸魔物                    |
 | 灵草丹药 |     **65** | 灵草灵药 / 天材地宝 / 突破丹药 / 辅助丹药 / 丹方·主材                    |
 | 法器法宝 |     **71** | 玄天之宝·至宝 / 本命法宝 / 神通秘术 / 功法秘典 / 符箓阵法 / 其他          |
 | 功法       |     **53** | 主修功诀 / 神识 / 体修 / 身法魔功，优先收录动画已出现条目，附原著出处 |
 | 阵法       |     **44** | 护山杀阵 / 困敌禁制 / 传送辅助，优先收录动画已出现条目，附原著出处 |
 | 符箓       |     **34** | 攻击 / 防御 / 辅助 / 通讯，优先收录动画已出现条目，附原著出处 |
+| 修仙界全图 |    **152** | 三界地点 × 21 区域 × 10 段巡游章节，韩立足迹人界 → 灵界 → 仙界 |
 | 配图     | **数百张** | 站内配图，人物形象以官方动画/游戏素材为主                         |
 
 数据来源：起点官方《凡人必备手册》第二版 + 原著与公开资料交叉验证；「剧情速览 → 情节梳理」整理自微信公众号「书生去哪了」的原创文章（署名与原文链接见页内，声明见 [`NOTICE`](NOTICE)）。

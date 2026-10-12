@@ -30,7 +30,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 └── dev/                    # 开发资料：永不上站；只跟踪文档与工具（见下方说明）
     ├── Agent.md            # 本文档
     ├── _review.md          # 数据审校笔记
-    ├── tools/              # 在用的工具：image-slim.py（图片瘦身，见 §6）、verify.mjs（零依赖验收，见 §8.3）、echarts-entry.js（ECharts 按需构建入口，见 §7）、readme-shots.py（README 宣传图：整页截图 → 16:10 缩略图，输出 image/README/shots/，原图被 .gitignore 忽略）、stamp.mjs（部署时把「最后更新」+ 提交说明注入 index.html、把 lastmod 注入 sitemap.xml，见 §7「元数据」）
+    ├── tools/              # 在用的工具：image-slim.py（图片瘦身，见 §6）、verify.mjs（零依赖验收，见 §8.3）、echarts-entry.js（ECharts 按需构建入口，见 §7）、readme-shots.py（README 宣传图：整页截图 → 16:10 缩略图，输出 image/README/shots/，原图被 .gitignore 忽略；⚠️ 只认「整页长图」来源，2026-10-12 起另有逐视图顶屏截图法，见 §11）、stamp.mjs（部署时把「最后更新」+ 提交说明注入 index.html、把 lastmod 注入 sitemap.xml，见 §7「元数据」）
     ├── _image-slim-report.json  # 瘦身逐图决策记录（体积/SSIM/所选质量档）
     ├── _backup/            # 历史堆积：index-vNN.html 版本次级（21 个）+ 一次性的 migrate 脚本（apply_*/add_*/fix_*/sync_*）+ meta/stories/ev/herbs_data/treasures_data 等中间数据
     └── watermark.svg       # 仅供 _backup/index-v*.html 引用的水印瓦片（当前页面已内联 base64）
@@ -559,3 +559,67 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   ⑤ **本地端到端实测**：`--host-resolver-rules` 这条路走不通（Chrome 153 下 MAP 规则被 DoH 绕过，且 `bunnychen.top` 发 HSTS 会把 http 升级成 https），改为本机自签证书 + `127.0.0.1:8931` 实测：数字正确渲染（显示 `10,903,551`，即 `127.0.0.1` 共享桶的值），证明「注入 → 回调 → 解析 site_pv → 渲染」整链可用；线上真实值以部署后 `verify.mjs --url https://bunnychen.top/fanren-wiki/` 复核。
   ⑦ **运行时 JSONP 撞上「静态资源无第三方请求」断言**：那条断言扫 DOM 里的 `link / script[src] / img`；统计改成 JSONP 后标签就留在 DOM 里 ⇒ 线上复核时它**假红**（v27 起一直是绿的，是因为当时统计走 `fetch()`，DOM 里什么都没有）。修法：统计标签打 `data-fw-stats`，断言选择器改成 `script[src]:not([data-fw-stats])`，断言名改为「页面静态资源无第三方请求（运行时统计 JSONP 除外）」。它守的口径没变 —— **HTML 里不得出现写死的第三方资源**；别把那个标记删了，否则线上验收会永久假红。
   ⑥ **未动**：`stamp.mjs`（锚点未受影响，体检 6/6 命中）、页面其余结构、`busuanzi.cc` 相关的历史备份文件（`dev/_backup/`）。
+
+## 11. README 宣传图 / 封面更新流程（2026-10-12 实战沉淀）
+
+> 适用范围：更新 `README.md` 的「页面速览」截图网格、重新生成封面、修订「特性 / 收录内容」数字。全流程**不 commit**（README 更新任务由用户明确「完成后不要 commit」）；`public/index.html` 若有未提交改动，**一律不动、不随 commit**（那是用户自己的进行中工作）。
+
+### 11.1 截图：逐视图顶屏截图法（推荐，不依赖整页长图）
+
+`dev/tools/readme-shots.py` 只认「手工整页长图 → 裁 16:10」，且 SHOTS 表只有 7 个视图、无法覆盖新增的功法/阵法/符箓/修仙界全图。**2026-10-12 起改用手法**：headless Chrome 逐视图顶屏截图，产出全部 11 个视图的 1440×900 顶屏画面，直接够 README 用：
+
+1. **起服务**：`cd <repo> && python3 -m http.server 8123 --directory public`（本地静态服务）。
+2. **截图脚本**：对每个视图**开独立 Chrome 实例**（不能用单实例连续导航），加载 `http://localhost:8123/?shot=<name>#v-<view>`，固定视口 1440×900@2x（`Emulation.setDeviceMetricsOverride`），等待 3.8s 后取顶屏。核心是 `?shot=<name>` + 完整 hash：
+   - `?shot=<name>` 是截图辅助参数（激活目标视图、避免时序竞争）；hash 必须带 `v-` 前缀（`#v-chars`，写 `#chars` 会被 SPA 回退到 v-home）。
+   - 11 个视图：`v-home` 首页 / `v-chars` 人物图谱 / `v-lore` 剧情速览 / `v-map` 修仙界全图 / `v-realms` 境界体系 / `v-beasts` 灵兽灵虫 / `v-herbs` 灵草丹药 / `v-treasures` 法器法宝 / `v-gongfa` 功法 / `v-zhenfa` 阵法 / `v-fu` 符箓。
+3. **压图入库**：把每视图顶屏 2x PNG 缩为 **1440×900 WebP（quality=80, method=6）**，写入 `image/README/shots/`，命名 `01-home.webp` ～ `11-map.webp`（顺序即 README 展示顺序）。
+4. **死路（已验证，勿重试）**：
+   - `Page.captureScreenshot` + `captureBeyondViewport` 在多视图导航后**反复返回同一帧**（headless 合成器时序问题）；`--run-all-compositor-stages-before-draw` 无效。
+   - 单 Chrome 实例内连续导航改 hash → **所有视图截到首页**（视图回退）。
+   - hash 漏写 `v-` 前缀（`#chars`）→ SPA 回退 v-home。
+   - 可行方案的脚本示例（临时目录，不入库）：`/tmp/fr-shots/shot-one.mjs`（每视图独立实例 + 完整加载 + 滚动偏移分段）；`stitch.py` 拼接**不用**——顶屏 y0000 画面即够。
+
+### 11.2 README「页面速览」结构（2026-10-12 版）
+
+```
+封面（image/README/shots/封面.png，width=840）
+│
+修仙界全图横幅（11-map.webp，width=840，深链 #v-map）      ← 新增视图作独立横幅置顶
+│
+5 行 × 2 视图网格（各 width=400，配表头标题）：
+  首页|人物图谱（01|02）→ 剧情速览|境界体系（03|04）→ 灵兽灵虫|灵草丹药（05|06）
+  → 法器法宝|功法（07|08）→ 阵法|符箓（09|10）
+```
+
+- 每个 `<a href>` 深链指向对应视图：`https://bunnychen.top/fanren-wiki/#v-chars` 等；单条记录深链示例 `#v-treasures/tres-12`、`#v-gongfa/gongfa-5`。
+- 封面在 README 中以 840 宽展示；封面文件落盘为 **1680×945 PNG（2x），量化 256 色压体积**（约 1MB）。
+
+### 11.3 数字核实方法（改「特性 / 收录内容」前必读，勿凭记忆写）
+
+用 node 直接统计 `public/index.html` 内的数据常量，**不要猜**。2026-10-12 已核实、可直接采用（README 已按此更新）：
+
+| 项 | 数值 | 统计口径 |
+|---|---|---|
+| 人物图谱 | **263 收录 / 233 唯一 / 6 篇章** | DATA 六数组长度合计（跨篇重复收录为设计） |
+| 灵兽 / 灵草 / 法宝 | **42 / 65 / 71** | BEASTS / HERBS / TREASURES 长度 |
+| 功法 / 阵法 / 符箓 | **53（动画 21）/ 44（动画 18）/ 34（动画 18）** | GONGFA / ZHENFA / FU 长度（含 `anim:1` 计数） |
+| 修仙界全图 | **152 地点（LOCS）/ 21 区域（REGIONS）/ 10 巡游阶段（STAGES 共 11 项含「全部」）/ 90 旅程节点（JOURNEY）** | 各常量长度 |
+| 情节梳理 | **11 卷 / 55 地点篇 / 388 步** | PLOT_VOLS（⚠️ 曾写 333，2026-10-12 实测为 **388**，README 已改） |
+| 核心圈 | **87**（被引 ≥ 5；README 曾写 81，页面 tab 已显示「核心圈 87」，以页面为准） | `coreCount()` |
+| 关系图谱 | **105 位**核心角色（被引 ≥ 3） | `#graph-core-n` 运行时值 |
+
+- ⚠️ **未上线的功能不要宣传**：`#v-map` 的「地理考据」抽屉（`btnGw` / `gwDrawer`）当前是**未提交改动**（工作区 `M public/index.html`）、内容注入未实现 —— README 只写「索引 / 播放 / 探索 / 舆图原图」，不写「地理考据」。写 README 前先 `git status --short` 看工作区有没有这类半成品。
+- 统计脚本示例（防 timeout 用 node 而非 python 读大文件）：`/tmp/fr-shots/count.js`（`LOCS/REGIONS/STAGES/JOURNEY` 用 `var X=[...];` 段、PLOT_VOLS 用 `const PLOT_VOLS = [ ... ];` 段做正则计数）。
+
+### 11.4 封面生成流程（doubao-creative-design，pure-image 横向 Banner）
+
+- **画布已存在**：`cws_58243300018383874`（2026-10-12 建，路径 `/deliverables/readme-cover`，含 v1 `eN5aQ30o-4IsGg5KXru-0201` 与 v2 `fCIqdkJH-4IjihNBsGI-0201`）。下次改封面**复用此画布**，勿新建。
+- **流程**（pure-image）：`design-workspace +workspace-create` → 主 Agent `present_files(<workspace_id>)` 交付画布卡片 → 写 `.creative-design/readme-cover/brief.md` → 读 `media-banner.md`（16:9 横向）+ `prompt-guide.md` + `image-quality-guide.md` → `image_gen` / `image_edit` → **双通道闭环**：`design-cli +create`（用工具返回的原始短链；v2 基于 v1 重绘时填 `<source_ids>` 继承血缘）→ `+get` 回读 → 交付 → 下载替换 `image/README/shots/封面.png`。
+- **文字规则**：图内中文必须用中文引号“”标注（禁止其他符号），生成后**逐字 OCR 核对**；缩略图 OCR 不可靠（384px 缩略图把「灵兽」误读成「灵宠」，真实 2730×1536 图是对的）——核对以完整尺寸图为准。
+- **v2 人物规格**：右侧人物为**韩立**（动画版形象：青年书生、清秀端正、剑眉、目光坚毅、黑发束高髻玉簪固定、玄青交领古袍、左手掌中悬浮青翠**掌天瓶**），构图与文字（标题/副标/六标签）保持不变。
+- **已知瑕疵（2026-10-12 状态）**：画面右上角多一小处「道友请进」浮字（v1、v2 均有），左侧钩子正常。用户如要求修正：基于 v2 短链再 `image_edit` 局部去除即可（按 skill 规则不自动重生，等用户明确要求）。
+
+### 11.5 Git 红线（README 更新任务通用）
+
+- **不 commit**（用户明确）；交付前 `git status --short` 核对：应只见 `README.md` + `image/README/shots/*` 改动，`public/index.html` 若有 `M` 是用户自己的未提交改动，**勿动勿提交**。
+- `dev/tools/readme-shots.py` 可复跑（依赖整页长图源，见 11.1 差异说明）；`.creative-design/` 是 skill 过程文件（brief 等），不入库引用。
