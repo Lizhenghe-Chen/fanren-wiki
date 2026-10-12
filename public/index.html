@@ -992,6 +992,28 @@ footer .note{margin-top:6px}
 #v-map #mapLegend .lg-sep{height:1px;background:var(--line);margin:8px 0 7px}
 #v-map #mapLegend .lg-note{margin-top:7px;font-size:10px;line-height:1.55;color:var(--ink4)}
 @media(max-width:760px){#v-map #mapLegend{display:none}}
+/* 地理考据抽屉：右侧滑出，宽 400px、近全屏高，内容滚动；默认隐藏不占主图 */
+#v-map #gwMask{position:absolute;inset:0;z-index:120;background:rgba(4,6,12,.45);opacity:0;pointer-events:none;transition:opacity .25s ease}
+#v-map #gwDrawer{position:absolute;top:0;right:0;bottom:0;width:400px;max-width:88vw;z-index:121;
+  display:flex;flex-direction:column;background:rgba(10,14,22,.97);backdrop-filter:blur(12px);
+  border-left:1px solid var(--line);transform:translateX(102%);transition:transform .28s cubic-bezier(.4,0,.2,1);box-shadow:-12px 0 40px rgba(0,0,0,.5)}
+#v-map #gwDrawer.open{transform:translateX(0);pointer-events:auto}
+#v-map #gwMask.show{opacity:1;pointer-events:auto}
+/* 地图视图顶栏是 fixed+z-index:200 悬浮层，会压住抽屉标题栏并吃掉「关闭」的点击：
+   头部内容按顶栏实测高度（--gw-top，由 openGw 写入）下移让开，抽屉本体仍占满高 */
+#v-map #gwDrawer .gwd-head{display:flex;align-items:center;gap:10px;padding:calc(12px + var(--gw-top,0px)) 14px 12px;border-bottom:1px solid var(--line);flex:none}
+#v-map #gwDrawer .gwd-t{color:var(--gold);font-size:15px;letter-spacing:.1em}
+#v-map #gwDrawer .gwd-s{color:var(--ink4);font-size:11px}
+#v-map #gwDrawer .gwd-head .sp{flex:1}
+#v-map #gwDrawer .gwd-body{padding:12px 16px 24px;overflow-y:auto;flex:1;font-size:12px;line-height:1.6;color:var(--ink3)}
+#v-map #gwDrawer .gw-sec{margin:14px 0 5px;color:var(--gold);letter-spacing:.12em;font-size:11px;border-left:2px solid var(--gold);padding-left:7px}
+#v-map #gwDrawer .gw-sec:first-of-type{margin-top:4px}
+#v-map #gwDrawer .gw-row{margin:0 0 7px;color:var(--ink2)}
+#v-map #gwDrawer .gw-row i{display:block;margin-top:2px;color:var(--ink4);font-size:10.5px;font-style:normal;line-height:1.5}
+#v-map #gwDrawer .gw-quote{color:var(--ink3)}
+#v-map #gwDrawer .gw-note{margin:2px 0 4px;padding:7px 9px;border-left:2px solid var(--gold);background:rgba(212,175,106,.08);color:var(--ink4);font-size:10.5px;line-height:1.55}
+#v-map #btnGw{background:rgba(212,175,106,.16);border-color:rgba(212,175,106,.5)}
+@media(max-width:760px){#v-map #gwDrawer{width:100vw;max-width:100vw}}
 #v-map #cover .cv-title{font-size:clamp(38px,6.4vw,68px)}
 @media(max-width:760px){
   #v-map #top{top:52px}
@@ -1369,6 +1391,7 @@ body.v-map-on .navbar{display:none!important}
     <button class="btn" id="btnSpeed" title="播放速度">1×</button>
     <button class="btn" id="btnExplore" title="跳过动画，直接探索地图">探索</button>
     <button class="btn" id="btnTn" title="查看同人舆图原图（作者：画地图的小七）">舆图原图</button>
+    <button class="btn" id="btnGw" title="查看人界地理原著考据（原文摘录）">地理考据</button>
   </div>
   <!-- 进度条 -->
   <div id="progress"></div>
@@ -1411,6 +1434,56 @@ body.v-map-on .navbar{display:none!important}
     <div class="lg-head" role="button" tabindex="0" aria-expanded="true" aria-controls="lgBody"><span>图 例</span><svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></div>
     <div class="lg-body" id="lgBody"></div>
   </div>
+  <!-- 地理考据：右侧滑出抽屉，原著原文摘录按区域分组；不占巡游主图 -->
+  <div id="gwDrawer" aria-hidden="true">
+    <div class="gwd-head">
+      <span class="gwd-t">地理考据</span>
+      <span class="gwd-s">人界 · 原著原文摘录</span>
+      <span class="sp"></span>
+      <button class="btn" id="btnGwClose" title="关闭（Esc）">关闭</button>
+    </div>
+    <div class="gwd-body" id="gwBody">
+      <div class="gw-note">本页为忘语《凡人修仙传》原著及官方手册/动画的地理摘录，按区域分组；每条标注出处，两说并存处并列，同人二设不采。坐标为同人示意，方位以官方动画第159集为准。</div>
+
+      <div class="gw-sec">天南格局 · 四势力</div>
+      <div class="gw-row">正道盟居西（风都国）、魔道六宗居东（天罗国）、九国盟居南（近慕兰）、天道盟居北（溪国·落云宗·云梦山）。<i>据原著势力分布与官方游戏站地理介绍</i></div>
+
+      <div class="gw-sec">越国 · 十三州与七派</div>
+      <div class="gw-row">「建州位于越国北部……太岳山脉位于建州西部……整座山脉中部早已被七大修仙派之一的黄枫谷占据数千年。」<i>原著·有声小说第81集；黄枫谷在越国立州太岳山脉，北接元武国</i></div>
+      <div class="gw-row">镜州在越国西北（青牛镇、七玄门，后迁彩霞山）；岚州在越国最南（嘉元城、墨府）；元武国在越国正北（神兵门、万妙观、天星宗三大正派）。<i>《凡人必备手册》宗门篇 + 考据转述</i></div>
+      <div class="gw-row">掩月宗为越国七派之首；魔道入侵后随六派南撤，在九国盟北凉国最西的玲珑山扎根。<i>《凡人必备手册》宗门篇</i></div>
+
+      <div class="gw-sec">九国盟 · 边境诸国</div>
+      <div class="gw-row">「越国的南面穿过紫金国等五六个国家，则是号称九国盟的九国联盟……对付慕兰族法士入侵大军。」<i>原著·有声小说第241集</i></div>
+      <div class="gw-row">确认成员：北凉国（六派南撤扎根）、虞国（总坛阗天城、黄龙山边防）、丰原国（最毗邻慕兰草原）、紫金国；其余五国原著未列全名。<i>起点官方资源站 + 考据转述</i></div>
+      <div class="gw-row">「黄龙山地处虞国离州边境，布有禁制大阵，乃兵家必守、慕兰大军必争之地。」<i>原著慕兰大战情节转述</i></div>
+
+      <div class="gw-sec">极西之地 · 飓风沙漠</div>
+      <div class="gw-row">「和天南隔着此沙漠，来往实在不太方便……极西只有天南两个中等国家大小，资源贫乏。」<i>原著原文</i></div>
+      <div class="gw-row">「沙漠上空常年刮猛烈无比的飓风，修士飞行未远便被耗干法力，只能徒步……一来一回要走一年多。」<i>原著转述·千竹教为极西唯一宗门</i></div>
+
+      <div class="gw-sec">慕兰草原 · 法士各部</div>
+      <div class="gw-row">慕兰修士称"法士"：元婴前期称法师、中期大上师、后期神师。四大神师为仲、祝、毕、田锺；圣女乐上师掌镇族至宝元明灯。<i>《凡人必备手册》次要人物篇</i></div>
+      <div class="gw-row">部众有拜火部（民风彪悍奉圣火）、天风部（擅贸易权谋）、金阳部（被突兀偷袭后方）等；黄龙山为天南—慕兰边界主战场。<i>动画186集解析 + 考据转述</i></div>
+
+      <div class="gw-sec">突兀族 · 天澜草原</div>
+      <div class="gw-row">「天澜草原是突兀人对慕兰草原的称呼……原本突兀人只占据草原南半部，三十年前在草原中部击败世仇慕兰人后，才占据整个大草原。」<i>原著第六卷第八七七章《苍鹭部》</i></div>
+      <div class="gw-row">即：慕兰人居草原北（靠天南/九国盟），突兀人居草原南（靠大晋）；天澜圣殿约七座，散处草原有灵脉之地。<i>据第877章原文</i></div>
+
+      <div class="gw-sec">大晋方位 · 原著两说</div>
+      <div class="gw-row">第六七〇章《交易会》：「天南最北端的虞国……阗天城为九国联盟总坛。」<i>一说阗天城在天南之北</i></div>
+      <div class="gw-row">第八七六章《远离》：「一道青虹从云梦山中破空飞出，一路向南飞遁远走。」<i>一说自天南部穿草原入大晋</i></div>
+      <div class="gw-row">大晋共一百零八州、三十六大郡，面积十倍于天南；韩立入境首站辽州（常年积雪、舜江穿境、关宁府在辽州最西、雪岭山脉绵延万里），南疆昆吾山，北境北冥岛有北夜小极宫。<i>原著第694集 + 《必备手册》宗门篇</i></div>
+
+      <div class="gw-sec">乱星海 · 诸岛格局</div>
+      <div class="gw-row">乱星海内为"内星海"（人族）、外围未探海域为"外星海"（妖海）；星宫在中部巨岛建超级城"天星城"，设内十二、外二十四星岛拱卫，魁星岛即其外岛之一。<i>原著原文</i></div>
+      <div class="gw-row">妙音门（女修为主）、极阴岛、圣魔岛（岛主六道极圣）均在乱星海；阴冥之地为巨兽罗睺体内移动空间，韩立离此后南飞万里重返天南。<i>《必备手册》+ 动画百科</i></div>
+
+      <div class="gw-sec">行程时长锚点</div>
+      <div class="gw-row">极西往返：徒步一年多。冰封顺舜江漂流入大晋：一年零三个月。入大晋后修为跌境，需五六年静养恢复。黄龙山被仲神师追杀：四天四夜。<i>原著原文/官方手册</i></div>
+    </div>
+  </div>
+  <div id="gwMask"></div>
   <!-- 工具条收起后的呼出按钮 -->
   <button id="toolsTab" title="显示导航工具" aria-label="显示导航工具">
     <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
@@ -3725,9 +3798,9 @@ var LOCS=[
   {n:"花溪阁",r:"天南 · 北境",re:"人界",f:"天南正道",x:355,y:545,s:4,imp:1,d:"天道盟中以丹道、花阵闻名的女修宗门，地处云雾山脉东麓。",c:"—"},
   {n:"元武国",r:"天南 · 北境",re:"人界",f:"天南正道",x:335,y:565,s:2,imp:1,d:"越国北面大国，地处天道盟南缘，是魔道入侵时七派撤离的必经之地。",c:"—"},
   {n:"天罗国",r:"天南 · 东境",re:"人界",f:"天南正道",x:525,y:625,s:2,imp:1,d:"越国东面的国家，地处魔道势力范围边缘，正魔两道势力交错。",c:"—"},
-  {n:"极西之地",r:"天南 · 西部",re:"人界",f:"散修·海外",x:75,y:700,s:4,imp:1,d:"天南西部隔大沙漠之地，韩立在此与千竹教大衍神君相遇。",c:"大衍神君"},
+  {n:"极西之地",r:"天南 · 西部",re:"人界",f:"散修·海外",x:58,y:700,s:4,imp:1,d:"天南西部隔大沙漠之地，韩立在此与千竹教大衍神君相遇。",c:"大衍神君"},
   {n:"飓风沙漠",r:"天南 · 西境",re:"人界",f:"凡俗",x:200,y:615,s:4,imp:1,d:"天南西境的大沙漠，终年飓风，是入极西之地的必经险途。",c:"—"},
-  {n:"千竹教",r:"天南 · 极西",re:"人界",f:"散修·海外",x:92,y:682,s:4,imp:1,d:"极西之地的隐世教派，大衍神君所立，以机关傀儡之术闻名。",c:"大衍神君"},
+  {n:"千竹教",r:"天南 · 极西",re:"人界",f:"散修·海外",x:75,y:682,s:4,imp:1,d:"极西之地的隐世教派，大衍神君所立，以机关傀儡之术闻名。",c:"大衍神君"},
   {n:"阗天城",r:"九国盟",re:"人界",f:"天南正道",x:400,y:740,s:4,imp:2,d:"九国盟总坛所在，上元灭光阵护城。天南交易大会举办地。",c:"南陇侯 · 天晶上人"},
   {n:"坠魔谷 · 万岭山脉",r:"天南 · 中部",re:"人界",f:"秘境·遗迹",x:355,y:600,s:4,imp:3,d:"天南第一险地，上古战场遗骸，位于越国西北。韩立与南陇侯、紫灵入谷寻宝，古魔脱困，韩立被困灵缈园残骸后脱身。",c:"南陇侯 · 紫灵 · 大衍神君"},
   {n:"黄土荒地",r:"天南 · 东南",re:"人界",f:"慕兰·突兀族",x:470,y:735,s:4,imp:1,d:"天南东南的黄土荒瘠之地，邻接慕兰草原，黄沙部游牧于此。",c:"—"},
@@ -3990,7 +4063,7 @@ var REGIONS=[
   /* 人界 */
   {name:"无边海",en:"Wubian Hai",re:"人界",x:360,y:505,rx:165,ry:22},
   {name:"越国 · 天南",en:"Yue · Tiannan",re:"人界",x:360,y:625,rx:165,ry:92},
-  {name:"极西之地",en:"Jixi Zhidi",re:"人界",x:75,y:700,rx:48,ry:36},
+  {name:"极西之地",en:"Jixi Zhidi",re:"人界",x:58,y:700,rx:44,ry:34},
   {name:"九国盟 · 慕兰",en:"Jiuguo · Mulan",re:"人界",x:400,y:740,rx:100,ry:45},
   {name:"大晋",en:"Da Jin",re:"人界",x:700,y:768,rx:205,ry:120},
   {name:"乱星海",en:"Luanxing Hai",re:"人界",x:1240,y:726,rx:205,ry:148}
@@ -4024,8 +4097,8 @@ var SUBS=[
   /* 乱星海为群岛：不设领土分区，按岛着色（见 archIslands） */
   /* === 人界·九国盟·慕兰 === */
   {reg:"九国盟 · 慕兰",name:"阗天城",f:"天南正道",core:1,cr:.38},
-  {reg:"九国盟 · 慕兰",name:"慕兰族（南）",f:"慕兰·突兀族",a0:-2.5,a1:0.5,r0:.32,r1:.95},
-  {reg:"九国盟 · 慕兰",name:"突兀族（西）",f:"慕兰·突兀族",a0:0.5,a1:2.9,r0:.32,r1:.95},
+  {reg:"九国盟 · 慕兰",name:"慕兰族（近天南）",f:"慕兰·突兀族",a0:0.5,a1:2.9,r0:.32,r1:.95},
+  {reg:"九国盟 · 慕兰",name:"突兀族（靠大晋）",f:"慕兰·突兀族",a0:-2.5,a1:0.5,r0:.32,r1:.95},
   /* === 人界·极西之地/无边海 === */
   {reg:"极西之地",name:"千竹教 · 强风沙漠",f:"散修·海外",core:1,cr:.92},
   {reg:"无边海",name:"无尽海域",f:"散修·海外",core:1,cr:.92},
@@ -4541,7 +4614,7 @@ function bindTiannan(){
     cur=m;
     elTitle.textContent=m.t; elSub.textContent=m.s;
     img.src=m.src; img.alt=m.art.slice(1,-1)+'，作者：画地图的小七';
-    note.innerHTML='<b>底图：画地图的小七 '+m.art+' 原图</b>　·　第三方同人作品，非官方。天南方位已在「三界巡游」主图按官方动画地图（第159集）校正；本底图与标注仅供爱好者对照参考，地名方位以官方动画地图为准，不保证准确';
+    note.innerHTML='<b>底图：<a href="https://www.bilibili.com/video/BV1ZvcTzvECp" target="_blank" rel="noopener" title="B站视频：凡人修仙传原创世界观地图集">画地图的小七</a> '+m.art+' 原图</b>　·　第三方同人作品，非官方。天南方位已在「三界巡游」主图按官方动画地图（第159集）校正；本底图与标注仅供爱好者对照参考，地名方位以官方动画地图为准，不保证准确';
     hint.textContent='滚轮缩放 · 拖拽平移 · 双击复位'+(m.pins.length?' · 虚线标注可点击跳转百科':'');
     lg.style.display=m.pins.length?'':'none';
     builtFor=null; tip.classList.remove('on');
@@ -4683,6 +4756,23 @@ function buildLegend(){
     head.addEventListener('keydown',function(e){
       if(e.key==="Enter"||e.key===" "){ e.preventDefault(); toggleLegend(); }
     });
+  }
+  /* 地理考据抽屉：顶栏按钮打开，遮罩/关闭/Esc 收起 */
+  var gwDrawer=document.getElementById('gwDrawer'), gwMask=document.getElementById('gwMask');
+  if(gwDrawer && !gwDrawer._bound){
+    gwDrawer._bound=1;
+    var gwNav=document.querySelector('.topnav');
+    var gwSyncTop=function(){
+      var pad=gwNav? Math.max(0,gwNav.getBoundingClientRect().bottom-gwDrawer.getBoundingClientRect().top) : 0;
+      gwDrawer.style.setProperty('--gw-top',pad+'px');
+    };
+    var openGw=function(){ gwSyncTop(); gwDrawer.classList.add('open'); gwMask.classList.add('show'); gwDrawer.setAttribute('aria-hidden','false'); };
+    var closeGw=function(){ gwDrawer.classList.remove('open'); gwMask.classList.remove('show'); gwDrawer.setAttribute('aria-hidden','true'); };
+    document.getElementById('btnGw').addEventListener('click',openGw);
+    document.getElementById('btnGwClose').addEventListener('click',closeGw);
+    gwMask.addEventListener('click',closeGw);
+    window.addEventListener('resize',function(){ if(gwDrawer.classList.contains('open')) gwSyncTop(); });
+    window.addEventListener('keydown',function(e){ if(e.key==='Escape' && gwDrawer.classList.contains('open')) closeGw(); });
   }
 }
 /* 地形示意：等高环（分层设色）、河流（逐段渐宽的曲线）、山脉（沿随机游走脊线排列的山形符号） */

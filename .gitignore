@@ -12,3 +12,6 @@ dev/*
 # 编辑器
 .vscode/
 .idea/
+
+# Agent 工作目录残留（图片生成 skill 等）
+.creative-design/
