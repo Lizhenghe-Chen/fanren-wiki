@@ -782,9 +782,9 @@ footer .note{margin-top:6px}
 #v-map #progress .seg:hover .track{background:rgba(212,175,106,.45)}
 
 /* ===== 电影字幕 ===== */
-#v-map #subtitle{position:absolute;left:50%;bottom:64px;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity .6s;
-  background:linear-gradient(90deg,transparent,rgba(4,6,12,.8) 16%,rgba(4,6,12,.8) 84%,transparent);
-  padding:16px 40px;width:min(760px,90vw)}
+#v-map #subtitle{position:absolute;left:50%;bottom:56px;transform:translateX(-50%);text-align:center;opacity:0;transition:opacity .6s;
+  background:linear-gradient(90deg,transparent,rgba(4,6,12,.5) 18%,rgba(4,6,12,.5) 82%,transparent);
+  padding:12px 40px;width:min(720px,90vw)}
 #v-map #subtitle.show{opacity:1}
 #v-map #subtitle .t1{font-family:var(--serif);font-size:25px;color:var(--gold-b);letter-spacing:.28em}
 #v-map #subtitle .t2{font-size:14px;color:var(--faint);letter-spacing:.16em;margin-top:7px;line-height:1.6}
@@ -3775,15 +3775,15 @@ var W=0,H=0,DPR=1;
 /* ---------------- 数据（旧逻辑坐标，运行时映射到世界坐标） ---------------- */
 var LOCS=[
   /* ================= 人界 · 越国/天南（参考"画地图的小七"天南舆图、越国舆图） ================= */
-  {n:"五里沟 · 青牛镇",r:"越国 · 镜州",re:"人界",f:"凡俗",x:395,y:650,s:1,imp:2,d:"韩立出生地。五里沟为韩家祖居之地，青牛镇是家乡小镇，少年时在此耕读度日。",c:"韩立 · 韩家"},
-  {n:"彩霞山 · 七玄门",r:"越国 · 镜州",re:"人界",f:"七玄门",x:415,y:620,s:1,imp:3,d:"七玄门总堂所在。韩立入门为记名弟子，偶得掌天瓶与《长春功》，识破墨大夫夺舍阴谋后反杀之，携升仙令下山。",c:"韩立 · 墨大夫 · 厉飞雨 · 张铁"},
+  {n:"五里沟 · 青牛镇",r:"越国 · 镜州",re:"人界",f:"凡俗",x:346,y:635,s:1,imp:2,d:"韩立出生地。五里沟为韩家祖居之地，青牛镇是家乡小镇，少年时在此耕读度日。",c:"韩立 · 韩家"},
+  {n:"彩霞山 · 七玄门",r:"越国 · 镜州",re:"人界",f:"七玄门",x:356,y:629,s:1,imp:3,d:"七玄门总堂所在。韩立入门为记名弟子，偶得掌天瓶与《长春功》，识破墨大夫夺舍阴谋后反杀之，携升仙令下山。",c:"韩立 · 墨大夫 · 厉飞雨 · 张铁"},
   {n:"燕翎堡",r:"越国 · 燕家",re:"人界",f:"天南正道",x:385,y:675,s:2,imp:1,d:"燕家堡所在，夺宝大会举办之地，韩立受师门任务参与。",c:"燕如嫣 · 燕家"},
-  {n:"嘉元城",r:"越国 · 岚州",re:"人界",f:"天南正道",x:435,y:645,s:2,imp:2,d:"岚州第一城。韩立下山后在此协助墨家，获知升仙令消息，向太南小会而去。",c:"墨彩环 · 墨府"},
-  {n:"太南山 · 太南小会",r:"越国 · 岚州",re:"人界",f:"天南正道",x:448,y:665,s:2,imp:2,d:"太南小会是越国附近修士交换资源的大集会，韩立在此初窥修仙界格局。",c:"韩立"},
+  {n:"嘉元城",r:"越国 · 岚州",re:"人界",f:"天南正道",x:353,y:647,s:2,imp:2,d:"岚州第一城。韩立下山后在此协助墨家，获知升仙令消息，向太南小会而去。",c:"墨彩环 · 墨府"},
+  {n:"太南山 · 太南小会",r:"越国 · 岚州",re:"人界",f:"天南正道",x:346,y:651,s:2,imp:2,d:"太南小会是越国附近修士交换资源的大集会，韩立在此初窥修仙界格局。",c:"韩立"},
   {n:"灵石矿",r:"越国",re:"人界",f:"天南正道",x:450,y:585,s:2,imp:1,d:"越国七派轮值的灵石矿脉，韩立曾驻守于此。",c:"韩立"},
   {n:"越京",r:"越国",re:"人界",f:"天南正道",x:478,y:595,s:2,imp:2,d:"越国京城。越京皇宫之变中黑煞教主现身，虚天残图线索现世。",c:"秦家 · 黑煞教主"},
-  {n:"黄枫谷",r:"越国 · 建州",re:"人界",f:"天南正道",x:465,y:630,s:2,imp:3,d:"韩立拜入的第一修仙大派，师从李化元。炼气筑基；魔道入侵时随七派撤离，修复古传送阵后远走乱星海。",c:"韩立 · 李化元 · 令狐老祖 · 南宫婉"},
-  {n:"血色禁地",r:"越国 · 建州北部",re:"人界",f:"天南正道",x:458,y:600,s:2,imp:2,d:"被风属性古禁封闭的荒山，十年一开。韩立于此试炼寻药，与掩月宗南宫婉初遇。",c:"韩立 · 南宫婉"},
+  {n:"黄枫谷",r:"越国 · 建州",re:"人界",f:"天南正道",x:366,y:633,s:2,imp:3,d:"韩立拜入的第一修仙大派，师从李化元。炼气筑基；魔道入侵时随七派撤离，修复古传送阵后远走乱星海。",c:"韩立 · 李化元 · 令狐老祖 · 南宫婉"},
+  {n:"血色禁地",r:"越国 · 建州北部",re:"人界",f:"天南正道",x:369,y:624,s:2,imp:2,d:"被风属性古禁封闭的荒山，十年一开。韩立于此试炼寻药，与掩月宗南宫婉初遇。",c:"韩立 · 南宫婉"},
   /* 越国周边（万岭山脉/桦叶城/金鼓原/神兵门/万妙观/化羽门，依越国舆图） */
   {n:"万岭山脉",r:"越国 · 北境",re:"人界",f:"秘境·遗迹",x:485,y:570,s:2,imp:1,d:"越国北境山脉，延绵千里，多凶兽灵药，是越京北面的天然屏障。",c:"—"},
   {n:"桦叶城",r:"元武国 · 西境",re:"人界",f:"天南正道",x:300,y:575,s:2,imp:1,d:"元武国西境大城，桦叶为记，是越国北上、东出的商路交汇。",c:"—"},
@@ -4076,14 +4076,14 @@ var REALMS={"人界":{c:"#7fb3d9"},"灵界":{c:"#4ec9a0"},"仙界":{c:"#d4af6a"}
  * 颜色取势力色 f，块间预留角度缝隙作自然边界。
  */
 var SUBS=[
-  /* === 人界·天南大陆（依《天南舆图》实测方位：越国居中，天南四势力环列 —— 天道盟北、正道盟西、九国盟南、魔道东） === */
+  /* === 人界·天南大陆（依画地图的小七《天南舆图》1365×768 实测色块位置摆 seed） === */
   {reg:"越国 · 天南",name:"越国",f:"天南正道",core:1,cr:.32},
-  {reg:"越国 · 天南",name:"天道盟 · 北境",f:"天南正道",a0:.97,a1:2.40,r0:.35,r1:.96},
-  {reg:"越国 · 天南",name:"正道盟 · 西陲",f:"天南正道",a0:2.40,a1:3.80,r0:.35,r1:.96},
-  {reg:"越国 · 天南",name:"九国盟 · 南疆",f:"天南正道",a0:3.80,a1:5.51,r0:.35,r1:.96},
-  {reg:"越国 · 天南",name:"魔道 · 东域",f:"天南魔道",a0:-.78,a1:.97,r0:.35,r1:.96},
-  /* 飓风沙漠压在正道盟西缘（舆图实测约 161°，处于外圈） */
-  {reg:"越国 · 天南",name:"飓风沙漠",f:"凡俗",a0:2.68,a1:3.03,r0:.64,r1:.95},
+  {reg:"越国 · 天南",name:"天道盟 · 北境",f:"天道盟",seed:[-0.12,0.55],a0:.97,a1:2.40,r0:.35,r1:.96},
+  {reg:"越国 · 天南",name:"正道盟 · 西陲",f:"正道盟",seed:[-0.62,-0.08],a0:2.40,a1:3.80,r0:.35,r1:.96},
+  {reg:"越国 · 天南",name:"九国盟 · 南疆",f:"九国盟",seed:[-0.05,-0.60],a0:3.80,a1:5.51,r0:.35,r1:.96},
+  {reg:"越国 · 天南",name:"魔道 · 东域",f:"天南魔道",seed:[0.58,0.05],a0:-.78,a1:.97,r0:.35,r1:.96},
+  /* 飓风沙漠压在正道盟西缘（舆图实测：颶風沙溟在极西东侧、约 x:150-320） */
+  {reg:"越国 · 天南",name:"飓风沙漠",f:"凡俗",seed:[-0.93,0.12],a0:2.68,a1:3.03,r0:.64,r1:.95},
   /* === 人界·大晋（依原著：一百零八州 · 三十六郡，正道十宗 / 魔道十宗，北溟小极宫、万妖谷） === */
   {reg:"大晋",name:"中州 · 三十六郡",f:"大晋正道",core:1,cr:.40},
   {reg:"大晋",name:"辽州 · 雪岭山脉",f:"大晋正道",a0:.30,a1:1.05,r0:.43,r1:.95},
@@ -4150,21 +4150,23 @@ var SUBS=[
  * 世界坐标 = 父区域中心 + (u*wrx, -v*wry)。放大到区域级比例尺后显示，避免全景时标注过密。
  */
 var NATIONS=[
-  {reg:"越国 · 天南",n:"花雨国",u:-.45,v:.65,f:"天南正道"},
-  {reg:"越国 · 天南",n:"剡云国",u:-.31,v:.44,f:"天南正道"},
-  {reg:"越国 · 天南",n:"溪国",  u:-.36,v:.65,f:"天南正道"},
-  {reg:"越国 · 天南",n:"东裕国",u:-.03,v:.18,f:"天南正道"},
-  {reg:"越国 · 天南",n:"元武国",u:.09, v:.13,f:"天南正道"},
-  {reg:"越国 · 天南",n:"天虞国",u:.52, v:.50,f:"天南魔道"},
-  {reg:"越国 · 天南",n:"天罗国",u:.72, v:.01,f:"天南魔道"},
-  {reg:"越国 · 天南",n:"车骑国",u:.33, v:-.22,f:"天南魔道"},
-  {reg:"越国 · 天南",n:"幽谷国",u:.16, v:-.41,f:"天南正道"},
-  {reg:"越国 · 天南",n:"香国",  u:.06, v:-.14,f:"天南正道"},
-  {reg:"越国 · 天南",n:"风都国",u:-.26,v:-.08,f:"天南正道"},
-  {reg:"越国 · 天南",n:"望水国",u:-.54,v:-.27,f:"天南正道"},
-  {reg:"越国 · 天南",n:"北凉国",u:-.30,v:-.43,f:"天南正道"},
-  {reg:"越国 · 天南",n:"丰原国",u:-.22,v:-.55,f:"天南正道"},
-  {reg:"越国 · 天南",n:"飓风沙漠",u:-.80,v:.20,f:"凡俗"}
+  {reg:"越国 · 天南",n:"花雨国",u:-.55,v:.72,f:"天南正道"},
+  {reg:"越国 · 天南",n:"剡云国",u:-.38,v:.45,f:"天南正道"},
+  {reg:"越国 · 天南",n:"溪国",  u:-.30,v:.62,f:"天南正道"},
+  {reg:"越国 · 天南",n:"东裕国",u:-.10,v:.22,f:"天南正道"},
+  {reg:"越国 · 天南",n:"元武国",u:.08, v:.05,f:"天南正道"},
+  {reg:"越国 · 天南",n:"天虞国",u:.58, v:.62,f:"天南魔道"},
+  {reg:"越国 · 天南",n:"姜国",  u:.36, v:.38,f:"天南魔道"},
+  {reg:"越国 · 天南",n:"天罗国",u:.78, v:.02,f:"天南魔道"},
+  {reg:"越国 · 天南",n:"车骑国",u:.34, v:-.30,f:"天南魔道"},
+  {reg:"越国 · 天南",n:"幽谷国",u:.16, v:-.45,f:"天南正道"},
+  {reg:"越国 · 天南",n:"香国",  u:.02, v:-.15,f:"天南正道"},
+  {reg:"越国 · 天南",n:"风都国",u:-.52,v:-.05,f:"天南正道"},
+  {reg:"越国 · 天南",n:"望水国",u:-.68,v:-.35,f:"天南正道"},
+  {reg:"越国 · 天南",n:"北凉国",u:-.42,v:-.62,f:"天南正道"},
+  {reg:"越国 · 天南",n:"紫金国",u:-.10,v:-.48,f:"天南正道"},
+  {reg:"越国 · 天南",n:"丰原国",u:-.30,v:-.80,f:"天南正道"},
+  {reg:"越国 · 天南",n:"飓风沙漠",u:-.88,v:.18,f:"凡俗"}
 ];
 /* SUBS 分区名（含去括号）→ 同名的 LOCS 点不再重复标标签，由分区标签承担 */
 var SUB_LABEL_MAP={};
@@ -4176,6 +4178,7 @@ SUBS.forEach(function(s){
 
 var F={
   "凡俗":{c:"#98a2b3"},"七玄门":{c:"#d4af6a"},"天南正道":{c:"#7fb3d9"},
+  "天道盟":{c:"#9aa5b5"},"正道盟":{c:"#c9a86a"},"九国盟":{c:"#c9b06a"},
   "慕兰·突兀族":{c:"#c98f5a"},"天南魔道":{c:"#c77a6a"},"大晋正道":{c:"#a68bc9"},"大晋魔道":{c:"#c77a6a"},"散修·海外":{c:"#8fb0c8"},
   "乱星海·星宫":{c:"#5b8fc9"},"秘境·遗迹":{c:"#c9b37a"},"阴司·海妖":{c:"#4f9dae"},
   "灵界诸族":{c:"#4ec9a0"},"魔族":{c:"#e07b54"},"仙域·天庭":{c:"#f0c96a"},"仙界魔域·蛮荒":{c:"#b06ab3"},
@@ -4885,6 +4888,9 @@ function buildOffscreen(){
   var lw=WORLD.W+PAD+80, lh=WORLD.H+PAD+80;
   offLand=document.createElement('canvas'); offLand.width=lw; offLand.height=lh;
   var lg=offLand.getContext('2d');
+  /* 天南底图：画地图的小七《天南舆图》原图画布，直接贴到天南 reg（不再自绘势力多边形） */
+  if(!window.TN_IMG){ window.TN_IMG=new Image(); window.TN_IMG.src='assets/tiannan-map.png'; window.TN_IMG.onload=function(){ try{ buildOffscreen(); }catch(e){} if(typeof render==='function') render(); }; }
+  var TN_IMG=window.TN_IMG;
   lg.save(); lg.translate(PAD,PAD);
   /* 中点二次曲线闭合平滑：折线顶点作控制点，放大后海岸/国界仍圆润 */
   function tracePath(g,p){
@@ -4909,6 +4915,15 @@ function buildOffscreen(){
     var pts=buildLand(r);
     var c=REALMS[r.re].c;
     var seed=hashStr(r.name);
+    /* 天南：直接贴《天南舆图》原图作底，不再自绘势力多边形/地形 */
+    if(r.name && r.name.indexOf("天南")>=0 && r.name.indexOf("越国")>=0 && TN_IMG.complete && TN_IMG.naturalWidth){
+      var w=r.wrx*2.7, h=w*(768/1365);
+      lg.drawImage(TN_IMG, r.wx-w/2, r.wy-h/2, w, h);
+      lg.fillStyle="rgba(8,12,20,.25)"; lg.fillRect(r.wx-w/2, r.wy-h/2, w, h);
+      lg.strokeStyle="rgba(226,210,176,.45)"; lg.lineWidth=1.6*LW; lg.lineJoin="round";
+      lg.strokeRect(r.wx-w/2, r.wy-h/2, w, h);
+      return;
+    }
     if(isArch(r)){
       /* 群岛：逐岛着色（近岛同色、远岛渐淡），无领土分区、无河流山脉 */
       archIslands().forEach(function(it){
@@ -4942,8 +4957,8 @@ function buildOffscreen(){
     SUBS.filter(function(s){return s.reg===r.name;}).forEach(function(sb){
       var sp=buildSubPoly(r,sb);
       var fc=(F[sb.f]&&F[sb.f].c)||c;
-      lg.fillStyle=hex2rgba(fc,sb.core?.20:.12); tracePath(lg,sp); lg.fill();
-      lg.strokeStyle=hex2rgba(fc,sb.core?.60:.34);
+      lg.fillStyle=hex2rgba(fc,sb.core?.22:.18); tracePath(lg,sp); lg.fill();
+      lg.strokeStyle=hex2rgba(fc,sb.core?.60:.40);
       lg.lineWidth=(sb.core?1.5:1.1)*LW; lg.lineJoin="round";
       tracePath(lg,sp); lg.stroke();
     });
@@ -5096,6 +5111,7 @@ function collectStaticLabels(list){
     REGIONS.forEach(function(r){
       var a=clamp((z-.30)/.16,0,.94);
       SUBS.filter(function(s){return s.reg===r.name;}).forEach(function(sb){
+        if(r.name && r.name.indexOf("天南")>=0 && r.name.indexOf("越国")>=0) return;  /* 天南贴原图纸底，原图标注已足 */
         var p=subLabelPos(r,sb), fc=(F[sb.f]&&F[sb.f].c)||REALMS[r.re].c;
         list.push({prio:sb.core?20:30, ax:p.x, ay:p.y, gap:4, fs:sb.core?19:12.5, w:sb.core?700:500, serif:true,
           text:sb.name, color:lightenA(fc,.38,a), halo:"rgba(4,9,16,.9)", hw:3.2/z, alpha:1});
@@ -5106,6 +5122,7 @@ function collectStaticLabels(list){
   if(z>=.95){
     var na=clamp((z-.95)/.18,0,1);
     REGIONS.forEach(function(r){
+      if(r.name && r.name.indexOf("天南")>=0 && r.name.indexOf("越国")>=0) return; /* 天南原图纸底已印国名，不再飘重复标签 */
       NATIONS.filter(function(n){return n.reg===r.name&&!LOC[n.n];}).forEach(function(n){
         var wx=r.wx+n.u*r.wrx, wy=r.wy-n.v*r.wry*1.18;
         var fc=(F[n.f]&&F[n.f].c)||REALMS[r.re].c;
@@ -5409,8 +5426,10 @@ function clipHalf(poly,nx,ny,c){           /* 保留 nx*x + ny*y + c <= 0 的一
   return out;
 }
 function subAnchor(reg,sb){
-  /* 锚点：核心区取陆心，外围分区取角度区间中值处的径向中点，并做确定性抖动避免共圆规整 */
+  /* 锚点：核心区取陆心；显式 seed:[u,v] 直接定位（用于天南按官方舆图摆块）；
+     否则取角度区间中值处的径向中点，并做确定性抖动避免共圆规整 */
   if(sb.core) return {u:0, v:0};
+  if(sb.seed) return {u:sb.seed[0], v:sb.seed[1]};
   var sd=hashStr(reg.name+"|"+sb.name);
   var am=(sb.a0+sb.a1)/2 + (rnd1(sd)-.5)*(sb.a1-sb.a0)*.34;
   var rm=(sb.r0+sb.r1)/2 + (rnd1(sd+7)-.5)*.14;
@@ -5511,7 +5530,7 @@ function drawLocations(opt,labelList){
     var ho=(MODE==="explore"&&hoverLoc===l);
     ctx.save();
     ctx.globalAlpha=alpha*(1-dim);
-    var gr=R*6;
+    var gr=R*3;
     ctx.drawImage(glowSprite(fc),l.wx-gr,l.wy-gr,gr*2,gr*2);
     /* 等高：重要地点外圈加环，作为等级的第一眼区分 */
     if(imp===3){
