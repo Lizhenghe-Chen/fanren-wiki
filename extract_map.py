@@ -8,6 +8,9 @@ import cv2
 import numpy as np
 from rembg import remove
 
+# ⚠️ 源图：public/assets/tiannan-map.png（3840×2160 高清原图）已于 2026-10-13 换成
+# public/assets/tiannan-map.webp（2400px）以减体积；重跑本脚本前先用
+# `git show <sha>:public/assets/tiannan-map.png > <路径>` 取回高清原图，再把 INPUT 指过去。
 INPUT = r"D:\GitProjects\fanren-wiki\public\assets\tiannan-map.png"
 OUTPUT = r"D:\GitProjects\fanren-wiki\public\assets\tiannan-map-cutout.png"
 
