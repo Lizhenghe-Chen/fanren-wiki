@@ -3762,8 +3762,39 @@ function syncTargetToResults(libId, keys){
 
 </script>
 <script src="javascripts/cultivation-chart.js"></script>
-<script src="javascripts/echarts.min.js"></script>
-<script src="javascripts/overview-charts.js"></script>
+<script>
+/* 概览图表（旭日图 / 关系图谱）依赖的 ECharts 是 526KB（gzip 178KB），而两张图都不在首屏：
+   旭日图在首页首屏之下、关系图谱在人物图谱视图里。改成「容器快进入视口时」再注入本地脚本，
+   首屏少下 526KB；注入完成后再执行 overview-charts.js（它自身在 echarts 缺失时会直接 return）。
+   与境界阶梯图（cultivation-chart.js 的 data-cultivation + IntersectionObserver）同一套思路。 */
+(function () {
+  var busy = false, loaded = false;
+  function loadCharts() {
+    if (busy || loaded) return; busy = true;
+    var e = document.createElement('script');
+    e.src = 'javascripts/echarts.min.js';
+    e.onload = function () {
+      loaded = true; busy = false;
+      var o = document.createElement('script');
+      o.src = 'javascripts/overview-charts.js';
+      document.body.appendChild(o);
+    };
+    e.onerror = function () { busy = false; };   /* 拉不到就保持无图，不影响其余内容 */
+    document.body.appendChild(e);
+  }
+  window.__loadEcharts = loadCharts;             /* 验收脚本与兜底用 */
+  var nodes = ['chart-sunburst', 'chart-graph']
+    .map(function (id) { return document.getElementById(id); })
+    .filter(Boolean);
+  if (!('IntersectionObserver' in window) || !nodes.length) { loadCharts(); return; }
+  var io = new IntersectionObserver(function (entries) {
+    for (var i = 0; i < entries.length; i++) {
+      if (entries[i].isIntersecting) { io.disconnect(); loadCharts(); return; }
+    }
+  });   /* 不加提前量：图真的进入视口才下 —— 首屏之外（窄屏 / 桌面）不多下一字节 */
+  nodes.forEach(function (el) { io.observe(el); });
+})();
+</script>
 <script>
 /* ===== 修仙界全图（三界巡游）：独立 IIFE，懒启动 ===== */
 (function(){
@@ -4077,7 +4108,8 @@ var REGIONS=[
      把两边接起来——不挪动任何已定好的大陆形状，只补这一块。 */
   {name:"天澜草原",en:"Tianlan Caoyuan",re:"人界",x:548,y:757,rx:100,ry:34},
   {name:"大晋",en:"Da Jin",re:"人界",x:840,y:750,rx:235,ry:145},
-  /* 乱星海：原著「天南之北、无边海之外」，故置于天南正北、越无边海；区域放宽压扁以适配人界带北侧空间 */
+  /* 乱星海：原著「天南之北、无边海之外」，故置于天南正北、越无边海；
+     ry 150 → 118 是按人界带北侧海面的高度收的（不是压扁：跨度比例 k 由 BND 决定） */
   {name:"乱星海",en:"Luanxing Hai",re:"人界",x:360,y:313,rx:210,ry:118}
 ];
 var REALMS={"人界":{c:"#7fb3d9"},"灵界":{c:"#4ec9a0"},"仙界":{c:"#d4af6a"}};
@@ -4566,13 +4598,13 @@ function bindTiannan(){
   ];
   var MAPS=[
     {id:"tiannan",  t:"天南舆图",    s:"TIANNAN · 天南四势力 · 二十余国",
-     art:"《天南舆图》", src:"assets/tiannan-map.png", w:1365, h:768, pins:PINS_TN},
+     art:"《天南舆图》", src:"assets/tiannan-map.webp", w:1365, h:768, pins:PINS_TN},
     {id:"dajin",    t:"大晋舆图",    s:"DA JIN · 大晋帝国 · 州府与宗派",
-     art:"《大晋帝国图》", src:"assets/map-dajin.jpg", w:2000, h:956, pins:[]},
+     art:"《大晋帝国图》", src:"assets/map-dajin.webp", w:2000, h:956, pins:[]},
     {id:"luangxing",t:"乱星海舆图",  s:"LUANXING HAI · 内星海与外海群岛",
-     art:"《乱星海图》", src:"assets/map-luangxinghai.jpg", w:2000, h:956, pins:[]},
+     art:"《乱星海图》", src:"assets/map-luangxinghai.webp", w:2000, h:956, pins:[]},
     {id:"fengyuan", t:"风元大陆舆图",s:"FENGYUAN · 灵界 · 人族三境与妖族",
-     art:"《风元大陆图》", src:"assets/map-fengyuan.jpg", w:1080, h:1238, pins:[]}
+     art:"《风元大陆图》", src:"assets/map-fengyuan.webp", w:1080, h:1238, pins:[]}
   ];
   var panel=document.getElementById('tnPanel'), wrap=document.getElementById('tnWrap'),
       stage=document.getElementById('tnStage'), ov=document.getElementById('tnOv'),
@@ -4968,26 +5000,37 @@ function buildOffscreen(){
      等深环/海岸先画到临时画布，再 destination-out 抠掉「别的大陆」的陆面，最后整块贴回：
      重叠区里两边的岸线都消失，只剩下并集的外缘，接缝处只余地面色差。 */
   var SC=null, sc=null;
+  /* 单块陆面的作图范围：等深环最外一档是 1.20×椭圆半径，再加线宽与噪声的余量；
+     常数集中在这里，改环半径时一起改。 */
+  var BOX_MARGIN=1.28, BOX_PAD=48;
   function landBox(r,k){
-    var mx=r.wrx*(k||1.28)+48, my=r.wry*(k||1.28)+48;
+    var mx=r.wrx*(k||BOX_MARGIN)+BOX_PAD, my=r.wry*(k||BOX_MARGIN)+BOX_PAD;
     return {x:r.wx-mx,y:r.wy-my,w:mx*2,h:my*2};
   }
+  /* 临时画布只按「单块陆面的包围盒」分配（最大的一块约 1700×1700），
+     不再按整张陆面层尺寸（3780×4980 ≈ 75MB）——手机上那点 canvas 内存经不起两份。 */
   function maskedPaint(r,box,drawFn){
-    if(!SC){ SC=document.createElement("canvas"); SC.width=offLand.width; SC.height=offLand.height; sc=SC.getContext("2d"); }
+    var w=Math.ceil(box.w), h=Math.ceil(box.h);
+    if(!SC || SC.width<w || SC.height<h){
+      SC=document.createElement("canvas");
+      SC.width=Math.max(w,1700); SC.height=Math.max(h,1700); sc=SC.getContext("2d");
+    }
     var X=box.x+PAD, Y=box.y+PAD;
-    sc.setTransform(1,0,0,1,0,0); sc.globalCompositeOperation="source-over"; sc.clearRect(X,Y,box.w,box.h);
-    sc.save(); sc.beginPath(); sc.rect(X,Y,box.w,box.h); sc.clip(); sc.translate(PAD,PAD);
+    /* 局部坐标：整块画布平移到包围盒原点，drawFn 仍按世界坐标绘制 */
+    sc.setTransform(1,0,0,1,0,0); sc.globalCompositeOperation="source-over"; sc.clearRect(0,0,w,h);
+    sc.save(); sc.translate(-box.x,-box.y);
+    sc.beginPath(); sc.rect(box.x,box.y,box.w,box.h); sc.clip();
     drawFn(sc);
     sc.restore();
     /* 抠掉被别的大陆压住的部分（乱星海是群岛、无边海是海面，都不参与） */
-    sc.save(); sc.setTransform(1,0,0,1,0,0); sc.globalCompositeOperation="destination-out";
-    sc.beginPath(); sc.rect(X,Y,box.w,box.h); sc.clip(); sc.translate(PAD,PAD);
+    sc.save(); sc.globalCompositeOperation="destination-out"; sc.translate(-box.x,-box.y);
+    sc.beginPath(); sc.rect(box.x,box.y,box.w,box.h); sc.clip();
     REGIONS.forEach(function(o){
       if(o===r || isArch(o) || o.name==="无边海") return;
       tracePath(sc,LAND[o.name]); sc.fill();
     });
     sc.restore();
-    lg.save(); lg.setTransform(1,0,0,1,0,0); lg.drawImage(SC,X,Y,box.w,box.h,X,Y,box.w,box.h); lg.restore();
+    lg.save(); lg.setTransform(1,0,0,1,0,0); lg.drawImage(SC,0,0,w,h,X,Y,w,h); lg.restore();
   }
   /* 浅海等深线：海岸外三重渐次外扩、渐淡的海域环，海图式由浅入深 */
   REGIONS.forEach(function(r){
@@ -5452,7 +5495,8 @@ function buildLand(r){
  * 手绘：中心大岛、各据点所在岛、西侧弧形长岛（妖海）、六道极圣岛群；其余岛屿按
  * 间距规则随机撒点（先内圈后外圈），并避开海域注记位。尺寸以「数据 x 单位」计。 */
 function isArch(r){ return r.name==="乱星海"; }
-/* 乱星海群岛：整体平移（+65, −72）——从人界带右下角移到天南的东北海外。
+/* 乱星海群岛：现整体位于「天南正北、无边海之外」（数据坐标中心 x360,y313，矩形 210×118）。
+ * 历次搬家都靠整体平移 + 撒点包围盒/环半径同步改；改坐标时一并check 上面那三个地方。
  * 依据：原著「……继续往北走，就到了天南地区的极北之地，就会遇到…………“无边海”了」（第三卷 第三百五十八章《无边海、慕兰人》）
  * 与「韩立自阴冥之地脱身后横穿无边海返回天南」：乱星海在无边海之外（天南之北、隔海相望）。
  * 改这些坐标时，REGIONS 的「乱星海」、ARCH_KEEP、下方撒点范围与「乱星海 · *」点位要同步平移。 */

@@ -337,6 +337,15 @@ try {
   /* ========== 概览图表（ECharts：篇章旭日图 / 人物关系图谱） ========== */
   await viewport(1440, 900)
   await evaluate(`location.hash = '#v-home'`)
+  /* ECharts 现在是「容器快进视口才注入」的懒加载：先显式触发，再等两张图初始化完成 */
+  await evaluate(`window.__loadEcharts && window.__loadEcharts()`)
+  let chartReady = false
+  for (let i = 0; i < 80; i++) {
+    chartReady = await evaluate(`!!(window.echarts && echarts.getInstanceByDom(document.getElementById('chart-sunburst')))`)
+    if (chartReady) break
+    await sleep(250)
+  }
+  check('懒加载的 ECharts 已注入并完成初始化（旭日图实例存在）', chartReady, '等了 20s 仍未见实例')
   await sleep(300)
   const sun = JSON.parse(await evaluate(`JSON.stringify((() => {
     const el = document.getElementById('chart-sunburst');
