@@ -1474,6 +1474,7 @@ body.v-map-on .navbar{display:none!important}
       <div class="gw-sec">突兀族 · 天澜草原</div>
       <div class="gw-row">「天澜草原是突兀人对慕兰草原的称呼……原本突兀人只占据草原南半部，三十年前在草原中部击败世仇慕兰人后，才占据整个大草原。」<i>原著第六卷第八七七章《苍鹭部》</i></div>
       <div class="gw-row">即：慕兰人居草原北（靠天南/九国盟），突兀人居草原南（靠大晋）；天澜圣殿约七座，散处草原有灵脉之地。<i>据第877章原文</i></div>
+      <div class="gw-row">草原是「天南 ⇄ 大晋」之间的过渡陆地（慕兰大战时突兀人正从大晋方向压来），故图上作东西连通的整块陆面，与大晋西缘相接，而非海域。<i>据原著两大陆之间隔草原的设定</i></div>
 
       <div class="gw-sec">大晋方位 · 原著两说</div>
       <div class="gw-row">第六七〇章《交易会》：「天南最北端的虞国……阗天城为九国联盟总坛。」<i>一说阗天城在天南之北</i></div>
@@ -4069,7 +4070,12 @@ var REGIONS=[
   {name:"无边海",en:"Wubian Hai",re:"人界",x:360,y:505,rx:165,ry:16},
   {name:"越国 · 天南",en:"Yue · Tiannan",re:"人界",x:360,y:625,rx:165,ry:92},
   {name:"极西之地",en:"Jixi Zhidi",re:"人界",x:108,y:597,rx:44,ry:34},
+  /* 九国盟·慕兰：本体保持原样（不动已校好的位置与子区域） */
   {name:"九国盟 · 慕兰",en:"Jiuguo · Mulan",re:"人界",x:380,y:745,rx:100,ry:45},
+  /* 天澜草原（= 慕兰草原）：天南/慕兰 与 大晋 之间的过渡陆地。
+     原著里两大陆之间隔着这片草原（突兀人正是从大晋方向压向慕兰），所以图上加一小块陆桥
+     把两边接起来——不挪动任何已定好的大陆形状，只补这一块。 */
+  {name:"天澜草原",en:"Tianlan Caoyuan",re:"人界",x:548,y:757,rx:100,ry:34},
   {name:"大晋",en:"Da Jin",re:"人界",x:840,y:750,rx:235,ry:145},
   {name:"乱星海",en:"Luanxing Hai",re:"人界",x:1305,y:654,rx:210,ry:150}
 ];
@@ -4953,21 +4959,52 @@ function buildOffscreen(){
   }
   function scaleAbout(g,x,y,s,fn){ g.save(); g.translate(x,y); g.scale(s,s); g.translate(-x,-y); fn(); g.restore(); }
   var LW=WORLD.W/3000;   /* 线宽基准：随世界尺度换算，缩放时线宽同步 */
+  /* 陆面多边形缓存：同一块大陆在本函数里要被引用多次（填色/岸线/抠除重叠区），只算一次 */
+  var LAND={};
+  REGIONS.forEach(function(r){ LAND[r.name]=buildLand(r); });
+  /* —— 接缝：相邻大陆互相压住的地方不描海岸 ——
+     两块陆面重叠时各画各的岸线，会看见两条岸线互相切割（像硬缝的堤）。做法是把这一块的
+     等深环/海岸先画到临时画布，再 destination-out 抠掉「别的大陆」的陆面，最后整块贴回：
+     重叠区里两边的岸线都消失，只剩下并集的外缘，接缝处只余地面色差。 */
+  var SC=null, sc=null;
+  function landBox(r,k){
+    var mx=r.wrx*(k||1.28)+48, my=r.wry*(k||1.28)+48;
+    return {x:r.wx-mx,y:r.wy-my,w:mx*2,h:my*2};
+  }
+  function maskedPaint(r,box,drawFn){
+    if(!SC){ SC=document.createElement("canvas"); SC.width=offLand.width; SC.height=offLand.height; sc=SC.getContext("2d"); }
+    var X=box.x+PAD, Y=box.y+PAD;
+    sc.setTransform(1,0,0,1,0,0); sc.globalCompositeOperation="source-over"; sc.clearRect(X,Y,box.w,box.h);
+    sc.save(); sc.beginPath(); sc.rect(X,Y,box.w,box.h); sc.clip(); sc.translate(PAD,PAD);
+    drawFn(sc);
+    sc.restore();
+    /* 抠掉被别的大陆压住的部分（乱星海是群岛、无边海是海面，都不参与） */
+    sc.save(); sc.setTransform(1,0,0,1,0,0); sc.globalCompositeOperation="destination-out";
+    sc.beginPath(); sc.rect(X,Y,box.w,box.h); sc.clip(); sc.translate(PAD,PAD);
+    REGIONS.forEach(function(o){
+      if(o===r || isArch(o) || o.name==="无边海") return;
+      tracePath(sc,LAND[o.name]); sc.fill();
+    });
+    sc.restore();
+    lg.save(); lg.setTransform(1,0,0,1,0,0); lg.drawImage(SC,X,Y,box.w,box.h,X,Y,box.w,box.h); lg.restore();
+  }
   /* 浅海等深线：海岸外三重渐次外扩、渐淡的海域环，海图式由浅入深 */
   REGIONS.forEach(function(r){
     if(r.name==="无边海") return;   /* 无边海是海不是陆：不画等深环，留空 */
     if(r.name==="乱星海") return;   /* 乱星海是群岛海域：不围椭圆套环（外圈会越过人界带的北界），岛形自明 */
     if(r.name && r.name.indexOf("天南")>=0 && r.name.indexOf("越国")>=0) return;   /* 天南用去背切图，海岸由图自身表达，不围椭圆套环 */
-    var pts=buildLand(r);
-    [[1.20,.020,1.0],[1.11,.036,2.4],[1.04,.058,4.2],[1.0,.05,9]].forEach(function(h){
-      scaleAbout(lg,r.wx,r.wy,h[0],function(){
-        lg.strokeStyle="rgba(122,186,232,"+h[1]+")"; lg.lineWidth=h[2]*LW; lg.lineJoin="round";
-        tracePath(lg,pts); lg.stroke();
+    var pts=LAND[r.name];
+    maskedPaint(r,landBox(r),function(g){
+      [[1.20,.020,1.0],[1.11,.036,2.4],[1.04,.058,4.2],[1.0,.05,9]].forEach(function(h){
+        scaleAbout(g,r.wx,r.wy,h[0],function(){
+          g.strokeStyle="rgba(122,186,232,"+h[1]+")"; g.lineWidth=h[2]*LW; g.lineJoin="round";
+          tracePath(g,pts); g.stroke();
+        });
       });
     });
   });
   REGIONS.forEach(function(r){
-    var pts=buildLand(r);
+    var pts=LAND[r.name];
     var c=REALMS[r.re].c;
     var seed=hashStr(r.name);
     /* 无边海：海面留空（不铺陆面、不描海岸线），只由「海域名」标注与近海小岛表达 */
@@ -5016,22 +5053,40 @@ function buildOffscreen(){
     lg.fillStyle=tg; lg.fillRect(bx,by,bw2,bh2);
     /* 地形：分层设色等高环 → 蜿蜒河流 → 山脉符号（皆为确定性生成，位于陆缘裁剪内） */
     drawRelief(lg,r,pts,seed,LW);
-    /* 内部子区域（国家/地域）：势力色平涂 + 实线界线 */
-    SUBS.filter(function(s){return s.reg===r.name;}).forEach(function(sb){
-      var sp=buildSubPoly(r,sb);
-      var fc=(F[sb.f]&&F[sb.f].c)||c;
-      lg.fillStyle=hex2rgba(fc,sb.core?.22:.18); tracePath(lg,sp); lg.fill();
-      lg.strokeStyle=hex2rgba(fc,sb.core?.60:.40);
-      lg.lineWidth=(sb.core?1.5:1.1)*LW; lg.lineJoin="round";
-      tracePath(lg,sp); lg.stroke();
+    /* 内部子区域（国家/地域）：势力色平涂 + 实线界线。
+       和海岸走同一条「抠掉别的大陆」的通道：子区域的色块与界线不会爬到接壤的另一块陆地上
+       （否则大晋西缘的色弧会横切天澜草原，又成一道硬缝） */
+    maskedPaint(r,landBox(r),function(g){
+      g.save(); tracePath(g,pts); g.clip();
+      SUBS.filter(function(s){return s.reg===r.name;}).forEach(function(sb){
+        var sp=buildSubPoly(r,sb);
+        var fc=(F[sb.f]&&F[sb.f].c)||c;
+        g.fillStyle=hex2rgba(fc,sb.core?.22:.18); tracePath(g,sp); g.fill();
+        g.strokeStyle=hex2rgba(fc,sb.core?.60:.40);
+        g.lineWidth=(sb.core?1.5:1.1)*LW; g.lineJoin="round";
+        tracePath(g,sp); g.stroke();
+      });
+      g.restore();
     });
-    /* 海岸内晕：沿海岸内侧压一层暗影，使陆块自海面抬起 */
-    lg.strokeStyle="rgba(3,7,12,.45)"; lg.lineWidth=7*LW; lg.lineJoin="round";
-    tracePath(lg,pts); lg.stroke();
     lg.restore();
-    /* 海岸线：清晰实线，图面第一等线（取羊皮纸象牙色，与区域原图同调） */
-    lg.strokeStyle="rgba(226,210,176,.62)"; lg.lineWidth=1.6*LW; lg.lineJoin="round";
-    tracePath(lg,pts); lg.stroke();
+  });
+  /* 海岸内晕 + 海岸线：和等深环走同一条「抠掉别的大陆」的通道 —— 接缝处两边都不留岸线，
+     整片陆地只余一条连续的外缘海岸，不会出现两条岸线互相切割的硬缝。 */
+  REGIONS.forEach(function(r){
+    if(r.name==="无边海") return;
+    if(isArch(r)) return;
+    if(r.name && r.name.indexOf("天南")>=0 && r.name.indexOf("越国")>=0 && TN_IMG.complete && TN_IMG.naturalWidth) return;
+    var pts=LAND[r.name];
+    maskedPaint(r,landBox(r),function(g){
+      /* 内晕只压陆面内侧：剪到本块多边形里 */
+      g.save(); tracePath(g,pts); g.clip();
+      g.strokeStyle="rgba(3,7,12,.45)"; g.lineWidth=7*LW; g.lineJoin="round";
+      tracePath(g,pts); g.stroke();
+      g.restore();
+      /* 海岸线：清晰实线，图面第一等线（取羊皮纸象牙色，与区域原图同调） */
+      g.strokeStyle="rgba(226,210,176,.62)"; g.lineWidth=1.6*LW; g.lineJoin="round";
+      tracePath(g,pts); g.stroke();
+    });
   });
   /* 近海岛屿：与大陆同色系，让海面不再是空白 */
   REGIONS.forEach(function(r){
@@ -5092,7 +5147,6 @@ var OCEANS=[
   {n:"内星海",re:"人界",x:.978,y:.494},
   {n:"外星海",re:"人界",x:1.048,y:.632},
   {n:"万丈海",re:"人界",x:.836,y:.462},
-  {n:"天澜草原",re:"人界",x:.367,y:.870},
   {n:"雾海",re:"人界",x:.885,y:.803},
   /* 灵界海域 */
   {n:"万渊海",re:"灵界",x:.30,y:.16},
