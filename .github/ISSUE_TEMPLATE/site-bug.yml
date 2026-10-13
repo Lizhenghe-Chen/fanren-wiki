@@ -5,7 +5,7 @@ body:
   - type: markdown
     attributes:
       value: |
-        本站是单文件静态页面（CSS/JS 全内联、无第三方请求）。若问题与浏览器或屏幕宽度有关，请在「环境」里写明。
+        本站是纯静态页面（无构建、无第三方请求）。若问题与浏览器或屏幕宽度有关，请在「环境」里写明。
   - type: textarea
     id: what
     attributes:

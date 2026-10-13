@@ -473,6 +473,23 @@ try {
   check('图谱折叠再展开：canvas 尺寸自动恢复（不会被挤成 0 宽）',
     fold.hidden === 0 && fold.w > 300 && fold.h > 300, JSON.stringify(fold))
 
+  /* ========== 舆图离屏画布（内存预算） ==========
+     v59 起底图不再是世界尺度位图：海色/色带烘焙成 1px 竖条，经纬网每帧只画可见格点。
+     断言内存总量与「陆面栅格是否盖住全部陆面内容」两件事，防止以后改外延时把内存或覆盖悄悄搞坏。 */
+  await viewport(1440, 900)
+  await evaluate(`location.hash = '#v-map'`)
+  await sleep(400)
+  await evaluate(`window.__fanrenMap && window.__fanrenMap.boot()`)
+  for (let i = 0; i < 40 && !(await evaluate(`!!(window.__fanrenMap && window.__fanrenMap.canvasInfo)`)); i++) await sleep(100)
+  const canvas = JSON.parse(await evaluate(`JSON.stringify(window.__fanrenMap.canvasInfo())`))
+  check('舆图离屏画布内存 ≤ 90MB（底图竖条 + 陆面栅格 + 接缝临时画布）',
+    canvas.mb <= 90, `实测 ${canvas.mb}MB，${canvas.dims}（bg/land）`)
+  const fitLand = canvas.landExtent
+  check('陆面栅格覆盖全部陆面内容（内容极值不出界）',
+    fitLand.x0 >= canvas.bounds.x0 && fitLand.y0 >= canvas.bounds.y0
+    && fitLand.x1 <= canvas.bounds.x1 && fitLand.y1 <= canvas.bounds.y1,
+    `内容 ${JSON.stringify(fitLand)} vs 栅格 ${JSON.stringify(canvas.bounds)}`)
+
   /* ========== 3. 交互 ========== */
   await viewport(1440, 900)
   await evaluate(`location.hash = '#v-chars'`)
