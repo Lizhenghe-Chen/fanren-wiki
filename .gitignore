@@ -15,3 +15,6 @@ dev/*
 
 # Agent 工作目录残留（图片生成 skill 等）
 .creative-design/
+
+# 天南切图中间产物：页面只用 .webp，这张 11MB 源 PNG 不必入库/上站
+public/assets/tiannan-map-cutout.png
