@@ -493,11 +493,11 @@ try {
     `内容 ${JSON.stringify(fitLand)} vs 栅格 ${JSON.stringify(canvas.bounds)}`)
 
   /* 地点必须落在「真的画了陆地」的地方（读离屏陆面层 alpha：贴图/大陆/近海岛屿都在这层，海面留空）。
-     点名两个例外：北海三岛与火云岛，本身就是海中的岛群——它们连岛形都还没画，落在水上是预期。
+     点名两个例外：北海三岛与火珊瑚群岛，本身就是海中的岛群——它们连岛形都还没画，落在水上是预期。
      这条守的是 v60 修过的 bug：贴图替代自绘天南后，越国/溪国北侧一簇地点没重标定，标记整体漂在图上白边（海里）。 */
   const offLand = JSON.parse(await evaluate(`JSON.stringify(window.__fanrenMap.locsOffLand())`))
-  const allowed = ['七灵岛', '火云岛 · 火碧珊群岛']
-  check('舆图地点都落在已绘制陆地上（例外：北海三岛、火云岛）',
+  const allowed = ['七灵岛', '火珊瑚群岛']
+  check('舆图地点都落在已绘制陆地上（例外：北海三岛、火珊瑚群岛）',
     Array.isArray(offLand) && offLand.length === allowed.length && allowed.every(n => offLand.includes(n)),
     offLand === null
       ? '读不到画布像素（需 --allow-file-access-from-files，或改用 --url 走 http）'
