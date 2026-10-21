@@ -209,6 +209,14 @@ try {
     document.querySelectorAll('#zhenfaGrid .card').length,
     document.querySelectorAll('#fuGrid .card').length])`)
   check('七库卡片数量正确（263/42/65/71/53/44/34）', counts === '[263,42,65,71,53,44,34]', `实际 ${counts}`)
+  /* 卡片模板的 rows 只在字段存在时才渲染一行；缺字段若没兜底，就会把字面量 undefined
+     直接印在卡片上（v63 前 111 条功法/阵法/符箓都长这样）。这条盯的是渲染结果，不是数据。 */
+  const undefinedText = JSON.parse(await evaluate(`JSON.stringify(
+    [...document.querySelectorAll('#characters .card, #beasts .card, #herbs .card, #treasureGrid .treasure-card, #gongfaGrid .card, #zhenfaGrid .card, #fuGrid .card')]
+      .filter(el => /(^|[^A-Za-z])(undefined|NaN)([^A-Za-z]|$)/.test(el.innerText))
+      .map(el => el.dataset.name || el.dataset.key))`))
+  check('卡片里没有 undefined / NaN 之类的占位残字', undefinedText.length === 0,
+    `${undefinedText.length} 张：${JSON.stringify(undefinedText.slice(0, 5))}`)
   /* 功法库不能只收韩立一人的功法：下列具名功法分别属于其他角色，缺失即说明只做单人巡检 */
   const otherChars = ['千浪决（千浪诀）', '真阳诀', '血灵大法', '六极真魔功', '断肢化劫大法', '阴阳轮回诀',
     '大搜神分念大法', '忘情诀', '冥河天尸诀', '逆情断天大法', '天煞真魔功', '九劫灭真大法', '五鬼锁神大法']
@@ -290,14 +298,16 @@ try {
   check('开源入口齐全（顶栏图标 / hero / 首页卡片 / 页脚同指一仓，图标真实渲染）',
     ossBad.length === 0, `缺失 ${ossBad.join('、')}`)
 
-  /* 反馈渠道：2026-09-17 起统一走 GitHub Issues，主站评论区不再是入口。
-     这条防的是「旧链接悄悄爬回来」—— 改文案时最容易漏的一处。 */
+  /* 反馈渠道：2026-10 起内容勘误统一引导到 B 站视频评论区（观众不必注册 GitHub），
+     GitHub Issues 只留给源码与技术问题。这条仍要防「旧的主站评论区链接悄悄爬回来」。 */
   const fb = JSON.parse(await evaluate(`JSON.stringify({
     legacy: [...document.querySelectorAll('a[href*="__comments"]')].map(a => a.getAttribute('href')),
-    issues: [...document.querySelectorAll('a[href*="github.com/Lizhenghe-Chen/fanren-wiki/issues"]')].length
+    issues: [...document.querySelectorAll('a[href*="github.com/Lizhenghe-Chen/fanren-wiki/issues"]')].length,
+    bili: [...document.querySelectorAll('a[href*="bilibili.com/video/BV1Ameq6vECK"]')].length
   })`))
-  check('反馈入口统一指向 GitHub Issues（页面无主站评论区旧链接）',
-    fb.legacy.length === 0 && fb.issues >= 3, `旧链接 ${JSON.stringify(fb.legacy)}，Issues 入口 ${fb.issues} 个`)
+  check('勘误引导到 B 站视频评论区，GitHub Issues 只留技术问题（无主站评论区旧链接）',
+    fb.legacy.length === 0 && fb.bili >= 2 && fb.issues >= 1,
+    `旧链接 ${JSON.stringify(fb.legacy)}，B 站入口 ${fb.bili} 个，Issues 入口 ${fb.issues} 个`)
 
   /* 核心圈：默认显示全部，可一键切到「被引 ≥ 5」的核心圈。核心圈条数随互引网络增长，
      以页面自身的 coreCount() 为准，不写死数字（否则数据一更新断言就假失败）。 */
