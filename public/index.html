@@ -14,15 +14,16 @@
   未获授权或背书。角色图片为网络检索素材（多为该动画截图与官方物料），版权归各自权利人所有，
   不在上述许可范围内，如有异议请联系删除。
   源码仓库：https://github.com/Lizhenghe-Chen/fanren-wiki
-  访问统计：首页 hero 的「次浏览」来自「不蒜子」官方 (busuanzi.ibruce.info)，是全页唯一的外部请求，
+  访问统计：首页 hero 的「次浏览」来自 Vercount (events.vercount.one)，是全页唯一的外部请求，
   取接口的 site_pv（全站累计）而非 page_pv —— page_pv 按「完整 URL 字符串」分桶，尾斜杠 / 查询串 /
   分享参数 / 深链 hash 都会各成一个小桶从 1 重新累计，展示出来就是「一千四百零几」的假小数字。
-  迁回官方（2026-10-09）：2026-10-03 曾因官方持续 502 迁到 busuanzi.cc；2026-10-09 该站（cdn 与主站）
-  整站 502 且其上累计的增量取不回，而官方已恢复，故迁回官方取 site_pv。
-  官方桶在 9 月下旬宕机中丢/回滚过数据（迁回时只剩 1223，低于 10-03 记录的 ≈1400），故按用户要求
-  设 BASE_PV 把显示起点对齐到 1888，避免数字从换站期间的 ≈1800+ 掉下来；起点见代码里的 TARGET_PV。
-  本站代码不写 cookie、不采集个人标识（官方接口会下发它自己的 busuanziId cookie，用于其 UV 去重）；
-  每次载入直接取回累计值并显示，且只在真实域名下发起（file:// 与本地预览不发起）。
+  迁移到 Vercount（2026-10-27）：不蒜子官方再次连接超时（实测 HTTP 000，8 秒无响应）；Vercount 是
+  社区维护的不蒜子兼容实现（后端 Cloudflare Anycast，实测 ≈0.9s），官方承诺「首访自动从 不蒜子同步
+  历史 PV/UV」，但不蒜子长期不可达，实测该路径已失效、新桶从 0 起，故按用户口径「约 13000 次浏览」
+  设 BASE_PV 把显示起点对齐到 13000；起点见代码里的 TARGET_PV。
+  迁移史：2026-10-03 官方 502 迁到 busuanzi.cc；2026-10-09 其整站 502 迁回官方；2026-10-27 官方再挂迁 Vercount。
+  本站代码不写 cookie、不采集个人标识（请求体 isNewUv 恒 false，不虚增其 UV）；
+  每次载入直接 POST 取回累计值并显示，且只在真实域名下发起（file:// 与本地预览不发起）。
   首次发布：2026-09-14 · 最后更新：2026-10-05
 -->
 <link rel="canonical" href="https://bunnychen.top/fanren-wiki/">
@@ -1106,7 +1107,7 @@ body.v-map-on .navbar{display:none!important}
         <div class="stat"><b id="home-st-gongfa">0</b><span>功法</span></div>
         <div class="stat"><b id="home-st-zhenfa">0</b><span>阵法</span></div>
         <div class="stat"><b id="home-st-fu">0</b><span>符箓</span></div>
-        <div class="stat" id="stat-views" style="display:none" title="全站累计浏览次数（数据来源：不蒜子官方 site_pv）"><b id="stat-views-num">0</b><span>次浏览</span></div>
+        <div class="stat" id="stat-views" style="display:none" title="全站累计浏览次数（数据来源：Vercount site_pv）"><b id="stat-views-num">0</b><span>次浏览</span></div>
       </div>
     </div>
     <div class="hero-cover">
@@ -1886,22 +1887,28 @@ body.v-map-on .navbar{display:none!important}
 </footer>
 
 <script>
-/* ===== 访问统计（不蒜子官方 site_pv）=====
-   展示位置：首页 hero 统计行；数据源：busuanzi.ibruce.info（全页唯一外部请求）。
-   每次载入都取回一次累计值并显示：不写本地缓存、不做去重窗口。
-   ⚠️ 取值必须用 site_pv 而不是 page_pv：page_pv 是按「完整 URL 字符串」分桶的，尾斜杠、查询串、
-   分享参数、深链 hash 都会各成一个独立小桶从 1 重新累计（实测同一页面 127 / 1 / 1 / 8），
-   展示出来就是「一千四百零几」的假小数字；site_pv 实测跨所有 URL 变体统一累加，才是全站浏览次数。
-   ⚠️ 字段名：官方 JSONP 回的是扁平的 site_pv / page_pv / site_uv（无前缀，与官方自己的
-   client 脚本读法一致）；带 busuanzi_ 前缀那套是 busuanzi.cc 的，迁回时务必一并改掉。
-   ⚠️ 官方接口没有 CORS 头、只认 Referer ⇒ 只能用 <script> 注入 JSONP（fetch 读不到响应）；
-   referrerPolicy 必须显式写 no-referrer-when-downgrade —— 跨域默认策略只送 origin，服务端拿不到路径。
-   迁移史：2026-10-03 因官方持续 502 迁到 busuanzi.cc（其接口是 POST JSON）；2026-10-09 busuanzi.cc
-   整站 502、且它在 10-03 之后累计的增量取不回来，而官方已恢复，故迁回官方。
-   迁回后**保留基数**：官方桶在宕机中丢/回滚过数据（迁回时 1223 < 10-03 记录的 ≈1400，计数不会自己变小），
-   直接显示会让数字从换站期间的 ≈1800+ 掉下来 —— 故按用户要求把显示起点对齐到 1888，见下方 TARGET_PV。
+/* ===== 访问统计（Vercount site_pv）=====
+   展示位置：首页 hero 统计行；数据源：events.vercount.one（全页唯一外部请求）。
+   每次载入都 POST 一次取回累计值并显示：不写本地缓存、不做去重窗口。
+   接口（逆向自官方 js https://events.vercount.one/js）：
+     POST https://events.vercount.one/api/v2/log
+     请求体 {url: 页面完整 URL, isNewUv: 是否新访客}；5s 超时（AbortController）
+     响应 {status:"success", data:{site_pv, page_pv, site_uv}}（error 时 data 里可能带兜底值）
+   Vercount 带 CORS 头 ⇒ 直接 fetch（不蒜子官方无 CORS 头、只认 Referer，只能 JSONP）。
+   ⚠️ 取值必须用 site_pv 而不是 page_pv：page_pv 按「完整 URL 字符串」分桶，尾斜杠、查询串、
+   分享参数、深链 hash 各成一个小桶（不蒜子上实测同一页面 127 / 1 / 1 / 8），展示出来就是
+   「一千四百零几」的假小数字；site_pv 按 host 跨所有 URL 变体统一累加，才是全站浏览次数。
+   ⚠️ isNewUv 恒为 false：官方 js 靠 cookie(vercount_uv_<host>) 判新访客并写一年期 cookie；
+   本站坚持不写 cookie，若恒报 true 会让 UV=PV 虚高，恒 false 则只累计 PV（后台 UV 不增长，
+   本站不显示 UV，无影响）。
+   迁移史：2026-10-03 官方 502 → busuanzi.cc（POST JSON）；2026-10-09 其整站 502 → 迁回官方 JSONP；
+   2026-10-27 官方再次连接超时（实测 HTTP 000）→ Vercount。
+   历史数据：Vercount 官方承诺首访自动从 不蒜子同步旧值，但官方长期不可达，实测该路径已失效 ——
+   迁移时 Vercount 桶 site_pv 仅 8（全是迁移探测请求，无真实同步数据）。按用户口径「约 13000
+   次浏览」用 BASE_PV 把显示起点对齐到 13000：首个真实访客看到 13001，之后每访问 +1。
+   ⚠️ 若日后 Vercount 补同步到不蒜子旧数据导致数字跳变，重设 TARGET_PV 即可。
    只在真实域名下发起：file:// 与本地预览不上报（本地想看加 ?stats=1）。
-   宕机兜底：请求失败或 6 秒无响应时，统计位显示「— 统计暂不可用」，不再静默隐藏。 */
+   宕机兜底：请求失败或 5 秒无响应时，统计位显示「— 统计暂不可用」，不再静默隐藏。 */
 (function () {
   var box = document.getElementById('stat-views'), num = document.getElementById('stat-views-num');
   if (!box || !num) return;
@@ -1911,48 +1918,46 @@ body.v-map-on .navbar{display:none!important}
     !/^(localhost|127\.0\.0\.1|0\.0\.0\.0|\[::1\])$/.test(location.hostname);
   if (!isReal && !/[?&]stats=1\b/.test(location.search)) return;
 
-  /* 显示 = 基数 + 官方桶的累计值，起点对齐到 1888（用户指定）。
-     为什么还要基数：官方桶在 9 月下旬那波长时间 502 里丢/回滚过数据 —— 迁回时只剩 1223，
-     比 2026-10-03 记录在案的 ≈1400 还低（计数不可能自己变小）；换成 busuanzi.cc 那几天
-     新增的 ≈400 更取不回来。直接显示 1223 会让数字从换站期间的 ≈1800+ 掉下来，故按起点对齐。
-     ⚠️ 改起点只改 TARGET_PV；OFFICIAL_AT_SWITCH 是「迁回瞬间官方桶的值」，别随手改（会平移整个数字）。 */
-  var TARGET_PV = 1888; /* 迁回时的显示起点 */
-  var OFFICIAL_AT_SWITCH = 1224; /* 迁回瞬间官方 site_pv：实测 1223（该次探测自身已计入）+ 首次载入的 1 */
-  var BASE_PV = TARGET_PV - OFFICIAL_AT_SWITCH; /* 664，恒正 */
-  var failTimer = null;
+  /* 显示 = 基数 + Vercount 桶的累计值，起点对齐到 13000（用户口径：约 13000 次浏览）。
+     Vercount 未能从宕机的不蒜子同步到任何历史数据（迁移时桶值仅 8，全是探测请求），
+     直接显示会让数字从个位数开始，故按起点对齐。
+     ⚠️ 改起点只改 TARGET_PV；VERCOUNT_AT_SWITCH 是「迁移上线瞬间 Vercount 桶的值」，
+     别随手改（会平移整个数字）。 */
+  var TARGET_PV = 13000; /* 迁移上线后的显示起点（用户口径：约 13000 次浏览） */
+  var VERCOUNT_AT_SWITCH = 8; /* 迁移上线前 Vercount site_pv：实测 8，全是迁移探测请求 */
+  var BASE_PV = TARGET_PV - VERCOUNT_AT_SWITCH; /* 12992，恒正 */
   function showFail() {
-    if (failTimer) { clearTimeout(failTimer); failTimer = null; }
     num.textContent = '—';
     if (suffix) suffix.textContent = '统计暂不可用';
-    box.title = '计数服务（不蒜子官方 busuanzi.ibruce.info）当前不可用，刷新页面重试';
+    box.title = '计数服务（Vercount events.vercount.one）当前不可用，刷新页面重试';
     box.style.display = '';
   }
 
   function onData(o) {
-    if (failTimer) { clearTimeout(failTimer); failTimer = null; }
-    /* ⚠️ 官方 JSONP 的字段是**扁平**的 site_pv / page_pv / site_uv；
-       带 busuanzi_ 前缀的那套是 busuanzi.cc 的（旧实现读的就是它，迁回官方时必须改回来）。 */
-    var pv = Number(o && o.site_pv);
+    /* 成功时计数在 data 里；status:error 时 data 里也可能带兜底值；
+       字段是扁平的 site_pv / page_pv / site_uv（无前缀）。 */
+    var d = (o && (o.data || o)) || {};
+    var pv = Number(d.site_pv);
     if (!isFinite(pv)) { showFail(); return; }
     num.textContent = (BASE_PV + pv).toLocaleString('zh-CN');
     if (suffix) suffix.textContent = '次浏览';
-    box.title = '全站累计浏览次数（数据来源：不蒜子官方 site_pv）';
+    box.title = '全站累计浏览次数（数据来源：Vercount site_pv，含历史基数）';
     box.style.display = '';
   }
 
-  /* JSONP：回调名随机，免得多标签页互相覆盖；标签留在 DOM 里并打上 data-fw-stats 标记 ——
-     它是运行时注入的统计请求，验收脚本扫「第三方静态资源」时要靠这个标记把它排除掉
-     （它不是 HTML 里写死的资源），同时也靠它核对请求目标。 */
-  var cb = 'BusuanziCallback_' + Math.floor(1099511627776 * Math.random());
-  window[cb] = function (o) { onData(o); };
-  var s = document.createElement('script');
-  s.dataset.fwStats = '1';
-  s.async = true;
-  s.referrerPolicy = 'no-referrer-when-downgrade';
-  s.src = 'https://busuanzi.ibruce.info/busuanzi?jsonpCallback=' + cb;
-  s.onerror = showFail;
-  document.head.appendChild(s);
-  failTimer = setTimeout(showFail, 6000); /* 兜底超时：请求挂起时不至于一直空白 */
+  /* Vercount 支持 CORS ⇒ fetch POST 即可（无需 JSONP 注入 <script>）；
+     运行时 fetch 不产生 DOM 节点，也不会被「静态资源无第三方请求」扫描命中。 */
+  var ctrl = (typeof AbortController === 'function') ? new AbortController() : null;
+  var timer = setTimeout(function () { if (ctrl) { try { ctrl.abort(); } catch (e) {} } else { showFail(); } }, 5000);
+  fetch('https://events.vercount.one/api/v2/log', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ url: location.href, isNewUv: false }),
+    signal: ctrl ? ctrl.signal : undefined
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  }).then(function (o) { clearTimeout(timer); onData(o); }).catch(function () { clearTimeout(timer); showFail(); });
 })();
 </script>
 

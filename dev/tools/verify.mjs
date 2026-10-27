@@ -774,38 +774,47 @@ try {
     JSON.stringify(backNav))
 
   /* 只看真正会发起请求的标签：canonical / alternate 这类 href 不是资源请求。
-     运行时的访问统计 JSONP 会自己插一个 <script>（打有 data-fw-stats）—— 它不是页面写死的
-     第三方资源，而是「全页唯一外部请求」的设计本身，故排除；漏排会让线上验收永久假红。 */
+     访问统计走 fetch POST Vercount（2026-10-27 起），运行时 fetch 不产生 DOM 资源节点，
+     天然不会被这里命中；:not([data-fw-stats]) 是旧 JSONP 时代的排除，保留兼容。 */
   const thirdParty = await evaluate(`JSON.stringify(
     [...document.querySelectorAll('link[rel="stylesheet"][href], link[rel="preload"][href], link[rel="icon"][href], script[src]:not([data-fw-stats]), img[src]')]
       .map(el => el.getAttribute('href') || el.getAttribute('src'))
       .filter(u => /^https?:/i.test(u)))`)
-  check('页面静态资源无第三方请求（运行时统计 JSONP 除外）', thirdParty === '[]', thirdParty)
+  check('页面静态资源无第三方请求（运行时统计 fetch 除外）', thirdParty === '[]', thirdParty)
 
   /* 访问统计：① 首页统计位默认隐藏（服务不可用时不留空洞）；② 本地/file:// 不发起上报（否则本地预览会污染线上计数）。
-     页面每次载入都直接取回累计值、不做本地去重缓存，故无「去重窗口」断言。 */
+     页面每次载入都直接取回累计值、不做本地去重缓存，故无「去重窗口」断言。
+     fetch 不留 DOM 痕迹，改从 performance resource 条目核对实际请求目标（busuanzi|vercount 全捕）。 */
   const readVisits = () => evaluate(`JSON.stringify((() => {
     const box = document.getElementById('stat-views'), num = document.getElementById('stat-views-num');
     return {
       box: box ? getComputedStyle(box).display : 'MISSING',
       num: num ? num.textContent.trim() : 'MISSING',
       scripts: [...document.querySelectorAll('script[src]')]
-        .map(s => s.getAttribute('src')).filter(u => /busuanzi/.test(u)),
+        .map(s => s.getAttribute('src')).filter(u => /busuanzi|vercount/.test(u)),
+      statsRes: performance.getEntriesByType('resource')
+        .map(e => e.name).filter(u => /vercount\.one|busuanzi/.test(u)),
     };
   })())`)
-  const visits = JSON.parse(await readVisits())
   /* 这条分环境：本地/file:// 下应「隐藏且不发起任何统计请求」（免得调试流量污染线上计数），
-     真实域名下正好反过来 —— 应显示取到的 PV，且请求只打到官方 JSONP 接口
-     （页面自己注入 <script>，不引官方那支 mini.js）。否则拿 --url 验线上时会永远挂一条假失败。 */
+     真实域名下正好反过来 —— 应显示取到的 PV，且请求只打到 Vercount 的 POST API（fetch 异步，
+     先轮询等统计位显示再断言）。否则拿 --url 验线上时会永远挂一条假失败。 */
   const hostInfo = await evaluate(`location.protocol + location.hostname`)
   const localRun = hostInfo.startsWith('file:') || /^https?:(localhost|127\.0\.0\.1)$/.test(hostInfo)
   if (localRun) {
-    check('首页浏览统计默认隐藏且本地不发起上报', visits.box === 'none' && visits.scripts.length === 0, JSON.stringify(visits))
+    const visits = JSON.parse(await readVisits())
+    check('首页浏览统计默认隐藏且本地不发起上报', visits.box === 'none' && visits.scripts.length === 0 && visits.statsRes.length === 0, JSON.stringify(visits))
   } else {
+    for (let i = 0; i < 60; i++) {
+      if (JSON.parse(await readVisits()).box !== 'none') break
+      await sleep(100) /* 等 fetch 回来：统计位显示后才是真实访客看到的状态 */
+    }
+    const visits = JSON.parse(await readVisits())
     const pv = Number(String(visits.num).replace(/[^0-9]/g, ''))
-    check('真实域名下：浏览统计显示不蒜子官方取回的 PV，且只请求官方 JSONP 接口',
-      visits.box !== 'none' && pv > 0 && visits.scripts.length === 1 &&
-        /^https:\/\/busuanzi\.ibruce\.info\/busuanzi\?jsonpCallback=BusuanziCallback_\d+$/.test(visits.scripts[0]),
+    check('真实域名下：浏览统计显示 Vercount 取回的 PV，且只请求 Vercount POST API',
+      visits.box !== 'none' && pv > 1000 && visits.scripts.length === 0 &&
+        visits.statsRes.length === 1 &&
+        /^https:\/\/events\.vercount\.one\/api\/v2\/log/.test(visits.statsRes[0]),
       JSON.stringify(visits))
   }
 
@@ -857,27 +866,28 @@ try {
      分桶的 —— 尾斜杠 / 查询串 / 分享参数 / 深链各成一个小桶从 1 重算，显示出来就是
      「一千四百零几」的假小数字（实测同一页面 127 / 1 / 1 / 8）。 */
   check('访问统计取 site_pv（不是按 URL 分桶的 page_pv）',
-    /var pv = Number\(o && o\.site_pv\)/.test(siteHtml) && !/o\.page_pv/.test(siteHtml),
-    `实际取值：${(/Number\(o && o\.(\w+(?:\\?\.\w+)?)\)/.exec(siteHtml) || [])[1] || '未找到取值行'}`)
+    /var pv = Number\(d\.site_pv\)/.test(siteHtml) && !/d\.page_pv/.test(siteHtml),
+    `实际取值：${(/Number\(d\.(\w+)\)/.exec(siteHtml) || [])[1] || '未找到取值行'}`)
 
-  /* 后端与字段名（2026-10-09 迁回官方）：请求只打官方 JSONP 接口，且读官方那套**扁平**字段
-     （site_pv / page_pv / site_uv）。带 busuanzi_ 前缀的是 busuanzi.cc 的字段名，读错会取到
-     undefined ⇒ 落到「统计暂不可用」。这条守住这次踩过的坑。 */
-  check('访问统计走不蒜子官方 JSONP，且读无前缀字段（非 busuanzi_*）',
-    /jsonpCallback=/.test(siteHtml) && /busuanzi\.ibruce\.info\/busuanzi/.test(siteHtml) &&
-      !/busuanzi_site_pv|busuanzi_page_pv|busuanzi_site_uv/.test(siteHtml),
-    `命中：${(/https:\/\/[\w.]+\/[^\s'"]*jsonpCallback=[^\s'"]*/.exec(siteHtml) || [])[0] || '未找到官方接口'}`)
+  /* 后端与协议（2026-10-27 迁 Vercount）：请求只打 events.vercount.one 的 POST API（带 CORS，
+     fetch 直连），不得残留旧的不蒜子 JSONP 注入、busuanzi.cc POST 接口或带前缀字段名。 */
+  check('访问统计走 Vercount POST API，且不残留不蒜子 JSONP / busuanzi.cc 接口',
+    /events\.vercount\.one\/api\/v2\/log/.test(siteHtml) &&
+      /method:\s*'POST'/.test(siteHtml) &&
+      !/jsonpCallback=/.test(siteHtml) &&
+      !/busuanzi_site_pv|busuanzi_value_site_pv|cdn\.busuanzi\.cc/.test(siteHtml),
+    `命中：${(/https:\/\/events\.vercount\.one\/api\/v2\/log/.test(siteHtml) ? 'Vercount /api/v2/log (POST)' : '未找到 Vercount 接口')}`)
 
-  /* 显示起点（2026-10-09 迁回官方时用户指定 1888）：显示 = BASE_PV + 官方 site_pv，
-     且 BASE_PV 必须由 TARGET_PV − OFFICIAL_AT_SWITCH 推出（官方桶在 9 月下旬宕机里丢/回滚过数据，
-     迁回时现值低于此前记录，直接显示会让数字「掉下来」）。改起点只该改 TARGET_PV。 */
+  /* 显示起点（2026-10-27 迁 Vercount 时用户口径：约 13000 次浏览）：显示 = BASE_PV + Vercount site_pv，
+     且 BASE_PV 必须由 TARGET_PV − VERCOUNT_AT_SWITCH 推出（Vercount 未能从宕机的不蒜子同步到历史数据，
+     新桶从 0 起，必须按起点对齐，否则数字从个位数开始）。改起点只该改 TARGET_PV。 */
   const baseNums = {
     TARGET: (siteHtml.match(/var TARGET_PV = (\d+)/) || [])[1],
-    SWITCH: (siteHtml.match(/var OFFICIAL_AT_SWITCH = (\d+)/) || [])[1],
-    推式: /var BASE_PV = TARGET_PV - OFFICIAL_AT_SWITCH/.test(siteHtml),
+    SWITCH: (siteHtml.match(/var VERCOUNT_AT_SWITCH = (\d+)/) || [])[1],
+    推式: /var BASE_PV = TARGET_PV - VERCOUNT_AT_SWITCH/.test(siteHtml),
     相加: /BASE_PV \+ pv/.test(siteHtml),
   }
-  check('访问统计显示起点自洽（BASE_PV = TARGET_PV − OFFICIAL_AT_SWITCH，且真的相加）',
+  check('访问统计显示起点自洽（BASE_PV = TARGET_PV − VERCOUNT_AT_SWITCH，且真的相加）',
     baseNums.推式 && baseNums.相加 && Number(baseNums.TARGET) > Number(baseNums.SWITCH),
     JSON.stringify(baseNums))
 
