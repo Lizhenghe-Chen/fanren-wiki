@@ -1049,6 +1049,66 @@ body.v-map-on #v-map .map-stage{height:100vh;min-height:0}
 @media(max-width:760px){#v-map #toolsTab{top:58px;width:44px;height:44px}}
 body.v-map-on .navbar{display:none!important}
 
+/* ===== 仙凡对照 · 境界换算（v-mortal）===== */
+.mortal-sec{padding:26px 0}
+.mc-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:14px;background:var(--card)}
+.mc-table{width:100%;border-collapse:collapse;min-width:840px;font-size:13px}
+.mc-table th{background:var(--card2);color:var(--gold);font-weight:600;text-align:left;padding:12px 14px;white-space:nowrap;border-bottom:1px solid var(--line);letter-spacing:.04em}
+.mc-table td{padding:12px 14px;vertical-align:top;color:var(--ink2);border-bottom:1px solid var(--line);line-height:1.6}
+.mc-table tbody tr:last-child td{border-bottom:none}
+.mc-table tbody tr:hover td{background:rgba(212,175,106,.05)}
+.mc-r{display:block;font-family:var(--font-serif);font-size:16px;line-height:1.3}
+.mc-life{display:block;font-size:11px;color:var(--ink3);margin-top:2px}
+.mc-r1{color:var(--c2)}.mc-r2{color:var(--c5)}.mc-r3{color:var(--gold)}.mc-r4{color:var(--c4)}.mc-r5{color:var(--c6)}
+
+.mc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:18px}
+.mc-field{display:flex;flex-direction:column;gap:7px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.mc-field label{font-size:12.5px;color:var(--ink);font-weight:600;letter-spacing:.02em}
+.mc-field label::before{content:"◆ ";color:var(--gold);font-size:10px}
+.mc-field select{appearance:none;-webkit-appearance:none;font:inherit;font-size:13px;color:var(--ink);background-color:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:10px 32px 10px 11px;min-height:42px;width:100%;cursor:pointer;
+  background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23d4af6a' stroke-width='2.4'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 11px center}
+.mc-field select:focus-visible{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+.mc-field select option{background:var(--bg2);color:var(--ink)}
+
+.mc-result{margin-top:22px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(212,175,106,.06),rgba(255,255,255,.015));padding:20px}
+.mc-result-main{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:24px;align-items:center}
+.mc-verdict-label{font-size:12px;color:var(--ink3);letter-spacing:.1em}
+.mc-verdict-big{font-family:var(--font-serif);font-weight:900;font-size:clamp(28px,4vw,40px);line-height:1.2;margin:6px 0 2px}
+.mc-verdict-sub{font-size:13.5px;color:var(--ink2);margin-bottom:10px}
+.mc-pct{font-size:13px;color:var(--ink2);margin-bottom:10px}
+.mc-pct b{color:var(--gold);font-size:16px;font-variant-numeric:tabular-nums}
+.mc-bar{height:8px;border-radius:5px;background:rgba(255,255,255,.08);overflow:hidden}
+#mc-bar-fill{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,var(--gold2),var(--gold));width:0;transition:width .4s ease}
+.mc-radar{position:relative;width:100%;height:340px;min-height:300px}
+.mc-tip{display:none;position:absolute;pointer-events:none;z-index:5;background:rgba(20,18,14,.94);border:1px solid rgba(212,175,106,.4);color:#e9e4d8;font-size:12px;padding:5px 9px;border-radius:8px;white-space:nowrap;transform:translateY(-100%)}
+.mc-comment{margin-top:16px;padding-top:16px;border-top:1px dashed var(--line);font-size:13.5px;line-height:1.8;color:var(--ink2)}
+.mc-comment p{margin-bottom:6px}
+.mc-comment b.mc-hl{color:var(--gold)}
+.mc-actions{display:flex;align-items:center;gap:14px;margin-top:16px;flex-wrap:wrap}
+.mc-btn{appearance:none;font:inherit;font-size:13px;font-weight:600;padding:9px 18px;border:1px solid var(--gold2);border-radius:9px;background:transparent;color:var(--gold);cursor:pointer;transition:background .18s}
+.mc-btn:hover{background:rgba(212,175,106,.14)}
+.mc-hint{font-size:12px;color:var(--ink3)}
+.mc-src{margin-top:12px;border-left:3px solid var(--gold);padding:4px 0 4px 14px}
+.mc-src p{font-size:12.5px;color:var(--ink2);line-height:1.8;margin-bottom:5px}
+@media(max-width:760px){
+  .mc-result-main{grid-template-columns:1fr;gap:14px}
+  .mc-radar{height:300px}
+}
+
+/* 各境界 · 现实人物对照 */
+.mf-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:18px}
+.mf-card{position:relative;border:1px solid var(--line);border-radius:14px;background:var(--card);padding:16px 18px 10px;overflow:hidden}
+.mf-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--gold)}
+.mf-1::before{background:var(--c2)}.mf-2::before{background:var(--c5)}.mf-3::before{background:var(--gold)}.mf-4::before{background:var(--c4)}.mf-5::before{background:var(--c6)}
+.mf-head{display:flex;align-items:baseline;gap:10px;margin-bottom:6px}
+.mf-head .mc-r{font-size:20px}
+.mf-head span{font-size:11.5px;color:var(--ink3)}
+.mf-list{list-style:none;margin:0;padding:0}
+.mf-list li{padding:7px 0;border-bottom:1px dashed var(--line);display:flex;flex-direction:column;gap:2px}
+.mf-list li:last-child{border-bottom:none}
+.mf-list b{font-size:13.5px;color:var(--ink);font-weight:600}
+.mf-list i{font-style:normal;font-size:12px;color:var(--ink2);line-height:1.5}
+
 </style>
 </head>
 <body>
@@ -1063,6 +1123,7 @@ body.v-map-on .navbar{display:none!important}
       <a href="#v-lore" data-view="v-lore">剧情速览</a>
       <a href="#v-map" data-view="v-map">修仙界全图</a>
       <a href="#v-realms" data-view="v-realms">境界体系</a>
+      <a href="#v-mortal" data-view="v-mortal">仙凡对照</a>
       <a href="#v-beasts" data-view="v-beasts">灵兽灵虫</a>
       <a href="#v-herbs" data-view="v-herbs">灵草丹药</a>
       <a href="#v-treasures" data-view="v-treasures">法器法宝</a>
@@ -1625,6 +1686,281 @@ body.v-map-on .navbar{display:none!important}
   </div>
 </section>
 
+</div>
+
+<!-- ============================================================
+     仙凡对照 · 境界换算（v-mortal）
+     以人界五境映照现实社会：学历=灵根，职业=功法，职位=境界，
+     财富=资源，人脉=道统，健康=道基，影响力=道果。
+     ============================================================ -->
+<div class="view" id="v-mortal">
+<header class="page-head">
+  <div class="wrap ph-inner">
+    <div>
+      <h1>仙凡对照 · <span class="accent">境界换算</span></h1>
+      <span class="kicker">以人界五境映照现实社会 · 你在凡间是哪一境？</span>
+    </div>
+    <div class="stats">
+      <div class="stat"><b>8</b><span>衡量维度</span></div>
+      <div class="stat"><b>5</b><span>人界大境</span></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <p class="ph-lead">修仙看灵根、功法、资源、机缘、寿元；现实看学历、职业、职位、财富、人脉、健康。下面先把人界五境与现实社会做个对照，再用换算器把你此刻的综合"修为"算出来。</p>
+  </div>
+</header>
+
+<!-- ===== 人界五境 × 现实社会 对照 ===== -->
+<section class="wrap mortal-sec">
+  <div class="sec-title">人界五境 × 现实社会</div>
+  <div class="sec-desc">境界越高，越能调动资源、影响规则、抵御风险，人数呈金字塔递减。下表为帮助理解结构的近似对应，非精确统计。</div>
+  <div class="mc-table-wrap">
+    <table class="mc-table">
+      <thead>
+        <tr>
+          <th>人界境界</th><th>现实定位</th><th>能力 / 职位</th><th>财富量级</th><th>圈层人脉</th><th>人群位置</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b class="mc-r mc-r1">炼气</b><span class="mc-life">寿约百年</span></td>
+          <td>入门谋生</td>
+          <td>基层员工、学徒，按指令执行，可替代性强</td>
+          <td>月入数千至一万余，存款六位数以内</td>
+          <td>亲友、同阶同事</td>
+          <td>中下游 · 约 65%</td>
+        </tr>
+        <tr>
+          <td><b class="mc-r mc-r2">筑基</b><span class="mc-life">寿约二百年</span></td>
+          <td>站稳脚跟</td>
+          <td>业务骨干、资深工程师、小团队负责人</td>
+          <td>年入 20–50 万，多数已置业</td>
+          <td>行业内稳定人脉</td>
+          <td>中上游 · 约 15%</td>
+        </tr>
+        <tr>
+          <td><b class="mc-r mc-r3">金丹</b><span class="mc-life">寿约五百岁</span></td>
+          <td>中流砥柱</td>
+          <td>技术专家、部门总监、中小企业主、教授</td>
+          <td>净资产 500 万至千万级</td>
+          <td>跨行业、掌握信息差</td>
+          <td>上游 · 约 4%</td>
+        </tr>
+        <tr>
+          <td><b class="mc-r mc-r4">元婴</b><span class="mc-life">寿约千岁</span></td>
+          <td>一方大佬</td>
+          <td>企业高管、成功企业家、学科带头人、厅级</td>
+          <td>千万至数亿，被动收入已得自由</td>
+          <td>政商学高层往来</td>
+          <td>顶层 · 约 0.9%</td>
+        </tr>
+        <tr>
+          <td><b class="mc-r mc-r5">化神</b><span class="mc-life">人界上限</span></td>
+          <td>规则制定</td>
+          <td>行业奠基人、院士、顶级企业家、省部级</td>
+          <td>数十亿以上，财富已成数字</td>
+          <td>顶层圈子，可影响规则</td>
+          <td>顶端 · 约 0.1%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ===== 各境界 · 现实人物对照 ===== -->
+<section class="wrap mortal-sec">
+  <div class="sec-title">各境界 · 现实人物对照</div>
+  <div class="sec-desc">为方便理解，按公开的行业地位与成就列举各境界的代表性人物，仅为趣味类比，不构成任何排名，亦不代表本人立场。</div>
+  <div class="mf-grid">
+    <div class="mf-card mf-5">
+      <div class="mf-head"><b class="mc-r mc-r5">化神</b><span>开宗立派 · 写进教科书</span></div>
+      <ul class="mf-list">
+        <li><b>袁隆平</b><i>杂交水稻之父，共和国勋章（已故）</i></li>
+        <li><b>钱学森</b><i>两弹一星元勋，中国航天奠基人（已故）</i></li>
+        <li><b>爱因斯坦 / 牛顿</b><i>奠定科学范式的历史级人物</i></li>
+        <li><b>任正非</b><i>华为创始人，全球通信龙头</i></li>
+        <li><b>马斯克</b><i>特斯拉、SpaceX，全球级企业家</i></li>
+      </ul>
+    </div>
+    <div class="mf-card mf-4">
+      <div class="mf-head"><b class="mc-r mc-r4">元婴</b><span>一方权威 · 领域内的巅峰</span></div>
+      <ul class="mf-list">
+        <li><b>两院院士</b><i>全国约 1900 人，学科带头人</i></li>
+        <li><b>顶级企业家</b><i>大型上市公司创始人</i></li>
+        <li><b>姚明 / 郎平</b><i>体坛殿堂级人物</i></li>
+        <li><b>国家级艺术大师</b><i>表演艺术领域的标杆</i></li>
+      </ul>
+    </div>
+    <div class="mf-card mf-3">
+      <div class="mf-head"><b class="mc-r mc-r3">金丹</b><span>专业中坚 · 独当一面</span></div>
+      <ul class="mf-list">
+        <li><b>罗翔</b><i>中国政法大学教授，普法名师</i></li>
+        <li><b>张雪峰</b><i>升学规划名师，创业者</i></li>
+        <li><b>大学教授 / 主任医师</b><i>高级职称专业岗</i></li>
+        <li><b>大厂总监 / 中小企业主</b><i>中层管理者</i></li>
+      </ul>
+    </div>
+    <div class="mf-card mf-2">
+      <div class="mf-head"><b class="mc-r mc-r2">筑基</b><span>站稳脚跟 · 业务骨干</span></div>
+      <ul class="mf-list">
+        <li><b>资深工程师</b><i>能独立负责一个模块</i></li>
+        <li><b>小团队负责人</b><i>带几个人推进项目</i></li>
+        <li><b>县城名医 / 重点中学骨干</b><i>本地专业权威</i></li>
+      </ul>
+    </div>
+    <div class="mf-card mf-1">
+      <div class="mf-head"><b class="mc-r mc-r1">炼气</b><span>入门谋生 · 大多数人</span></div>
+      <ul class="mf-list">
+        <li><b>应届毕业生</b><i>初入职场，正在学习</i></li>
+        <li><b>普通职员 / 学徒</b><i>按指令完成工作</i></li>
+        <li><b>外卖骑手 / 流水线工人</b><i>靠一份体力活谋生</i></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 境界换算器 ===== -->
+<section class="wrap mortal-sec" id="mortal-calc">
+  <div class="sec-title">境界换算器</div>
+  <div class="sec-desc">在下列八项中选择最符合你当前情况的一项，结果会实时更新；财富可按家庭口径填写。</div>
+
+  <div class="mc-grid">
+    <div class="mc-field">
+      <label for="mc-edu">学历 / 出身（灵根）</label>
+      <select id="mc-edu" data-key="edu">
+        <option value="0.3">初中及以下</option>
+        <option value="0.7">高中 / 中专</option>
+        <option value="1.0">大专</option>
+        <option value="1.3" selected>本科</option>
+        <option value="1.7">硕士</option>
+        <option value="2.3">博士</option>
+        <option value="2.8">博士后 / 青年学者</option>
+      </select>
+    </div>
+
+    <div class="mc-field">
+      <label for="mc-job">职业领域（功法）</label>
+      <select id="mc-job" data-key="job">
+        <option value="0.3">在校 / 待业 / 退休</option>
+        <option value="0.7">体力 / 流水线 / 临时工</option>
+        <option value="1.0" selected>普通服务 / 销售 / 文员</option>
+        <option value="1.5">技术工人 / 技师</option>
+        <option value="2.0">专业技术岗（工程师 / 教师 / 医生 / 公务员）</option>
+        <option value="2.8">资深专家 / 中层 / 中小企业主</option>
+        <option value="3.8">大企业高管 / 成功企业家</option>
+        <option value="4.8">行业奠基人 / 国民级人物</option>
+      </select>
+    </div>
+
+    <div class="mc-field">
+      <label for="mc-pos">职位 / 职级（境界）</label>
+      <select id="mc-pos" data-key="pos">
+        <option value="0.4">无职级 / 基层办事员</option>
+        <option value="1.4" selected>业务骨干 / 初级职称 / 科员</option>
+        <option value="2.0">资深骨干 / 中级职称 / 科级</option>
+        <option value="2.7">团队负责人 / 副高职称 / 处级</option>
+        <option value="3.4">部门总监 / 正高职称 / 厅级</option>
+        <option value="4.2">核心高管 / 学科带头人 / 省部级</option>
+        <option value="4.9">单位一把手 / 院士 / 国家级</option>
+      </select>
+    </div>
+
+    <div class="mc-field">
+      <label for="mc-wealth">家庭净资产（资源）</label>
+      <select id="mc-wealth" data-key="wealth">
+        <option value="0.1">资不抵债</option>
+        <option value="0.6">10 万以下</option>
+        <option value="1.0" selected>10–50 万</option>
+        <option value="1.5">50–100 万</option>
+        <option value="2.0">100–300 万</option>
+        <option value="2.5">300–500 万</option>
+        <option value="3.0">500–1000 万</option>
+        <option value="3.8">1000 万 – 1 亿</option>
+        <option value="4.5">1 亿 – 50 亿</option>
+        <option value="5.0">50 亿以上</option>
+      </select>
+    </div>
+
+    <div class="mc-field">
+      <label for="mc-income">个人税前年收入（俸禄）</label>
+      <select id="mc-income" data-key="income">
+        <option value="0.3">无稳定收入</option>
+        <option value="0.7">5 万以下</option>
+        <option value="1.0" selected>5–10 万</option>
+        <option value="1.5">10–20 万</option>
+        <option value="2.1">20–50 万</option>
+        <option value="2.7">50–100 万</option>
+        <option value="3.3">100–300 万</option>
+        <option value="3.9">300–1000 万</option>
+        <option value="4.5">1000 万以上</option>
+      </select>
+    </div>
+
+    <div class="mc-field">
+      <label for="mc-net">人脉 / 圈层（道统）</label>
+      <select id="mc-net" data-key="net">
+        <option value="0.6">基本只有亲友</option>
+        <option value="1.2" selected>同事 / 同行熟人</option>
+        <option value="1.9">行业内稳定人脉</option>
+        <option value="2.6">跨行业、能调动资源</option>
+        <option value="3.5">政商学高层往来</option>
+        <option value="4.5">顶层圈子、可影响规则</option>
+      </select>
+    </div>
+
+    <div class="mc-field">
+      <label for="mc-health">健康 / 精力（道基）</label>
+      <select id="mc-health" data-key="health">
+        <option value="0.5">重病 / 慢性病缠身</option>
+        <option value="1.1">亚健康 / 体弱</option>
+        <option value="1.7" selected>一般、正常</option>
+        <option value="2.3">健康、精力充沛</option>
+        <option value="3.0">强健、体能拔尖</option>
+      </select>
+    </div>
+
+    <div class="mc-field">
+      <label for="mc-fame">影响力 / 成就（道果）</label>
+      <select id="mc-fame" data-key="fame">
+        <option value="0.5">暂无</option>
+        <option value="1.4" selected>单位内小有名气</option>
+        <option value="2.3">行业内有口碑 / 获奖</option>
+        <option value="3.2">省级或全行业认可</option>
+        <option value="4.2">国家级 / 全国知名</option>
+        <option value="4.9">开宗立派、写进教科书</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="mc-result">
+    <div class="mc-result-main">
+      <div class="mc-verdict">
+        <div class="mc-verdict-label">你当前的凡间修为</div>
+        <div class="mc-verdict-big" id="mc-big">炼气期</div>
+        <div class="mc-verdict-sub" id="mc-sub"></div>
+        <div class="mc-pct">已超越约 <b id="mc-pct-num">0</b>% 的人</div>
+        <div class="mc-bar"><span id="mc-bar-fill"></span></div>
+      </div>
+      <div class="mc-radar" id="mc-radar" aria-label="八维度境界雷达图"></div>
+    </div>
+    <div class="mc-comment" id="mc-comment"></div>
+    <div class="mc-actions">
+      <button type="button" id="mc-reset" class="mc-btn">重新选择</button>
+      <span class="mc-hint">结果仅供娱乐，凡间"修为"随时可再精进</span>
+    </div>
+  </div>
+</section>
+
+<!-- ===== 口径与数据来源 ===== -->
+<section class="wrap mortal-sec">
+  <div class="sec-title">口径与数据来源</div>
+  <div class="mc-src">
+    <p>· 收入分层参考国家统计局居民收入五等份分组（2025 年高收入组人均可支配收入约 10.4 万元）；中等收入群体按家庭年入 10–50 万口径，规模约 4 亿人。</p>
+    <p>· 财富门槛参考胡润财富报告：600 万资产"富裕家庭"约 500 余万户、千万资产"高净值家庭"约 200 万户、亿元资产"超高净值家庭"约 12.6 万户；50 亿以上企业家约 1400 余人。</p>
+    <p>· 学历线对应学术成长路径（本科→硕士→博士→博士后），职级线对应行政级别（科级 / 处级 / 厅级 / 省部级）与职称（初级 / 中级 / 副高 / 正高）。</p>
+    <p>· 境界寿元引自原著设定（炼气约百年、筑基约二百年、结丹约五百年、元婴约千年）。本换算为趣味类比，权重为主观设定，不构成任何现实评价或建议。</p>
+  </div>
+</section>
 </div>
 
 <div class="view" id="v-beasts">
@@ -3521,7 +3857,7 @@ function applyTreasureFilter(){
 /* ===== 路由：视图切换 + 条目深链 =====
    深链形如 #v-chars/qixuanmen-0、#v-treasures/tres-12，可直接分享到某个人在某一篇的那张卡。
    用 - 而不是 # 当分隔符，否则 URL 会被当成新锚点截断。 */
-const VIEWS = ["v-home","v-chars","v-lore","v-map","v-realms","v-beasts","v-herbs","v-treasures","v-gongfa","v-zhenfa","v-fu"];
+const VIEWS = ["v-home","v-chars","v-lore","v-map","v-realms","v-mortal","v-beasts","v-herbs","v-treasures","v-gongfa","v-zhenfa","v-fu"];
 
 function switchView(id){
   if(VIEWS.indexOf(id) < 0) id = "v-home";
@@ -3812,6 +4148,200 @@ function syncTargetToResults(libId, keys){
   applyHash();
 })();
 
+</script>
+<script>
+/* ===== 仙凡对照 · 境界换算器（v-mortal）=====
+   八个维度各取一个 0–5 的"境界值"（0 凡人 / 1 炼气 / 2 筑基 / 3 金丹 / 4 元婴 / 5 化神），
+   按权重加权得到综合 S，再映射到境界与"超越百分比"。权重为主观设定，仅供娱乐。 */
+(function(){
+  var DIMS=[
+    {key:"edu",    name:"学历",   w:0.10},
+    {key:"job",    name:"职业",   w:0.14},
+    {key:"pos",    name:"职位",   w:0.18},
+    {key:"wealth", name:"净资产", w:0.20},
+    {key:"income", name:"收入",   w:0.12},
+    {key:"net",    name:"人脉",   w:0.12},
+    {key:"health", name:"健康",   w:0.08},
+    {key:"fame",   name:"影响力", w:0.06}
+  ];
+  /* 小境界表：S 区间 -> 大境/小层/颜色/大境序号 */
+  var LEVELS=[
+    {lo:0,   hi:0.4,  major:"凡人",   sub:"凡胎俗骨", c:"#7d7564", mi:0},
+    {lo:0.4, hi:0.65, major:"炼气期", sub:"一至三层",   c:"#7fb3d9", mi:1},
+    {lo:0.65,hi:0.9,  major:"炼气期", sub:"四至六层",   c:"#7fb3d9", mi:1},
+    {lo:0.9, hi:1.15, major:"炼气期", sub:"七至九层",   c:"#7fb3d9", mi:1},
+    {lo:1.15,hi:1.4,  major:"炼气期", sub:"十至十三层", c:"#7fb3d9", mi:1},
+    {lo:1.4, hi:1.65, major:"筑基期", sub:"初期", c:"#4ec9a0", mi:2},
+    {lo:1.65,hi:1.9,  major:"筑基期", sub:"中期", c:"#4ec9a0", mi:2},
+    {lo:1.9, hi:2.15, major:"筑基期", sub:"后期", c:"#4ec9a0", mi:2},
+    {lo:2.15,hi:2.4,  major:"筑基期", sub:"巅峰", c:"#4ec9a0", mi:2},
+    {lo:2.4, hi:2.65, major:"金丹期", sub:"初期", c:"#d4af6a", mi:3},
+    {lo:2.65,hi:2.9,  major:"金丹期", sub:"中期", c:"#d4af6a", mi:3},
+    {lo:2.9, hi:3.15, major:"金丹期", sub:"后期", c:"#d4af6a", mi:3},
+    {lo:3.15,hi:3.4,  major:"金丹期", sub:"巅峰", c:"#d4af6a", mi:3},
+    {lo:3.4, hi:3.65, major:"元婴期", sub:"初期", c:"#a68bc9", mi:4},
+    {lo:3.65,hi:3.9,  major:"元婴期", sub:"中期", c:"#a68bc9", mi:4},
+    {lo:3.9, hi:4.15, major:"元婴期", sub:"后期", c:"#a68bc9", mi:4},
+    {lo:4.15,hi:4.4,  major:"元婴期", sub:"巅峰", c:"#a68bc9", mi:4},
+    {lo:4.4, hi:4.55, major:"化神期", sub:"初期", c:"#e07b54", mi:5},
+    {lo:4.55,hi:4.7,  major:"化神期", sub:"中期", c:"#e07b54", mi:5},
+    {lo:4.7, hi:4.85, major:"化神期", sub:"后期", c:"#e07b54", mi:5},
+    {lo:4.85,hi:5.01, major:"化神期", sub:"巅峰", c:"#e07b54", mi:5}
+  ];
+  var VERDICT=[
+    "尚未踏上修行路，凡尘亦是起点。",
+    "初窥门径，仙路漫漫，正在叩问筑基。",
+    "道基已成，登堂入室，一方安稳可求。",
+    "结丹凝元，中流砥柱，已入上品之林。",
+    "元婴出窍，一方豪强，举手投足皆是格局。",
+    "化神返虚，人界之巅，可立言、立法、开宗。"
+  ];
+  /* 超越百分比锚点（S -> %），分段线性插值 */
+  var PCT=[[0,1],[0.4,8],[0.9,40],[1.4,72],[1.9,85],[2.4,93],[2.9,96.5],[3.4,99.0],[3.9,99.5],[4.4,99.85],[5.0,99.98]];
+
+  function levelOf(s){ for(var i=0;i<LEVELS.length;i++){ if(s>=LEVELS[i].lo && s<LEVELS[i].hi) return LEVELS[i]; } return LEVELS[LEVELS.length-1]; }
+  function shortName(s){ var L=levelOf(s); return L.major+(L.major==="凡人"?"":(" · "+L.sub)); }
+  function pctOf(s){
+    for(var i=0;i<PCT.length-1;i++){ var a=PCT[i],b=PCT[i+1]; if(s>=a[0]&&s<=b[0]){ var t=(s-a[0])/(b[0]-a[0]); return a[1]+t*(b[1]-a[1]); } }
+    return PCT[PCT.length-1][1];
+  }
+  function readVals(){ var o={}; DIMS.forEach(function(d){ o[d.key]=parseFloat(document.getElementById("mc-"+d.key).value); }); return o; }
+  function scoreOf(v){ var s=0; DIMS.forEach(function(d){ s+=v[d.key]*d.w; }); return s; }
+
+  /* ===== 纯 Canvas 手绘八维雷达图（不依赖 echarts，自带，约 3KB） ===== */
+  var radarGeom=null, radarVals=null;
+  var RADAR_TIERS=["凡人","炼气","筑基","金丹","元婴","化神"];
+  function drawRadar(el,v){
+    var dpr=window.devicePixelRatio||1;
+    var w=el.clientWidth, h=el.clientHeight;
+    if(!w||!h) return;
+    var canvas=el.querySelector("canvas");
+    if(!canvas){
+      canvas=document.createElement("canvas");
+      canvas.style.width="100%"; canvas.style.height="100%";
+      el.appendChild(canvas);
+      canvas.addEventListener("mousemove",function(ev){
+        var tip=el.querySelector(".mc-tip");
+        if(!radarGeom||!radarVals){ tip.style.display="none"; return; }
+        var rect=canvas.getBoundingClientRect(), mx=ev.clientX-rect.left, my=ev.clientY-rect.top, hit=-1, best=18;
+        for(var i=0;i<radarGeom.pts.length;i++){
+          var dx=mx-radarGeom.pts[i][0], dy=my-radarGeom.pts[i][1], d=Math.sqrt(dx*dx+dy*dy);
+          if(d<best){ best=d; hit=i; }
+        }
+        if(hit>=0){
+          var d=DIMS[hit], val=radarVals[d.key];
+          tip.innerHTML=d.name+" · "+shortName(val)+"（"+val.toFixed(1)+"）";
+          tip.style.display="block";
+          tip.style.left=(radarGeom.pts[hit][0]+12)+"px";
+          tip.style.top=(radarGeom.pts[hit][1]-12)+"px";
+        } else tip.style.display="none";
+      });
+      canvas.addEventListener("mouseleave",function(){ el.querySelector(".mc-tip").style.display="none"; });
+    }
+    if(!el.querySelector(".mc-tip")){
+      var tip0=document.createElement("div"); tip0.className="mc-tip"; el.appendChild(tip0);
+    }
+    canvas.width=Math.round(w*dpr); canvas.height=Math.round(h*dpr);
+    var ctx=canvas.getContext("2d");
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.clearRect(0,0,w,h);
+
+    var n=DIMS.length, cx=w/2, cy=h/2+2, labelPad=48;
+    var R=Math.min(w,h)/2-labelPad;
+    var ang=function(i){ return -Math.PI/2+i*2*Math.PI/n; };
+    var pt=function(i,r){ return [cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))]; };
+
+    /* 五层网格 */
+    for(var layer=1;layer<=5;layer++){
+      var rr=R*layer/5;
+      ctx.beginPath();
+      for(var i=0;i<=n;i++){ var p=pt(i%n,rr); if(i===0)ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]); }
+      ctx.fillStyle=layer%2?"rgba(255,255,255,.015)":"rgba(255,255,255,.045)";
+      ctx.fill();
+      ctx.strokeStyle="rgba(233,228,216,.14)"; ctx.lineWidth=1; ctx.stroke();
+    }
+    /* 轴线 */
+    for(var i=0;i<n;i++){ var p=pt(i,R); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(p[0],p[1]); ctx.strokeStyle="rgba(233,228,216,.14)"; ctx.stroke(); }
+    /* 境界刻度（沿顶部轴） */
+    ctx.textAlign="left"; ctx.textBaseline="middle"; ctx.font="10px sans-serif";
+    for(var layer=1;layer<=5;layer++){ ctx.fillStyle="rgba(233,228,216,.42)"; ctx.fillText(RADAR_TIERS[layer],cx+4,cy-R*layer/5); }
+    /* 维度标签 */
+    ctx.font="12px sans-serif";
+    for(var i=0;i<n;i++){
+      var p=pt(i,R+24), cos=Math.cos(ang(i));
+      if(Math.abs(cos)<0.15)ctx.textAlign="center"; else if(cos>0)ctx.textAlign="left"; else ctx.textAlign="right";
+      ctx.fillStyle="#a89f8b"; ctx.fillText(DIMS[i].name,p[0],p[1]);
+    }
+    /* 数据多边形 */
+    var pts=[];
+    for(var i=0;i<n;i++){
+      var val=Math.max(0,Math.min(5,v[DIMS[i].key]));
+      pts[i]=pt(i,R*val/5);
+    }
+    ctx.beginPath();
+    for(var i=0;i<=n;i++){
+      var p=pts[i%n];
+      if(i===0)ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]);
+    }
+    ctx.closePath();
+    ctx.fillStyle="rgba(212,175,106,.26)"; ctx.fill();
+    ctx.strokeStyle="#d4af6a"; ctx.lineWidth=2; ctx.stroke();
+    for(var i=0;i<n;i++){
+      ctx.beginPath(); ctx.arc(pts[i][0],pts[i][1],3.2,0,2*Math.PI);
+      ctx.fillStyle="#f0d69a"; ctx.fill();
+    }
+    radarGeom={cx:cx,cy:cy,R:R,pts:pts};
+  }
+  function renderRadar(v){
+    var el=document.getElementById("mc-radar");
+    if(!el||el.offsetWidth===0) return;   /* 视图隐藏，等进入时再渲染 */
+    radarVals=v;
+    drawRadar(el,v);
+  }
+
+  function render(){
+    var v=readVals(), s=scoreOf(v), L=levelOf(s), pct=pctOf(s);
+    var big=document.getElementById("mc-big");
+    big.textContent=L.major; big.style.color=L.c;
+    document.getElementById("mc-sub").textContent=L.sub+" · "+VERDICT[L.mi];
+    document.getElementById("mc-pct-num").textContent=Math.round(pct);
+    document.getElementById("mc-bar-fill").style.width=pct+"%";
+    var arr=DIMS.map(function(d){ return {name:d.name,val:v[d.key]}; }).sort(function(a,b){ return b.val-a.val; });
+    var hi=arr[0], lo=arr[arr.length-1], cmt=document.getElementById("mc-comment");
+    if(hi.val-lo.val<0.5){
+      cmt.innerHTML="<p>八维均衡，道基扎实，无明显短板——这往往是走得最远的那一类修法。</p>";
+    }else{
+      cmt.innerHTML="<p>你的<b class='mc-hl'>"+hi.name+"</b>已至<b class='mc-hl'>"+shortName(hi.val)+"</b>，"+
+        "而<b class='mc-hl'>"+lo.name+"</b>尚在<b class='mc-hl'>"+shortName(lo.val)+"</b>。长板可恃，短板也别忘了补。</p>";
+    }
+    renderRadar(v);
+  }
+
+  /* 默认值（HTML 中带 selected 的项），用于重置 */
+  var defaults={};
+  DIMS.forEach(function(d){
+    var el=document.getElementById("mc-"+d.key), op=el.querySelector("option[selected]");
+    defaults[d.key]=op?op.value:el.value;
+    el.addEventListener("change",render);
+  });
+  document.getElementById("mc-reset").addEventListener("click",function(){
+    DIMS.forEach(function(d){ document.getElementById("mc-"+d.key).value=defaults[d.key]; });
+    render();
+  });
+  /* 进入本视图时：若雷达尚未初始化（隐藏时跳过了），重绘并 resize */
+  window.addEventListener("hashchange",function(){
+    if((location.hash||"").indexOf("#v-mortal")===0){ setTimeout(render,60); }
+  });
+  /* 窗口尺寸变化（拖窗 / 旋转 / 开发者工具）重绘雷达，防抖 */
+  var rzTimer=null;
+  window.addEventListener("resize",function(){
+    if(rzTimer)clearTimeout(rzTimer);
+    rzTimer=setTimeout(function(){
+      if((location.hash||"").indexOf("#v-mortal")===0) render();
+    },150);
+  });
+  render();
+})();
 </script>
 <script src="javascripts/cultivation-chart.js"></script>
 <script>
