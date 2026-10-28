@@ -912,8 +912,8 @@ footer .note{margin-top:6px}
 #v-map canvas#cv{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab}
 #v-map #ui{position:absolute;inset:0;pointer-events:none;z-index:10}
 #v-map #top{top:50px;z-index:30}
-#v-map #progress{top:108px;z-index:22}
-#v-map #explore{top:134px;z-index:20}
+#v-map #progress{top:170px;z-index:22}
+#v-map #explore{top:200px;z-index:20}
 #v-map #detail,#v-map #index{top:180px;pointer-events:none;z-index:25}
 #v-map #detail.show,#v-map #index.show{pointer-events:auto}
 /* ===== 舆图原图：以原图（画地图的小七）作底，标注为绝对定位 DOM，独立于三界巡游的相机 ===== */
@@ -1019,14 +1019,24 @@ footer .note{margin-top:6px}
 #v-map #cover .cv-title{font-size:clamp(38px,6.4vw,68px)}
 @media(max-width:760px){
   #v-map #top{top:52px}
-  #v-map #progress{top:104px}
-  #v-map #explore{top:108px}
+  #v-map #progress{top:170px}
+  #v-map #explore{top:200px}
   #v-map #detail,#v-map #index{top:auto}
 }
 /* 地图视图沉浸：顶栏悬浮透明、地图延伸到屏幕顶部，不形成方形边框 */
 body.v-map-on .topnav{position:fixed;top:0;left:0;right:0;z-index:200;
   background:linear-gradient(180deg,rgba(4,6,12,.8),rgba(4,6,12,0));border-bottom:none;box-shadow:none}
 body.v-map-on #v-map .map-stage{height:100vh;min-height:0}
+/* 移动端地图沉浸：顶部导航压回单行（链接横向滚动），避免换行两行把地图顶栏 #top 压住；
+   非地图视图仍保持「换行看全」的既有策略 */
+@media (max-width:760px){
+  body.v-map-on .topnav .wrap{height:48px;flex-wrap:nowrap;padding-top:0;padding-bottom:0;row-gap:0}
+  body.v-map-on .tn-links{flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;flex:1 1 auto;min-width:0}
+  body.v-map-on .tn-brand{display:none}
+  body.v-map-on #v-map #top{top:52px}
+  body.v-map-on #v-map #progress{top:170px}
+  body.v-map-on #v-map #explore{top:200px}
+}
 /* ===== 探索模式缩放控件（与舆图原图的 #tnZoom 同形） ===== */
 #v-map #mapZoom{position:absolute;right:20px;bottom:18px;z-index:26;display:none;flex-direction:column;gap:6px;pointer-events:auto}
 #v-map #mapZoom.on{display:flex}
