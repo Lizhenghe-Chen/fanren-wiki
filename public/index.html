@@ -1070,9 +1070,17 @@ body.v-map-on .navbar{display:none!important}
 .mc-field select:focus-visible{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
 .mc-field select option{background:var(--bg2);color:var(--ink)}
 
+.mc-name{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 14px;margin-top:18px}
+.mc-name label{font-size:12.5px;color:var(--ink);font-weight:600;white-space:nowrap}
+.mc-name label::before{content:"◆ ";color:var(--gold);font-size:10px}
+.mc-name input{flex:1;font:inherit;font-size:13.5px;color:var(--ink);background-color:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:9px 12px;min-width:0}
+.mc-name input::placeholder{color:var(--ink3)}
+.mc-name input:focus-visible{outline:2px solid var(--gold);outline-offset:1px;border-color:var(--gold)}
+
 .mc-result{margin-top:22px;border:1px solid var(--line);border-radius:16px;background:linear-gradient(180deg,rgba(212,175,106,.06),rgba(255,255,255,.015));padding:20px}
 .mc-result-main{display:grid;grid-template-columns:minmax(260px,340px) minmax(0,1fr);gap:24px;align-items:center}
 .mc-verdict-label{font-size:12px;color:var(--ink3);letter-spacing:.1em}
+.mc-verdict-label .mc-name-hl{color:var(--gold);font-weight:700;font-size:15px;letter-spacing:.03em;margin-right:2px}
 .mc-verdict-big{font-family:var(--font-serif);font-weight:900;font-size:clamp(28px,4vw,40px);line-height:1.2;margin:6px 0 2px}
 .mc-verdict-sub{font-size:13.5px;color:var(--ink2);margin-bottom:10px}
 .mc-pct{font-size:13px;color:var(--ink2);margin-bottom:10px}
@@ -1090,6 +1098,14 @@ body.v-map-on .navbar{display:none!important}
 .mc-hint{font-size:12px;color:var(--ink3)}
 .mc-src{margin-top:12px;border-left:3px solid var(--gold);padding:4px 0 4px 14px}
 .mc-src p{font-size:12.5px;color:var(--ink2);line-height:1.8;margin-bottom:5px}
+/* 立场告示（叠甲） */
+.mc-stance{margin-top:22px;border:1px solid rgba(212,175,106,.35);border-radius:14px;background:linear-gradient(180deg,rgba(212,175,106,.07),rgba(255,255,255,.015));padding:16px 18px}
+.mc-stance-title{font-family:var(--font-serif);font-size:15px;color:var(--gold);font-weight:700;letter-spacing:.04em;margin-bottom:8px}
+.mc-stance-list{list-style:none;margin:0;padding:0}
+.mc-stance-list li{position:relative;padding:6px 0 6px 18px;font-size:13px;color:var(--ink2);line-height:1.75;border-bottom:1px dashed var(--line)}
+.mc-stance-list li:last-child{border-bottom:none}
+.mc-stance-list li::before{content:"◆";position:absolute;left:0;top:8px;color:var(--gold);font-size:9px}
+.mc-stance-list li b{color:var(--ink);font-weight:600}
 @media(max-width:760px){
   .mc-result-main{grid-template-columns:1fr;gap:14px}
   .mc-radar{height:300px}
@@ -1108,6 +1124,8 @@ body.v-map-on .navbar{display:none!important}
 .mf-list li:last-child{border-bottom:none}
 .mf-list b{font-size:13.5px;color:var(--ink);font-weight:600}
 .mf-list i{font-style:normal;font-size:12px;color:var(--ink2);line-height:1.5}
+.mf-group{font-size:11px;color:var(--gold);letter-spacing:.08em;margin:12px 0 1px;font-weight:600}
+.mf-group:first-of-type{margin-top:3px}
 
 </style>
 </head>
@@ -1701,69 +1719,27 @@ body.v-map-on .navbar{display:none!important}
       <span class="kicker">以人界五境映照现实社会 · 你在凡间是哪一境？</span>
     </div>
     <div class="stats">
-      <div class="stat"><b>8</b><span>衡量维度</span></div>
+      <div class="stat"><b>9</b><span>衡量维度</span></div>
       <div class="stat"><b>5</b><span>人界大境</span></div>
     </div>
   </div>
   <div class="wrap">
-    <p class="ph-lead">修仙看灵根、功法、资源、机缘、寿元；现实看学历、职业、职位、财富、人脉、健康。下面先把人界五境与现实社会做个对照，再用换算器把你此刻的综合"修为"算出来。</p>
+    <p class="ph-lead">修仙看灵根、功法、资源、机缘、寿元；现实看学历、职业、职位、财富、人脉、健康。职业无贵贱，境界看你在这个领域做到什么程度；财富还分"自己挣的"和"家里给的"两笔账。在下面的换算器里如实选择，就能算出你此刻的凡间"修为"，还能看看各境界都有哪些现实中的人物。</p>
   </div>
 </header>
 
-<!-- ===== 人界五境 × 现实社会 对照 ===== -->
+<!-- ===== 立场告示（叠甲） ===== -->
 <section class="wrap mortal-sec">
-  <div class="sec-title">人界五境 × 现实社会</div>
-  <div class="sec-desc">境界越高，越能调动资源、影响规则、抵御风险，人数呈金字塔递减。下表为帮助理解结构的近似对应，非精确统计。</div>
-  <div class="mc-table-wrap">
-    <table class="mc-table">
-      <thead>
-        <tr>
-          <th>人界境界</th><th>现实定位</th><th>能力 / 职位</th><th>财富量级</th><th>圈层人脉</th><th>人群位置</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><b class="mc-r mc-r1">炼气</b><span class="mc-life">寿约百年</span></td>
-          <td>入门谋生</td>
-          <td>基层员工、学徒，按指令执行，可替代性强</td>
-          <td>月入数千至一万余，存款六位数以内</td>
-          <td>亲友、同阶同事</td>
-          <td>中下游 · 约 65%</td>
-        </tr>
-        <tr>
-          <td><b class="mc-r mc-r2">筑基</b><span class="mc-life">寿约二百年</span></td>
-          <td>站稳脚跟</td>
-          <td>业务骨干、资深工程师、小团队负责人</td>
-          <td>年入 20–50 万，多数已置业</td>
-          <td>行业内稳定人脉</td>
-          <td>中上游 · 约 15%</td>
-        </tr>
-        <tr>
-          <td><b class="mc-r mc-r3">金丹</b><span class="mc-life">寿约五百岁</span></td>
-          <td>中流砥柱</td>
-          <td>技术专家、部门总监、中小企业主、教授</td>
-          <td>净资产 500 万至千万级</td>
-          <td>跨行业、掌握信息差</td>
-          <td>上游 · 约 4%</td>
-        </tr>
-        <tr>
-          <td><b class="mc-r mc-r4">元婴</b><span class="mc-life">寿约千岁</span></td>
-          <td>一方大佬</td>
-          <td>企业高管、成功企业家、学科带头人、厅级</td>
-          <td>千万至数亿，被动收入已得自由</td>
-          <td>政商学高层往来</td>
-          <td>顶层 · 约 0.9%</td>
-        </tr>
-        <tr>
-          <td><b class="mc-r mc-r5">化神</b><span class="mc-life">人界上限</span></td>
-          <td>规则制定</td>
-          <td>行业奠基人、院士、顶级企业家、省部级</td>
-          <td>数十亿以上，财富已成数字</td>
-          <td>顶层圈子，可影响规则</td>
-          <td>顶端 · 约 0.1%</td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="mc-stance">
+    <div class="mc-stance-title">先说立场 · 请务必一阅</div>
+    <ul class="mc-stance-list">
+      <li><b>纯属娱乐：</b>本页是《凡人修仙传》的同人趣味创作，境界换算为虚构类比，不科学、不严谨，不构成任何现实评价、排名、诊断或建议。</li>
+      <li><b>职业无贵贱、人格皆平等：</b>分值只粗略反映"入行门槛、资源稀缺度"的统计差异，绝不代表职业或人的高低尊卑；靠双手吃饭的每一份工作都值得尊重。</li>
+      <li><b>人物仅为示意：</b>现实人物举例只为帮助理解，不代表本项目立场，不构成对任何在世人物的褒贬或排名；归类难免主观、疏漏。</li>
+      <li><b>数据为粗略参考：</b>财富、收入、人群比例引用公开统计并做了大幅简化与主观映射，并不精确，请勿用一个结果定义自己或他人。</li>
+      <li><b>不宣扬宿命与阶层固化：</b>所有维度都是"此刻的快照"，随时可改、可升；出身只作小幅助力，真正的上限握在你自己手里。</li>
+      <li><b>请勿标签化：</b>不要用结果贬低自己，更不要据此歧视任何职业、学历、出身的人——仙路漫漫，各有各的机缘。</li>
+    </ul>
   </div>
 </section>
 
@@ -1774,46 +1750,132 @@ body.v-map-on .navbar{display:none!important}
   <div class="mf-grid">
     <div class="mf-card mf-5">
       <div class="mf-head"><b class="mc-r mc-r5">化神</b><span>开宗立派 · 写进教科书</span></div>
+      <div class="mf-group">科学巨匠（已故）</div>
       <ul class="mf-list">
-        <li><b>袁隆平</b><i>杂交水稻之父，共和国勋章（已故）</i></li>
-        <li><b>钱学森</b><i>两弹一星元勋，中国航天奠基人（已故）</i></li>
-        <li><b>爱因斯坦 / 牛顿</b><i>奠定科学范式的历史级人物</i></li>
-        <li><b>任正非</b><i>华为创始人，全球通信龙头</i></li>
+        <li><b>牛顿 / 爱因斯坦</b><i>经典力学与相对论，现代科学两大支柱</i></li>
+        <li><b>达尔文</b><i>进化论，重塑人类对生命的认知</i></li>
+        <li><b>居里夫人</b><i>放射性研究，两度诺贝尔奖</i></li>
+        <li><b>袁隆平</b><i>杂交水稻之父，共和国勋章</i></li>
+        <li><b>钱学森</b><i>两弹一星元勋，中国航天奠基人</i></li>
+        <li><b>杨振宁</b><i>规范场论，诺贝尔物理学奖（2025 年逝世）</i></li>
+      </ul>
+      <div class="mf-group">计算机 · 互联网源头（已故）</div>
+      <ul class="mf-list">
+        <li><b>图灵</b><i>计算机科学之父、人工智能之父，图灵奖以他命名</i></li>
+        <li><b>冯·诺依曼</b><i>现代计算机架构（冯·诺依曼结构）、博弈论之父</i></li>
+      </ul>
+      <div class="mf-group">产业巨擘</div>
+      <ul class="mf-list">
+        <li><b>乔布斯</b><i>iPhone、个人电脑，重新定义消费电子（已故）</i></li>
         <li><b>马斯克</b><i>特斯拉、SpaceX，全球级企业家</i></li>
+        <li><b>比尔·盖茨</b><i>Windows，让个人电脑走进千家万户</i></li>
+        <li><b>任正非</b><i>华为，全球通信设备龙头</i></li>
+      </ul>
+      <div class="mf-group">思想源头（历史）</div>
+      <ul class="mf-list">
+        <li><b>孔子 / 老子</b><i>东方文明的思想源头</i></li>
       </ul>
     </div>
     <div class="mf-card mf-4">
       <div class="mf-head"><b class="mc-r mc-r4">元婴</b><span>一方权威 · 领域内的巅峰</span></div>
+      <div class="mf-group">企业家（中国 · 互联网）</div>
+      <ul class="mf-list">
+        <li><b>张一鸣 / 马化腾</b><i>字节跳动、腾讯，互联网巨头</i></li>
+        <li><b>马云 / 雷军</b><i>阿里、小米，行业开创者</i></li>
+        <li><b>丁磊 / 李彦宏</b><i>网易、百度，互联网老牌</i></li>
+        <li><b>刘强东 / 黄峥</b><i>京东、拼多多，电商双雄</i></li>
+        <li><b>王兴 / 程维</b><i>美团、滴滴，本地生活与出行</i></li>
+      </ul>
+      <div class="mf-group">企业家（中国 · 实业）</div>
+      <ul class="mf-list">
+        <li><b>钟睒睒 / 王传福</b><i>农夫山泉、比亚迪，各自行业龙头</i></li>
+        <li><b>曾毓群 / 李书福</b><i>宁德时代、吉利，新能源制造</i></li>
+        <li><b>李嘉诚 / 董明珠</b><i>长和、格力，商界常青树</i></li>
+      </ul>
+      <div class="mf-group">企业家（全球）</div>
+      <ul class="mf-list">
+        <li><b>黄仁勋</b><i>英伟达，AI 算力时代的奠基者</i></li>
+        <li><b>拉里·佩奇 / 谢尔盖·布林</b><i>谷歌，搜索、安卓与 AI</i></li>
+        <li><b>扎克伯格 / 贝索斯</b><i>Meta、亚马逊，平台帝国</i></li>
+        <li><b>山姆·奥特曼</b><i>OpenAI，ChatGPT 引爆 AI 应用</i></li>
+        <li><b>蒂姆·库克 / 纳德拉</b><i>苹果、微软，职业经理人标杆</i></li>
+        <li><b>拉里·埃里森</b><i>甲骨文，数据库与企业软件巨头</i></li>
+      </ul>
+      <div class="mf-group">学术</div>
       <ul class="mf-list">
         <li><b>两院院士</b><i>全国约 1900 人，学科带头人</i></li>
-        <li><b>顶级企业家</b><i>大型上市公司创始人</i></li>
-        <li><b>姚明 / 郎平</b><i>体坛殿堂级人物</i></li>
-        <li><b>国家级艺术大师</b><i>表演艺术领域的标杆</i></li>
+        <li><b>屠呦呦</b><i>青蒿素，诺贝尔生理学或医学奖</i></li>
+        <li><b>哈萨比斯</b><i>DeepMind，AlphaGo / AlphaFold，诺贝尔化学奖</i></li>
+        <li><b>李飞飞</b><i>ImageNet，现代 AI 先驱、三院院士</i></li>
+      </ul>
+      <div class="mf-group">文体 · 文学</div>
+      <ul class="mf-list">
+        <li><b>梅西 / C罗</b><i>足坛殿堂，一代人的 GOAT</i></li>
+        <li><b>姚明 / 郎平</b><i>中国体坛的标杆</i></li>
+        <li><b>成龙 / 张艺谋</b><i>电影领域的世界级名片</i></li>
+        <li><b>金庸 / 莫言</b><i>武侠宗师、诺贝尔文学奖</i></li>
+      </ul>
+      <div class="mf-group">新兴 · 文化消费</div>
+      <ul class="mf-list">
+        <li><b>头部主播 / 顶流</b><i>李佳琦等，年入可达十亿级</i></li>
+        <li><b>蔡浩宇 / 王宁</b><i>米哈游（原神）、泡泡玛特（Labubu）</i></li>
       </ul>
     </div>
     <div class="mf-card mf-3">
       <div class="mf-head"><b class="mc-r mc-r3">金丹</b><span>专业中坚 · 独当一面</span></div>
+      <div class="mf-group">知识 · 科普</div>
       <ul class="mf-list">
         <li><b>罗翔</b><i>中国政法大学教授，普法名师</i></li>
         <li><b>张雪峰</b><i>升学规划名师，创业者</i></li>
-        <li><b>大学教授 / 主任医师</b><i>高级职称专业岗</i></li>
-        <li><b>大厂总监 / 中小企业主</b><i>中层管理者</i></li>
+        <li><b>李永乐</b><i>科普名师，名校教师</i></li>
+        <li><b>吴恩达</b><i>AI 教育名师，谷歌大脑、百度前首席科学家</i></li>
+        <li><b>头部知识 / 财经博主</b><i>百万粉丝级创作者</i></li>
+      </ul>
+      <div class="mf-group">学术 · 专业</div>
+      <ul class="mf-list">
+        <li><b>大学教授 / 主任医师</b><i>高级职称，学科骨干</i></li>
+        <li><b>资深律师 / 注册会计师</b><i>专业服务领域的资深者</i></li>
+      </ul>
+      <div class="mf-group">管理 · 经营</div>
+      <ul class="mf-list">
+        <li><b>大厂总监 / 资深架构师</b><i>中层管理者、技术权威</i></li>
+        <li><b>独角兽创始人 / 知名产品经理</b><i>做出过爆款产品或高速成长公司</i></li>
+        <li><b>知名投资人 / VC 合伙人</b><i>主导过成功的投资与并购</i></li>
+        <li><b>中小企业主</b><i>经营一家稳定盈利的公司</i></li>
       </ul>
     </div>
     <div class="mf-card mf-2">
       <div class="mf-head"><b class="mc-r mc-r2">筑基</b><span>站稳脚跟 · 业务骨干</span></div>
+      <div class="mf-group">技术 · 管理</div>
       <ul class="mf-list">
-        <li><b>资深工程师</b><i>能独立负责一个模块</i></li>
-        <li><b>小团队负责人</b><i>带几个人推进项目</i></li>
+        <li><b>资深工程师 / 高级程序员</b><i>能独立负责一个模块</i></li>
+        <li><b>小团队负责人 / 组长</b><i>带几个人推进项目</i></li>
+        <li><b>中级职称 / 科级</b><i>体制内的中坚力量</i></li>
+      </ul>
+      <div class="mf-group">商业 · 运营</div>
+      <ul class="mf-list">
+        <li><b>电商店长 / 直播运营</b><i>带店、带账号，有稳定业绩</i></li>
+        <li><b>外卖站长 / 车队队长</b><i>管理一线骑手、司机与调度</i></li>
+      </ul>
+      <div class="mf-group">地方 · 手艺</div>
+      <ul class="mf-list">
         <li><b>县城名医 / 重点中学骨干</b><i>本地专业权威</i></li>
+        <li><b>成熟手艺人 / 高级技师</b><i>一门手艺做到精通</i></li>
+        <li><b>腰部博主 / 稳定个体户</b><i>有稳定客源与收入</i></li>
       </ul>
     </div>
     <div class="mf-card mf-1">
       <div class="mf-head"><b class="mc-r mc-r1">炼气</b><span>入门谋生 · 大多数人</span></div>
+      <div class="mf-group">初入职场</div>
       <ul class="mf-list">
         <li><b>应届毕业生</b><i>初入职场，正在学习</i></li>
         <li><b>普通职员 / 学徒</b><i>按指令完成工作</i></li>
-        <li><b>外卖骑手 / 流水线工人</b><i>靠一份体力活谋生</i></li>
+      </ul>
+      <div class="mf-group">体力 · 服务</div>
+      <ul class="mf-list">
+        <li><b>外卖骑手 / 快递员</b><i>靠一份体力活谋生</i></li>
+        <li><b>流水线工人 / 临时工</b><i>重复劳动，可替代性强</i></li>
+        <li><b>普通服务岗 / 小店员</b><i>餐饮、零售、基础服务</i></li>
       </ul>
     </div>
   </div>
@@ -1822,7 +1884,12 @@ body.v-map-on .navbar{display:none!important}
 <!-- ===== 境界换算器 ===== -->
 <section class="wrap mortal-sec" id="mortal-calc">
   <div class="sec-title">境界换算器</div>
-  <div class="sec-desc">在下列八项中选择最符合你当前情况的一项，结果会实时更新；财富可按家庭口径填写。</div>
+  <div class="sec-desc">在下列九项中选择最符合你当前情况的一项，结果会实时更新；财富分"自己挣的"与"父母给的"两笔账。</div>
+
+  <div class="mc-name">
+    <label for="mc-name-input">道号 / 昵称（选填）</label>
+    <input type="text" id="mc-name-input" maxlength="12" placeholder="留下名字，结果更专属，也方便截图" autocomplete="off">
+  </div>
 
   <div class="mc-grid">
     <div class="mc-field">
@@ -1841,43 +1908,76 @@ body.v-map-on .navbar{display:none!important}
     <div class="mc-field">
       <label for="mc-job">职业领域（功法）</label>
       <select id="mc-job" data-key="job">
-        <option value="0.3">在校 / 待业 / 退休</option>
-        <option value="0.7">体力 / 流水线 / 临时工</option>
-        <option value="1.0" selected>普通服务 / 销售 / 文员</option>
-        <option value="1.5">技术工人 / 技师</option>
-        <option value="2.0">专业技术岗（工程师 / 教师 / 医生 / 公务员）</option>
-        <option value="2.8">资深专家 / 中层 / 中小企业主</option>
-        <option value="3.8">大企业高管 / 成功企业家</option>
-        <option value="4.8">行业奠基人 / 国民级人物</option>
+        <optgroup label="基础服务 · 体力">
+          <option value="0.4">在校 / 待业 / 退休</option>
+          <option value="0.9">务农 / 农林牧渔</option>
+          <option value="1.0" selected>外卖 / 快递 / 配送</option>
+          <option value="1.0">餐饮 / 零售 / 生活服务</option>
+          <option value="0.9">流水线 / 工厂普工 / 搬运</option>
+          <option value="1.3">建筑 / 装修 / 技术工人</option>
+          <option value="1.1">司机 / 物流 / 仓储</option>
+        </optgroup>
+        <optgroup label="办公 · 商业">
+          <option value="1.3">销售 / 中介 / 商务</option>
+          <option value="1.3">行政 / 文员 / 人事 / 财务</option>
+          <option value="1.8">互联网 / 软件开发</option>
+          <option value="1.7">电商 / 直播 / 带货</option>
+          <option value="1.5">自由职业 / 个体工商户</option>
+        </optgroup>
+        <optgroup label="专业 · 体制">
+          <option value="2.0">专业技术（工程师 / 设计师 / 分析师）</option>
+          <option value="1.9">教师 / 培训 / 科研</option>
+          <option value="1.9">医疗 / 医护 / 健康</option>
+          <option value="1.9">金融 / 银行 / 投资</option>
+          <option value="1.8">公务员 / 事业编 / 军警 / 消防</option>
+          <option value="1.7">文娱 / 自媒体 / 内容创作</option>
+        </optgroup>
       </select>
     </div>
 
     <div class="mc-field">
       <label for="mc-pos">职位 / 职级（境界）</label>
       <select id="mc-pos" data-key="pos">
-        <option value="0.4">无职级 / 基层办事员</option>
-        <option value="1.4" selected>业务骨干 / 初级职称 / 科员</option>
-        <option value="2.0">资深骨干 / 中级职称 / 科级</option>
-        <option value="2.7">团队负责人 / 副高职称 / 处级</option>
-        <option value="3.4">部门总监 / 正高职称 / 厅级</option>
-        <option value="4.2">核心高管 / 学科带头人 / 省部级</option>
-        <option value="4.9">单位一把手 / 院士 / 国家级</option>
+        <option value="0.4">刚入行 / 学徒 / 实习</option>
+        <option value="1.2" selected>能独立干活 / 熟练工</option>
+        <option value="1.8">业务骨干 / 带新人（初级职称）</option>
+        <option value="2.4">资深 / 组长（中级职称 / 科级）</option>
+        <option value="3.0">团队负责人 / 主管（副高 / 处级）</option>
+        <option value="3.6">经理 / 总监（正高 / 厅级）</option>
+        <option value="4.3">高层 / 企业主 / 合伙人（省部级）</option>
+        <option value="4.9">行业标杆 / 院士 / 开创者</option>
       </select>
     </div>
 
     <div class="mc-field">
-      <label for="mc-wealth">家庭净资产（资源）</label>
-      <select id="mc-wealth" data-key="wealth">
+      <label for="mc-pwealth">个人净资产（己力 · 资源）</label>
+      <select id="mc-pwealth" data-key="pwealth">
         <option value="0.1">资不抵债</option>
-        <option value="0.6">10 万以下</option>
-        <option value="1.0" selected>10–50 万</option>
-        <option value="1.5">50–100 万</option>
-        <option value="2.0">100–300 万</option>
+        <option value="0.5">无积蓄（学生 / 刚工作）</option>
+        <option value="0.8" selected>10 万以下</option>
+        <option value="1.4">10–50 万</option>
+        <option value="1.8">50–100 万</option>
+        <option value="2.2">100–300 万</option>
         <option value="2.5">300–500 万</option>
-        <option value="3.0">500–1000 万</option>
-        <option value="3.8">1000 万 – 1 亿</option>
-        <option value="4.5">1 亿 – 50 亿</option>
-        <option value="5.0">50 亿以上</option>
+        <option value="2.8">500–1000 万</option>
+        <option value="3.2">1000–3000 万</option>
+        <option value="3.6">3000 万 – 1 亿</option>
+        <option value="4.0">1 – 3 亿</option>
+        <option value="4.5">3 – 10 亿</option>
+        <option value="4.8">10 亿以上</option>
+      </select>
+    </div>
+
+    <div class="mc-field">
+      <label for="mc-family">家庭出身（家底 · 助力）</label>
+      <select id="mc-family" data-key="family">
+        <option value="0.6">普通工薪 / 务农，需自立</option>
+        <option value="1.1" selected>小康，能供读书、略有积蓄</option>
+        <option value="1.7">城镇中产，有房有产，能托底</option>
+        <option value="2.4">家境殷实，可支援首付 / 留学</option>
+        <option value="3.1">富裕家庭（数百万至千万），资源丰富</option>
+        <option value="3.9">高净值（千万级以上），平台可继承</option>
+        <option value="4.7">豪门 / 家族企业（亿级），可继承事业</option>
       </select>
     </div>
 
@@ -1890,21 +1990,23 @@ body.v-map-on .navbar{display:none!important}
         <option value="1.5">10–20 万</option>
         <option value="2.1">20–50 万</option>
         <option value="2.7">50–100 万</option>
-        <option value="3.3">100–300 万</option>
-        <option value="3.9">300–1000 万</option>
-        <option value="4.5">1000 万以上</option>
+        <option value="3.2">100–300 万</option>
+        <option value="3.6">300–500 万</option>
+        <option value="4.0">500–1000 万</option>
+        <option value="4.4">1000–3000 万</option>
+        <option value="4.8">3000 万以上</option>
       </select>
     </div>
 
     <div class="mc-field">
       <label for="mc-net">人脉 / 圈层（道统）</label>
       <select id="mc-net" data-key="net">
-        <option value="0.6">基本只有亲友</option>
-        <option value="1.2" selected>同事 / 同行熟人</option>
-        <option value="1.9">行业内稳定人脉</option>
-        <option value="2.6">跨行业、能调动资源</option>
-        <option value="3.5">政商学高层往来</option>
-        <option value="4.5">顶层圈子、可影响规则</option>
+        <option value="0.6">基本只有亲友，遇事靠家人</option>
+        <option value="1.2" selected>同事 / 同行熟人，能互相帮衬</option>
+        <option value="1.9">行业内稳定人脉，办事找得到人</option>
+        <option value="2.6">跨行业，能约到科长 / 处长级办事</option>
+        <option value="3.5">政商学高层，能约到厅局级、企业高管</option>
+        <option value="4.5">顶层圈子，与省部级、行业大佬平起平坐</option>
       </select>
     </div>
 
@@ -1922,12 +2024,12 @@ body.v-map-on .navbar{display:none!important}
     <div class="mc-field">
       <label for="mc-fame">影响力 / 成就（道果）</label>
       <select id="mc-fame" data-key="fame">
-        <option value="0.5">暂无</option>
-        <option value="1.4" selected>单位内小有名气</option>
-        <option value="2.3">行业内有口碑 / 获奖</option>
-        <option value="3.2">省级或全行业认可</option>
-        <option value="4.2">国家级 / 全国知名</option>
-        <option value="4.9">开宗立派、写进教科书</option>
+        <option value="0.5">暂无，影响范围就是身边人</option>
+        <option value="1.4" selected>单位 / 圈子内小有名气</option>
+        <option value="2.3">行业内有口碑、拿过奖</option>
+        <option value="3.2">省级 / 全行业认可，媒体报道过</option>
+        <option value="4.2">国家级 / 全国知名，大众脸熟</option>
+        <option value="4.9">开宗立派，写进教科书 / 行业史</option>
       </select>
     </div>
   </div>
@@ -1935,13 +2037,13 @@ body.v-map-on .navbar{display:none!important}
   <div class="mc-result">
     <div class="mc-result-main">
       <div class="mc-verdict">
-        <div class="mc-verdict-label">你当前的凡间修为</div>
+        <div class="mc-verdict-label" id="mc-label">你当前的凡间修为</div>
         <div class="mc-verdict-big" id="mc-big">炼气期</div>
         <div class="mc-verdict-sub" id="mc-sub"></div>
         <div class="mc-pct">已超越约 <b id="mc-pct-num">0</b>% 的人</div>
         <div class="mc-bar"><span id="mc-bar-fill"></span></div>
       </div>
-      <div class="mc-radar" id="mc-radar" aria-label="八维度境界雷达图"></div>
+      <div class="mc-radar" id="mc-radar" aria-label="九维度境界雷达图"></div>
     </div>
     <div class="mc-comment" id="mc-comment"></div>
     <div class="mc-actions">
@@ -1951,14 +2053,17 @@ body.v-map-on .navbar{display:none!important}
   </div>
 </section>
 
-<!-- ===== 口径与数据来源 ===== -->
+<!-- ===== 口径、立场与数据来源 ===== -->
 <section class="wrap mortal-sec">
-  <div class="sec-title">口径与数据来源</div>
+  <div class="sec-title">口径、立场与数据来源</div>
   <div class="mc-src">
     <p>· 收入分层参考国家统计局居民收入五等份分组（2025 年高收入组人均可支配收入约 10.4 万元）；中等收入群体按家庭年入 10–50 万口径，规模约 4 亿人。</p>
     <p>· 财富门槛参考胡润财富报告：600 万资产"富裕家庭"约 500 余万户、千万资产"高净值家庭"约 200 万户、亿元资产"超高净值家庭"约 12.6 万户；50 亿以上企业家约 1400 余人。</p>
+    <p>· 财富分两笔账：「个人净资产」按你（含配偶）自己小家庭、自己挣得的口径填写；「家庭出身」专指原生家庭（父母）能调动的资源与平台。前者是自身修为，后者是出身助力、只做小幅加成。</p>
+    <p>· 境界看长板而非样样平均：自身 8 维取最高 3 维做几何平均（对短板敏感），再与整体加权混合——所以偏科的天才（思想家、科学家、企业家）也能凭核心修为走到高境界。</p>
     <p>· 学历线对应学术成长路径（本科→硕士→博士→博士后），职级线对应行政级别（科级 / 处级 / 厅级 / 省部级）与职称（初级 / 中级 / 副高 / 正高）。</p>
-    <p>· 境界寿元引自原著设定（炼气约百年、筑基约二百年、结丹约五百年、元婴约千年）。本换算为趣味类比，权重为主观设定，不构成任何现实评价或建议。</p>
+    <p>· 境界寿元引自原著设定（炼气约百年、筑基约二百年、结丹约五百年、元婴约千年）。</p>
+    <p>· <b>立场与免责：</b>本页为《凡人修仙传》非官方同人趣味创作，与原著作者、出品方及任何被提及的个人、机构无关；所有境界映射、权重、人物归类与百分比均为主观设定，不科学、不精确，不构成排名、评价、诊断或任何建议。列举现实人物仅为帮助理解，不代表本人立场，亦无褒贬之意。相关数据与名称的著作权归各自权利人所有，如有异议请联系。请仅作娱乐，勿据此定义、贬低自己或他人。</p>
   </div>
 </section>
 </div>
@@ -4151,18 +4256,20 @@ function syncTargetToResults(libId, keys){
 </script>
 <script>
 /* ===== 仙凡对照 · 境界换算器（v-mortal）=====
-   八个维度各取一个 0–5 的"境界值"（0 凡人 / 1 炼气 / 2 筑基 / 3 金丹 / 4 元婴 / 5 化神），
-   按权重加权得到综合 S，再映射到境界与"超越百分比"。权重为主观设定，仅供娱乐。 */
+   九个维度各取一个 0–5 的"境界值"（0 凡人 / 1 炼气 / 2 筑基 / 3 金丹 / 4 元婴 / 5 化神）。
+   境界看"长板"而非样样平均：自身 8 维取最高 3 维做几何平均（对短板敏感），再与自身线性加权
+   混合；家庭出身（家底）是"助力"，单独做非对称小幅加成，不直接继承。权重为主观设定，仅供娱乐。 */
 (function(){
   var DIMS=[
-    {key:"edu",    name:"学历",   w:0.10},
-    {key:"job",    name:"职业",   w:0.14},
-    {key:"pos",    name:"职位",   w:0.18},
-    {key:"wealth", name:"净资产", w:0.20},
-    {key:"income", name:"收入",   w:0.12},
-    {key:"net",    name:"人脉",   w:0.12},
-    {key:"health", name:"健康",   w:0.08},
-    {key:"fame",   name:"影响力", w:0.06}
+    {key:"edu",     name:"学历",     w:0.10},
+    {key:"job",     name:"职业",     w:0.10},
+    {key:"pos",     name:"职位",     w:0.19},
+    {key:"pwealth", name:"个人净资产", w:0.16},
+    {key:"family",  name:"家庭出身", w:0},
+    {key:"income",  name:"收入",     w:0.11},
+    {key:"net",     name:"人脉",     w:0.13},
+    {key:"health",  name:"健康",     w:0.09},
+    {key:"fame",    name:"影响力",   w:0.12}
   ];
   /* 小境界表：S 区间 -> 大境/小层/颜色/大境序号 */
   var LEVELS=[
@@ -4206,9 +4313,23 @@ function syncTargetToResults(libId, keys){
     return PCT[PCT.length-1][1];
   }
   function readVals(){ var o={}; DIMS.forEach(function(d){ o[d.key]=parseFloat(document.getElementById("mc-"+d.key).value); }); return o; }
-  function scoreOf(v){ var s=0; DIMS.forEach(function(d){ s+=v[d.key]*d.w; }); return s; }
+  /* 长板主导：自身 8 维（不含家庭出身）线性加权 Ws + 最高 3 维几何平均 Ts，混合；
+     家庭出身只在高于自身时做 12% 的非对称小幅加成（出身好是助力，自身超过出身则不惩罚）。 */
+  function scoreOf(v){
+    var ws=0, selfVals=[];
+    DIMS.forEach(function(d){
+      if(d.key==="family") return;
+      ws+=v[d.key]*d.w;
+      selfVals.push(v[d.key]);
+    });
+    selfVals.sort(function(a,b){ return b-a; });
+    var ts=Math.pow(selfVals[0]*selfVals[1]*selfVals[2],1/3);
+    var ss=ts*0.76+ws*0.24;
+    var fm=v.family;
+    return fm>ss ? ss+(fm-ss)*0.12 : ss;
+  }
 
-  /* ===== 纯 Canvas 手绘八维雷达图（不依赖 echarts，自带，约 3KB） ===== */
+  /* ===== 纯 Canvas 手绘九维雷达图（不依赖 echarts，自带，约 3KB） ===== */
   var radarGeom=null, radarVals=null;
   var RADAR_TIERS=["凡人","炼气","筑基","金丹","元婴","化神"];
   function drawRadar(el,v){
@@ -4299,8 +4420,17 @@ function syncTargetToResults(libId, keys){
     drawRadar(el,v);
   }
 
+  function escHtml(s){ return s.replace(/[&<>"']/g,function(c){ return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]; }); }
+  function setLabel(nick){
+    var lbl=document.getElementById("mc-label");
+    if(nick){ lbl.innerHTML='<span class="mc-name-hl">「'+escHtml(nick)+'」</span>的凡间修为'; }
+    else { lbl.textContent="你当前的凡间修为"; }
+  }
   function render(){
     var v=readVals(), s=scoreOf(v), L=levelOf(s), pct=pctOf(s);
+    var nameInput=document.getElementById("mc-name-input");
+    var nick=nameInput?nameInput.value.trim():"";
+    setLabel(nick);
     var big=document.getElementById("mc-big");
     big.textContent=L.major; big.style.color=L.c;
     document.getElementById("mc-sub").textContent=L.sub+" · "+VERDICT[L.mi];
@@ -4308,12 +4438,23 @@ function syncTargetToResults(libId, keys){
     document.getElementById("mc-bar-fill").style.width=pct+"%";
     var arr=DIMS.map(function(d){ return {name:d.name,val:v[d.key]}; }).sort(function(a,b){ return b.val-a.val; });
     var hi=arr[0], lo=arr[arr.length-1], cmt=document.getElementById("mc-comment");
+    var html="";
     if(hi.val-lo.val<0.5){
-      cmt.innerHTML="<p>八维均衡，道基扎实，无明显短板——这往往是走得最远的那一类修法。</p>";
+      html+="<p>九维均衡，道基扎实，无明显短板——这往往是走得最远的那一类修法。</p>";
     }else{
-      cmt.innerHTML="<p>你的<b class='mc-hl'>"+hi.name+"</b>已至<b class='mc-hl'>"+shortName(hi.val)+"</b>，"+
+      html+="<p>你的<b class='mc-hl'>"+hi.name+"</b>已至<b class='mc-hl'>"+shortName(hi.val)+"</b>，"+
         "而<b class='mc-hl'>"+lo.name+"</b>尚在<b class='mc-hl'>"+shortName(lo.val)+"</b>。长板可恃，短板也别忘了补。</p>";
     }
+    /* 两笔账：家庭出身（家底）vs 个人净资产（己力） */
+    var pw=v.pwealth, fm=v.family;
+    if(fm-pw>=1.2){
+      html+="<p>家底（<b class='mc-hl'>"+shortName(fm)+"</b>）远厚于你自己挣下的（<b class='mc-hl'>"+shortName(pw)+"</b>）——出身名门、起点高，但家族资源是靠山，能否化为己用全看自己，莫做纨绔。</p>";
+    }else if(pw-fm>=1.2){
+      html+="<p>自己挣下的（<b class='mc-hl'>"+shortName(pw)+"</b>）远超出身（<b class='mc-hl'>"+shortName(fm)+"</b>）——寒门起家，每一分修为都含金量十足，是韩立式的路数。</p>";
+    }else{
+      html+="<p>家底与自身修为相称，稳扎稳打，没有虚浮。</p>";
+    }
+    cmt.innerHTML=html;
     renderRadar(v);
   }
 
@@ -4326,7 +4467,11 @@ function syncTargetToResults(libId, keys){
   });
   document.getElementById("mc-reset").addEventListener("click",function(){
     DIMS.forEach(function(d){ document.getElementById("mc-"+d.key).value=defaults[d.key]; });
+    var nameInput=document.getElementById("mc-name-input"); if(nameInput) nameInput.value="";
     render();
+  });
+  document.getElementById("mc-name-input").addEventListener("input",function(){
+    setLabel(this.value.trim());
   });
   /* 进入本视图时：若雷达尚未初始化（隐藏时跳过了），重绘并 resize */
   window.addEventListener("hashchange",function(){
