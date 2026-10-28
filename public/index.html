@@ -1803,11 +1803,14 @@ body.v-map-on .navbar{display:none!important}
         </optgroup>
         <optgroup label="专业 · 体制">
           <option value="2.0">专业技术（工程师 / 设计师 / 分析师）</option>
-          <option value="1.9">教师 / 培训 / 科研</option>
+          <option value="1.9">教育 / 院校 / 科研 / 培训</option>
           <option value="1.9">医疗 / 医护 / 健康</option>
           <option value="1.9">金融 / 银行 / 投资</option>
-          <option value="1.8">公务员 / 事业编 / 军警 / 消防</option>
+          <option value="1.9">法律 / 律师 / 法务 / 司法</option>
+          <option value="1.8">公务员 / 事业编 / 国企</option>
+          <option value="1.8">军警 / 消防 / 军事 / 应急</option>
           <option value="1.7">文娱 / 自媒体 / 内容创作</option>
+          <option value="1.4">体育 / 运动员 / 教练</option>
         </optgroup>
       </select>
     </div>
@@ -1960,6 +1963,16 @@ body.v-map-on .navbar{display:none!important}
         <li><b>比尔·盖茨</b><i>Windows，让个人电脑走进千家万户</i></li>
         <li><b>任正非</b><i>华为，全球通信设备龙头</i></li>
       </ul>
+      <div class="mf-group">AI 时代开创者</div>
+      <ul class="mf-list">
+        <li><b>黄仁勋</b><i>英伟达，AI 算力时代的奠基者，GPU 写进教科书</i></li>
+        <li><b>山姆·奥特曼</b><i>OpenAI，ChatGPT 引爆 AI 应用时代</i></li>
+      </ul>
+      <div class="mf-group">国家治理者（不点名）</div>
+      <ul class="mf-list">
+        <li><b>开国元勋 / 共和国奠基人</b><i>改天换地，奠定一国之基业</i></li>
+        <li><b>国家领导人（历届）</b><i>治国理政，影响亿万人的命运</i></li>
+      </ul>
       <div class="mf-group">思想源头（历史）</div>
       <ul class="mf-list">
         <li><b>孔子 / 老子</b><i>东方文明的思想源头</i></li>
@@ -1983,10 +1996,8 @@ body.v-map-on .navbar{display:none!important}
       </ul>
       <div class="mf-group">企业家（全球）</div>
       <ul class="mf-list">
-        <li><b>黄仁勋</b><i>英伟达，AI 算力时代的奠基者</i></li>
         <li><b>拉里·佩奇 / 谢尔盖·布林</b><i>谷歌，搜索、安卓与 AI</i></li>
         <li><b>扎克伯格 / 贝索斯</b><i>Meta、亚马逊，平台帝国</i></li>
-        <li><b>山姆·奥特曼</b><i>OpenAI，ChatGPT 引爆 AI 应用</i></li>
         <li><b>蒂姆·库克 / 纳德拉</b><i>苹果、微软，职业经理人标杆</i></li>
         <li><b>拉里·埃里森</b><i>甲骨文，数据库与企业软件巨头</i></li>
       </ul>
@@ -2011,7 +2022,7 @@ body.v-map-on .navbar{display:none!important}
       </ul>
     </div>
     <div class="mf-card mf-3">
-      <div class="mf-head"><b class="mc-r mc-r3">金丹</b><span>专业中坚 · 独当一面</span></div>
+      <div class="mf-head"><b class="mc-r mc-r3">结丹</b><span>专业中坚 · 独当一面</span></div>
       <div class="mf-group">知识 · 科普</div>
       <ul class="mf-list">
         <li><b>罗翔</b><i>中国政法大学教授，普法名师</i></li>
@@ -4274,7 +4285,7 @@ function syncTargetToResults(libId, keys){
 </script>
 <script>
 /* ===== 仙凡对照 · 境界换算器（v-mortal）=====
-   十个维度各取一个 0–5 的"境界值"（0 凡人 / 1 炼气 / 2 筑基 / 3 金丹 / 4 元婴 / 5 化神）。
+   十个维度各取一个 0–5 的"境界值"（0 凡人 / 1 炼气 / 2 筑基 / 3 结丹 / 4 元婴 / 5 化神）。
    境界看"长板"而非样样平均：自身 9 维取最高 3 维做几何平均（对短板敏感），再与自身线性加权
    混合；家庭出身（家底）是"助力"，单独做非对称小幅加成，不直接继承。权重为主观设定，仅供娱乐。 */
 (function(){
@@ -4292,35 +4303,27 @@ function syncTargetToResults(libId, keys){
   ];
   /* 小境界表：S 区间 -> 大境/小层/颜色/大境序号 */
   var LEVELS=[
-    {lo:0,   hi:0.45, major:"凡人",   sub:"凡胎俗骨", c:"#7d7564", mi:0},
-    {lo:0.45,hi:0.65, major:"炼气期", sub:"一至三层",   c:"#7fb3d9", mi:1},
-    {lo:0.65,hi:0.9,  major:"炼气期", sub:"四至六层",   c:"#7fb3d9", mi:1},
-    {lo:0.9, hi:1.15, major:"炼气期", sub:"七至九层",   c:"#7fb3d9", mi:1},
-    {lo:1.15,hi:1.4,  major:"炼气期", sub:"十至十三层", c:"#7fb3d9", mi:1},
-    {lo:1.4, hi:1.65, major:"筑基期", sub:"初期", c:"#4ec9a0", mi:2},
-    {lo:1.65,hi:1.9,  major:"筑基期", sub:"中期", c:"#4ec9a0", mi:2},
-    {lo:1.9, hi:2.15, major:"筑基期", sub:"后期", c:"#4ec9a0", mi:2},
-    {lo:2.15,hi:2.4,  major:"筑基期", sub:"巅峰", c:"#4ec9a0", mi:2},
-    {lo:2.4, hi:2.65, major:"金丹期", sub:"初期", c:"#d4af6a", mi:3},
-    {lo:2.65,hi:2.9,  major:"金丹期", sub:"中期", c:"#d4af6a", mi:3},
-    {lo:2.9, hi:3.15, major:"金丹期", sub:"后期", c:"#d4af6a", mi:3},
-    {lo:3.15,hi:3.4,  major:"金丹期", sub:"巅峰", c:"#d4af6a", mi:3},
-    {lo:3.4, hi:3.65, major:"元婴期", sub:"初期", c:"#a68bc9", mi:4},
-    {lo:3.65,hi:3.9,  major:"元婴期", sub:"中期", c:"#a68bc9", mi:4},
-    {lo:3.9, hi:4.15, major:"元婴期", sub:"后期", c:"#a68bc9", mi:4},
-    {lo:4.15,hi:4.4,  major:"元婴期", sub:"巅峰", c:"#a68bc9", mi:4},
-    {lo:4.4, hi:4.55, major:"化神期", sub:"初期", c:"#e07b54", mi:5},
-    {lo:4.55,hi:4.7,  major:"化神期", sub:"中期", c:"#e07b54", mi:5},
-    {lo:4.7, hi:4.85, major:"化神期", sub:"后期", c:"#e07b54", mi:5},
-    {lo:4.85,hi:5.01, major:"化神期", sub:"巅峰", c:"#e07b54", mi:5}
-  ];
-  var VERDICT=[
-    "尚未踏上修行路，凡尘亦是起点。",
-    "初窥门径，仙路漫漫，正在叩问筑基。",
-    "道基已成，登堂入室，一方安稳可求。",
-    "结丹凝元，中流砥柱，已入上品之林。",
-    "元婴出窍，一方豪强，举手投足皆是格局。",
-    "化神返虚，人界之巅，可立言、立法、开宗。"
+    {lo:0,   hi:0.45, major:"凡人",   sub:"凡胎俗骨", c:"#7d7564", mi:0, d:"尚未踏上修行路，凡尘亦是起点"},
+    {lo:0.45,hi:0.65, major:"炼气期", sub:"一至三层",   c:"#7fb3d9", mi:1, d:"初窥门径，灵气微茫，仙路漫漫始于此"},
+    {lo:0.65,hi:0.9,  major:"炼气期", sub:"四至六层",   c:"#7fb3d9", mi:1, d:"气感渐稳，吐纳有成，凡俗中已是不凡"},
+    {lo:0.9, hi:1.15, major:"炼气期", sub:"七至九层",   c:"#7fb3d9", mi:1, d:"周天小成，气走全身，离仙门只差一步"},
+    {lo:1.15,hi:1.4,  major:"炼气期", sub:"十至十三层", c:"#7fb3d9", mi:1, d:"气满将溢，只待筑基，凡人中的登顶者"},
+    {lo:1.4, hi:1.65, major:"筑基期", sub:"初期", c:"#4ec9a0", mi:2, d:"道基初立，脱胎换骨，正式踏入修士之列"},
+    {lo:1.65,hi:1.9,  major:"筑基期", sub:"中期", c:"#4ec9a0", mi:2, d:"法力渐厚，神识凝练，可御器而行"},
+    {lo:1.9, hi:2.15, major:"筑基期", sub:"后期", c:"#4ec9a0", mi:2, d:"根基扎实，法力雄浑，同阶中的好手"},
+    {lo:2.15,hi:2.4,  major:"筑基期", sub:"巅峰", c:"#4ec9a0", mi:2, d:"圆满在即，已窥结丹门槛，只欠临门一脚"},
+    {lo:2.4, hi:2.65, major:"结丹期", sub:"初期", c:"#d4af6a", mi:3, d:"金丹初成，寿元大增，真正迈入上品之林"},
+    {lo:2.65,hi:2.9,  major:"结丹期", sub:"中期", c:"#d4af6a", mi:3, d:"丹火淬炼，法力质变，威能远超筑基"},
+    {lo:2.9, hi:3.15, major:"结丹期", sub:"后期", c:"#d4af6a", mi:3, d:"丹元醇厚，一方宗门的中坚砥柱"},
+    {lo:3.15,hi:3.4,  major:"结丹期", sub:"巅峰", c:"#d4af6a", mi:3, d:"丹成圆满，元婴之望已在眼前"},
+    {lo:3.4, hi:3.65, major:"元婴期", sub:"初期", c:"#a68bc9", mi:4, d:"元婴初凝，神识离体，可称一方老祖"},
+    {lo:3.65,hi:3.9,  major:"元婴期", sub:"中期", c:"#a68bc9", mi:4, d:"元婴凝实，神通渐广，威震一域"},
+    {lo:3.9, hi:4.15, major:"元婴期", sub:"后期", c:"#a68bc9", mi:4, d:"元婴大成，瞬移千里，人界顶尖战力"},
+    {lo:4.15,hi:4.4,  major:"元婴期", sub:"巅峰", c:"#a68bc9", mi:4, d:"半步化神，只待一朝顿悟，可望飞升"},
+    {lo:4.4, hi:4.55, major:"化神期", sub:"初期", c:"#e07b54", mi:5, d:"神念入化，初触法则，人界之巅的入场券"},
+    {lo:4.55,hi:4.7,  major:"化神期", sub:"中期", c:"#e07b54", mi:5, d:"法则感悟渐深，可开宗立派，言出法随"},
+    {lo:4.7, hi:4.85, major:"化神期", sub:"后期", c:"#e07b54", mi:5, d:"人界巅峰，举手投足间天地变色"},
+    {lo:4.85,hi:5.01, major:"化神期", sub:"巅峰", c:"#e07b54", mi:5, d:"人间极致，已窥灵界，尘世难容其身"}
   ];
   /* 超越百分比锚点（S -> %），分段线性插值 */
   var PCT=[[0,1],[0.45,8],[0.9,40],[1.4,72],[1.9,85],[2.4,93],[2.9,96.5],[3.4,99.0],[3.9,99.5],[4.4,99.85],[5.0,99.98]];
@@ -4350,7 +4353,7 @@ function syncTargetToResults(libId, keys){
 
   /* ===== 纯 Canvas 手绘十维雷达图（含家庭出身；不依赖 echarts，自带，约 3KB） ===== */
   var radarGeom=null, radarVals=null;
-  var RADAR_TIERS=["凡人","炼气","筑基","金丹","元婴","化神"];
+  var RADAR_TIERS=["凡人","炼气","筑基","结丹","元婴","化神"];
   function drawRadar(el,v){
     var dpr=window.devicePixelRatio||1;
     var w=el.clientWidth, h=el.clientHeight;
@@ -4392,8 +4395,8 @@ function syncTargetToResults(libId, keys){
     var pt=function(i,r){ return [cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))]; };
 
     /* 境界区间边界（与 LEVELS 一致）与各层中点（用于刻度标签） */
-    var BOUNDS=[0.4,1.4,2.4,3.4,4.4];          /* 炼气/筑基/金丹/元婴/化神 下界 */
-    var MID=[0.22,0.9,1.9,2.9,3.9,4.7];          /* 凡人/炼气/筑基/金丹/元婴/化神 区间中点 */
+    var BOUNDS=[0.4,1.4,2.4,3.4,4.4];          /* 炼气/筑基/结丹/元婴/化神 下界 */
+    var MID=[0.22,0.9,1.9,2.9,3.9,4.7];          /* 凡人/炼气/筑基/结丹/元婴/化神 区间中点 */
     /* 网格：按真实边界绘制（0 为圆心，5.0 为最外沿） */
     var gridR=[0.4,1.4,2.4,3.4,4.4,5.0].map(function(s){ return R*s/5; });
     for(var g=0;g<gridR.length;g++){
@@ -4457,7 +4460,7 @@ function syncTargetToResults(libId, keys){
     setLabel(nick);
     var big=document.getElementById("mc-big");
     big.textContent=L.major; big.style.color=L.c;
-    document.getElementById("mc-sub").textContent=L.sub+" · "+VERDICT[L.mi];
+    document.getElementById("mc-sub").textContent=L.sub+" · "+L.d;
     document.getElementById("mc-pct-num").textContent=Math.round(pct);
     document.getElementById("mc-bar-fill").style.width=pct+"%";
     var arr=DIMS.map(function(d){ return {name:d.name,val:v[d.key]}; }).sort(function(a,b){ return b.val-a.val; });
@@ -4466,17 +4469,15 @@ function syncTargetToResults(libId, keys){
     if(hi.val-lo.val<0.5){
       html+="<p>十维均衡，道基扎实，无明显短板——这往往是走得最远的那一类修法。</p>";
     }else{
-      html+="<p>你的<b class='mc-hl'>"+hi.name+"</b>已至<b class='mc-hl'>"+shortName(hi.val)+"</b>，"+
-        "而<b class='mc-hl'>"+lo.name+"</b>尚在<b class='mc-hl'>"+shortName(lo.val)+"</b>。长板可恃，短板也别忘了补。</p>";
+      html+="<p>你的<b class='mc-hl'>"+hi.name+"</b>是长板（≈"+shortName(hi.val)+"），"+
+        "而<b class='mc-hl'>"+lo.name+"</b>是短板（≈"+shortName(lo.val)+"）。长板可恃，短板也别忘了补。</p>";
     }
-    /* 两笔账：家庭出身（家底）vs 个人净资产（己力） */
+    /* 两笔账：家庭出身（家底）vs 个人净资产（己力）——仅显著差异时提一句，弱化家庭标签 */
     var pw=v.pwealth, fm=v.family;
-    if(fm-pw>=1.2){
-      html+="<p>家底（<b class='mc-hl'>"+shortName(fm)+"</b>）远厚于你自己挣下的（<b class='mc-hl'>"+shortName(pw)+"</b>）——出身名门、起点高，但家族资源是靠山，能否化为己用全看自己，莫做纨绔。</p>";
-    }else if(pw-fm>=1.2){
-      html+="<p>自己挣下的（<b class='mc-hl'>"+shortName(pw)+"</b>）远超出身（<b class='mc-hl'>"+shortName(fm)+"</b>）——寒门起家，每一分修为都含金量十足，是韩立式的路数。</p>";
-    }else{
-      html+="<p>家底与自身修为相称，稳扎稳打，没有虚浮。</p>";
+    if(pw-fm>=1.5){
+      html+="<p>自己挣下的（"+shortName(pw)+"）明显超过原生家庭起点（"+shortName(fm)+"）——白手起家，每一分修为都含金量十足，是韩立式的路数。</p>";
+    }else if(fm-pw>=1.5){
+      html+="<p>原生家庭条件不错（"+shortName(fm)+"），是助力而非修为本身；路终究要自己走，别辜负了起点。</p>";
     }
     cmt.innerHTML=html;
     renderRadar(v);
