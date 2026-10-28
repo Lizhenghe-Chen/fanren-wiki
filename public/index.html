@@ -1051,14 +1051,7 @@ body.v-map-on .navbar{display:none!important}
 
 /* ===== 仙凡对照 · 境界换算（v-mortal）===== */
 .mortal-sec{padding:26px 0}
-.mc-table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:14px;margin-top:14px;background:var(--card)}
-.mc-table{width:100%;border-collapse:collapse;min-width:840px;font-size:13px}
-.mc-table th{background:var(--card2);color:var(--gold);font-weight:600;text-align:left;padding:12px 14px;white-space:nowrap;border-bottom:1px solid var(--line);letter-spacing:.04em}
-.mc-table td{padding:12px 14px;vertical-align:top;color:var(--ink2);border-bottom:1px solid var(--line);line-height:1.6}
-.mc-table tbody tr:last-child td{border-bottom:none}
-.mc-table tbody tr:hover td{background:rgba(212,175,106,.05)}
 .mc-r{display:block;font-family:var(--font-serif);font-size:16px;line-height:1.3}
-.mc-life{display:block;font-size:11px;color:var(--ink3);margin-top:2px}
 .mc-r1{color:var(--c2)}.mc-r2{color:var(--c5)}.mc-r3{color:var(--gold)}.mc-r4{color:var(--c4)}.mc-r5{color:var(--c6)}
 
 .mc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin-top:18px}
@@ -1819,14 +1812,14 @@ body.v-map-on .navbar{display:none!important}
       <label for="mc-pos">职位 / 职级（境界）</label>
       <select id="mc-pos" data-key="pos">
         <option value="0.2">无职级 / 学生 / 居家 / 退休</option>
-        <option value="0.4">刚入行 / 学徒 / 实习</option>
-        <option value="1.2" selected>能独立干活 / 熟练工</option>
-        <option value="1.8">业务骨干 / 带新人（初级职称）</option>
-        <option value="2.4">资深 / 组长（中级职称 / 科级）</option>
-        <option value="3.0">团队负责人 / 主管（副高 / 处级）</option>
-        <option value="3.6">经理 / 总监（正高 / 厅级）</option>
-        <option value="4.3">高层 / 企业主 / 合伙人（省部级）</option>
-        <option value="4.9">行业标杆 / 院士 / 开创者</option>
+        <option value="0.4">刚入行 / 学徒 / 实习（含在校研究生）</option>
+        <option value="1.2" selected>能独立干活 / 熟练工（住院医师 / 助教级）</option>
+        <option value="1.8">业务骨干 / 带新人（初级职称 · 助教 / 住院医师）</option>
+        <option value="2.4">资深 / 组长（中级职称 · 讲师 / 主治医师 · 科级）</option>
+        <option value="3.0">团队负责人 / 主管（副高 · 副教授 / 副主任医 · 处级）</option>
+        <option value="3.6">经理 / 总监（正高 · 教授 / 主任医 · 厅级）</option>
+        <option value="4.3">高层 / 企业主 / 合伙人（省部级 · 将官）</option>
+        <option value="4.9">行业标杆 / 院士 / 学术泰斗</option>
       </select>
     </div>
 
@@ -1853,12 +1846,13 @@ body.v-map-on .navbar{display:none!important}
       <label for="mc-family">家庭出身（家底 · 助力）</label>
       <select id="mc-family" data-key="family">
         <option value="0.1">低保 / 贫困 / 无依无靠</option>
-        <option value="0.6">普通工薪 / 务农，需自立</option>
-        <option value="1.1" selected>小康，能供读书、略有积蓄</option>
-        <option value="1.7">城镇中产，有房有产，能托底</option>
+        <option value="0.5">温饱家庭，少有积蓄</option>
+        <option value="0.9">普通工薪 / 务农，能自立</option>
+        <option value="1.4" selected>小康，能供读书、略有积蓄</option>
+        <option value="1.9">城镇中产，有房有产，能托底</option>
         <option value="2.4">家境殷实，可支援首付 / 留学</option>
-        <option value="3.1">富裕家庭（数百万至千万），资源丰富</option>
-        <option value="3.9">高净值（千万级以上），平台可继承</option>
+        <option value="3.0">富裕家庭（数百万级），资源充足</option>
+        <option value="3.7">高净值（千万级），平台可继承</option>
         <option value="4.7">豪门 / 家族企业（亿级），可继承事业</option>
       </select>
     </div>
@@ -4363,23 +4357,36 @@ function syncTargetToResults(libId, keys){
       canvas=document.createElement("canvas");
       canvas.style.width="100%"; canvas.style.height="100%";
       el.appendChild(canvas);
-      canvas.addEventListener("mousemove",function(ev){
+      function showTip(px,py){
         var tip=el.querySelector(".mc-tip");
         if(!radarGeom||!radarVals){ tip.style.display="none"; return; }
-        var rect=canvas.getBoundingClientRect(), mx=ev.clientX-rect.left, my=ev.clientY-rect.top, hit=-1, best=18;
-        for(var i=0;i<radarGeom.pts.length;i++){
-          var dx=mx-radarGeom.pts[i][0], dy=my-radarGeom.pts[i][1], d=Math.sqrt(dx*dx+dy*dy);
-          if(d<best){ best=d; hit=i; }
+        var dx=px-radarGeom.cx, dy=py-radarGeom.cy, dist=Math.sqrt(dx*dx+dy*dy);
+        /* 超出雷达最外沿 + 标签区，视为未命中 */
+        if(dist>radarGeom.R+34){ tip.style.display="none"; return; }
+        var a=Math.atan2(dy,dx), half=Math.PI/DIMS.length, best=1e9, hit=-1;
+        for(var i=0;i<DIMS.length;i++){
+          var ai=-Math.PI/2+i*2*Math.PI/DIMS.length, diff=Math.abs(a-ai);
+          if(diff>Math.PI) diff=2*Math.PI-diff;
+          if(diff<best){ best=diff; hit=i; }
         }
-        if(hit>=0){
+        if(best<=half){
           var d=DIMS[hit], val=radarVals[d.key];
-          tip.innerHTML=d.name+" · "+shortName(val)+"（"+val.toFixed(1)+"）";
+          tip.innerHTML=d.name+" · 评分 "+val.toFixed(1)+"（刻度≈"+shortName(val)+"）";
           tip.style.display="block";
-          tip.style.left=(radarGeom.pts[hit][0]+12)+"px";
-          tip.style.top=(radarGeom.pts[hit][1]-12)+"px";
+          tip.style.left=(px+12)+"px";
+          tip.style.top=(py-12)+"px";
         } else tip.style.display="none";
+      }
+      canvas.addEventListener("mousemove",function(ev){
+        var rect=canvas.getBoundingClientRect();
+        showTip(ev.clientX-rect.left, ev.clientY-rect.top);
       });
       canvas.addEventListener("mouseleave",function(){ el.querySelector(".mc-tip").style.display="none"; });
+      /* 触屏：点击显示该维度的境界值，再点其它处收起 */
+      canvas.addEventListener("touchstart",function(ev){
+        var rect=canvas.getBoundingClientRect(), t=ev.touches[0];
+        showTip(t.clientX-rect.left, t.clientY-rect.top);
+      }, {passive:true});
     }
     if(!el.querySelector(".mc-tip")){
       var tip0=document.createElement("div"); tip0.className="mc-tip"; el.appendChild(tip0);
@@ -4395,10 +4402,10 @@ function syncTargetToResults(libId, keys){
     var pt=function(i,r){ return [cx+r*Math.cos(ang(i)),cy+r*Math.sin(ang(i))]; };
 
     /* 境界区间边界（与 LEVELS 一致）与各层中点（用于刻度标签） */
-    var BOUNDS=[0.4,1.4,2.4,3.4,4.4];          /* 炼气/筑基/结丹/元婴/化神 下界 */
+    var BOUNDS=[0.45,1.4,2.4,3.4,4.4];          /* 炼气/筑基/结丹/元婴/化神 下界 */
     var MID=[0.22,0.9,1.9,2.9,3.9,4.7];          /* 凡人/炼气/筑基/结丹/元婴/化神 区间中点 */
     /* 网格：按真实边界绘制（0 为圆心，5.0 为最外沿） */
-    var gridR=[0.4,1.4,2.4,3.4,4.4,5.0].map(function(s){ return R*s/5; });
+    var gridR=[0.45,1.4,2.4,3.4,4.4,5.0].map(function(s){ return R*s/5; });
     for(var g=0;g<gridR.length;g++){
       var rr=gridR[g];
       ctx.beginPath();
@@ -4469,15 +4476,14 @@ function syncTargetToResults(libId, keys){
     if(hi.val-lo.val<0.5){
       html+="<p>十维均衡，道基扎实，无明显短板——这往往是走得最远的那一类修法。</p>";
     }else{
-      html+="<p>你的<b class='mc-hl'>"+hi.name+"</b>是长板（≈"+shortName(hi.val)+"），"+
-        "而<b class='mc-hl'>"+lo.name+"</b>是短板（≈"+shortName(lo.val)+"）。长板可恃，短板也别忘了补。</p>";
+      html+="<p>你的<b class='mc-hl'>"+hi.name+"</b>是长板，<b class='mc-hl'>"+lo.name+"</b>是短板，差距不小。境界看的是十维综合，单维再强也撑不起一个境界——补短板，路更长。</p>";
     }
     /* 两笔账：家庭出身（家底）vs 个人净资产（己力）——仅显著差异时提一句，弱化家庭标签 */
     var pw=v.pwealth, fm=v.family;
     if(pw-fm>=1.5){
-      html+="<p>自己挣下的（"+shortName(pw)+"）明显超过原生家庭起点（"+shortName(fm)+"）——白手起家，每一分修为都含金量十足，是韩立式的路数。</p>";
+      html+="<p>自己挣下的积累已明显超过原生家庭起点——白手起家，每一分都含金量十足，是韩立式的路数。</p>";
     }else if(fm-pw>=1.5){
-      html+="<p>原生家庭条件不错（"+shortName(fm)+"），是助力而非修为本身；路终究要自己走，别辜负了起点。</p>";
+      html+="<p>原生家庭条件不错，是助力而非修为本身；路终究要自己走，别辜负了起点。</p>";
     }
     cmt.innerHTML=html;
     renderRadar(v);
