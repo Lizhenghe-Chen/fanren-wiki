@@ -614,11 +614,11 @@ footer .note{margin-top:6px}
 /* ===== 循环水印（斜向平铺，标明出处） =====
    水印内联为 base64 data URI：去掉它不再是「删一个文件」，而要动这一整段数据。
    瓦片三行 = 首页大标题的两行原文 + 站点网址，网址行勿删（截图转发全靠它指回本站）。
-   改文字 / 改色时同步改 dev/watermark.svg。
+   改文字 / 改色时直接改这段 base64（瓦片 svg 已不单独存放）。
    不设 print 例外：position:fixed 在分页媒体里会逐页重复，可拦住「打印成 PDF 再转发」。 */
 .watermark{
   position:fixed;inset:0;z-index:60;pointer-events:none;
-  background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iMjQwIiB2aWV3Qm94PSIwIDAgNDIwIDI0MCI+PGcgZm9udC1mYW1pbHk9Ik5vdG8gU2FucyBTQywgUGluZ0ZhbmcgU0MsIE1pY3Jvc29mdCBZYUhlaSwgc2Fucy1zZXJpZiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNi4zMCAtMTEuMjApIj48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMjQgMjEwIDE1MCkiPjx0ZXh0IHg9IjIxMCIgeT0iMTEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE4IiBsZXR0ZXItc3BhY2luZz0iMiIgZmlsbD0iI2U5ZTRkOCIgZmlsbC1vcGFjaXR5PSIwLjExIj7jgIrlh6Hkurrkv67ku5nkvKDjgIs8L3RleHQ+PHRleHQgeD0iMjEwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTYiIGxldHRlci1zcGFjaW5nPSIzIiBmaWxsPSIjZDRhZjZhIiBmaWxsLW9wYWNpdHk9IjAuMDkiPueZvuenkSDCtyDlhajnr4fotYTmlpnlm77osLE8L3RleHQ+PHRleHQgeD0iMjEwIiB5PSIxNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTQiIGxldHRlci1zcGFjaW5nPSIyIiBmaWxsPSIjZTllNGQ4IiBmaWxsLW9wYWNpdHk9IjAuMDkiPmJ1bm55Y2hlbi50b3A8L3RleHQ+PC9nPjwvZz48L2c+PC9zdmc+") repeat;
+  background:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MjAiIGhlaWdodD0iMjQwIiB2aWV3Qm94PSIwIDAgNDIwIDI0MCI+PGcgZm9udC1mYW1pbHk9Ik5vdG8gU2FucyBTQywgUGluZ0ZhbmcgU0MsIE1pY3Jvc29mdCBZYUhlaSwgc2Fucy1zZXJpZiI+PGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNi4zMCAtMTEuMjApIj48ZyB0cmFuc2Zvcm09InJvdGF0ZSgtMjQgMjEwIDE1MCkiPjx0ZXh0IHg9IjIxMCIgeT0iMTEyIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE4IiBsZXR0ZXItc3BhY2luZz0iMiIgZmlsbD0iI2U5ZTRkOCIgZmlsbC1vcGFjaXR5PSIwLjExIj7jgIrlh6Hkurrkv67ku5nkvKDjgIs8L3RleHQ+PHRleHQgeD0iMjEwIiB5PSIxNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTYiIGxldHRlci1zcGFjaW5nPSIzIiBmaWxsPSIjZDRhZjZhIiBmaWxsLW9wYWNpdHk9IjAuMDkiPueZvuenkSDCtyDlhajnr4fotYTmlpnlm77osLE8L3RleHQ+PHRleHQgeD0iMjEwIiB5PSIxNjUiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTQiIGxldHRlci1zcGFjaW5nPSIyIiBmaWxsPSIjZTllNGQ4IiBmaWxsLW9wYWNpdHk9IjAuMDkiPmJ1bm55Y2hlbi50b3AvZmFucmVuLXdpa2k8L3RleHQ+PC9nPjwvZz48L2c+PC9zdmc+") repeat;
   background-size:420px 240px;
 }
 
@@ -905,6 +905,18 @@ footer .note{margin-top:6px}
 @media(max-width:760px){#v-map #top{padding:10px 12px;gap:8px}#v-map #top .logo b,#v-map #top .logo h1{font-size:15px}#v-map #top .logo small{display:none}#v-map #stages{display:none}#v-map #top .btn{min-width:44px;min-height:44px;padding:5px 10px;font-size:12px}#v-map #progress{top:56px;left:12px;right:12px}#v-map #explore{padding:6px 12px}#v-map #explore .pill{min-height:40px}#v-map #subtitle{width:94vw;padding:12px 18px;bottom:52px}#v-map #subtitle .t1{font-size:19px}#v-map #subtitle .t2{font-size:12.5px}#v-map #placename{top:15%;width:90vw}#v-map #placename .pn{font-size:30px}#v-map #placename .pr{font-size:12px}#v-map #placename .pd{font-size:13px}#v-map #detail{top:auto;bottom:14px;right:12px;left:12px;width:auto;max-height:46vh}#v-map #detail .d-close{min-width:44px;min-height:44px}#v-map #index{top:auto;bottom:14px;right:12px;left:12px;width:auto;max-height:52vh}#v-map #mapNote{font-size:10.5px;letter-spacing:.02em;padding:4px 12px;bottom:10px;max-width:92vw;overflow:hidden;text-overflow:ellipsis}#v-map #detail.show~#mapNote,#v-map #index.show~#mapNote{display:none}#v-map #index .ix-search{font-size:16px}#v-map #finale .btn{min-height:44px}#v-map #help{display:none}
 }
 @media(max-width:420px){#v-map #subtitle .t1{font-size:16.5px;letter-spacing:.18em}#v-map #subtitle .t2{font-size:11.5px}#v-map #placename .pn{font-size:26px;letter-spacing:.16em}#v-map #placename .pd{font-size:12px;max-width:86vw}#v-map #explore .pill{font-size:12.5px;padding:6px 12px}#v-map #explore .legend-tip{display:none}#v-map #index .ix-search{font-size:16px}
+}
+
+/* 移动端地图顶栏：标题 + 六枚按钮实测需 ~390px，320–430 宽放不进一行——
+   末两枚（舆图原图 / 地理考据）会被 .map-stage 的 overflow:hidden 裁掉、点不到，标题也被挤成一字一行。
+   改为标题与按钮同排、超出自动换行；行高固定 44px（触达），两行总高 108px，#progress 仍从 170px 起、不会被压住。 */
+@media(max-width:760px){
+  #v-map #top{flex-wrap:wrap;row-gap:6px;padding:6px 12px 8px}
+  #v-map #top .logo{gap:7px}
+  #v-map #top .logo .mark{width:20px;height:20px}
+  #v-map #top .logo h1{font-size:13px;letter-spacing:.06em;white-space:nowrap}
+  #v-map #top .spacer{display:none}
+  #v-map #top .btn{flex:0 0 auto;min-width:40px;min-height:44px;padding:0 8px;font-size:12px;letter-spacing:.02em;white-space:nowrap}
 }
 
 /* ===== 主页内嵌容器（覆盖独立页 fixed 定位） ===== */

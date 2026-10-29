@@ -32,3 +32,10 @@
   .plot-place{line-height:1.6}
   .plot-step{padding-left:12px}
 }
+
+/* 窄屏：图谱折叠标题与「核心人物 · 逐批生长」提示各占一行——
+   并排时提示会被挤成三行的窄列（320–390 实测），换行后整行可读。 */
+@media(max-width:760px){
+  .graph-fold>summary{flex-wrap:wrap;row-gap:2px}
+  .graph-fold-hint{flex:1 1 100%}
+}

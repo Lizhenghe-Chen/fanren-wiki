@@ -44,8 +44,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
     ├── _review.md          # 数据审校笔记
     ├── tools/              # 在用的工具：image-slim.py（图片瘦身，见 §6）、verify.mjs（零依赖验收，见 §8.3）、pixel-diff.mjs（改观感类改动的像素比对，见 §8.3）、echarts-entry.js（ECharts 按需构建入口，见 §7）、readme-shots.py（README 宣传图：整页截图 → 16:10 缩略图，输出 image/README/shots/，原图被 .gitignore 忽略；⚠️ 只认「整页长图」来源，2026-10-12 起另有逐视图顶屏截图法，见 §11）、stamp.mjs（部署时把「最后更新」+ 提交说明注入 index.html、把 lastmod 注入 sitemap.xml，见 §7「元数据」）
     ├── _image-slim-report.json  # 瘦身逐图决策记录（体积/SSIM/所选质量档）
-    ├── _backup/            # 历史堆积：index-vNN.html 版本次级（21 个）+ 一次性的 migrate 脚本（apply_*/add_*/fix_*/sync_*）+ meta/stories/ev/herbs_data/treasures_data 等中间数据
-    └── watermark.svg       # 仅供 _backup/index-v*.html 引用的水印瓦片（当前页面已内联 base64）
+    └── _backup/            # 历史堆积：index-vNN.html 版本次级（21 个）+ 一次性的 migrate 脚本（apply_*/add_*/fix_*/sync_*）+ meta/stories/ev/herbs_data/treasures_data 等中间数据（水印瓦片已内联进 index.html，见 §「出处与防盗」）
 ```
 
 - `_backup/` 里的脚本不参与运行、也不要“顺手执行”：它们是当时的字符串级插入脚本，路径写死在旧仓库（`Lizhenghe-Chen.github.io/...`）。要重跑得先把路径改回来。
@@ -115,6 +114,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - **新增视图**：加一个 `<div class="view" id="v-xxx">`（内部只放一个 `h1`），在 `VIEWS` 数组里登记（脚本与外链都读它），topnav 加链接即可。
 - **展开态与地址栏的一致性（2026-10-05 加）**：筛选/切降噪都是**整表重排**（卡片会被卸载重建），所以 ① `openKeyFromHash()` 在挂载时按地址栏 target 还原 `.open`；② `syncTargetToResults(libId, keys)` 在重排后若 target 已不在结果集里就撤掉 target（**只撤 target，视图不动**）。两者都只处理「target 属于本库」的情况 —— 启动时各库都会先重排一次，那会儿 hash 可能指向**别的**库（深链冷启动）。
 - **移动端**：`@media (max-width:640px)` 下 **topnav 换行显示**（`.topnav .wrap{height:auto;flex-wrap:wrap}` + `.tn-links{flex:1 1 0;flex-wrap:wrap}`，十一个入口分两行全部落在视口内；状态位 `.tn-update` 隐藏，日期与作者主页下沉到页脚），`.topnav a` 同时降字号内边距；`@media (max-width:400px)` 再降一档。因为顶栏变高：`.chapter` 不再 sticky、`.view{scroll-margin-top:88px}`。`.navbar{top:45px}`、`.tabs` 仍是单行横向滚动。
+- **地图视图的移动端另有一套规则**：`body.v-map-on` 下 topnav 压回单行 48px（链接横向滚动，免得两行顶栏压住地图）、`.map-stage` 占满 100vh；`@media(max-width:760px)` 里 `#v-map #top` **换行成两行**（标题 + 索引/播放/倍速/探索 ‖ 舆图原图/地理考据）—— 六枚按钮 + 标题实测要 ~390px，单行在 320–430 宽会被 `overflow:hidden` 裁掉、且标题被挤成一字一行（v65 修）。`#progress{top:170px}`、`#explore{top:200px}` 是按两行总高 108px 留的位，改顶栏高度时同步核这两处。
 - **⚠ 锚点注释会撞车**：`/* ===== 韩立境界时间轴 ===== */` 在 `<style>`（`.timeline-sec` 注释）与 `<script>`（`const TL` 前）各出现一次——脚本插入若用该注释定位 JS 数据，会误命中 CSS 区导致 `BEASTS is not defined`。定位 JS 数据应匹配 `];\n\n/* ===== 韩立境界时间轴 ===== */\nconst TL = [` 整段。历史修复：`_backup/fix_beast_data_pos.py`。
 
 ## 4. 数据模型（`const DATA`）
@@ -300,7 +300,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 > ⚠️ **许可现为 CC BY-NC-SA 4.0（2026-10-07 起；2026-09-17 ~ 2026-10-07 间为 Apache-2.0）**，水印的性质不变：它仍是**出处标识**，**不是「禁止去除」的许可条件** —— CC BY-NC-SA 4.0 第 2(a)(5)(C) 条同样不允许对下游附加额外限制（当年那两条“禁止商业使用”“禁止去除署名与水印”里，前者已回到许可正文，后者**不要**再写回成条款）。页脚保持“欢迎保留”。**不要再把水印写回成强制条款。**
 > 但“不在卡片图上盖章”这条**依然成立** —— 理由不变（图不是你画的），且第三方图片**本来就不在 CC BY-NC-SA 4.0 范围内**。
 
-- **全页水印**：`.watermark`（`position:fixed` 全屏平铺）的背景图**已内联为 base64 data URI**，不再引用 `watermark.svg`——`dev/watermark.svg` 仅为 `dev/_backup/index-v*.html` 保留，**勿删**（删了旧备份开出来就没水印）。改水印要改那段 base64，别改回外部文件引用。**瓦片三行 = 首页大标题的两行原文（`《凡人修仙传》` / `百科 · 全篇资料图谱`，与 `#v-home .hero-title h1` 逐字一致，别并成一行）+ 站点网址 `bunnychen.top`**；网址行是「截图转发后还能找回本站」的唯一线索，**不能删**。改名时两处同步：那段 base64 与 `dev/watermark.svg`。
+- **全页水印**：`.watermark`（`position:fixed` 全屏平铺）的背景图**已内联为 base64 data URI**（`dev/watermark.svg` 已随 dev/ 移出发布面删除，旧备份也早已内联，改水印**只改那段 base64**，别改回外部文件引用）。**瓦片三行 = 首页大标题的两行原文（`《凡人修仙传》` / `百科 · 全篇资料图谱`，与 `#v-home .hero-title h1` 逐字一致，别并成一行）+ 站点网址 `bunnychen.top/fanren-wiki`**；网址行是「截图转发后还能找回本站」的唯一线索，**不能删**。改文字时必须用字节级替换重写 base64，别用会改行尾/编码的编辑器整文件保存。
 - **无 `@media print` 例外**：打印/导出 PDF 也带水印（`position:fixed` 在分页媒体里逐页重复），别再加 `display:none` 把它关掉。
 - **不在卡片图片上盖章**：曾经加过 `.card-top::after{content:"bunnychen.top"}` 的右下角标，**已移除且不要再加**——图片本身是网络检索的第三方素材，不是本站作品，在别人的图上盖自己的出处站不住脚（真有争议时也不占理）。图片区保持干净。
 - **元数据**：`<head>` 里三件套——版权注释块（含版本/日期/仓库地址，抄整页的人会把出处一起带走）、`<link rel="canonical">`、JSON-LD（author / datePublished / dateModified / license / isBasedOn）。**改版必须同步**。许可字段当前为 `https://creativecommons.org/licenses/by-nc-sa/4.0/`。
@@ -714,6 +714,13 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   ⑤ **验收 52 → 52（条数不变，改三条）**：本地断言加查 `performance.getEntriesByType('resource')` 里无统计请求；真实域名断言改为「轮询等统计位显示 → 只发 1 次 `events.vercount.one/api/v2/log`、显示值 > 1000、无 script 标签统计」；源码断言改为「走 Vercount POST API + 残留 `jsonpCallback=` / `busuanzi_site_pv` / `cdn.busuanzi.cc` 即失败」「`var pv = Number(d.site_pv)`」「基数推式 `BASE_PV = TARGET_PV − VERCOUNT_AT_SWITCH`」。`file://` 下 **52/52 通过**。
   ⑥ **本地端到端实测**：headless Chrome `--dump-dom` 开 `?stats=1`，统计位渲染 `12,992 次浏览`（= BASE_PV + file:// 桶的 0，证明 fetch/CORS/解析/千位分隔整链可用；file:// 不污染线上 host 桶）；线上真实值以部署后 `verify.mjs --url https://bunnychen.top/fanren-wiki/` 复核。
   ⑦ **未动**：展示位置、`?stats=1` 开关、本地不上报逻辑、`data-fw-stats` 排除选择器（保留兼容，无节点带该标记）、地图与其他业务代码、`stamp.mjs` 与「最后更新」四处日期（留给部署时刷新）。
+
+- **v65：水印网址补全 + 移动端逐视图巡检（2026-10-29，本次）**——起因：用户先要「水印网址完善为 bunnychen.top/fanren-wiki」，随后「自己检查各个页面的移动端的适配和显示」。
+  ① **水印瓦片第三行** `bunnychen.top` → `bunnychen.top/fanren-wiki`：改的是 `public/index.html` `.watermark` 那段内联 base64，用**字节级替换 + 重新编码**（先整文件读字符串再写回会把 CRLF/编码一起动一遍，diff 会从 1 行变成 1279 行）。`dev/watermark.svg` 早在 `d84ddad`（dev/ 移出发布面）就已删除、`_backup/index-v*.html` 也早已内联 —— 文档里「改名时两处同步 watermark.svg」是失效口径，已改成「只改那段 base64」。
+  ② **巡检口径**（CDP 驱动本机 Edge，320/360/390/414/768 五档 × 11 视图，按页面自己的路由点 topnav 进入，地图视图才会带上 `v-map-on` 沉浸态）：量文档横向溢出、越界元素、竖条文本、被裁内容、触达尺寸、<11px 字号。修完结论：**五档全部 0 横向溢出、0 竖条文本、0 控制台报错**。仍会命中的三类均为设计如此：标签条/时间轴/境界 rail 里的越界（横向滚动容器）、`#mapNote` 与图片声明 `.tt`（单行省略号，展开可看全）、战力断层的超宽 `.cv-bar`（图表自身裁剪）。
+  ③ **真问题 1：地图顶栏在手机上放不下**（≤430px）。标题 + 六枚按钮实测需 ~390px，`overflow:hidden` 把「舆图原图 / 地理考据」裁到视口外（**320 宽下「地理考据」完全点不到**），标题 `修仙界全图` 被挤成一字一行，索引/探索折成竖条。修法：新增 `@media(max-width:760px)`——`#top{flex-wrap:wrap;row-gap:6px;padding:6px 12px 8px}`、`.spacer{display:none}`、`.logo .mark{20px}` + `h1{font-size:13px;white-space:nowrap}`、`.btn{flex:0 0 auto;min-width:40px;min-height:44px;padding:0 8px;letter-spacing:.02em;white-space:nowrap}` ⇒ 稳定两行（标题+索引/⏸/1×/探索 ‖ 舆图原图/地理考据），320–430 全部可见可点；1440 桌面复测仍是单行（规则全在媒体查询内）。
+  ④ **真问题 2：`v-chars` 图谱折叠标题**的 `.graph-fold-hint`（「105 位核心人物 · 按篇章逐批生长 · 点节点看生平」）在 320–390 被挤成三行窄列，`cultivation.css` 加 `@media(max-width:760px){.graph-fold>summary{flex-wrap:wrap;row-gap:2px}.graph-fold-hint{flex:1 1 100%}}`，让提示独占一行。
+  ⑤ **验收**：`verify.mjs`（`--chrome` 指本机 Edge）**51/52**。唯一失败「十一个视图容器齐全 → 实际 12 个」是 `v-mortal` 早就加过、断言没跟上（`git show HEAD:public/index.html` 同样是 12 个），与本次无关，未动。
 
 ## 11. README 宣传图 / 封面更新流程（2026-10-12 实战沉淀）
 
