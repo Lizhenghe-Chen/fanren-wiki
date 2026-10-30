@@ -55,8 +55,9 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - 参考资料页仍在主站：`https://bunnychen.top/docs/Other/fanren-xiuxian/`（**仅作首页介绍文案的素材来源**）。
 - **反馈 / 勘误走 B 站视频评论区**（2026-10-21 起）：`https://www.bilibili.com/video/BV1Ameq6vECK/`（《我做了一本《凡人修仙传》百科全书：221 位人物全收录》）—— 读者不必注册 GitHub，留个评论就行；页面上四处入口（hero「勘误与反馈」/ 收录说明 `.home-note` / 图片准确性声明 `.img-note` / 页脚）全指这一条。**GitHub Issues 只留给源码与技术问题**（页脚并列一句），不再当作内容勘误入口。⚠️ **主站评论区仍不是入口**，不要把链接指回 `bunnychen.top/docs/.../#__comments`。
 - **开发资料一律放进 `dev/`**：发布边界由目录决定（只上传 `public/`），不要把 `_backup/`、自检截图、笔记放进 `public/`。
-- ⚠️ **`dev/` 的跟踪策略（2026-09-18 调整）**：**只跟踪「活文档 + 工具」**（`Agent.md`、`_review.md`、`Bili-Feedback.md`、`tools/`、`_image-slim-report.json`），`_backup/`、`demos/`、`watermark.svg` 仍在 `.gitignore` 里（仅本地保留）。理由是前者没有版本历史就只能靠本机磁盘活着、且与 `public/` 的改动一一对应；后者要么 git 历史里本来就有一份（`_backup/index-vNN.html` 就是各次提交的副本），要么是一次性产物。
-  - 📄 `Bili-Feedback.md` 是**视频评论区专用手册**（抓全评论 / 核查口径 / 用 API 回帖的三个坑）。它是写给作者本人和后续 agent 的**内部操作记录，不对外引用**（README、页面、对外文案里都不要提）。
+- ⚠️ **`dev/` 的跟踪策略（2026-09-18 调整）**：**只跟踪「活文档 + 工具」**（`Agent.md`、`_review.md`、`tools/`、`_image-slim-report.json`），`_backup/`、`demos/`、`watermark.svg` 仍在 `.gitignore` 里（仅本地保留）。理由是前者没有版本历史就只能靠本机磁盘活着、且与 `public/` 的改动一一对应；后者要么 git 历史里本来就有一份（`_backup/index-vNN.html` 就是各次提交的副本），要么是一次性产物。
+  - 📄 `dev/_private/Bili-Feedback.md` 是**视频评论区专用手册**（抓全评论 / 核查口径 / 用 API 回帖的三个坑）。它是写给作者本人和后续 agent 的**仅本地保存的内部操作记录，不再纳入后续仓库版本**（README、页面、对外文案里都不要提）。
+  ⚠️ 已跟踪的开发文档可随仓库公开阅读，并非私密文件；仅本地资料应放入被忽略的 `dev/_private/`。历史版本仍可能包含旧手册，本次不改写历史。
   ⚠️ **`dev/` 仍然不会上站**（CI 只传 `public/`）：公开可见 ≠ 交付物，README 里不要把 `dev/` 当交付物引用。
 
 ## 3. 页面结构：十一视图 + hash 路由

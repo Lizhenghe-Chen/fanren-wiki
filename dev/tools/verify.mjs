@@ -171,7 +171,7 @@ const HELPERS = `
   };
 `
 
-const VIEWS = ['v-home', 'v-chars', 'v-lore', 'v-map', 'v-realms', 'v-beasts', 'v-herbs', 'v-treasures', 'v-gongfa', 'v-zhenfa', 'v-fu']
+const VIEWS = ['v-home', 'v-chars', 'v-lore', 'v-map', 'v-realms', 'v-mortal', 'v-beasts', 'v-herbs', 'v-treasures', 'v-gongfa', 'v-zhenfa', 'v-fu']
 
 /* ---------- 主流程 ---------- */
 const { proc, profile, send, evaluate, viewport, goto, pageErrors } = await launch()
@@ -185,8 +185,8 @@ try {
   await goto(TARGET)
   await evaluate(HELPERS)
 
-  check('十一个视图容器齐全',
-    await evaluate(`document.querySelectorAll('.view').length`) === 11,
+  check('十二个视图容器齐全',
+    await evaluate(`document.querySelectorAll('.view').length`) === VIEWS.length,
     `实际 ${await evaluate(`document.querySelectorAll('.view').length`)} 个`)
 
   /* 分批渲染是设计（先挂首批、滚动续传），先测「没一次性铺全」，再加载全量测结构 ——
@@ -271,7 +271,7 @@ try {
   check('被引数最高者 > 100（韩立应是全网中心）', refs.max > 100, `最高被引 ${refs.max}`)
 
   const h1s = await evaluate(`JSON.stringify(${JSON.stringify(VIEWS)}.map(id => document.querySelectorAll('#' + id + ' h1').length))`)
-  check('十一个视图各有且仅有一个 h1', h1s === '[1,1,1,1,1,1,1,1,1,1,1]', h1s)
+  check('十二个视图各有且仅有一个 h1', JSON.parse(h1s).every(n=>n===1), h1s)
 
   /* 开源入口：顶栏图标 / hero 按钮 / 首页卡片 / 页脚四处必须指向同一个仓库，且图标是真实
      渲染出来的（防 SVG 路径写空、或断点把它藏了）。顶栏图标在 ≤1100px 会让位给 7 个视图
@@ -340,7 +340,7 @@ try {
       const o = await evaluate(`window.__overflow()`)
       if (o > 0) bad.push(`${v} +${o}px`)
     }
-    check(`${label} 十一个视图均无横向溢出`, bad.length === 0, bad.join('，'))
+    check(`${label} 十二个视图均无横向溢出`, bad.length === 0, bad.join('，'))
 
     const strips = await evaluate(`JSON.stringify(window.__stripText())`)
     check(`${label} 无被压成竖条的文本`, strips === '[]', strips)
@@ -890,6 +890,19 @@ try {
   check('访问统计显示起点自洽（BASE_PV = TARGET_PV − VERCOUNT_AT_SWITCH，且真的相加）',
     baseNums.推式 && baseNums.相加 && Number(baseNums.TARGET) > Number(baseNums.SWITCH),
     JSON.stringify(baseNums))
+
+  /* 微调版：保留十维结构，职业小幅分档、精力可不参与。 */
+  await evaluate(`location.hash='#v-mortal'`); await sleep(100)
+  check('十项表单保留且身体状态默认参与', await evaluate(`document.querySelectorAll('#v-mortal .mc-field').length===10 && document.getElementById('mc-health').value==='2.8'`))
+  check('职业恢复原版分档', await evaluate(`Math.min(...[...document.getElementById('mc-job').options].map(o=>Number(o.value)))===0.3 && Math.max(...[...document.getElementById('mc-job').options].map(o=>Number(o.value)))===2 && document.getElementById('mc-job').options.length===22`))
+  check('结果无短板点评，稀有度明确为同人设定', await evaluate(`!/(短板|白手起家|别辜负)/.test(document.getElementById('mc-comment').textContent) && document.getElementById('mc-pct-num').parentNode.textContent.includes('境界稀有度') && document.querySelector('.mc-verdict').textContent.includes('非真实人口或用户排名')`))
+
+  await evaluate(`document.querySelectorAll('#v-mortal select').forEach(el=>{el.selectedIndex=el.options.length-1;el.dispatchEvent(new Event('change'));})`)
+  const fullHealthScore = Number(await evaluate(`document.getElementById('mc-score-num').textContent`))
+  await evaluate(`document.getElementById('mc-health').value='';document.getElementById('mc-health').dispatchEvent(new Event('change'))`)
+  check('最高身体状态不再低于不参与', fullHealthScore >= Number(await evaluate(`document.getElementById('mc-score-num').textContent`)))
+  await evaluate(`document.getElementById('mc-reset').click()`)
+  check('学识术语与雷达图说明已校正', await evaluate(`document.querySelector('label[for="mc-edu"]').textContent.includes('教育与研究积累') && !document.getElementById('mc-edu').textContent.includes('博导') && document.querySelector('.mc-result').textContent.includes('不是每项完成度')`))
 
   /* ========== 4. 控制台 ========== */
   check('控制台与页面均无报错', pageErrors.length === 0, pageErrors.slice(0, 3).join(' | '))

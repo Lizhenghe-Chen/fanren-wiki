@@ -1201,7 +1201,7 @@ body.v-map-on .navbar{display:none!important}
         <div class="stat"><b id="home-st-gongfa">0</b><span>功法</span></div>
         <div class="stat"><b id="home-st-zhenfa">0</b><span>阵法</span></div>
         <div class="stat"><b id="home-st-fu">0</b><span>符箓</span></div>
-        <div class="stat" id="stat-views" style="display:none" title="全站累计浏览次数（数据来源：Vercount site_pv）"><b id="stat-views-num">0</b><span>次浏览</span></div>
+        <div class="stat" id="stat-views" style="display:none" title="全站累计浏览次数（数据来源：Vercount site_pv）"><b id="stat-views-num">0</b><span>次浏览</span><small style="display:block;font-size:10px;line-height:1.5;color:var(--ink3)">含迁移前约 1.3 万次历史估算</small></div>
       </div>
     </div>
     <div class="hero-cover">
@@ -1321,7 +1321,7 @@ body.v-map-on .navbar{display:none!important}
     <span class="repo-mark"><svg width="22" height="22" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg></span>
     <span class="repo-body">
       <b class="repo-name">Lizhenghe-Chen / fanren-wiki</b>
-      <span>纯静态站点，无构建步骤、无第三方请求，脚本与样式都在本仓库内。页面代码与原创内容依 <b>CC BY-NC-SA 4.0</b> 授权（署名 · 非商用 · 相同方式共享），禁止商业使用；角色图片为第三方素材，不在授权范围内。</span>
+      <span>纯静态站点，无构建步骤，静态资源本地提供；浏览统计会请求第三方服务。页面代码与原创内容依 <b>CC BY-NC-SA 4.0</b> 授权（署名 · 非商用 · 相同方式共享），禁止商业使用；角色图片为第三方素材，不在授权范围内。</span>
     </span>
     <span class="repo-go">前往仓库 →</span>
   </a>
@@ -1458,7 +1458,7 @@ body.v-map-on .navbar{display:none!important}
       <p class="plot-credit">
         本页内容整理自微信公众号「书生去哪了」原创文章
         <a href="https://mp.weixin.qq.com/s/jbp5FD4rk07W4aeNd9wFXQ" target="_blank" rel="noopener">《凡人修仙传》情节梳理（全）</a>（2026-05-27 发布），
-        版权归原作者所有，此处引用仅作学习交流，转载请保留本声明并附原文链接。
+        版权归原作者所有，未获转载授权或背书，此处仅作学习交流展示；转载请保留本声明并附原文链接。
       </p>
       <div class="plot-list" id="plotList"></div>
       <p class="plot-credit plot-credit-foot">
@@ -1724,7 +1724,7 @@ body.v-map-on .navbar{display:none!important}
 <!-- ============================================================
      仙凡对照 · 境界换算（v-mortal）
      以人界五境映照现实社会：学识=灵根·悟性，神识=认知储备，职业=功法，职位=境界，
-     财富=资源，人脉=道统，健康=道基，影响力=道果。
+     财富=资源，人脉=道统，近期精力=可选道基，影响力=道果。
      ============================================================ -->
 <div class="view" id="v-mortal">
 <header class="page-head">
@@ -1739,7 +1739,7 @@ body.v-map-on .navbar{display:none!important}
     </div>
   </div>
   <div class="wrap">
-    <p class="ph-lead">修仙看灵根、功法、资源、机缘、寿元；现实看学识、神识、职业、职位、财富、人脉、健康。职业无贵贱，境界看你在这个领域做到什么程度；财富还分"自己挣的"和"家里给的"两笔账。在下面的换算器里如实选择，就能算出你此刻的凡间"修为"，还能看看各境界都有哪些现实中的人物。</p>
+    <p class="ph-lead">修仙看灵根、功法、资源、机缘、寿元；现实看学识、神识、职业、职位、财富、人脉与近期精力。职业按原版分档参与换算，境界结合专业阶段与各项积累；家庭支持只作小幅助力，近期精力可选择不参与。在下面的换算器里如实选择，就能算出你此刻的凡间"修为"，还能看看不同成就与境界之间的趣味联想。</p>
   </div>
 </header>
 
@@ -1749,10 +1749,10 @@ body.v-map-on .navbar{display:none!important}
     <div class="mc-stance-title">先说立场 · 请务必一阅</div>
     <ul class="mc-stance-list">
       <li><b>纯属娱乐：</b>本页是《凡人修仙传》的同人趣味创作，境界换算为虚构类比，不科学、不严谨，不构成任何现实评价、排名、诊断或建议。</li>
-      <li><b>职业无贵贱、人格皆平等：</b>分值只粗略反映"入行门槛、资源稀缺度"的统计差异，绝不代表职业或人的高低尊卑；靠双手吃饭的每一份工作都值得尊重。</li>
-      <li><b>人物仅为示意：</b>现实人物举例只为帮助理解，不代表本项目立场，不构成对任何在世人物的褒贬或排名；归类难免主观、疏漏。</li>
-      <li><b>数据为粗略参考：</b>财富、收入、人群比例引用公开统计并做了大幅简化与主观映射，并不精确，请勿用一个结果定义自己或他人。</li>
-      <li><b>不宣扬宿命与阶层固化：</b>所有维度都是"此刻的快照"，随时可改、可升；出身只作小幅助力，真正的上限握在你自己手里。</li>
+      <li><b>职业无贵贱、人格皆平等：</b>职业基础系数仅为游戏设定，不代表社会贡献排名；专业阶段与实际成果另行体现，绝不代表职业或人的高低尊卑；靠双手吃饭的每一份工作都值得尊重。</li>
+      <li><b>贡献仅作联想：</b>现实人物仅以一项具体贡献作联想，不对人物综合实力定级；不同领域的贡献不可据此比较高低。</li>
+      <li><b>数据为粗略参考：</b>财富、收入分档经过简化与主观映射；进度仅表示本页游戏刻度，不代表人口比例，请勿用一个结果定义自己或他人。</li>
+      <li><b>不宣扬宿命与阶层固化：</b>所有维度只是"此刻的快照"，不预测人生结果；家庭支持仅为可选档位中的助力，不定义个人价值。</li>
       <li><b>请勿标签化：</b>不要用结果贬低自己，更不要据此歧视任何职业、学历、出身的人——仙路漫漫，各有各的机缘。</li>
     </ul>
   </div>
@@ -1761,7 +1761,7 @@ body.v-map-on .navbar{display:none!important}
 <!-- ===== 境界换算器 ===== -->
 <section class="wrap mortal-sec" id="mortal-calc">
   <div class="sec-title">境界换算器</div>
-  <div class="sec-desc">在下列十项中选择最符合你当前情况的一项，结果会实时更新；财富分"自己挣的"与"父母给的"两笔账。</div>
+  <div class="sec-desc">在下列十项中选择最符合你当前情况的一项，结果会实时更新；各职业按原版分档参与换算，家庭支持包括照护、经验、教育与资源，身体状态默认参与综合换算，也可选择不参与。</div>
 
   <div class="mc-name">
     <label for="mc-name-input">道号 / 昵称（选填）</label>
@@ -1770,7 +1770,7 @@ body.v-map-on .navbar{display:none!important}
 
   <div class="mc-grid">
     <div class="mc-field">
-      <label for="mc-edu">学识 / 学历（灵根 · 悟性）</label>
+      <label for="mc-edu">学识 / 教育与研究积累（灵根 · 悟性）</label>
       <select id="mc-edu" data-key="edu">
         <option value="0.2">初中及以下 / 未受过系统教育</option>
         <option value="0.7">高中 / 中专</option>
@@ -1779,8 +1779,9 @@ body.v-map-on .navbar{display:none!important}
         <option value="1.7">硕士</option>
         <option value="2.3">博士</option>
         <option value="2.8">博士后 / 青年学者</option>
-        <option value="3.3">教授 / 研究员（博导）</option>
-        <option value="4.0">院士 / 学术泰斗</option>
+        <option value="3.3">教授 / 研究员</option>
+        <option value="4.5">院士 / 领域学术权威</option>
+        <option value="4.9">开创性学术贡献 / 奠定学科或理论体系</option>
       </select>
     </div>
 
@@ -1797,11 +1798,11 @@ body.v-map-on .navbar{display:none!important}
     </div>
 
     <div class="mc-field">
-      <label for="mc-job">职业领域（功法）</label>
+      <label for="mc-job">职业领域（功法 · 基础系数）</label>
       <select id="mc-job" data-key="job">
         <optgroup label="基础服务 · 体力">
           <option value="0.4">在校 / 待业 / 退休</option>
-          <option value="0.3">居家 / 家庭主妇 / 全职妈妈</option>
+          <option value="0.3">居家 / 家庭照护 / 全职育儿</option>
           <option value="0.9">务农 / 农林牧渔</option>
           <option value="1.0" selected>外卖 / 快递 / 配送</option>
           <option value="1.0">餐饮 / 零售 / 生活服务</option>
@@ -1831,24 +1832,24 @@ body.v-map-on .navbar{display:none!important}
     </div>
 
     <div class="mc-field">
-      <label for="mc-pos">职位 / 职级（境界）</label>
+      <label for="mc-pos">专业阶段 / 职责范围（境界）</label>
       <select id="mc-pos" data-key="pos">
-        <option value="0.2">无职级 / 学生 / 居家 / 退休</option>
-        <option value="0.4">刚入行 / 学徒 / 实习（含在校研究生）</option>
-        <option value="1.2" selected>能独立干活 / 熟练工（住院医师 / 助教级）</option>
-        <option value="1.8">业务骨干 / 带新人（初级职称 · 助教 / 住院医师）</option>
-        <option value="2.4">资深 / 组长（中级职称 · 讲师 / 主治医师 · 科级）</option>
-        <option value="3.0">团队负责人 / 主管（副高 · 副教授 / 副主任医 · 处级）</option>
-        <option value="3.6">经理 / 总监（正高 · 教授 / 主任医 · 厅级）</option>
-        <option value="4.3">高层 / 企业主 / 合伙人（省部级 · 将官）</option>
-        <option value="4.9">行业标杆 / 院士 / 学术泰斗</option>
+        <option value="0.2">尚在探索 / 暂无专业实践</option>
+        <option value="0.4">入门学习 / 学徒 / 实习</option>
+        <option value="1.2" selected>能独立完成常见任务</option>
+        <option value="1.8">熟练骨干 / 能指导新人</option>
+        <option value="2.4">资深实践者 / 能处理复杂任务</option>
+        <option value="3.0">负责项目 / 组织团队协作</option>
+        <option value="3.6">领域专家 / 主导重要项目</option>
+        <option value="4.3">建立成熟体系 / 成果获广泛采用</option>
+        <option value="4.9">开创性贡献 / 推动领域发展</option>
       </select>
     </div>
 
     <div class="mc-field">
       <label for="mc-pwealth">个人净资产（己力 · 资源）</label>
       <select id="mc-pwealth" data-key="pwealth">
-        <option value="0.1">资不抵债</option>
+        <option value="0.1">净资产为负</option>
         <option value="0.5">无积蓄（学生 / 刚工作）</option>
         <option value="0.8" selected>10 万以下</option>
         <option value="1.4">10–50 万</option>
@@ -1865,17 +1866,17 @@ body.v-map-on .navbar{display:none!important}
     </div>
 
     <div class="mc-field">
-      <label for="mc-family">家庭出身（家底 · 助力）</label>
+      <label for="mc-family">家庭支持（家底 · 助力）</label>
       <select id="mc-family" data-key="family">
-        <option value="0.1">低保 / 贫困 / 无依无靠</option>
-        <option value="0.5">温饱家庭，少有积蓄</option>
-        <option value="0.9">普通工薪 / 务农，能自立</option>
-        <option value="1.4" selected>小康，能供读书、略有积蓄</option>
-        <option value="1.9">城镇中产，有房有产，能托底</option>
-        <option value="2.4">家境殷实，可支援首付 / 留学</option>
-        <option value="3.0">富裕家庭（数百万级），资源充足</option>
-        <option value="3.7">高净值（千万级），平台可继承</option>
-        <option value="4.7">豪门 / 家族企业（亿级），可继承事业</option>
+        <option value="0.1">主要靠自己，家庭难提供经济支持</option>
+        <option value="0.5">能帮日常生活，额外积蓄较少</option>
+        <option value="0.9">普通工薪 / 务农，能帮衬日常开支</option>
+        <option value="1.4" selected>能支持读书、应急，略有积蓄</option>
+        <option value="1.9">有房或稳定积蓄，能提供生活托底</option>
+        <option value="2.4">可资助首付 / 留学等较大开支</option>
+        <option value="3.0">家庭资产数百万级，可持续支援</option>
+        <option value="3.7">家庭资产千万级，可提供较充足资源</option>
+        <option value="4.7">家庭资产亿级，可提供事业平台</option>
       </select>
     </div>
 
@@ -1902,20 +1903,21 @@ body.v-map-on .navbar{display:none!important}
         <option value="0.3">基本只有亲友，遇事靠家人</option>
         <option value="1.2" selected>同事 / 同行熟人，能互相帮衬</option>
         <option value="1.9">行业内稳定人脉，办事找得到人</option>
-        <option value="2.6">跨行业，能约到科长 / 处长级办事</option>
-        <option value="3.5">政商学高层，能约到厅局级、企业高管</option>
-        <option value="4.5">顶层圈子，与省部级、行业大佬平起平坐</option>
+        <option value="2.6">能协调跨团队或跨领域合作</option>
+        <option value="3.5">有持续的跨组织、跨领域合作网络</option>
+        <option value="4.5">能组织广泛、长期的跨地域合作</option>
       </select>
     </div>
 
     <div class="mc-field">
-      <label for="mc-health">健康 / 精力（道基）</label>
+      <label for="mc-health">身体状态 / 精力（道基）</label>
       <select id="mc-health" data-key="health">
-        <option value="0.2">重病 / 慢性病缠身</option>
-        <option value="1.1">亚健康 / 体弱</option>
-        <option value="1.7" selected>一般、正常</option>
-        <option value="2.3">健康、精力充沛</option>
-        <option value="3.0">强健、体能拔尖</option>
+        <option value="">暂不参与换算</option>
+        <option value="0.3">需要较多休整 / 日常活动受限</option>
+        <option value="1.8">体能偏弱 / 容易疲劳</option>
+        <option value="2.8" selected>日常活动自如 / 精力一般</option>
+        <option value="3.8">身体状态良好 / 精力充沛</option>
+        <option value="5.0">体能与恢复状态很好</option>
       </select>
     </div>
 
@@ -1938,11 +1940,14 @@ body.v-map-on .navbar{display:none!important}
         <div class="mc-verdict-label" id="mc-label">你当前的凡间修为</div>
         <div class="mc-verdict-big" id="mc-big">炼气期</div>
         <div class="mc-verdict-sub" id="mc-sub"></div>
-        <div class="mc-pct">已超越约 <b id="mc-pct-num">0</b>% 的人</div>
+        <div class="mc-hint" style="margin-bottom:8px">综合修为 <b id="mc-score-num">0.000</b></div>
+        <div class="mc-pct">境界稀有度 · 约前 <b id="mc-pct-num">0</b>%</div>
+        <div class="mc-hint" style="margin-bottom:10px">同人设定 · 非真实人口或用户排名</div>
         <div class="mc-bar"><span id="mc-bar-fill"></span></div>
       </div>
       <div class="mc-radar" id="mc-radar" aria-label="十维度境界雷达图"></div>
     </div>
+    <p class="mc-hint" style="margin-top:12px;line-height:1.7">雷达图使用统一的 0—5 游戏分值，不是每项完成度；选到该项最高档，也不一定填满该轴。</p>
     <div class="mc-comment" id="mc-comment"></div>
     <div class="mc-actions">
       <button type="button" id="mc-reset" class="mc-btn">重新选择</button>
@@ -1951,40 +1956,37 @@ body.v-map-on .navbar{display:none!important}
   </div>
 </section>
 
-<!-- ===== 各境界 · 现实人物对照 ===== -->
+<!-- ===== 各境界 · 单项成就联想 ===== -->
 <section class="wrap mortal-sec">
-  <div class="sec-title">各境界 · 现实人物对照</div>
-  <div class="sec-desc">为方便理解，按公开的行业地位与成就列举各境界的代表性人物，仅为趣味类比，不构成任何排名，亦不代表本人立场。「化神之上」已超单个个体尺度，列为非人格化的存在与现象，仅供联想。</div>
+  <div class="sec-title">各境界 · 单项成就联想</div>
+  <div class="sec-desc">以下以具体贡献作趣味联想，不是人物综合实力榜，也不代表未列出者低于列出者。每一项只关联所列贡献，不对人物整体定级。「化神之上」已超单个个体尺度，列为非人格化的存在与现象，仅供联想。</div>
   <div class="mf-grid">
     <div class="mf-card mf-6">
       <div class="mf-head"><b class="mc-r mc-r6">化神之上</b><span>超出人界 · 非个体存在（趣味联想）</span></div>
-      <div class="mf-group">炼虚 · 思想飞升（已故而仍运转世界）</div>
+      <div class="mf-group">炼虚 · 知识成体系（超越个人传承）</div>
       <ul class="mf-list">
-        <li><b>孔子 / 老子</b><i>肉身已逝两千余年，东方文明的底层代码至今仍运转</i></li>
-        <li><b>马克思</b><i>一种思想改写全球政治版图，影响力远超其本人</i></li>
-        <li><b>牛顿 / 爱因斯坦</b><i>定律统治物理世界，后人皆在其"神识"笼罩下修行</i></li>
+        <li><b>数学与逻辑</b><i>由无数人接续积累，成为跨学科推演与表达的共同语言</i></li>
+        <li><b>科学方法</b><i>观察、检验与修正不断传承，方法的生命长于个人</i></li>
       </ul>
       <div class="mf-group">合体 · 组织之灵（无数个体合为一体）</div>
       <ul class="mf-list">
-        <li><b>Google / 苹果</b><i>公司即意志，单个人只是它的细胞</i></li>
-        <li><b>央行体系 / 美联储</b><i>无形之手，调度全球资金流向</i></li>
-        <li><b>国家机器</b><i>人界最大规模的"合体"存在</i></li>
+        <li><b>大型协作组织</b><i>不同专长长期配合，形成个人难以独立完成的协作能力</i></li>
       </ul>
       <div class="mf-group">大乘 · 文明化身</div>
       <ul class="mf-list">
-        <li><b>互联网</b><i>人类集体意识的载体，无人能真正"退出"</i></li>
-        <li><b>通用人工智能</b><i>新物种正在成形，人类是它的算力单元</i></li>
+        <li><b>互联网</b><i>跨地域连接知识与协作，联想为文明尺度的网络</i></li>
+        <li><b>通用人工智能（设想）</b><i>若能实现广泛的通用能力，或将改变文明协作方式；仅作未来联想</i></li>
       </ul>
-      <div class="mf-group">渡劫 · 文明关口（天地不容）</div>
+      <div class="mf-group">渡劫 · 文明关口（共同面对的挑战）</div>
       <ul class="mf-list">
-        <li><b>核平衡</b><i>悬在全体人类头顶的劫云</i></li>
-        <li><b>气候临界点</b><i>渡过则进入新纪元，渡不过则文明重启</i></li>
-        <li><b>AGI 对齐</b><i>新一轮天劫，尚未有人敢言稳渡</i></li>
+        <li><b>核风险防范</b><i>需要长期合作与审慎治理的共同课题</i></li>
+        <li><b>气候临界点</b><i>联想为需要跨世代持续应对的环境关口</i></li>
+        <li><b>技术风险治理</b><i>发展新能力的同时，建立相应的约束与保障</i></li>
       </ul>
-      <div class="mf-group">真仙 · 离开人界</div>
+      <div class="mf-group">真仙 · 超出地球尺度（科幻设想）</div>
       <ul class="mf-list">
-        <li><b>星际文明</b><i>已脱离地球尺度，人界法则不再束缚</i></li>
-        <li><b>数字永生</b><i>意识脱离肉身，"尘世难容其身"</i></li>
+        <li><b>星际文明（设想）</b><i>若有跨恒星的长期生存与协作，可联想为离开人界</i></li>
+        <li><b>数字生命（设想）</b><i>设想生命以数字形式延续，借此联想存在方式的变化，并非已实现的事实</i></li>
       </ul>
     </div>
     <div class="mf-card mf-5">
@@ -2014,11 +2016,6 @@ body.v-map-on .navbar{display:none!important}
       <ul class="mf-list">
         <li><b>黄仁勋</b><i>英伟达，AI 算力时代的奠基者，GPU 写进教科书</i></li>
         <li><b>山姆·奥特曼</b><i>OpenAI，ChatGPT 引爆 AI 应用时代</i></li>
-      </ul>
-      <div class="mf-group">国家治理者（不点名）</div>
-      <ul class="mf-list">
-        <li><b>开国元勋 / 共和国奠基人</b><i>改天换地，奠定一国之基业</i></li>
-        <li><b>国家领导人（历届）</b><i>治国理政，影响亿万人的命运</i></li>
       </ul>
       <div class="mf-group">思想源头（历史）</div>
       <ul class="mf-list">
@@ -2050,7 +2047,7 @@ body.v-map-on .navbar{display:none!important}
       </ul>
       <div class="mf-group">学术</div>
       <ul class="mf-list">
-        <li><b>两院院士</b><i>全国约 1900 人，学科带头人</i></li>
+        <li><b>两院院士</b><i>2025 年增选后，中科院 908 位、工程院 1002 位；此为当时两院各自人数</i></li>
         <li><b>屠呦呦</b><i>青蒿素，诺贝尔生理学或医学奖</i></li>
         <li><b>哈萨比斯</b><i>DeepMind，AlphaGo / AlphaFold，诺贝尔化学奖</i></li>
         <li><b>李飞飞</b><i>ImageNet，现代 AI 先驱、三院院士</i></li>
@@ -2064,7 +2061,7 @@ body.v-map-on .navbar{display:none!important}
       </ul>
       <div class="mf-group">新兴 · 文化消费</div>
       <ul class="mf-list">
-        <li><b>头部主播 / 顶流</b><i>李佳琦等，年入可达十亿级</i></li>
+        <li><b>头部主播 / 顶流</b><i>内容传播、制作与运营形成较广影响</i></li>
         <li><b>蔡浩宇 / 王宁</b><i>米哈游（原神）、泡泡玛特（Labubu）</i></li>
       </ul>
     </div>
@@ -2120,8 +2117,8 @@ body.v-map-on .navbar{display:none!important}
       </ul>
       <div class="mf-group">体力 · 服务</div>
       <ul class="mf-list">
-        <li><b>外卖骑手 / 快递员</b><i>靠一份体力活谋生</i></li>
-        <li><b>流水线工人 / 临时工</b><i>重复劳动，可替代性强</i></li>
+        <li><b>外卖骑手 / 快递员</b><i>承担配送、路线安排与履约工作</i></li>
+        <li><b>流水线工人 / 临时工</b><i>承担生产、操作与现场执行工作</i></li>
         <li><b>普通服务岗 / 小店员</b><i>餐饮、零售、基础服务</i></li>
       </ul>
     </div>
@@ -2132,15 +2129,15 @@ body.v-map-on .navbar{display:none!important}
 <section class="wrap mortal-sec">
   <div class="sec-title">口径、立场与数据来源</div>
   <div class="mc-src">
-    <p>· 收入分层参考国家统计局居民收入五等份分组（2025 年高收入组人均可支配收入约 10.4 万元）；中等收入群体按家庭年入 10–50 万口径，规模约 4 亿人。</p>
-    <p>· 财富门槛参考胡润财富报告：600 万资产"富裕家庭"约 500 余万户、千万资产"高净值家庭"约 200 万户、亿元资产"超高净值家庭"约 12.6 万户；50 亿以上企业家约 1400 余人。</p>
-    <p>· 财富分两笔账：「个人净资产」按你（含配偶）自己小家庭、自己挣得的口径填写；「家庭出身」专指原生家庭（父母）能调动的资源与平台。前者是自身修为，后者是出身助力、只做小幅加成。</p>
-    <p>· 境界看长板而非样样平均：自身 9 维取最高 3 维做几何平均（对短板敏感），再与整体加权混合——所以偏科的天才（思想家、科学家、企业家）也能凭核心修为走到高境界。</p>
-    <p>· <b>换算公式（页面上所有结果均由以下公式实时算出，非人工预设）：</b>① 每维选档即取该维评分 v（0–5，选项分值见各下拉框）；② 自身线性加权 Ws＝Σ(vᵢ×权重ᵢ)，长板项 Ts＝最高 3 维评分的几何平均；③ 自身修为＝Ts×0.76＋Ws×0.24；④ 家庭出身非对称加成 S＝自身修为＋(家庭出身−自身修为)×0.12（仅当家庭出身高于自身时生效，只加不罚）；⑤ S 落入 21 档区间即得境界（凡人 0–0.45 / 炼气 0.45–1.4 / 筑基 1.4–2.4 / 结丹 2.4–3.4 / 元婴 3.4–4.4 / 化神 4.4–5.01）；⑥ 「超越多少人」由 S 对照 11 个锚点（0.9→40%、1.4→72%、2.4→93%、3.4→99%…）分段线性插值而来。</p>
-    <p>· 「职业」「健康」两维刻意设了低于化神的上限：职业是"功法 / 赛道"而非境界本身，高度由职位、成就、影响力去修；健康是"道基"，人类肉身有物理上限，现实中不存在化神级体魄。所以雷达图上这两轴天生填不满外圈，属正常设计，不是漏项。</p>
-    <p>· 学历线对应学术成长路径（本科→硕士→博士→博士后→教授→院士），以学历近似"灵根 / 悟性"；「神识」单列，指认知储备、见识与判断力——学历是"认证"，神识是"实质"，二者不完全等同。职级线对应行政级别（科级 / 处级 / 厅级 / 省部级）与职称（初级 / 中级 / 副高 / 正高）。</p>
+    <p>· 收入背景：国家统计局公布的 2025 年高收入组人均可支配收入为 103,778 元，这是最高五分之一组的平均数，不是进入该组的门槛，也不等于个人税前年薪。<a href="https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html" target="_blank" rel="noopener">统计局原文</a>。国家发改委 2021 年资料以典型三口之家年收入 10—50 万元说明当时超过 4 亿人的中等收入群体，不能直接套用于任意家庭规模或视为 2026 年新统计。<a href="https://www.ndrc.gov.cn/fggz/fzzlgh/gjfzgh/202112/t20211224_1309504_ext.html" target="_blank" rel="noopener">来源说明</a>。这些数据只作背景，不用于推算本页分数或真实人口排名。</p>
+    <p>· 财富背景：《2025东亚银行·胡润财富报告》于 2026 年 6 月发布，数据截至 2025 年 1 月 1 日、研究范围含港澳台：600 万资产家庭 506 万户、千万资产家庭 200.5 万户、亿元资产家庭 12.6 万户。报告中的家庭总财富、可投资资产与本页个人或小家庭净资产不是同一口径。<a href="https://hurun.cn/zh-CN/Info/Detail?num=CVWLBLAWHVHX" target="_blank" rel="noopener">报告与方法</a>。2026 胡润百富榜有 1,529 位财富达 50 亿元人民币以上的上榜企业家，财富截至 2026 年 9 月 1 日，属于榜单估算而非人口普查。<a href="https://www.hurun.net/zh-CN/Info/Detail?num=NQ4RKN4DO34P" target="_blank" rel="noopener">榜单原文</a>。</p>
+    <p>· 「个人净资产」按个人或小家庭净资产选择；「家庭支持」按原生家庭实际能提供的帮助选择，资产量级仅作参照；有资产不等于能获得支持，请以读书、应急、首付等实际可获得的支援为准。该项只作小幅助力，不评价出身或个人价值。</p>
+    <p>· 境界看长板而非样样平均：除身体状态外，取最高 3 维做几何平均（反映这三项的组合），再与整体加权混合——所以偏科的天才（思想家、科学家、企业家）也能凭核心修为走到高境界。</p>
+    <p>· <b>换算公式（页面上所有结果均由以下公式实时算出，非人工预设）：</b>① 每维选档即取该维评分 v（0–5，选项分值见各下拉框）；② 自身加权均值 Ws＝Σ(vᵢ×权重ᵢ)÷参与项权重之和，长板项 Ts＝除身体状态外最高 3 维评分的几何平均；③ 自身修为＝Ts×0.76＋Ws×0.24；④ 家庭支持非对称加成 S＝自身修为＋(家庭支持−自身修为)×0.12（仅当家庭支持档位高于自身时生效，只加不罚）；⑤ S 落入 21 档区间即得境界（凡人 0–0.45 / 炼气 0.45–1.4 / 筑基 1.4–2.4 / 结丹 2.4–3.4 / 元婴 3.4–4.4 / 化神 4.4–5.01）；⑥ 「境界稀有度」来自本站原创的分段曲线，例如筑基门槛约前 28%、结丹约前 7%、元婴约前 1%、化神约前 0.15%；这些百分位仅为同人设定，没有真实人口或用户样本支撑，不表示现实排名。进度条表示曲线位置；近期精力不参与时，该项不计分、其余权重归一化，雷达图该轴标注「未参与」。</p>
+    <p>· 职业保留原版 0.3—2.0 分档与 0.09 权重，并参与长板计算；它是本站游戏设定，不是官方社会贡献分。身体状态保留 0.12 权重、不进入最高三项；五档按统一游戏尺度校准为 0.3、1.8、2.8、3.8、5.0，默认一般状态 2.8，最高状态不会拉低相较不参与时的得分。健康选项不是医疗评估，不作短板点评；不参与时不计分，雷达点留空。职业最高档低于 5 分是原版设计，不是漏项。</p>
+    <p>· 学识采用教育与研究积累作游戏参照：学历／学位、博士后科研经历、教授等职称、院士荣誉与开创性成果是不同路径，不是人人必须依次晋升的阶梯。博士后不是更高学位，博导是岗位而非教授的同义称呼；开创性贡献也不是院士以上的正式称号。<a href="https://www.moe.gov.cn/moe_879/moe_1252/moe_1279/tnull_17796.html" target="_blank" rel="noopener">教育部说明</a> · <a href="https://www.moe.gov.cn/srcsite/A22/s7065/202009/t20200927_491838.html" target="_blank" rel="noopener">导师岗位说明</a>。「神识」另指见识与判断力；专业阶段按实际经验与职责选择，不由当前学历或在校、退休等身份直接决定。</p>
     <p>· 境界寿元引自原著设定（炼气约百年、筑基约二百年、结丹约五百年、元婴约千年）。</p>
-    <p>· <b>立场与免责：</b>本页为《凡人修仙传》非官方同人趣味创作，与原著作者、出品方及任何被提及的个人、机构无关；所有境界映射、权重、人物归类与百分比均为主观设定，不科学、不精确，不构成排名、评价、诊断或任何建议。列举现实人物仅为帮助理解，不代表本人立场，亦无褒贬之意。相关数据与名称的著作权归各自权利人所有，如有异议请联系。请仅作娱乐，勿据此定义、贬低自己或他人。</p>
+    <p>· <b>立场与免责：</b>本页为《凡人修仙传》非官方同人趣味创作，与原著作者、出品方及任何被提及的个人、机构无关；所有境界映射、权重、贡献联想与进度百分比均为主观设定，不科学、不精确，不构成排名、评价、诊断或任何建议。列举现实人物仅关联所写的一项贡献，不是人物综合排名，亦无褒贬之意。相关数据与名称的著作权归各自权利人所有，如有异议请联系。请仅作娱乐，勿据此定义、贬低自己或他人。</p>
   </div>
 </section>
 </div>
@@ -2396,7 +2393,7 @@ body.v-map-on .navbar{display:none!important}
   <div class="wrap">
     <div class="serif" style="color:var(--ink2);font-weight:700">《凡人修仙传》百科 · 全篇资料图谱</div>
     <div class="note">内容依据原著及公开资料整理。配图为网络检索素材，部分角色动画未登场，<b>仅供回忆辅助，不保证与官方形象一致</b>，有偏差以文字资料为准。</div>
-    <div class="note">地图为依原著文本的示意性重构，坐标为同人考据相对坐标、面积比例为示意（非等比——原著大晋面积约为天南十倍，图上按压缩后的「4.9 倍」表达，其余板块同理收在可读范围内），<b>非官方设定，不保证地名位置、方位与比例准确</b>；同人舆图原图版权归原作者，引用仅作学习交流。</div>
+    <div class="note">地图为依原著文本的示意性重构，坐标为同人考据相对坐标、面积比例为示意（非等比——原著大晋面积约为天南十倍，图上按压缩后的「4.9 倍」表达，其余板块同理收在可读范围内），<b>非官方设定，不保证地名位置、方位与比例准确</b>；同人舆图原图版权归原作者，未获授权或背书，引用仅作学习交流。</div>
     <div class="note">原著小说与同名改编动画《凡人修仙传》的权利归各自权利人（作者忘语、起点中文网 / 阅文集团及出版发行方；哔哩哔哩及动画出品 / 制作方），本页为个人非官方整理，与上述权利人无关联、未获授权或背书。</div>
     <div class="note">疏漏错讹请到 <a href="https://www.bilibili.com/video/BV1Ameq6vECK/" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">B 站视频评论区</a> 留言（不必注册 GitHub）；源码与技术问题走 <a href="https://github.com/Lizhenghe-Chen/fanren-wiki/issues" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none">GitHub Issues</a>。</div>
     <div class="note"><span style="color:var(--gold)">最后更新：2026-10-05</span> · <span class="stamp-note">Merge PR #1 新增故事线（本地解决冲突）</span></div>
@@ -4335,7 +4332,7 @@ function syncTargetToResults(libId, keys){
 /* ===== 仙凡对照 · 境界换算器（v-mortal）=====
    十个维度各取一个 0–5 的"境界值"（0 凡人 / 1 炼气 / 2 筑基 / 3 结丹 / 4 元婴 / 5 化神）。
    境界看"长板"而非样样平均：自身 9 维取最高 3 维做几何平均（对短板敏感），再与自身线性加权
-   混合；家庭出身（家底）是"助力"，单独做非对称小幅加成，不直接继承。权重为主观设定，仅供娱乐。 */
+   混合；家庭支持是"助力"，单独做非对称小幅加成，不直接继承。权重为主观设定，仅供娱乐。 */
 (function(){
   var DIMS=[
     {key:"edu",     name:"学识",     w:0.08},
@@ -4343,10 +4340,10 @@ function syncTargetToResults(libId, keys){
     {key:"job",     name:"职业",     w:0.09},
     {key:"pos",     name:"职位",     w:0.18},
     {key:"pwealth", name:"个人净资产", w:0.15},
-    {key:"family",  name:"家庭出身", w:0},
+    {key:"family",  name:"家庭支持", w:0},
     {key:"income",  name:"收入",     w:0.10},
     {key:"net",     name:"人脉",     w:0.12},
-    {key:"health",  name:"健康",     w:0.08},
+    {key:"health",  name:"身体状态", w:0.12},
     {key:"fame",    name:"影响力",   w:0.10}
   ];
   /* 小境界表：S 区间 -> 大境/小层/颜色/大境序号 */
@@ -4368,38 +4365,39 @@ function syncTargetToResults(libId, keys){
     {lo:3.65,hi:3.9,  major:"元婴期", sub:"中期", c:"#a68bc9", mi:4, d:"元婴凝实，神通渐广，威震一域"},
     {lo:3.9, hi:4.15, major:"元婴期", sub:"后期", c:"#a68bc9", mi:4, d:"元婴大成，瞬移千里，人界顶尖战力"},
     {lo:4.15,hi:4.4,  major:"元婴期", sub:"巅峰", c:"#a68bc9", mi:4, d:"半步化神，只待一朝顿悟，可望飞升"},
-    {lo:4.4, hi:4.55, major:"化神期", sub:"初期", c:"#e07b54", mi:5, d:"神念入化，初触法则，人界之巅的入场券"},
-    {lo:4.55,hi:4.7,  major:"化神期", sub:"中期", c:"#e07b54", mi:5, d:"法则感悟渐深，可开宗立派，言出法随"},
-    {lo:4.7, hi:4.85, major:"化神期", sub:"后期", c:"#e07b54", mi:5, d:"人界巅峰，举手投足间天地变色"},
-    {lo:4.85,hi:5.01, major:"化神期", sub:"巅峰", c:"#e07b54", mi:5, d:"人间极致，已窥灵界，尘世难容其身"}
+    {lo:4.4, hi:4.50, major:"化神期", sub:"初期", c:"#e07b54", mi:5, d:"神念入化，初触法则，人界之巅的入场券"},
+    {lo:4.50,hi:4.60,  major:"化神期", sub:"中期", c:"#e07b54", mi:5, d:"法则感悟渐深，可开宗立派，言出法随"},
+    {lo:4.60,hi:4.70, major:"化神期", sub:"后期", c:"#e07b54", mi:5, d:"人界巅峰，举手投足间天地变色"},
+    {lo:4.70,hi:5.01, major:"化神期", sub:"巅峰", c:"#e07b54", mi:5, d:"人间极致，已窥灵界，尘世难容其身"}
   ];
-  /* 超越百分比锚点（S -> %），分段线性插值 */
-  var PCT=[[0,1],[0.45,8],[0.9,40],[1.4,72],[1.9,85],[2.4,93],[2.9,96.5],[3.4,99.0],[3.9,99.5],[4.4,99.85],[5.0,99.98]];
+  /* 稀有度曲线：原创同人设定，不取自真实人口或访客样本。 */
+  var RARITY_CURVE=[[0,1],[0.45,8],[0.9,40],[1.4,72],[1.9,85],[2.4,93],[2.9,96.5],[3.4,99],[3.9,99.5],[4.4,99.85],[5,99.98]];
 
   function levelOf(s){ for(var i=0;i<LEVELS.length;i++){ if(s>=LEVELS[i].lo && s<LEVELS[i].hi) return LEVELS[i]; } return LEVELS[LEVELS.length-1]; }
   function shortName(s){ var L=levelOf(s); return L.major+(L.major==="凡人"?"":(" · "+L.sub)); }
   function pctOf(s){
-    for(var i=0;i<PCT.length-1;i++){ var a=PCT[i],b=PCT[i+1]; if(s>=a[0]&&s<=b[0]){ var t=(s-a[0])/(b[0]-a[0]); return a[1]+t*(b[1]-a[1]); } }
-    return PCT[PCT.length-1][1];
+    s=Math.max(0,Math.min(5,s));
+    for(var i=0;i<RARITY_CURVE.length-1;i++){var a=RARITY_CURVE[i],b=RARITY_CURVE[i+1];if(s<=b[0])return a[1]+(s-a[0])/(b[0]-a[0])*(b[1]-a[1]);}
+    return RARITY_CURVE[RARITY_CURVE.length-1][1];
   }
   function readVals(){ var o={}; DIMS.forEach(function(d){ o[d.key]=parseFloat(document.getElementById("mc-"+d.key).value); }); return o; }
-  /* 长板主导：自身 9 维（不含家庭出身）线性加权 Ws + 最高 3 维几何平均 Ts，混合；
-     家庭出身只在高于自身时做 12% 的非对称小幅加成（出身好是助力，自身超过出身则不惩罚）。 */
+  /* 长板主导：自身 9 维（不含家庭支持）线性加权 Ws + 最高 3 维几何平均 Ts，混合；
+     家庭支持只在高于自身时做 12% 的非对称小幅加成（支持仅作助力，自身超过支持档位则不惩罚）。 */
   function scoreOf(v){
-    var ws=0, selfVals=[];
+    var ws=0, totalWeight=0, selfVals=[];
     DIMS.forEach(function(d){
-      if(d.key==="family") return;
-      ws+=v[d.key]*d.w;
-      selfVals.push(v[d.key]);
+      if(d.key==="family" || !isFinite(v[d.key])) return;
+      ws+=v[d.key]*d.w; totalWeight+=d.w;
+      if(d.key!=="health") selfVals.push(v[d.key]);
     });
     selfVals.sort(function(a,b){ return b-a; });
     var ts=Math.pow(selfVals[0]*selfVals[1]*selfVals[2],1/3);
-    var ss=ts*0.76+ws*0.24;
+    var ss=ts*0.76+(ws/totalWeight)*0.24;
     var fm=v.family;
     return fm>ss ? ss+(fm-ss)*0.12 : ss;
   }
 
-  /* ===== 纯 Canvas 手绘十维雷达图（含家庭出身；不依赖 echarts，自带，约 3KB） ===== */
+  /* ===== 纯 Canvas 手绘十维雷达图（含家庭支持；不依赖 echarts，自带，约 3KB） ===== */
   var radarGeom=null, radarVals=null;
   var RADAR_TIERS=["凡人","炼气","筑基","结丹","元婴","化神"];
   function drawRadar(el,v){
@@ -4425,7 +4423,7 @@ function syncTargetToResults(libId, keys){
         }
         if(best<=half){
           var d=DIMS[hit], val=radarVals[d.key];
-          tip.innerHTML=d.name+" · 评分 "+val.toFixed(1)+"（刻度≈"+shortName(val)+"）";
+          tip.textContent=isFinite(val)?d.name+" · 评分 "+val.toFixed(1)+"（刻度≈"+shortName(val)+"）":d.name+" · 未参与换算";
           tip.style.display="block";
           tip.style.left=(px+12)+"px";
           tip.style.top=(py-12)+"px";
@@ -4479,26 +4477,21 @@ function syncTargetToResults(libId, keys){
     for(var i=0;i<n;i++){
       var p=pt(i,R+24), cos=Math.cos(ang(i));
       if(Math.abs(cos)<0.15)ctx.textAlign="center"; else if(cos>0)ctx.textAlign="left"; else ctx.textAlign="right";
-      ctx.fillStyle="#a89f8b"; ctx.fillText(DIMS[i].name,p[0],p[1]);
+      ctx.fillStyle="#a89f8b"; ctx.fillText(DIMS[i].key==="health"?"体能精力":DIMS[i].name,p[0],p[1]);
+      if(!isFinite(v[DIMS[i].key])){ctx.font="10px sans-serif";ctx.fillText("未参与",p[0],p[1]+14);ctx.font="12px sans-serif";}
     }
     /* 数据多边形 */
     var pts=[];
     for(var i=0;i<n;i++){
-      var val=Math.max(0,Math.min(5,v[DIMS[i].key]));
-      pts[i]=pt(i,R*val/5);
+      var val=v[DIMS[i].key];
+      pts[i]=isFinite(val)?pt(i,R*Math.max(0,Math.min(5,val))/5):null;
     }
+    var complete=pts.every(function(p){return p!==null;});
     ctx.beginPath();
-    for(var i=0;i<=n;i++){
-      var p=pts[i%n];
-      if(i===0)ctx.moveTo(p[0],p[1]); else ctx.lineTo(p[0],p[1]);
-    }
-    ctx.closePath();
-    ctx.fillStyle="rgba(212,175,106,.26)"; ctx.fill();
-    ctx.strokeStyle="#d4af6a"; ctx.lineWidth=2; ctx.stroke();
-    for(var i=0;i<n;i++){
-      ctx.beginPath(); ctx.arc(pts[i][0],pts[i][1],3.2,0,2*Math.PI);
-      ctx.fillStyle="#f0d69a"; ctx.fill();
-    }
+    if(complete){pts.forEach(function(p,i){if(i)ctx.lineTo(p[0],p[1]);else ctx.moveTo(p[0],p[1]);});ctx.closePath();ctx.fillStyle="rgba(212,175,106,.26)";ctx.fill();}
+    else{for(var i=0;i<n;i++){var p=pts[i],q=pts[(i+1)%n];if(p&&q){ctx.moveTo(p[0],p[1]);ctx.lineTo(q[0],q[1]);}}}
+    ctx.strokeStyle="#d4af6a";ctx.lineWidth=2;ctx.stroke();
+    pts.forEach(function(p){if(!p)return;ctx.beginPath();ctx.arc(p[0],p[1],3.2,0,2*Math.PI);ctx.fillStyle="#f0d69a";ctx.fill();});
     radarGeom={cx:cx,cy:cy,R:R,pts:pts};
   }
   function renderRadar(v){
@@ -4522,29 +4515,19 @@ function syncTargetToResults(libId, keys){
     var big=document.getElementById("mc-big");
     big.textContent=L.major; big.style.color=L.c;
     document.getElementById("mc-sub").textContent=L.sub+" · "+L.d;
-    document.getElementById("mc-pct-num").textContent=Math.round(pct);
+    var rarity=100-pct;
+    document.getElementById("mc-pct-num").textContent=rarity.toFixed(2);
+    document.getElementById("mc-score-num").textContent=s.toFixed(3);
     document.getElementById("mc-bar-fill").style.width=pct+"%";
-    var arr=DIMS.map(function(d){ return {name:d.name,val:v[d.key]}; }).sort(function(a,b){ return b.val-a.val; });
-    var hi=arr[0], lo=arr[arr.length-1], cmt=document.getElementById("mc-comment");
-    var html="";
-    if(hi.val-lo.val<0.5){
-      html+="<p>十维均衡，道基扎实，无明显短板——这往往是走得最远的那一类修法。</p>";
-    }else{
-      html+="<p>你的<b class='mc-hl'>"+hi.name+"</b>是长板，<b class='mc-hl'>"+lo.name+"</b>是短板，差距不小。境界看的是十维综合，单维再强也撑不起一个境界——补短板，路更长。</p>";
-    }
-    /* 两笔账：家庭出身（家底）vs 个人净资产（己力）——仅显著差异时提一句，弱化家庭标签 */
-    var pw=v.pwealth, fm=v.family;
-    if(pw-fm>=1.5){
-      html+="<p>自己挣下的积累已明显超过原生家庭起点——白手起家，每一分都含金量十足，是韩立式的路数。</p>";
-    }else if(fm-pw>=1.5){
-      html+="<p>原生家庭条件不错，是助力而非修为本身；路终究要自己走，别辜负了起点。</p>";
-    }
+    var arr=DIMS.filter(function(d){return d.key!=="family"&&d.key!=="job"&&d.key!=="health"&&isFinite(v[d.key]);}).map(function(d){ return {name:d.name,val:v[d.key]}; }).sort(function(a,b){ return b.val-a.val; });
+    var hi=arr[0],cmt=document.getElementById("mc-comment");
+    var html="<p>你的<b class='mc-hl'>"+hi.name+"</b>是本次较突出的积累，单项游戏刻度为"+shortName(hi.val)+"；综合境界为"+shortName(s)+"。</p>";
     cmt.innerHTML=html;
     renderRadar(v);
   }
 
   /* 默认值（HTML 中带 selected 的项），用于重置 */
-  var defaults={};
+  var defaults={},defaultJobIndex=document.getElementById("mc-job").selectedIndex;
   DIMS.forEach(function(d){
     var el=document.getElementById("mc-"+d.key), op=el.querySelector("option[selected]");
     defaults[d.key]=op?op.value:el.value;
@@ -4552,6 +4535,7 @@ function syncTargetToResults(libId, keys){
   });
   document.getElementById("mc-reset").addEventListener("click",function(){
     DIMS.forEach(function(d){ document.getElementById("mc-"+d.key).value=defaults[d.key]; });
+    document.getElementById("mc-job").selectedIndex=defaultJobIndex;
     var nameInput=document.getElementById("mc-name-input"); if(nameInput) nameInput.value="";
     render();
   });
