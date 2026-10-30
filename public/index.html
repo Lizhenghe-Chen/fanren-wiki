@@ -1113,6 +1113,15 @@ body.v-map-on .navbar{display:none!important}
 .mc-hint{font-size:12px;color:var(--ink3)}
 .mc-src{margin-top:12px;border-left:3px solid var(--gold);padding:4px 0 4px 14px}
 .mc-src p{font-size:12.5px;color:var(--ink2);line-height:1.8;margin-bottom:5px}
+/* 口径区块小标题（分组） */
+.mc-src .mc-h{margin:12px 0 5px;font-size:12px;color:var(--gold);letter-spacing:.12em;font-weight:700}
+.mc-src .mc-h:first-child{margin-top:0}
+/* 引用角标（上标数字，可点击跳转仓库依据文档） */
+.mc-ref{color:var(--gold);font-weight:700;text-decoration:none;font-size:10.5px;vertical-align:super;line-height:0;padding:0 1px}
+.mc-ref:hover{color:#fff;text-decoration:underline}
+/* 文档链接 */
+.mc-src a.mc-doc{color:var(--gold);text-decoration:none;border-bottom:1px dashed rgba(212,175,106,.45)}
+.mc-src a.mc-doc:hover{color:#fff;border-bottom-style:solid}
 /* 立场告示（叠甲） */
 .mc-stance{margin-top:22px;border:1px solid rgba(212,175,106,.35);border-radius:14px;background:linear-gradient(180deg,rgba(212,175,106,.07),rgba(255,255,255,.015));padding:16px 18px}
 .mc-stance-title{font-family:var(--font-serif);font-size:15px;color:var(--gold);font-weight:700;letter-spacing:.04em;margin-bottom:8px}
@@ -2047,7 +2056,7 @@ body.v-map-on .navbar{display:none!important}
       </ul>
       <div class="mf-group">学术</div>
       <ul class="mf-list">
-        <li><b>两院院士</b><i>2025 年增选后，中科院 908 位、工程院 1002 位；此为当时两院各自人数</i></li>
+        <li><b>两院院士</b><i>2025 年增选后，中科院 908 位、工程院 1002 位；此为当时两院各自人数<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s12" target="_blank" rel="noopener" title="中科院 2025 年增选数据">[S12]</a><a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s13" target="_blank" rel="noopener" title="2025 年两院增选数据">[S13]</a></i></li>
         <li><b>屠呦呦</b><i>青蒿素，诺贝尔生理学或医学奖</i></li>
         <li><b>哈萨比斯</b><i>DeepMind，AlphaGo / AlphaFold，诺贝尔化学奖</i></li>
         <li><b>李飞飞</b><i>ImageNet，现代 AI 先驱、三院院士</i></li>
@@ -2129,14 +2138,19 @@ body.v-map-on .navbar{display:none!important}
 <section class="wrap mortal-sec">
   <div class="sec-title">口径、立场与数据来源</div>
   <div class="mc-src">
-    <p>· 收入背景：国家统计局公布的 2025 年高收入组人均可支配收入为 103,778 元，这是最高五分之一组的平均数，不是进入该组的门槛，也不等于个人税前年薪。<a href="https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html" target="_blank" rel="noopener">统计局原文</a>。国家发改委 2021 年资料以典型三口之家年收入 10—50 万元说明当时超过 4 亿人的中等收入群体，不能直接套用于任意家庭规模或视为 2026 年新统计。<a href="https://www.ndrc.gov.cn/fggz/fzzlgh/gjfzgh/202112/t20211224_1309504_ext.html" target="_blank" rel="noopener">来源说明</a>。这些数据只作背景，不用于推算本页分数或真实人口排名。</p>
-    <p>· 财富背景：《2025东亚银行·胡润财富报告》于 2026 年 6 月发布，数据截至 2025 年 1 月 1 日、研究范围含港澳台：600 万资产家庭 506 万户、千万资产家庭 200.5 万户、亿元资产家庭 12.6 万户。报告中的家庭总财富、可投资资产与本页个人或小家庭净资产不是同一口径。<a href="https://hurun.cn/zh-CN/Info/Detail?num=CVWLBLAWHVHX" target="_blank" rel="noopener">报告与方法</a>。2026 胡润百富榜有 1,529 位财富达 50 亿元人民币以上的上榜企业家，财富截至 2026 年 9 月 1 日，属于榜单估算而非人口普查。<a href="https://www.hurun.net/zh-CN/Info/Detail?num=NQ4RKN4DO34P" target="_blank" rel="noopener">榜单原文</a>。</p>
-    <p>· 「个人净资产」按个人或小家庭净资产选择；「家庭支持」按原生家庭实际能提供的帮助选择，资产量级仅作参照；有资产不等于能获得支持，请以读书、应急、首付等实际可获得的支援为准。该项只作小幅助力，不评价出身或个人价值。</p>
-    <p>· 境界看长板而非样样平均：除身体状态外，取最高 3 维做几何平均（反映这三项的组合），再与整体加权混合——所以偏科的天才（思想家、科学家、企业家）也能凭核心修为走到高境界。</p>
+    <p class="mc-h">换算模型</p>
     <p>· <b>换算公式（页面上所有结果均由以下公式实时算出，非人工预设）：</b>① 每维选档即取该维评分 v（0–5，选项分值见各下拉框）；② 自身加权均值 Ws＝Σ(vᵢ×权重ᵢ)÷参与项权重之和，长板项 Ts＝除身体状态外最高 3 维评分的几何平均；③ 自身修为＝Ts×0.76＋Ws×0.24；④ 家庭支持非对称加成 S＝自身修为＋(家庭支持−自身修为)×0.12（仅当家庭支持档位高于自身时生效，只加不罚）；⑤ S 落入 21 档区间即得境界（凡人 0–0.45 / 炼气 0.45–1.4 / 筑基 1.4–2.4 / 结丹 2.4–3.4 / 元婴 3.4–4.4 / 化神 4.4–5.01）；⑥ 「境界稀有度」来自本站原创的分段曲线，例如筑基门槛约前 28%、结丹约前 7%、元婴约前 1%、化神约前 0.15%；这些百分位仅为同人设定，没有真实人口或用户样本支撑，不表示现实排名。进度条表示曲线位置；近期精力不参与时，该项不计分、其余权重归一化，雷达图该轴标注「未参与」。</p>
+    <p>· 境界看长板而非样样平均：除身体状态外，取最高 3 维做几何平均（反映这三项的组合），再与整体加权混合——所以偏科的天才（思想家、科学家、企业家）也能凭核心修为走到高境界。</p>
+    <p class="mc-h">口径说明</p>
+    <p>· 「个人净资产」按个人或小家庭净资产选择；「家庭支持」按原生家庭实际能提供的帮助选择，资产量级仅作参照；有资产不等于能获得支持，请以读书、应急、首付等实际可获得的支援为准。该项只作小幅助力，不评价出身或个人价值。</p>
     <p>· 职业保留原版 0.3—2.0 分档与 0.09 权重，并参与长板计算；它是本站游戏设定，不是官方社会贡献分。身体状态保留 0.12 权重、不进入最高三项；五档按统一游戏尺度校准为 0.3、1.8、2.8、3.8、5.0，默认一般状态 2.8，最高状态不会拉低相较不参与时的得分。健康选项不是医疗评估，不作短板点评；不参与时不计分，雷达点留空。职业最高档低于 5 分是原版设计，不是漏项。</p>
-    <p>· 学识采用教育与研究积累作游戏参照：学历／学位、博士后科研经历、教授等职称、院士荣誉与开创性成果是不同路径，不是人人必须依次晋升的阶梯。博士后不是更高学位，博导是岗位而非教授的同义称呼；开创性贡献也不是院士以上的正式称号。<a href="https://www.moe.gov.cn/moe_879/moe_1252/moe_1279/tnull_17796.html" target="_blank" rel="noopener">教育部说明</a> · <a href="https://www.moe.gov.cn/srcsite/A22/s7065/202009/t20200927_491838.html" target="_blank" rel="noopener">导师岗位说明</a>。「神识」另指见识与判断力；专业阶段按实际经验与职责选择，不由当前学历或在校、退休等身份直接决定。</p>
-    <p>· 境界寿元引自原著设定（炼气约百年、筑基约二百年、结丹约五百年、元婴约千年）。</p>
+    <p>· 学识采用教育与研究积累作游戏参照：学历／学位、博士后科研经历、教授等职称、院士荣誉与开创性成果是不同路径，不是人人必须依次晋升的阶梯。博士后不是更高学位，博导是岗位而非教授的同义称呼；开创性贡献也不是院士以上的正式称号。<a href="https://www.moe.gov.cn/moe_879/moe_1252/moe_1279/tnull_17796.html" target="_blank" rel="noopener">教育部说明</a> · <a href="https://www.moe.gov.cn/srcsite/A22/s7065/202009/t20200927_491838.html" target="_blank" rel="noopener">导师岗位说明</a>。「神识」另指见识与判断力；专业阶段按实际经验与职责选择，不由当前学历或在校、退休等身份直接决定。<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s8" target="_blank" rel="noopener" title="博士后与学位">[S8]</a><a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s10" target="_blank" rel="noopener" title="博士生导师岗位">[S10]</a><a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s11" target="_blank" rel="noopener" title="院士称号">[S11]</a></p>
+    <p class="mc-h">数据来源</p>
+    <p>· 收入背景：国家统计局公布的 2025 年高收入组人均可支配收入为 103,778 元，这是最高五分之一组的平均数，不是进入该组的门槛，也不等于个人税前年薪。<a href="https://www.stats.gov.cn/sj/zxfb/202602/t20260228_1962662.html" target="_blank" rel="noopener">统计局原文</a>。国家发改委 2021 年资料以典型三口之家年收入 10—50 万元说明当时超过 4 亿人的中等收入群体，不能直接套用于任意家庭规模或视为 2026 年新统计。<a href="https://www.ndrc.gov.cn/fggz/fzzlgh/gjfzgh/202112/t20211224_1309504_ext.html" target="_blank" rel="noopener">来源说明</a>。这些数据只作背景，不用于推算本页分数或真实人口排名。<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s1" target="_blank" rel="noopener" title="国家统计局收入口径">[S1]</a><a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s3" target="_blank" rel="noopener" title="三口之家收入说明">[S3]</a></p>
+    <p>· 财富背景：《2025东亚银行·胡润财富报告》于 2026 年 6 月发布，数据截至 2025 年 1 月 1 日、研究范围含港澳台：600 万资产家庭 506 万户、千万资产家庭 200.5 万户、亿元资产家庭 12.6 万户。报告中的家庭总财富、可投资资产与本页个人或小家庭净资产不是同一口径。<a href="https://hurun.cn/zh-CN/Info/Detail?num=CVWLBLAWHVHX" target="_blank" rel="noopener">报告与方法</a>。2026 胡润百富榜有 1,529 位财富达 50 亿元人民币以上的上榜企业家，财富截至 2026 年 9 月 1 日，属于榜单估算而非人口普查。<a href="https://www.hurun.net/zh-CN/Info/Detail?num=NQ4RKN4DO34P" target="_blank" rel="noopener">榜单原文</a>。<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s4" target="_blank" rel="noopener" title="胡润财富报告及编制方法">[S4]</a><a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-s6" target="_blank" rel="noopener" title="2026 胡润百富榜">[S6]</a></p>
+    <p>· 境界寿元引自原著设定（炼气约百年、筑基约二百年、结丹约五百年、元婴约千年）。<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md#source-fiction" target="_blank" rel="noopener" title="原著设定考据范围">[原著]</a></p>
+    <p>数据时点、统计口径、当前游戏规则与复算结果见仓库文档 <a class="mc-doc" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md" target="_blank" rel="noopener">《仙凡对照 · 调研依据与现行规则》</a>；角标 [S1] 等对应文档中的来源编号，游戏系数不属于权威统计结论。</p>
+    <p class="mc-h">立场与免责</p>
     <p>· <b>立场与免责：</b>本页为《凡人修仙传》非官方同人趣味创作，与原著作者、出品方及任何被提及的个人、机构无关；所有境界映射、权重、贡献联想与进度百分比均为主观设定，不科学、不精确，不构成排名、评价、诊断或任何建议。列举现实人物仅关联所写的一项贡献，不是人物综合排名，亦无褒贬之意。相关数据与名称的著作权归各自权利人所有，如有异议请联系。请仅作娱乐，勿据此定义、贬低自己或他人。</p>
   </div>
 </section>
