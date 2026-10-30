@@ -1113,6 +1113,15 @@ body.v-map-on .navbar{display:none!important}
 .mc-hint{font-size:12px;color:var(--ink3)}
 .mc-src{margin-top:12px;border-left:3px solid var(--gold);padding:4px 0 4px 14px}
 .mc-src p{font-size:12.5px;color:var(--ink2);line-height:1.8;margin-bottom:5px}
+/* 口径区块小标题（分组） */
+.mc-src .mc-h{margin:12px 0 5px;font-size:12px;color:var(--gold);letter-spacing:.12em;font-weight:700}
+.mc-src .mc-h:first-child{margin-top:0}
+/* 引用角标（上标数字，可点击跳转仓库依据文档） */
+.mc-ref{color:var(--gold);font-weight:700;text-decoration:none;font-size:10.5px;vertical-align:super;line-height:0;padding:0 1px}
+.mc-ref:hover{color:#fff;text-decoration:underline}
+/* 文档链接 */
+.mc-src a.mc-doc{color:var(--gold);text-decoration:none;border-bottom:1px dashed rgba(212,175,106,.45)}
+.mc-src a.mc-doc:hover{color:#fff;border-bottom-style:solid}
 /* 立场告示（叠甲） */
 .mc-stance{margin-top:22px;border:1px solid rgba(212,175,106,.35);border-radius:14px;background:linear-gradient(180deg,rgba(212,175,106,.07),rgba(255,255,255,.015));padding:16px 18px}
 .mc-stance-title{font-family:var(--font-serif);font-size:15px;color:var(--gold);font-weight:700;letter-spacing:.04em;margin-bottom:8px}
@@ -2050,7 +2059,7 @@ body.v-map-on .navbar{display:none!important}
       </ul>
       <div class="mf-group">学术</div>
       <ul class="mf-list">
-        <li><b>两院院士</b><i>全国约 1900 人，学科带头人</i></li>
+        <li><b>两院院士</b><i>全国约 1900 人<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md" target="_blank" rel="noopener" title="2025 年两院院士增选结果（中国科学院 908 人、中国工程院 1002 人）">[4]</a>，学科带头人</i></li>
         <li><b>屠呦呦</b><i>青蒿素，诺贝尔生理学或医学奖</i></li>
         <li><b>哈萨比斯</b><i>DeepMind，AlphaGo / AlphaFold，诺贝尔化学奖</i></li>
         <li><b>李飞飞</b><i>ImageNet，现代 AI 先驱、三院院士</i></li>
@@ -2132,15 +2141,20 @@ body.v-map-on .navbar{display:none!important}
 <section class="wrap mortal-sec">
   <div class="sec-title">口径、立场与数据来源</div>
   <div class="mc-src">
-    <p>· 收入分层参考国家统计局居民收入五等份分组（2025 年高收入组人均可支配收入约 10.4 万元）；中等收入群体按家庭年入 10–50 万口径，规模约 4 亿人。</p>
-    <p>· 财富门槛参考胡润财富报告：600 万资产"富裕家庭"约 500 余万户、千万资产"高净值家庭"约 200 万户、亿元资产"超高净值家庭"约 12.6 万户；50 亿以上企业家约 1400 余人。</p>
-    <p>· 财富分两笔账：「个人净资产」按你（含配偶）自己小家庭、自己挣得的口径填写；「家庭出身」专指原生家庭（父母）能调动的资源与平台。前者是自身修为，后者是出身助力、只做小幅加成。</p>
-    <p>· 境界看长板而非样样平均：自身 9 维取最高 3 维做几何平均（对短板敏感），再与整体加权混合——所以偏科的天才（思想家、科学家、企业家）也能凭核心修为走到高境界。</p>
-    <p>· <b>换算公式（页面上所有结果均由以下公式实时算出，非人工预设）：</b>① 每维选档即取该维评分 v（0–5，选项分值见各下拉框）；② 自身线性加权 Ws＝Σ(vᵢ×权重ᵢ)，长板项 Ts＝最高 3 维评分的几何平均；③ 自身修为＝Ts×0.76＋Ws×0.24；④ 家庭出身非对称加成 S＝自身修为＋(家庭出身−自身修为)×0.12（仅当家庭出身高于自身时生效，只加不罚）；⑤ S 落入 21 档区间即得境界（凡人 0–0.45 / 炼气 0.45–1.4 / 筑基 1.4–2.4 / 结丹 2.4–3.4 / 元婴 3.4–4.4 / 化神 4.4–5.01）；⑥ 「超越多少人」由 S 对照 11 个锚点（0.9→40%、1.4→72%、2.4→93%、3.4→99%…）分段线性插值而来。</p>
-    <p>· 「职业」「健康」两维刻意设了低于化神的上限：职业是"功法 / 赛道"而非境界本身，高度由职位、成就、影响力去修；健康是"道基"，人类肉身有物理上限，现实中不存在化神级体魄。所以雷达图上这两轴天生填不满外圈，属正常设计，不是漏项。</p>
-    <p>· 学历线对应学术成长路径（本科→硕士→博士→博士后→教授→院士），以学历近似"灵根 / 悟性"；「神识」单列，指认知储备、见识与判断力——学历是"认证"，神识是"实质"，二者不完全等同。职级线对应行政级别（科级 / 处级 / 厅级 / 省部级）与职称（初级 / 中级 / 副高 / 正高）。</p>
-    <p>· 境界寿元引自原著设定（炼气约百年、筑基约二百年、结丹约五百年、元婴约千年）。</p>
-    <p>· <b>立场与免责：</b>本页为《凡人修仙传》非官方同人趣味创作，与原著作者、出品方及任何被提及的个人、机构无关；所有境界映射、权重、人物归类与百分比均为主观设定，不科学、不精确，不构成排名、评价、诊断或任何建议。列举现实人物仅为帮助理解，不代表本人立场，亦无褒贬之意。相关数据与名称的著作权归各自权利人所有，如有异议请联系。请仅作娱乐，勿据此定义、贬低自己或他人。</p>
+    <p class="mc-h">换算模型</p>
+    <p>页面上所有结果均由以下公式实时算出，非人工预设：① 每维选档即取该维评分 v（0–5，选项分值见各下拉框）；② 自身线性加权 Ws＝Σ(vᵢ×权重ᵢ)，长板项 Ts＝最高 3 维评分的几何平均；③ 自身修为＝Ts×0.76＋Ws×0.24；④ 家庭出身非对称加成 S＝自身修为＋(家庭出身−自身修为)×0.12（仅当家庭出身高于自身时生效，只加不罚）；⑤ S 落入 21 档区间即得境界（凡人 0–0.45 / 炼气 0.45–1.4 / 筑基 1.4–2.4 / 结丹 2.4–3.4 / 元婴 3.4–4.4 / 化神 4.4–5.01）；⑥ 「超越多少人」由 S 对照 11 个锚点（0.9→40%、1.4→72%、2.4→93%、3.4→99%…）分段线性插值而来。</p>
+    <p class="mc-h">口径说明</p>
+    <p>财富分两笔账：「个人净资产」按你（含配偶）自己小家庭、自己挣得的口径填写，为自身修为；「家庭出身」专指原生家庭能调动的资源与平台，仅小幅加成、只加不罚。</p>
+    <p>境界看长板而非平均：自身 9 维取最高 3 维做几何平均（对短板敏感），再与整体加权混合——偏科的天才（思想家、科学家、企业家）也能凭核心修为走到高境界。</p>
+    <p>「职业」「健康」两维刻意设低于化神上限：职业是"功法 / 赛道"而非境界本身，高度由职位、成就、影响力去修；健康是"道基"，人类肉身有物理上限。故雷达图上这两轴天生填不满外圈，属正常设计。</p>
+    <p>学历近似"灵根 / 悟性"，对应学术成长路径（本科→硕士→博士→博士后→教授→院士）；「神识」单列，指认知储备、见识与判断力——学历是"认证"，神识是"实质"。</p>
+    <p class="mc-h">数据来源</p>
+    <p>收入分层参考国家统计局居民收入五等份分组（2025 年高收入组人均可支配收入约 10.4 万元）；中等收入群体按家庭年入 10–50 万口径、规模约 4 亿人。<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md" target="_blank" rel="noopener" title="国家统计局：2025 年国民经济和社会发展统计公报">[1]</a></p>
+    <p>财富门槛参考胡润财富报告：600 万资产「富裕家庭」约 500 余万户、千万「高净值家庭」约 200 万户、亿元「超高净值家庭」约 12.6 万户；50 亿以上企业家约 1400 余人。<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md" target="_blank" rel="noopener" title="胡润财富报告（2025）与胡润百富榜">[2]</a></p>
+    <p>境界寿元引自原著设定（炼气约百年、筑基约二百年、结丹约五百年、元婴约千年）。<a class="mc-ref" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md" target="_blank" rel="noopener" title="《凡人修仙传》原著设定（忘语著）">[7]</a></p>
+    <p>各数据的取值时点、富豪榜财富锚点、人物归类依据与完整引用清单，见仓库文档 <a class="mc-doc" href="https://github.com/Lizhenghe-Chen/fanren-wiki/blob/main/docs/mortal-converter-references.md" target="_blank" rel="noopener">《仙凡对照 · 境界换算 引用与依据》（mortal-converter-references.md ↗）</a>；文中上标角标编号对应文档内章节序号。</p>
+    <p class="mc-h">立场与免责</p>
+    <p>本页为《凡人修仙传》非官方同人趣味创作，与原著作者、出品方及任何被提及的个人、机构无关；所有境界映射、权重、人物归类与百分比均为主观设定，不科学、不精确，不构成排名、评价、诊断或任何建议。列举现实人物仅为帮助理解，不代表本人立场，亦无褒贬之意。相关数据与名称的著作权归各自权利人所有，如有异议请联系。请仅作娱乐，勿据此定义、贬低自己或他人。</p>
   </div>
 </section>
 </div>
