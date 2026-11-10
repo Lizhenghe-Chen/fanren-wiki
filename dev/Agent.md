@@ -15,21 +15,21 @@
 3. **`file://` 双击打开就能用**：不允许「必须起服务器」的功能（不用 ES module、不用 `fetch` 读本地文件）。
 4. **无构建步骤**：改完直接能跑，不引入打包/编译/依赖安装（`echarts.min.js` 的按需打包是「改库」不是「改站」，见 §7）。
 
-历史口径「自包含单页 / CSS JS 全内联」**已作废**：内联与拆分是**实现细节，不是目的**。拆分的收益是**按文件缓存**（回访只重新取改动的那份）、**可单独 diff/回滚**、**HTML 与脚本各自增量更新**——**不是**体积：拆完 gzip 总量与拆前基本持平（647KB+176KB，gzip 273KB vs 拆前 272KB）。只要不破坏上面四条就允许。已落地：`public/javascripts/map.js`（修仙界全图引擎，176KB，v59 从 `index.html` 拆出）。页面仍是**一个 HTML 十一个视图**的单页应用（路由用 hash，见 §3）。
+历史口径「自包含单页 / CSS JS 全内联」**已作废**：内联与拆分是**实现细节，不是目的**。拆分的收益是**按文件缓存**（回访只重新取改动的那份）、**可单独 diff/回滚**、**HTML 与脚本各自增量更新**——**不是**体积：拆完 gzip 总量与拆前基本持平（647KB+176KB，gzip 273KB vs 拆前 272KB）。只要不破坏上面四条就允许。已落地：`public/javascripts/map.js`（修仙界全图引擎，176KB，v59 从 `index.html` 拆出）。页面仍是**一个 HTML 十二个视图**的单页应用（路由用 hash，见 §3；v-mortal 为交互换算器，非资料库）。
 
 - **默认首页（v-home）**：百科式介绍页——网站命名《凡人修仙传》百科，含"为什么做这个网站"（`<details class="home-why">` 折叠，摘要一句话 + "展开全文"，默认收起以缩首屏）、六大收录板块入口卡片、"问道自述"、"收录说明"、"数据来源"。用户明确要求"首页不要开门见山放人物图鉴"。（2026-09-17 已删掉"页面包含"功能清单区块——功能靠界面自身说明，不再用一段清单复述。）
 - **降噪可选**：人物图谱**默认显示全部 263 条**（2026-09-22 起，见 v39；此前默认只显示被引 ≥ 5 的核心圈）；`#tabs` 内的分段选择器可一键切「核心圈 87 / 全部 263」。互引网络与定位能力见 §5。
-- 收录 **6 个篇章、263 条人物记录**（跨篇章重复出现的角色按"出现即写"重复收录，如韩立 6 篇、南宫婉 4 篇）+ **灵兽灵虫 42 条** + **灵草丹药 65 条** + **法器法宝 71 条** + **功法 53 条 / 阵法 44 条 / 符箓 34 条**（共 **十一个视图**、七库合计 **572 条**；修仙界全图另含 156 处地点，与全库索引 `INDEX` 条目数一致）。
+- 收录 **6 个篇章、263 条人物记录**（跨篇章重复出现的角色按"出现即写"重复收录，如韩立 6 篇、南宫婉 4 篇）+ **灵兽灵虫 42 条** + **灵草丹药 65 条** + **法器法宝 71 条** + **功法 53 条 / 阵法 44 条 / 符箓 34 条**（共 **十二个视图**：人物图谱 + 六资料库 + 全图 + 换算器等；人物 263 + 六库 **572 条**为资料库口径，仙凡对照是交互换算器、不计条目数；修仙界全图另含 156 处地点，与全库索引 `INDEX` 条目数一致）。
 - 每人默认卡片显示：**头像图、名字、身份、本篇修为、关系/势力/种族标签**；点击展开显示**生平梗概与结局**（默认不剧透）。**修为演进 ev 字段已全量补齐（263/263）**，卡片修为行显示本篇内的境界变化（如"炼气→筑基→结丹后期"）。
 - 页面支持 **人物图片**（优先动画形象，同一角色可挂多形象轮播）、**境界图表**（外部 cultivation-chart.js）、**妖兽等级制度**与**灵药年份等级**对照区块。
-- **剧情速览分两栏（页内 tab）**：`境界时间线`（默认）与 `情节梳理 · 全书十一卷`（11 卷 / 55 地点篇 / 388 步，首次点开才渲染）。后者内容整理自第三方公众号文章并已署名，见 §9 与 `NOTICE`。
+- **剧情速览分两栏（页内 tab）**：`境界时间线`（默认）与 `情节梳理 · 全书十一卷`（11 卷 / 55 地点篇 / **333 步**，首次点开才渲染；步数随改写浮动，改完须按 §11.3 口径重测）。后者内容整理自第三方公众号文章并已署名，见 §9 与 `NOTICE`。
 
 ## 2. 目录结构
 
 ```
 fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git 历史保留）
 ├── public/                 # ← 唯一发布目录，GitHub Actions 只上传这里
-│   ├── index.html          # 页面本体：十一视图标记 + 内联 CSS + 内联数据/主逻辑（≈646KB）
+│   ├── index.html          # 页面本体：十二视图标记 + 内联 CSS + 内联数据/主逻辑（≈646KB）
 │   ├── cultivation.css     # 图表样式（境界阶梯【用户自加部分原样不改】+ 末尾追加的概览图表，见 §7）
 │   ├── javascripts/
 │   │   ├── map.js                 # 修仙界全图引擎（Canvas，IIFE + 懒启动，171KB；v59 从 index.html 拆出，见 §1.1）
@@ -60,13 +60,13 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
   ⚠️ 已跟踪的开发文档可随仓库公开阅读，并非私密文件；仅本地资料应放入被忽略的 `dev/_private/`。历史版本仍可能包含旧手册，本次不改写历史。
   ⚠️ **`dev/` 仍然不会上站**（CI 只传 `public/`）：公开可见 ≠ 交付物，README 里不要把 `dev/` 当交付物引用。
 
-## 3. 页面结构：十一视图 + hash 路由
+## 3. 页面结构：十二视图 + hash 路由
 
 页面**不是单页长滚**，而是**页内多视图切换**（用户明确要求"分页面"，否决过"左右分栏"）：
 
 ```
 <body>
-  <nav class="topnav">                        # 顶部主导航（sticky top:0，48px 内容高+1px 边框=49px）：首页 | 人物图谱 | 剧情速览 | 修仙界全图 | 境界体系 | 灵兽灵虫 | 灵草丹药 | 法器法宝 | 功法 | 阵法 | 符箓（**十一入口**）+ 搜索按钮 + **GitHub 图标（≥1100px 才显示，见下）** + 持续更新·作者主页·日期
+  <nav class="topnav">                        # 顶部主导航（sticky top:0，48px 内容高+1px 边框=49px）：首页 | 人物图谱 | 剧情速览 | 修仙界全图 | 境界体系 | 仙凡对照 | 灵兽灵虫 | 灵草丹药 | 法器法宝 | 功法 | 阵法 | 符箓（**十二入口**）+ 搜索按钮 + **GitHub 图标（≥1100px 才显示，见下）** + 持续更新·作者主页·日期
   <div class="view" id="v-home">              # 视图0 首页（默认）
     hero（标题/统计/按钮） → 为什么做这个网站（<details class="home-why">，默认收起） → **篇章×势力旭日图 #chart-sunburst**（ECharts sunburst，首页"收录内容"之前） → 收录内容 6 卡 → 问道自述（.home-quest） → 收录说明 → 数据来源（.src-list） → **开源（.repo-card）**
   </div>
@@ -114,7 +114,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 - **默认视图**：无 hash 或非法时回退 **`v-home`**（不是 v-chars）。
 - **新增视图**：加一个 `<div class="view" id="v-xxx">`（内部只放一个 `h1`），在 `VIEWS` 数组里登记（脚本与外链都读它），topnav 加链接即可。
 - **展开态与地址栏的一致性（2026-10-05 加）**：筛选/切降噪都是**整表重排**（卡片会被卸载重建），所以 ① `openKeyFromHash()` 在挂载时按地址栏 target 还原 `.open`；② `syncTargetToResults(libId, keys)` 在重排后若 target 已不在结果集里就撤掉 target（**只撤 target，视图不动**）。两者都只处理「target 属于本库」的情况 —— 启动时各库都会先重排一次，那会儿 hash 可能指向**别的**库（深链冷启动）。
-- **移动端**：`@media (max-width:640px)` 下 **topnav 换行显示**（`.topnav .wrap{height:auto;flex-wrap:wrap}` + `.tn-links{flex:1 1 0;flex-wrap:wrap}`，十一个入口分两行全部落在视口内；状态位 `.tn-update` 隐藏，日期与作者主页下沉到页脚），`.topnav a` 同时降字号内边距；`@media (max-width:400px)` 再降一档。因为顶栏变高：`.chapter` 不再 sticky、`.view{scroll-margin-top:88px}`。`.navbar{top:45px}`、`.tabs` 仍是单行横向滚动。
+- **移动端**：`@media (max-width:640px)` 下 **topnav 换行显示**（`.topnav .wrap{height:auto;flex-wrap:wrap}` + `.tn-links{flex:1 1 0;flex-wrap:wrap}`，十二个入口分两行全部落在视口内；状态位 `.tn-update` 隐藏，日期与作者主页下沉到页脚），`.topnav a` 同时降字号内边距；`@media (max-width:400px)` 再降一档。因为顶栏变高：`.chapter` 不再 sticky、`.view{scroll-margin-top:88px}`。`.navbar{top:45px}`、`.tabs` 仍是单行横向滚动。
 - **地图视图的移动端另有一套规则**：`body.v-map-on` 下 topnav 压回单行 48px（链接横向滚动，免得两行顶栏压住地图）、`.map-stage` 占满 100vh；`@media(max-width:760px)` 里 `#v-map #top` **换行成两行**（标题 + 索引/播放/倍速/探索 ‖ 舆图原图/地理考据）—— 六枚按钮 + 标题实测要 ~390px，单行在 320–430 宽会被 `overflow:hidden` 裁掉、且标题被挤成一字一行（v65 修）。`#progress{top:170px}`、`#explore{top:200px}` 是按两行总高 108px 留的位，改顶栏高度时同步核这两处。
 - **⚠ 锚点注释会撞车**：`/* ===== 韩立境界时间轴 ===== */` 在 `<style>`（`.timeline-sec` 注释）与 `<script>`（`const TL` 前）各出现一次——脚本插入若用该注释定位 JS 数据，会误命中 CSS 区导致 `BEASTS is not defined`。定位 JS 数据应匹配 `];\n\n/* ===== 韩立境界时间轴 ===== */\nconst TL = [` 整段。历史修复：`_backup/fix_beast_data_pos.py`。
 
@@ -321,7 +321,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
    node dev/tools/verify.mjs                                   # 默认验 ./public/index.html（file://）
    node dev/tools/verify.mjs --url http://localhost:8899/index.html   # 也可指定 URL
    ```
-   **零依赖**：Node ≥ 22 内置 `WebSocket`/`fetch` + 本机 Chrome，自己拉起 headless Chrome 走 CDP，**不装 puppeteer/playwright**。当前 **52 条断言**：十一视图容器、**分批渲染首屏只挂首批**、七库卡片数（期望值取页面自身数组长度，不再写死）、**卡片里没有 undefined/NaN 残字**（rows 缺字段的兜底，v63 加）、他角色具名功法/阵法/灵兽/法宝防回归抽查、**图片引用无缺图 + 全部能解码**、互引网络规模、**每个视图有且仅有一个 h1**、**开源入口齐全（顶栏图标 / hero / 首页卡片 / 页脚同指一仓）**、**勘误引导到 B 站视频评论区（GitHub Issues 只留技术问题，且无主站评论区旧链接）**、**访问统计三条口径（site_pv / 官方 JSONP + 无前缀字段 / 显示起点自洽）**、默认全部且可一键切核心圈、桌面 1440×900 与移动 390×844 双视口的横向溢出与"竖条文本"、篇章筛选、**三库分类筛选（含 tab 计数一致性）与三库搜索**、搜索定位、互引 chip 跳转、返回顶部与进度环、深链冷启动、**深链落到首批之外的卡（按需补齐渲染）**、**筛选后地址栏与展开态一致**、点卡片同步 URL、浏览器返回后视图与地址一致、**静态资源无第三方请求**、**统计位默认隐藏 + 本地不发起上报 + 取到值后显示累计次数（千位分隔）+ 统计位可见时双视口无溢出 + 取值字段是 site_pv**、**两张概览图表渲染与配色来源 + 悬浮详情 + 图谱节点点击跳转 + 折叠展开后 canvas 尺寸恢复**、**舆图离屏画布内存 ≤ 90MB 且陆面栅格覆盖全部陆面内容（`__fanrenMap.canvasInfo()`，v59 加）**、**舆图地点都落在「真的画了陆地」的地方（`__fanrenMap.locsOffLand()`，v60 加；例外只有北海三岛与火云岛两处海岛）**、0 控制台报错。
+   **零依赖**：Node ≥ 22 内置 `WebSocket`/`fetch` + 本机 Chrome，自己拉起 headless Chrome 走 CDP，**不装 puppeteer/playwright**。当前 **57 条断言**：十二视图容器、**分批渲染首屏只挂首批**、七库卡片数（期望值取页面自身数组长度，不再写死）、**卡片里没有 undefined/NaN 残字**（rows 缺字段的兜底，v63 加）、他角色具名功法/阵法/灵兽/法宝防回归抽查、**图片引用无缺图 + 全部能解码**、互引网络规模、**每个视图有且仅有一个 h1**、**开源入口齐全（顶栏图标 / hero / 首页卡片 / 页脚同指一仓）**、**勘误引导到 B 站视频评论区（GitHub Issues 只留技术问题，且无主站评论区旧链接）**、**访问统计三条口径（site_pv / 官方 JSONP + 无前缀字段 / 显示起点自洽）**、默认全部且可一键切核心圈、桌面 1440×900 与移动 390×844 双视口的横向溢出与"竖条文本"、篇章筛选、**三库分类筛选（含 tab 计数一致性）与三库搜索**、搜索定位、互引 chip 跳转、返回顶部与进度环、深链冷启动、**深链落到首批之外的卡（按需补齐渲染）**、**筛选后地址栏与展开态一致**、点卡片同步 URL、浏览器返回后视图与地址一致、**静态资源无第三方请求**、**统计位默认隐藏 + 本地不发起上报 + 取到值后显示累计次数（千位分隔）+ 统计位可见时双视口无溢出 + 取值字段是 site_pv**、**两张概览图表渲染与配色来源 + 悬浮详情 + 图谱节点点击跳转 + 折叠展开后 canvas 尺寸恢复**、**舆图离屏画布内存 ≤ 90MB 且陆面栅格覆盖全部陆面内容（`__fanrenMap.canvasInfo()`，v59 加）**、**舆图地点都落在「真的画了陆地」的地方（`__fanrenMap.locsOffLand()`，v60 加；例外只有北海三岛与火云岛两处海岛）**、v-mortal 换算器专项（十项表单保留且身体状态默认参与、职业原版分档、结果无短板点评、稀有度标注为同人设定、最高身体状态不低于不参与档、学识术语与雷达图说明校正）**、0 控制台报错。
   ⚠️ **用 `--url` 跑线上会真实计数**：脚本对目标地址共导航 **3 次**（首屏 + `#v-treasures/tres-2`、`#v-chars/lingjie-0` 两条深链冷启动），每次都是真实访客请求 ⇒ 每跑一轮线上验收就给线上统计 **+3**（2026-10-09 复核时把自己的数字从 1224 推到 1240）。要复核就用一次、别反复跑。
   ⚠️ **分批渲染后，"扫 DOM"型断言必须先补齐**：DOM 只是数据的子集（首屏每库 10 条）。脚本注入的 `window.__loadAll(id)` / `window.__loadAllLibs()` 负责补齐（chars / tres 走 `ensureAll()`，三库借 `LIB_UI[id].ensureKey(该库最后一个 key)`）。**忘了补齐会写成假绿** —— 图片完整性那条就从 481 张掉到 70 张覆盖（v49 修）。同理，切降噪/切分类 tab 都会重排，**每次计数前**都要补。
    - 断言失败先看输出里打印的**实际值**再动代码（有 3 条断言曾是自己写错：阈值拍脑袋、期望值写反、把 `<link rel=canonical>` 当资源请求）。
@@ -564,7 +564,7 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 
 - **v47：慕兰之战人物与剧情节点补全（2026-10-04，`0cae7ef`）**——人物 251 → **263**（六个篇章的条数：七玄门 17 / 黄枫谷 35 / 乱星海 37 / 大晋 74 / 灵界 41 / 仙界 59）。
 
-- **v48：剧情速览新增「情节梳理 · 全书十一卷」（2026-10-05，PR #1 @jackey0118）**——① 视图内加 `.lore-tabs` 页内 tab（境界时间线 / 情节梳理）；② 新增 `PLOT_VOLS`（当时为 11 卷 / 55 地点篇 / 333 步，后续补全为当前 388 步）+ `renderPlot()` + `plotStepHTML()`，**首次点开才渲染**；③ 样式追加在 `cultivation.css` 末尾；④ 内容整理自微信公众号「书生去哪了」，页面上下两处署名 + 原文链接，README / NOTICE 同步声明（见 §9）。
+- **v48：剧情速览新增「情节梳理 · 全书十一卷」（2026-10-05，PR #1 @jackey0118）**——① 视图内加 `.lore-tabs` 页内 tab（境界时间线 / 情节梳理）；② 新增 `PLOT_VOLS`（建表时为 11 卷 / 55 地点篇 / 333 步，后续一度补全到 388 步、再经改写回落；2026-11-10 实测为 **333 步**，步数以 §11.3 实时口径为准，勿把历史值当现值）+ `renderPlot()` + `plotStepHTML()`，**首次点开才渲染**；③ 样式追加在 `cultivation.css` 末尾；④ 内容整理自微信公众号「书生去哪了」，页面上下两处署名 + 原文链接，README / NOTICE 同步声明（见 §9）。
   ⑤ **合并时修正了 PR 的 key 错位**：`libFiltered()` 原用「筛选后的下标」生成卡片 key（`cfg.prefix + i`），而卡片 key 是全库索引、互引 chip 与深链 `gotoEntry` 的主键 —— 一旦筛选，key 整体错位、互引与跳转都会指向错误条目。已改为保留原数组下标（详见 v49 ③）。
 
 - **v49：瀑布分批渲染 + 验收/文档全面对齐（2026-10-05，本次）**——① `makePager` 分批引擎接管人物卡与七库列表（`firstN=10` / `stepN=12` / `rootMargin=800px`，`ensureAll` / `ensureKey` 对外）；筛选从"扫 DOM 切 display"下沉到**数据层整表重排**；核心圈计数改 `coreCount()` 纯数据计算（`renderTabs` 不再依赖卡片先渲染）；② 修**展开态与地址栏失同步**：新增 `openKeyFromHash()` / `syncTargetToResults()`（开卡后被输入框筛掉时，地址栏不再停在 `#v-chars/<key>`）；③ 修 PR 带进来的 **key 错位**（`libFiltered()` 改用原数组下标，见 v48 ⑤）；④ **访问统计改取 `site_pv`** —— `page_pv` 按完整 URL 分桶（尾斜杠/查询串/分享参数/深链各成一个小桶），显示出来是「一千四百零几」的假小数字；⑤ `verify.mjs` 适配分批渲染（注入 `__loadAll` 补齐）并新增 4 条断言（首屏只挂首批 / 深链落到首批之外的卡 / 筛选后地址栏与展开态一致 / 取值必须是 site_pv），**42/42 全绿**（合并前基线 33/38，且脚本会在"找 南宫婉 卡片"处直接崩）；⑥ 文档同步：§1~§9 所有数字与结构按代码重写，补记 v39–v48。
@@ -729,60 +729,73 @@ fanren-wiki/                # 独立仓库（2026-09-17 从主站拆出，git �
 
 ### 11.1 截图：逐视图顶屏截图法（推荐，不依赖整页长图）
 
-`dev/tools/readme-shots.py` 只认「手工整页长图 → 裁 16:10」，且 SHOTS 表只有 7 个视图、无法覆盖新增的功法/阵法/符箓/修仙界全图。**2026-10-12 起改用手法**：headless Chrome 逐视图顶屏截图，产出全部 11 个视图的 1440×900 顶屏画面，直接够 README 用：
+`dev/tools/readme-shots.py` 只认「手工整页长图 → 裁 16:10」，且 SHOTS 表只有 7 个视图、无法覆盖新增的功法/阵法/符箓/修仙界全图与仙凡对照。**2026-10-12 起改用逐视图顶屏法；2026-11 扩为 12 个视图**，产出 1440×900@2x（2880×1800）顶屏 PNG 源图，压 WebP 入库。
 
-1. **起服务**：`cd <repo> && python3 -m http.server 8123 --directory public`（本地静态服务）。
-2. **截图脚本**：对每个视图**开独立 Chrome 实例**（不能用单实例连续导航），加载 `http://localhost:8123/?shot=<name>#v-<view>`，固定视口 1440×900@2x（`Emulation.setDeviceMetricsOverride`），等待 3.8s 后取顶屏。核心是 `?shot=<name>` + 完整 hash：
-   - `?shot=<name>` 是截图辅助参数（激活目标视图、避免时序竞争）；hash 必须带 `v-` 前缀（`#v-chars`，写 `#chars` 会被 SPA 回退到 v-home）。
-   - 11 个视图：`v-home` 首页 / `v-chars` 人物图谱 / `v-lore` 剧情速览 / `v-map` 修仙界全图 / `v-realms` 境界体系 / `v-beasts` 灵兽灵虫 / `v-herbs` 灵草丹药 / `v-treasures` 法器法宝 / `v-gongfa` 功法 / `v-zhenfa` 阵法 / `v-fu` 符箓。
-3. **压图入库**：把每视图顶屏 2x PNG 缩为 **1440×900 WebP（quality=80, method=6）**，写入 `image/README/shots/`，命名 `01-home.webp` ～ `11-map.webp`（顺序即 README 展示顺序）。
-4. **死路（已验证，勿重试）**：
+1. **起服务**：`cd <repo> && python3 -m http.server 8123 --directory public`（本地静态服务，收尾后停掉）。
+2. **常规视图（10 个：home/chars/lore/realms/beasts/herbs/treasures/gongfa/zhenfa/fu）**：headless Chrome CLI 逐视图**独立进程**，`--virtual-time-budget=4200` 后截 2880×1800 顶屏；URL 只带 hash：`http://localhost:8123/#v-<view>`。
+   - ⚠️ **`?shot=<name>` 参数已废弃**：现源码 grep 不到任何 `shot` 读取逻辑（旧经验所述参数已移除），不要再携带；hash 仍必须带 `v-` 前缀（`#v-chars`，写 `#chars` 会被 SPA 回退 v-home）。
+   - 12 视图清单（导航顺序，hash 即 id）：`v-home` 首页 / `v-chars` 人物图谱 / `v-lore` 剧情速览 / `v-map` 修仙界全图 / `v-realms` 境界体系 / **`v-mortal` 仙凡对照** / `v-beasts` 灵兽灵虫 / `v-herbs` 灵草丹药 / `v-treasures` 法器法宝 / `v-gongfa` 功法 / `v-zhenfa` 阵法 / `v-fu` 符箓。
+3. **两个特殊视图必须用 CDP 脚本**（独立 Chrome 进程 + `Page.navigate` + `Runtime.evaluate` 注入动作 + `Page.captureScreenshot`；CLI 无法执行点击/滚动）：
+   - **`v-map`（11-map）**：待机态中央有「修仙界全图 / 点击屏幕开始巡游」大字遮罩，直接截会带遮罩（废弃）。先 `document.getElementById('btnExplore').click()`（该按钮绑定 `enterExplore`，见 `map.js` 约 2853 行）进入探索态，遮罩消失并 `fitAll()` 出全图；`--virtual-time-budget` 类等待给到 6800ms 让陆面栅格长齐。
+   - **`v-mortal`（出两张：12-mortal / 13-mortal-radar）**：默认顶屏只到换算器表单上半。结果区是 **`class="mc-result"`（无 id）**，用 `document.querySelector('.mc-result').scrollIntoView({block:'center'})`（视图容器自身不滚动，window 滚动生效）滚出「炼气期」判定卡（`#mc-big/#mc-sub/#mc-score-num/#mc-pct-num/#mc-bar-fill`）与十维雷达 `<canvas id="mc-radar">`（CSS 高 340px）；12 张取告示+表单顶屏，13 张取判定卡+雷达+底部人物对照联想卡。
+   - **CDP 脚本两个必踩坑**：①注入动作的 postJs 必须写成立即调用 `(fn)()`，只定义不调用会静默返回 `{}`；②`.mc-result` 是 class，`getElementById('mc-result')` 为 null 会抛错，必须 `querySelector`。
+4. **压图入库（网络优化主线，cwebp `/opt/homebrew/bin/cwebp`，method=6）**：
+   - 网格图 12 张（01–10、12、13）：`-q 76 -m 6 -resize 1280 800`（源 16:10 等比，不变形）。
+   - 地图横幅 11-map：`-q 80 -m 6 -resize 1440 900`。
+   - 封面：源 1680×945，`-q 82 -m 6` **不缩放**转 WebP（原 PNG 约 1.07MB → WebP 约 220KB，降幅约 80%）；文字多的网格图不要再降 q（q76 已保文字可读，降档出块状伪影）。
+   - 命名：`01-home.webp` … `10-fu.webp`、`11-map.webp`、`12-mortal.webp`、`13-mortal-radar.webp`，顺序即 README 展示顺序。
+5. **死路（已验证，勿重试）**：
    - `Page.captureScreenshot` + `captureBeyondViewport` 在多视图导航后**反复返回同一帧**（headless 合成器时序问题）；`--run-all-compositor-stages-before-draw` 无效。
-   - 单 Chrome 实例内连续导航改 hash → **所有视图截到首页**（视图回退）。
+   - 单 Chrome 实例内连续导航改 hash → **所有视图截到首页**（视图回退）；常规视图仍以每图独立进程最稳。
    - hash 漏写 `v-` 前缀（`#chars`）→ SPA 回退 v-home。
-   - 可行方案的脚本示例（临时目录，不入库）：`/tmp/fr-shots/shot-one.mjs`（每视图独立实例 + 完整加载 + 滚动偏移分段）；`stitch.py` 拼接**不用**——顶屏 y0000 画面即够。
+   - 临时脚本（不入库，丢失按下述方法重建）：`/tmp/fr-shots2/shoot.sh`（CLI 批量常规视图）、`cdp-shot.mjs`（签名 `node cdp-shot.mjs <out.png> <#view> "()=>{…}" [waitMs]`）、`encode.sh`（cwebp 批量压图 + 体积报告）。`readme-shots.py` 拼接法**不用**——顶屏画面即够。
 
 ### 11.2 README「页面速览」结构（2026-10-12 版）
 
 ```
-封面（image/README/shots/封面.png，width=840）
+封面（image/README/shots/封面.webp，width=840）
 │
-修仙界全图横幅（11-map.webp，width=840，深链 #v-map）      ← 新增视图作独立横幅置顶
+修仙界全图横幅（11-map.webp，width=840，深链 #v-map）      ← 地图作独立横幅置顶
 │
-5 行 × 2 视图网格（各 width=400，配表头标题）：
-  首页|人物图谱（01|02）→ 剧情速览|境界体系（03|04）→ 灵兽灵虫|灵草丹药（05|06）
-  → 法器法宝|功法（07|08）→ 阵法|符箓（09|10）
+6 行 × 2 视图网格（各 width=400，配表头标题，深链 #v-<view>）：
+  首页|人物图谱（01|02）→ 剧情速览|境界体系（03|04）
+  → 仙凡对照·换算器|修为判定·十维雷达（12|13，两格都链 #v-mortal）
+  → 灵兽灵虫|灵草丹药（05|06）→ 法器法宝|功法（07|08）→ 阵法|符箓（09|10）
 ```
 
 - 每个 `<a href>` 深链指向对应视图：`https://bunnychen.top/fanren-wiki/#v-chars` 等；单条记录深链示例 `#v-treasures/tres-12`、`#v-gongfa/gongfa-5`。
-- 封面在 README 中以 840 宽展示；封面文件落盘为 **1680×945 PNG（2x），量化 256 色压体积**（约 1MB）。
+- 封面在 README 中以 840 宽展示；**落盘为 1680×945 WebP（q82/m6，约 220KB）**，旧 `封面.png`（约 1.07MB）在切换引用后从 shots 目录删除、由 git 记录 deletion，不留在仓库当死重。
+- 全部 14 张成品（封面 1 + 地图横幅 1 + 网格 12）实际字节合计约 **956KB**；每张单独抽验文字/标签清晰度后再入库，压缩后用 `Read` 目视，不能只看字节数小就放行。
 
 ### 11.3 数字核实方法（改「特性 / 收录内容」前必读，勿凭记忆写）
 
-用 node 直接统计 `public/index.html` 内的数据常量，**不要猜**。2026-10-12 已核实、可直接采用（README 已按此更新）：
+用 **CDP 在真实页面运行时求值** 最准（node 正则只能数数组，复杂结构易错）；不要凭记忆/历史文档抄数字——收录条目与步数都随迭代增减。2026-11-10 实测值（口径列即复算方法，下次照口径重测，不要直接照抄本表数字）：
 
-| 项 | 数值 | 统计口径 |
+| 项 | 实测值 | 统计口径 / 取值方式 |
 |---|---|---|
-| 人物图谱 | **263 收录 / 233 唯一 / 6 篇章** | DATA 六数组长度合计（跨篇重复收录为设计） |
-| 灵兽 / 灵草 / 法宝 | **42 / 65 / 71** | BEASTS / HERBS / TREASURES 长度 |
-| 功法 / 阵法 / 符箓 | **53（动画 21）/ 44（动画 18）/ 34（动画 18）** | GONGFA / ZHENFA / FU 长度（含 `anim:1` 计数） |
-| 修仙界全图 | **156 地点（LOCS）/ 22 区域（REGIONS）/ 10 巡游阶段（STAGES 共 11 项含「全部」）/ 97 旅程节点（JOURNEY，76 个不同站点）** | 各常量长度 |
-| 情节梳理 | **11 卷 / 55 地点篇 / 388 步** | PLOT_VOLS（⚠️ 曾写 333，2026-10-12 实测为 **388**，README 已改） |
-| 核心圈 | **87**（被引 ≥ 5；README 曾写 81，页面 tab 已显示「核心圈 87」，以页面为准） | `coreCount()` |
-| 关系图谱 | **105 位**核心角色（被引 ≥ 3） | `#graph-core-n` 运行时值 |
+| 人物图谱 | **263 收录 / 233 唯一 / 6 篇章** | `Object.values(DATA).reduce((a,v)=>a+v.length,0)`；唯一 = `new Set(flat().map(c=>c.n)).size`；首页 `#home-st-chars` 应同步显示 263 |
+| 灵兽 / 灵草 / 法宝 | **42 / 65 / 71** | `BEASTS.length / HERBS.length / TREASURES.length`（与首页 `#home-st-*` 交叉验证） |
+| 功法 / 阵法 / 符箓 | **53 / 44 / 34** | `GONGFA / ZHENFA / FU.length`（三者 = `ARTS.filter(a=>a.cat===...)`；「动画已出现」张数在各库页右上角另显示） |
+| 修仙界全图 | **156 地点 / 22 区域（人界7+灵界5+仙界10）/ 10 巡游阶段** | ⚠️ `LOCS/REGIONS/STAGES/JOURNEY` 在 `map.js` 闭包 `var`（第 20/215/339/353 行），CDP 全局求值直接报 `ReferenceError: LOCS is not defined`；改用**图例 DOM 分项求和交叉核对**：地点类型 宗门82+门派1+部族39+海岛16+秘境13+凡俗5=156；三界 7+5+10=22；`STAGES` 共 11 项（id=0「全部」+10 段），故写「10 段巡游章节」 |
+| 情节梳理 | **11 卷 / 55 地点篇 / 333 步** | `PLOT_VOLS`：卷=length；地点篇=`Σ vol[2].length`；步数=`Σ vol[2].reduce((b,p)=>b+p[1].length,0)`——每个情节字符串即渲染出的一个 `.plot-step`。⚠️ **该数随改写浮动**：2026-10 曾为 388，2026-11-10 实测为 333，改完剧情必须重测，勿沿用旧值 |
+| 核心圈 | **87**（被引 ≥5，`CORE_MIN=5`） | `coreCount()` 顶层函数直接调；页面 tab 文本「核心圈87 / 全部263」交叉确认 |
+| 关系图谱 | **105 位**核心角色（基础名级被引 ≥3，`MIN_REF=3`，跨篇同名合并去重） | 须切到 `#v-chars`、等 ECharts 注入后读 `#graph-core-n` 文本（静态占位是 34，运行时才覆盖为 105，勿读占位值） |
 
-- ⚠️ **未上线的功能不要宣传**：`#v-map` 的「地理考据」抽屉（`btnGw` / `gwDrawer`）当前是**未提交改动**（工作区 `M public/index.html`）、内容注入未实现 —— README 只写「索引 / 播放 / 探索 / 舆图原图」，不写「地理考据」。写 README 前先 `git status --short` 看工作区有没有这类半成品。
-- 统计脚本示例（防 timeout 用 node 而非 python 读大文件）：`/tmp/fr-shots/count.js`（`LOCS/REGIONS/STAGES/JOURNEY` 用 `var X=[...];` 段、PLOT_VOLS 用 `const PLOT_VOLS = [ ... ];` 段做正则计数）。
+- ⚠️ **未上线 / 半成品功能不要写进 README**：先 `git status --short` 看 `public/` 是否有用户自己的未提交改动；工作区里没跑通的抽屉、表单或按钮，README 不宣传。README 只描述线上 `public/` 已发布且 `verify.mjs` 覆盖到的能力。
+- 临时计数脚本（不入库）：`/tmp/fr-shots2/count-cdp.mjs`（首页求值七库/人物/情节梳理计数并回读 `#home-st-*`）、`count2.mjs`（切 `#v-chars` 等图表就绪后取 `coreCount()` 与 `#graph-core-n`）；写法要点：独立 user-data-dir、`Page.enable`+`Page.navigate`、`Runtime.evaluate` 带 `returnByValue:true`，报错时打印完整响应（`result.result.subtype==="error"` 即异常，别只取 `.value`）。
+- 跑完站点自带验收：`node dev/tools/verify.mjs`（默认 `file://` 直开，零依赖 Node22+Chrome），2026-11-10 为 **57 条断言全过**，其中含 v-mortal 专项：十项表单保留且身体状态默认参与、职业恢复原版分档、结果无短板点评、稀有度标注为同人设定、最高身体状态不低于不参与档、学识术语与雷达图说明已校正。
 
 ### 11.4 封面生成流程（doubao-creative-design，pure-image 横向 Banner）
 
 - **画布已存在**：`cws_58243300018383874`（2026-10-12 建，路径 `/deliverables/readme-cover`，含 v1 `eN5aQ30o-4IsGg5KXru-0201` 与 v2 `fCIqdkJH-4IjihNBsGI-0201`）。下次改封面**复用此画布**，勿新建。
-- **流程**（pure-image）：`design-workspace +workspace-create` → 主 Agent `present_files(<workspace_id>)` 交付画布卡片 → 写 `.creative-design/readme-cover/brief.md` → 读 `media-banner.md`（16:9 横向）+ `prompt-guide.md` + `image-quality-guide.md` → `image_gen` / `image_edit` → **双通道闭环**：`design-cli +create`（用工具返回的原始短链；v2 基于 v1 重绘时填 `<source_ids>` 继承血缘）→ `+get` 回读 → 交付 → 下载替换 `image/README/shots/封面.png`。
+- **流程**（pure-image）：`design-workspace +workspace-create` → 主 Agent `present_files(<workspace_id>)` 交付画布卡片 → 写 `.creative-design/readme-cover/brief.md` → 读 `media-banner.md`（16:9 横向）+ `prompt-guide.md` + `image-quality-guide.md` → `image_gen` / `image_edit` → **双通道闭环**：`design-cli +create`（用工具返回的原始短链；v2 基于 v1 重绘时填 `<source_ids>` 继承血缘）→ `+get` 回读 → 交付 → 成品落地为 `image/README/shots/封面.webp`。**若本轮不要求重新设计封面**（只做截图更新/瘦身），不要走生图链路：直接对既有 1680×945 封面 PNG 跑 `cwebp -q 82 -m 6` 转 WebP，替换引用后删除旧 PNG，人物与构图原样保留。
 - **文字规则**：图内中文必须用中文引号“”标注（禁止其他符号），生成后**逐字 OCR 核对**；缩略图 OCR 不可靠（384px 缩略图把「灵兽」误读成「灵宠」，真实 2730×1536 图是对的）——核对以完整尺寸图为准。
 - **v2 人物规格**：右侧人物为**韩立**（动画版形象：青年书生、清秀端正、剑眉、目光坚毅、黑发束高髻玉簪固定、玄青交领古袍、左手掌中悬浮青翠**掌天瓶**），构图与文字（标题/副标/六标签）保持不变。
 - **已知瑕疵（2026-10-12 状态）**：画面右上角多一小处「道友请进」浮字（v1、v2 均有），左侧钩子正常。用户如要求修正：基于 v2 短链再 `image_edit` 局部去除即可（按 skill 规则不自动重生，等用户明确要求）。
 
 ### 11.5 Git 红线（README 更新任务通用）
 
-- **不 commit**（用户明确）；交付前 `git status --short` 核对：应只见 `README.md` + `image/README/shots/*` 改动，`public/index.html` 若有 `M` 是用户自己的未提交改动，**勿动勿提交**。
+- **不 commit / 不 push**（README 更新任务默认如此；仅当用户本轮明确说「提交/push」才执行，推送走 §8 的代理环境变量）；交付前 `git status --short` 核对：应只见 `README.md` + `image/README/shots/*` 改动，`public/` 若有 `M` 是用户自己的未提交改动，**勿动勿提交**。
+- **图片网络优化闭环**：README 引用切换到 WebP 后，旧格式死图（如 `封面.png`）要从 `shots/` 目录删除，让 git 呈现 `D` deletion，避免 1MB 级旧文件继续随仓库/Pages 发布；README 里 `grep -oE 'image/README/shots/[^")]+\.(webp|png|…)'` 逐条确认无 MISSING、无悬空引用；最终统计 `cat *.webp | wc -c` 得到总体积并与旧版对比写进交付说明。
 - `dev/tools/readme-shots.py` 可复跑（依赖整页长图源，见 11.1 差异说明）；`.creative-design/` 是 skill 过程文件（brief 等），不入库引用。
+- **交付前必做**：`node dev/tools/verify.mjs` 全绿 + 逐张 `Read` 目视新图（压缩伪影、地图标签、雷达文字、封面人物），再向用户汇报「改了哪些文件 / 总体积变化 / 验收结果 / 仍存在的已知瑕疵」。
